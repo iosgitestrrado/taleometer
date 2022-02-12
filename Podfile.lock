@@ -1,0 +1,20 @@
+PODS:
+  - LGSideMenuController (3.1.2)
+  - SwiftGifOrigin (1.7.0)
+
+DEPENDENCIES:
+  - LGSideMenuController (~> 3.1.2)
+  - SwiftGifOrigin (~> 1.7.0)
+
+SPEC REPOS:
+  trunk:
+    - LGSideMenuController
+    - SwiftGifOrigin
+
+SPEC CHECKSUMS:
+  LGSideMenuController: 0c7b155b0dbdf14bf8b88d5ac363c5fe1584bb23
+  SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
+
+PODFILE CHECKSUM: a7cbf92816ed2bd3fc27f6e38f38736cf2d8fbf1
+
+COCOAPODS: 1.11.2

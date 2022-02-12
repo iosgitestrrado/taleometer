@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '12.0'
+
+target 'TaleOMeter' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  pod 'LGSideMenuController', '~>3.1.2'
+  pod 'SwiftGifOrigin', '~>1.7.0'
+  # Pods for TaleOMeter
+
+  target 'TaleOMeterTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'TaleOMeterUITests' do
+    # Pods for testing
+  end
+
+end

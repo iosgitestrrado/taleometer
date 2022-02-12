@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Launch View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController storyboardIdentifier="LaunchViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="01J-lp-oVM" customClass="LaunchViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="ThL-to-mWe">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ThL-to-mWe" secondAttribute="bottom" id="EEc-wT-SoD"/>
+                            <constraint firstItem="ThL-to-mWe" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MXg-Ac-Uq4"/>
+                            <constraint firstItem="ThL-to-mWe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NYV-Lr-3ss"/>
+                            <constraint firstItem="ThL-to-mWe" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="TkQ-Ue-YsI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="splashImage" destination="ThL-to-mWe" id="MYj-vD-QOM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
+        </scene>
+    </scenes>
+    <color key="tintColor" red="0.2374408841" green="0.1087190881" blue="0.40989226099999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    <resources>
+        <image name="splash" width="1080" height="1920"/>
+    </resources>
+</document>
