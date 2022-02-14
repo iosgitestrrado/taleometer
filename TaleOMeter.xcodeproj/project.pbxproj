@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */; };
 		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
+		6353708627BA26CF000A144E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6353708527BA26CF000A144E /* LoginViewController.swift */; };
+		6353708827BA271F000A144E /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6353708727BA271F000A144E /* Auth.storyboard */; };
 		6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358430C27B7AED90055DE7E /* AppDelegate.swift */; };
 		6358430F27B7AED90055DE7E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358430E27B7AED90055DE7E /* SceneDelegate.swift */; };
 		6358431127B7AED90055DE7E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358431027B7AED90055DE7E /* MainViewController.swift */; };
@@ -28,6 +30,14 @@
 		6358435D27B7C9EC0055DE7E /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */; };
 		6358436027B7CFC60055DE7E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6358435F27B7CFC60055DE7E /* Media.xcassets */; };
 		6358436227B7D3780055DE7E /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6358436127B7D3780055DE7E /* splash_anim_new.gif */; };
+		6361179127BA34CF000C1749 /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361178F27BA34CF000C1749 /* VerificationViewController.swift */; };
+		6361179227BA34CF000C1749 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361179027BA34CF000C1749 /* RegisterViewController.swift */; };
+		6361179427BA553B000C1749 /* CountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361179327BA553B000C1749 /* CountryViewController.swift */; };
+		6361179727BA5814000C1749 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361179627BA5814000C1749 /* Country.swift */; };
+		6361179A27BA685F000C1749 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361179927BA685F000C1749 /* UIColor+Extension.swift */; };
+		636117A027BA68D6000C1749 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361179F27BA68D6000C1749 /* String+Extension.swift */; };
+		636117A227BA68ED000C1749 /* NSLocale+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636117A127BA68ED000C1749 /* NSLocale+Extension.swift */; };
+		636117A427BA75FB000C1749 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636117A327BA75FB000C1749 /* UIViewController+Extension.swift */; };
 		76AD30E196281466F1D06E7F /* Pods_TaleOMeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +61,8 @@
 /* Begin PBXFileReference section */
 		1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6353708527BA26CF000A144E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6353708727BA271F000A144E /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		6358430927B7AED90055DE7E /* TaleOMeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaleOMeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6358430C27B7AED90055DE7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6358430E27B7AED90055DE7E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +86,14 @@
 		6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		6358435F27B7CFC60055DE7E /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		6358436127B7D3780055DE7E /* splash_anim_new.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = splash_anim_new.gif; sourceTree = "<group>"; };
+		6361178F27BA34CF000C1749 /* VerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
+		6361179027BA34CF000C1749 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		6361179327BA553B000C1749 /* CountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryViewController.swift; sourceTree = "<group>"; };
+		6361179627BA5814000C1749 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		6361179927BA685F000C1749 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		6361179F27BA68D6000C1749 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		636117A127BA68ED000C1749 /* NSLocale+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLocale+Extension.swift"; sourceTree = "<group>"; };
+		636117A327BA75FB000C1749 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		63D5A6E5D579EC195493DA50 /* Pods-TaleOMeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.debug.xcconfig"; sourceTree = "<group>"; };
 		6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter_TaleOMeterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7533486D34A0D1A1D22E1D4A /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -111,6 +131,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6353708327BA26A2000A144E /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				6361179C27BA688C000C1749 /* Other */,
+				6361179E27BA68AB000C1749 /* Verification */,
+				6361179B27BA687E000C1749 /* Register */,
+				6353708427BA26B9000A144E /* Login */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		6353708427BA26B9000A144E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6353708527BA26CF000A144E /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		6358430027B7AED90055DE7E = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +205,7 @@
 		6358434027B7B7D60055DE7E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6361179527BA5802000C1749 /* Country */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -176,6 +216,7 @@
 				6358431227B7AED90055DE7E /* Main.storyboard */,
 				6358433E27B7B7C80055DE7E /* SideMenu.storyboard */,
 				6358431727B7AEDB0055DE7E /* LaunchScreen.storyboard */,
+				6353708727BA271F000A144E /* Auth.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -183,6 +224,7 @@
 		6358434227B7B7E70055DE7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6353708327BA26A2000A144E /* Authentication */,
 				6358435B27B7C9DC0055DE7E /* Dashboard */,
 				6358435827B7C5D60055DE7E /* Launch */,
 				6358434427B7B8130055DE7E /* SideMenu */,
@@ -193,6 +235,7 @@
 		6358434327B7B8050055DE7E /* _Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				6361179827BA6833000C1749 /* Extension */,
 				6358435427B7BE970055DE7E /* Helper.swift */,
 				6358430C27B7AED90055DE7E /* AppDelegate.swift */,
 				6358430E27B7AED90055DE7E /* SceneDelegate.swift */,
@@ -244,6 +287,49 @@
 				6358435F27B7CFC60055DE7E /* Media.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		6361179527BA5802000C1749 /* Country */ = {
+			isa = PBXGroup;
+			children = (
+				6361179627BA5814000C1749 /* Country.swift */,
+			);
+			path = Country;
+			sourceTree = "<group>";
+		};
+		6361179827BA6833000C1749 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				6361179927BA685F000C1749 /* UIColor+Extension.swift */,
+				6361179F27BA68D6000C1749 /* String+Extension.swift */,
+				636117A127BA68ED000C1749 /* NSLocale+Extension.swift */,
+				636117A327BA75FB000C1749 /* UIViewController+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		6361179B27BA687E000C1749 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				6361179027BA34CF000C1749 /* RegisterViewController.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		6361179C27BA688C000C1749 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				6361179327BA553B000C1749 /* CountryViewController.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		6361179E27BA68AB000C1749 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				6361178F27BA34CF000C1749 /* VerificationViewController.swift */,
+			);
+			path = Verification;
 			sourceTree = "<group>";
 		};
 		75062CC8DCEEDB60118FBB8B /* Frameworks */ = {
@@ -384,6 +470,7 @@
 				6358436227B7D3780055DE7E /* splash_anim_new.gif in Resources */,
 				6358431627B7AEDB0055DE7E /* Assets.xcassets in Resources */,
 				6358431427B7AED90055DE7E /* Main.storyboard in Resources */,
+				6353708827BA271F000A144E /* Auth.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,10 +604,19 @@
 				6358434F27B7BA980055DE7E /* RightViewController.swift in Sources */,
 				6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */,
 				6358430F27B7AED90055DE7E /* SceneDelegate.swift in Sources */,
+				636117A227BA68ED000C1749 /* NSLocale+Extension.swift in Sources */,
+				6361179127BA34CF000C1749 /* VerificationViewController.swift in Sources */,
+				636117A427BA75FB000C1749 /* UIViewController+Extension.swift in Sources */,
+				6361179A27BA685F000C1749 /* UIColor+Extension.swift in Sources */,
+				636117A027BA68D6000C1749 /* String+Extension.swift in Sources */,
 				6358435127B7BDE30055DE7E /* RightViewCell.swift in Sources */,
 				6358435D27B7C9EC0055DE7E /* DashboardViewController.swift in Sources */,
 				6358435A27B7C5EA0055DE7E /* LaunchViewController.swift in Sources */,
+				6361179227BA34CF000C1749 /* RegisterViewController.swift in Sources */,
+				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
 				6358435727B7C42C0055DE7E /* Constants.swift in Sources */,
+				6361179727BA5814000C1749 /* Country.swift in Sources */,
+				6353708627BA26CF000A144E /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,6 +800,7 @@
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -732,6 +829,7 @@
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

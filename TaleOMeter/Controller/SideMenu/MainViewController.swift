@@ -17,7 +17,7 @@ class MainViewController: LGSideMenuController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        self.rightViewBackgroundColor = UIColor(red: 237.0 / 255.0, green: 44.0 / 255.0, blue: 61.0 / 255.0, alpha: 1.0)// ED2C3D 237, 44, 61
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: menuIconImage, style: .plain, target: self, action: #selector(showRightViewAction(sender:)))
     }
 

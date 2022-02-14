@@ -22,6 +22,7 @@ class DashboardViewController: UIViewController {
         
     }
     
+    // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
     }

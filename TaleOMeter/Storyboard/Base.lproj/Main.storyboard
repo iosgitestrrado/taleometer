@@ -15,15 +15,26 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="6HQ-ex-5X4">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="6HQ-ex-5X4" secondAttribute="bottom" id="3sp-SI-3yT"/>
+                            <constraint firstItem="6HQ-ex-5X4" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="YDe-uK-9hR"/>
+                            <constraint firstItem="6HQ-ex-5X4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Zyv-9z-ZVC"/>
+                            <constraint firstItem="6HQ-ex-5X4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="pwN-dn-9eX"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DAT-8h-zlg">
                         <barButtonItem key="rightBarButtonItem" id="LCw-hQ-tmP">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GOg-E4-9Nq">
-                                <rect key="frame" x="348" y="5" width="46" height="34"/>
+                                <rect key="frame" x="344" y="0.0" width="50" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Menu">
+                                <state key="normal" image="menu">
                                     <color key="titleColor" red="0.2374408841" green="0.1087190881" blue="0.40989226099999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -39,8 +50,10 @@
             <point key="canvasLocation" x="928.98550724637687" y="45.535714285714285"/>
         </scene>
     </scenes>
-    <color key="tintColor" red="0.14509803921568626" green="0.14509803921568626" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
+        <image name="background" width="360" height="640"/>
+        <image name="menu" width="25" height="16.5"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

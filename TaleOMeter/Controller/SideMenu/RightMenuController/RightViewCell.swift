@@ -12,11 +12,14 @@ private let textFont = UIFont.boldSystemFont(ofSize: 16.0)
 private let fillColorNormal = UIColor(white: 0.0, alpha: 0.2)
 private let fillColorNormalInverted = UIColor(white: 1.0, alpha: 0.2)
 private let fillColorHighlighted = UIColor(white: 1.0, alpha: 0.6)
-private let textColorNormal: UIColor = .white
+private let textColorNormal: UIColor = .red
 private let textColorHighlighted: UIColor = .black
 
 class RightViewCell: UITableViewCell {
-
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var closeButton: UIButton!
+    
     var isFirst: Bool = false {
         didSet {
             guard let backgroundView = self.backgroundView as? RightViewCellBackgroundView else { return }
@@ -39,11 +42,7 @@ class RightViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
 
-        
-        setBackgroundColor(getFillColorNormal())
-
         textLabel!.font = textFont
-        textLabel!.textColor = textColorNormal
         textLabel!.numberOfLines = 1
         textLabel!.textAlignment = .left
     }
@@ -69,17 +68,9 @@ class RightViewCell: UITableViewCell {
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         backgroundView = RightViewCellBackgroundView()
-        setBackgroundColor(highlighted ? fillColorHighlighted : getFillColorNormal())
-        textLabel!.textColor = highlighted ? textColorHighlighted : textColorNormal
     }
 
     func getFillColorNormal() -> UIColor {
         return isFillColorInverted ? fillColorNormalInverted : fillColorNormal
     }
-
-    func setBackgroundColor(_ color: UIColor) {
-        let backgroundView = self.backgroundView as! RightViewCellBackgroundView
-        backgroundView.fillColor = color
-    }
-
 }
