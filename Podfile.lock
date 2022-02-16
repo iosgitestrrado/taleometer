@@ -1,20 +1,38 @@
 PODS:
   - LGSideMenuController (3.1.2)
+  - Magnetic (3.2.1)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
+  - SoundWave (0.1.4)
   - SwiftGifOrigin (1.7.0)
+  - TTGSnackbar (1.10.5)
 
 DEPENDENCIES:
   - LGSideMenuController (~> 3.1.2)
+  - Magnetic (~> 3.2.1)
+  - NVActivityIndicatorView (~> 5.1.1)
+  - SoundWave (~> 0.1.4)
   - SwiftGifOrigin (~> 1.7.0)
+  - TTGSnackbar (~> 1.10.5)
 
 SPEC REPOS:
   trunk:
     - LGSideMenuController
+    - Magnetic
+    - NVActivityIndicatorView
+    - SoundWave
     - SwiftGifOrigin
+    - TTGSnackbar
 
 SPEC CHECKSUMS:
   LGSideMenuController: 0c7b155b0dbdf14bf8b88d5ac363c5fe1584bb23
+  Magnetic: 02b9d6686160421cc4285140387419ec9ccab033
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
+  SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
   SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
+  TTGSnackbar: 2bd245d2bbf83639483410273fd936af0b7ba2a9
 
-PODFILE CHECKSUM: a7cbf92816ed2bd3fc27f6e38f38736cf2d8fbf1
+PODFILE CHECKSUM: fafdc71767d94183dea406d6611b6385474d09e2
 
 COCOAPODS: 1.11.2

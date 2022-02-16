@@ -14,6 +14,7 @@ class MainViewController: LGSideMenuController {
         super.init(coder: coder)
     }
     
+    // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

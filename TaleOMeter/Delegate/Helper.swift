@@ -14,6 +14,7 @@ struct Storyboard {
     static let sideMenu = "SideMenu"
     static let launch = "LaunchScreen"
     static let auth = "Auth"
+    static let audio = "Audio"
 }
 
 struct SroryboardId {
@@ -60,7 +61,7 @@ func isLightTheme() -> Bool {
 
 func getKeyWindow() -> UIWindow? {
     if #available(iOS 13.0, *) {
-        return UIApplication.shared.windows.first(where: { $0.isKeyWindow })
+        return (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
     } else {
         return UIApplication.shared.keyWindow
     }

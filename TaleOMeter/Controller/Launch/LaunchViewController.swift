@@ -9,6 +9,8 @@ import UIKit
 import SwiftGifOrigin
 
 class LaunchViewController: UIViewController {
+    
+    // MARK: - Variables -
     @IBOutlet weak var splashImage: UIImageView!
     
     // MARK: - Lifecycle -
@@ -18,8 +20,13 @@ class LaunchViewController: UIViewController {
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
-            let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-            (self.sideMenuController?.rootViewController as! UINavigationController).pushViewController(myobject, animated: true)
+            Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "PreferenceViewController")
+            
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
     }
 }

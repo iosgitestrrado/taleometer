@@ -11,20 +11,13 @@ import CoreTelephony
 
 class LoginViewController: UIViewController {
     
-    // MARK: - Storyboard Outlet / Connection -
+    // MARK: - Variables -
     @IBOutlet weak var countryCodeLbl: UILabel!
     @IBOutlet weak var mobileNumberTxt: UITextField!
     
     fileprivate var countryModel: Country = Country()
     
     // MARK: - Lifecycle -
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -32,6 +25,15 @@ class LoginViewController: UIViewController {
         self.navigationItem.hidesBackButton = true
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     @objc func keyboardWillShowNotification (notification: Notification) {
@@ -53,12 +55,20 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func tapOnSubmit(_ sender: Any) {
+        if !Reachability.isConnectedToNetwork() {
+            Snackbar.showNoInternetMessage()
+            return
+        }
+        if !self.mobileNumberTxt.text!.isPhoneNumber {
+            Snackbar.showAlertMessage("Please Enter correct Mobile Number!")
+            return
+        }
         self.performSegue(withIdentifier: "verification", sender: sender)
     }
     
     
     @IBAction func tapOnTermsAndCond(_ sender: Any) {
-        
+        self.performSegue(withIdentifier: "termsAndCondition", sender: sender)
     }
     
     // MARK: - Country
@@ -82,15 +92,13 @@ class LoginViewController: UIViewController {
                     model.extensionCode = "+\(NSLocale().extensionCode(countryCode: model.countryCode) ?? "")"
                 }
                 countryModel = model
-                print("Default Country: \(model.flag!) \(model.extensionCode!)")
+                self.countryCodeLbl.text = "\(model.flag!) \(model.extensionCode!)"
             }
         }
     }
     
     @IBAction func tapOnCountry(_ sender: Any) {
-        let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
-        myobject.delegate = self
-        self.navigationController?.present(myobject, animated: true, completion: nil)
+        Core.present(self, storyboard: "CountryViewController", storyboardId: Storyboard.auth)
     }
 }
 
@@ -98,6 +106,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: CountryCodeDelegate {
     func selectedCountryCode(country: Country) {
         self.countryModel = country
+        self.countryCodeLbl.text = "\(country.flag!) \(country.extensionCode!)"
        // print("Country: \(country.flag!) \(country.extensionCode!)")
     }
 }
