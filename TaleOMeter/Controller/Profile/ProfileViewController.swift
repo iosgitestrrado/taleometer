@@ -9,7 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-    // MARK: - Variables -
+    // MARK: - Weak Property -
     
     
     // MARK: - Lifecycle -

@@ -10,7 +10,7 @@ import SwiftGifOrigin
 
 class LaunchViewController: UIViewController {
     
-    // MARK: - Variables -
+    // MARK: - Weak Properties -
     @IBOutlet weak var splashImage: UIImageView!
     
     // MARK: - Lifecycle -
@@ -20,7 +20,7 @@ class LaunchViewController: UIViewController {
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
-            Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "PreferenceViewController")
+            Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
             
         }
     }

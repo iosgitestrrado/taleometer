@@ -10,7 +10,7 @@ import UIKit
 
 class VerificationViewController: UIViewController {
     
-    // MARK: - Variables -
+    // MARK: - Weak Properties -
     @IBOutlet weak var otp1TextField: UITextField!
     @IBOutlet weak var otp2TextField: UITextField!
     @IBOutlet weak var otp3TextField: UITextField!
@@ -33,7 +33,7 @@ class VerificationViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    @objc func keyboardWillShowNotification (notification: Notification) {
+    @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                 self.view.frame.origin.y -= 100.0
@@ -42,7 +42,7 @@ class VerificationViewController: UIViewController {
         }
     }
     
-    @objc func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardDidHideNotification (notification: Notification) {
         if self.view.frame.origin.y != 0.0 {
             UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.view.frame.origin.y = 0

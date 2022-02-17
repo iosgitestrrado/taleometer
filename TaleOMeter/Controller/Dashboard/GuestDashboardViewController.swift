@@ -10,7 +10,7 @@ import LGSideMenuController
 
 class GuestDashboardViewController: UIViewController {
 
-    // MARK: - Variables -
+    // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
     
     

@@ -9,10 +9,11 @@ import UIKit
 
 class SegmentViewController: UIViewController {
 
-    // MARK: - Variables -
-    var parentController: UIViewController?
-    var parentFrame: CGRect?
+    // MARK: - Public Properties -
+    public var parentController: UIViewController?
+    public var parentFrame: CGRect?
     
+    // MARK: - Private Properties -
     private var containerVC: ContainerViewController?
     private var viewsArray = [UIViewController]()
     
@@ -34,18 +35,20 @@ class SegmentViewController: UIViewController {
     }
     
     // MARK: - Add views into container -
-    func addContainerViews() {
+    private func addContainerViews() {
         var gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
         gridView.title = "Entertain"
+        gridView.parentController = self.parentController
         viewsArray.append(gridView)
         
         gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
+        gridView.parentController = self.parentController
         gridView.title = "Inspire"
         viewsArray.append(gridView)
         
-        
         for _ in 0..<20 {
             gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
+            gridView.parentController = self.parentController
             gridView.title = "Snooze"
             viewsArray.append(gridView)
         }

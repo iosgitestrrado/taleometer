@@ -25,7 +25,22 @@ class AudioPlayManager: NSObject {
     var songIndex = 0
     var nextSongIndex = 0
     var prevSongIndex = 0
-    var playerAV: AVPlayer = AVPlayer.init()
+    var playerAV: AVPlayer = AVPlayer()
+    
+    func configAudio(_ url: URL) {
+        do {
+            try
+            AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: .mixWithOthers)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            let playerItem = AVPlayerItem(url: url)
+            playerAV = AVPlayer.init(playerItem: playerItem)
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
         
     func play(_ songIndexs: Int, control: UIViewController) {
         songIndex = songIndexs
@@ -124,5 +139,13 @@ class AudioPlayManager: NSObject {
     @objc func tapOnContainer(_ sender: UIButton) {
         let nowPlayView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
         currController.navigationController?.present(nowPlayView, animated: true, completion: nil)
+    }
+}
+
+
+// MARK: Check audio is playing
+extension AVPlayer {
+    var isPlaying: Bool {
+        return rate != 0 && error == nil
     }
 }

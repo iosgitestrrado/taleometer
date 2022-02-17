@@ -9,7 +9,7 @@ import UIKit
 
 class AudioContainerViewController: UIViewController {
 
-    // MARK: - Variables -
+    // MARK: - Weak Property -
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var fullViewButton: UIButton!

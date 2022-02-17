@@ -9,7 +9,7 @@ import UIKit
 
 class RegisterViewController: UIViewController {
     
-    // MARK: - Variables -
+    // MARK: - Weak Properties -
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     
@@ -31,7 +31,7 @@ class RegisterViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    @objc func keyboardWillShowNotification (notification: Notification) {
+    @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                 self.view.frame.origin.y -= 100.0
@@ -40,7 +40,7 @@ class RegisterViewController: UIViewController {
         }
     }
     
-    @objc func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardDidHideNotification (notification: Notification) {
         if self.view.frame.origin.y != 0.0 {
             UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.view.frame.origin.y = 0

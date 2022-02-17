@@ -9,7 +9,7 @@ import UIKit
 
 class AuthorViewController: UIViewController {
 
-    // MARK: - Variables -
+    // MARK: - Weak Property -
     
     
     // MARK: - Lifecycle -

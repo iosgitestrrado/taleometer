@@ -10,9 +10,8 @@ import LGSideMenuController
 
 class DashboardViewController: UIViewController {
 
-    // MARK: - Variables -
+    // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
-    
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -31,7 +30,6 @@ class DashboardViewController: UIViewController {
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
     }
-    
     
     @IBAction func tapOnNonStop(_ sender: Any) {
     }

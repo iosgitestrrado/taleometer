@@ -9,7 +9,7 @@ import UIKit
 
 class TermsAndConditionVC: UIViewController {
     
-    // MARK: - Variables -
+    // MARK: - Weak Properties -
     @IBOutlet weak var textView: UITextView!
     
     // MARK: - Lifecycle -

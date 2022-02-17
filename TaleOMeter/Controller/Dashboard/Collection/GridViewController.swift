@@ -9,9 +9,11 @@ import UIKit
 
 class GridViewController: UICollectionViewController {
 
-    // MARK: - Variables -
-   // @IBOutlet var collectionView: UICollectionView!
-    var gridSize: CGFloat = 100.0
+    // MARK: - Public Properties -
+    public var parentController: UIViewController?
+    
+    // MARK: - Private Properties -
+    private var gridSize: CGFloat = 100.0
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -57,7 +59,7 @@ class GridViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDelegate -
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Click on Item")
+        Core.push(self.parentController!, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
     }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 class GridCollectionViewCell: UICollectionViewCell {
-    // MARK: - Variables - 
+    // MARK: - Weak Properties -
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
 }

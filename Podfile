@@ -10,6 +10,7 @@ target 'TaleOMeter' do
   pod 'NVActivityIndicatorView', '~>5.1.1'
   pod 'Magnetic', '~>3.2.1'
   pod "SoundWave", '~>0.1.4'
+
   # Pods for TaleOMeter
 
   target 'TaleOMeterTests' do

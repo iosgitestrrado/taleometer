@@ -9,7 +9,7 @@ import UIKit
 
 class FeedbackViewController: UIViewController {
 
-    // MARK: - Variables -
+    // MARK: - Weak Property -
     
     
     // MARK: - Lifecycle -

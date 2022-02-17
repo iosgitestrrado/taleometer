@@ -11,11 +11,12 @@ import CoreTelephony
 
 class LoginViewController: UIViewController {
     
-    // MARK: - Variables -
+    // MARK: - Weak Properties -
     @IBOutlet weak var countryCodeLbl: UILabel!
     @IBOutlet weak var mobileNumberTxt: UITextField!
     
-    fileprivate var countryModel: Country = Country()
+    // MARK: - Private Properties -
+    private var countryModel: Country = Country()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -36,7 +37,7 @@ class LoginViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    @objc func keyboardWillShowNotification (notification: Notification) {
+    @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                 self.view.frame.origin.y -= 100.0
@@ -45,7 +46,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @objc func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardDidHideNotification (notification: Notification) {
         if self.view.frame.origin.y != 0.0 {
             UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.view.frame.origin.y = 0
@@ -72,7 +73,7 @@ class LoginViewController: UIViewController {
     }
     
     // MARK: - Country
-    func setDefaultCountry() {
+    private func setDefaultCountry() {
         //let carrier = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?.first?.value, let code = carrier.isoCountryCode
         if let code = NSLocale.current.regionCode  {
             let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])

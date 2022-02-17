@@ -14,16 +14,15 @@ protocol CountryCodeDelegate: AnyObject {
 
 class CountryViewController: UIViewController {
     
-    // MARK: - Variables -
+    // MARK: - Weak Properties -
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
-    var list: [Country] = [Country]()
-    var dupList: [Country] = [Country]()
-    
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var delegate: CountryCodeDelegate? = nil
     
+    // MARK: - Private Properties -
+    private var list: [Country] = [Country]()
+    private var dupList: [Country] = [Country]()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -38,7 +37,7 @@ class CountryViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
     }
     
-    func configuration() {
+    private func configuration() {
         for code in NSLocale.isoCountryCodes  {
             let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
             let name = NSLocale(localeIdentifier: "en_US").displayName(forKey: NSLocale.Key.identifier, value: id)
