@@ -7,9 +7,10 @@ target 'TaleOMeter' do
   pod 'LGSideMenuController', '~>3.1.2'
   pod 'SwiftGifOrigin', '~>1.7.0'
   pod 'TTGSnackbar', '~>1.10.5'
-  pod 'NVActivityIndicatorView', '~>5.1.1'
+#  pod 'NVActivityIndicatorView', '~>5.1.1'
   pod 'Magnetic', '~>3.2.1'
   pod "SoundWave", '~>0.1.4'
+  pod 'MBProgressHUD', '~>1.2.0'
 
   # Pods for TaleOMeter
 

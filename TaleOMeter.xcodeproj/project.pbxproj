@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */; };
 		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
+		630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */; };
 		6353708627BA26CF000A144E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6353708527BA26CF000A144E /* LoginViewController.swift */; };
 		6353708827BA271F000A144E /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6353708727BA271F000A144E /* Auth.storyboard */; };
 		6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358430C27B7AED90055DE7E /* AppDelegate.swift */; };
@@ -25,7 +26,6 @@
 		6358435127B7BDE30055DE7E /* RightViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435027B7BDE30055DE7E /* RightViewCell.swift */; };
 		6358435327B7BE200055DE7E /* RightViewCellBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435227B7BE200055DE7E /* RightViewCellBackgroundView.swift */; };
 		6358435527B7BE970055DE7E /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435427B7BE970055DE7E /* Helper.swift */; };
-		6358435727B7C42C0055DE7E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435627B7C42C0055DE7E /* Constants.swift */; };
 		6358435A27B7C5EA0055DE7E /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435927B7C5EA0055DE7E /* LaunchViewController.swift */; };
 		6358435D27B7C9EC0055DE7E /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */; };
 		6358436027B7CFC60055DE7E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6358435F27B7CFC60055DE7E /* Media.xcassets */; };
@@ -45,9 +45,10 @@
 		636ED8E627BB7C120030D2F0 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636ED8E527BB7C120030D2F0 /* CGPoint+Extension.swift */; };
 		636ED8E827BB7C2A0030D2F0 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */; };
 		636ED8EB27BB7C8E0030D2F0 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */; };
-		638480B527BE388000035630 /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 638480B427BE387F00035630 /* splash_anim_new.gif */; };
+		637AD84427BF7381001D964A /* FooterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637AD84327BF7381001D964A /* FooterManager.swift */; };
 		638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */; };
-		638480BD27BE71D200035630 /* testAudio copy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480BC27BE71D200035630 /* testAudio copy.mp3 */; };
+		638480BD27BE71D200035630 /* testAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480BC27BE71D200035630 /* testAudio.mp3 */; };
+		63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */; };
 		63D27C6027BCF6030074EA7F /* GuestDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C5F27BCF6030074EA7F /* GuestDashboardViewController.swift */; };
 		63D27C6227BD07FA0074EA7F /* Audio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63D27C6127BD07FA0074EA7F /* Audio.storyboard */; };
 		63D27C6627BD087F0074EA7F /* NonStopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C6527BD087F0074EA7F /* NonStopViewController.swift */; };
@@ -64,9 +65,9 @@
 		63D27C8F27BD0B0C0074EA7F /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C8E27BD0B0C0074EA7F /* FeedbackViewController.swift */; };
 		63D27C9227BD0B830074EA7F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C9127BD0B830074EA7F /* SearchViewController.swift */; };
 		63D27C9527BD0BA20074EA7F /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C9427BD0BA20074EA7F /* FavoriteViewController.swift */; };
-		63D27C9827BD0C2F0074EA7F /* PopupCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C9727BD0C2F0074EA7F /* PopupCViewController.swift */; };
+		63D27C9827BD0C2F0074EA7F /* PromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C9727BD0C2F0074EA7F /* PromptViewController.swift */; };
 		63D27C9D27BD12AC0074EA7F /* AudioPlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C9C27BD12AC0074EA7F /* AudioPlayManager.swift */; };
-		63D27CA127BD18160074EA7F /* AudioContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27CA027BD18160074EA7F /* AudioContainerViewController.swift */; };
+		63D27CA127BD18160074EA7F /* MiniAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27CA027BD18160074EA7F /* MiniAudioViewController.swift */; };
 		63D27CA327BD1BAD0074EA7F /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27CA227BD1BAD0074EA7F /* MarqueeLabel.swift */; };
 		63DFB4A927BCAF3500B08216 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DFB4A827BCAF3500B08216 /* ContainerViewController.swift */; };
 		63DFB4AB27BCB03D00B08216 /* ScrollMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DFB4AA27BCB03D00B08216 /* ScrollMenuView.swift */; };
@@ -101,6 +102,7 @@
 /* Begin PBXFileReference section */
 		1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = splash_anim_new.gif; sourceTree = "<group>"; };
 		6353708527BA26CF000A144E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6353708727BA271F000A144E /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		6358430927B7AED90055DE7E /* TaleOMeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaleOMeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,7 +123,6 @@
 		6358435027B7BDE30055DE7E /* RightViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewCell.swift; sourceTree = "<group>"; };
 		6358435227B7BE200055DE7E /* RightViewCellBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewCellBackgroundView.swift; sourceTree = "<group>"; };
 		6358435427B7BE970055DE7E /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		6358435627B7C42C0055DE7E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6358435927B7C5EA0055DE7E /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		6358435F27B7CFC60055DE7E /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -141,9 +142,10 @@
 		636ED8E527BB7C120030D2F0 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		638480B427BE387F00035630 /* splash_anim_new.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = splash_anim_new.gif; path = ../../../../TaleOMeter/splash_anim_new.gif; sourceTree = "<group>"; };
+		637AD84327BF7381001D964A /* FooterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterManager.swift; sourceTree = "<group>"; };
 		638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = file_example_MP3_5MG.mp3; sourceTree = "<group>"; };
-		638480BC27BE71D200035630 /* testAudio copy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "testAudio copy.mp3"; sourceTree = "<group>"; };
+		638480BC27BE71D200035630 /* testAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio.mp3; sourceTree = "<group>"; };
+		63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptVManager.swift; sourceTree = "<group>"; };
 		63D27C5F27BCF6030074EA7F /* GuestDashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestDashboardViewController.swift; sourceTree = "<group>"; };
 		63D27C6127BD07FA0074EA7F /* Audio.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Audio.storyboard; sourceTree = "<group>"; };
 		63D27C6527BD087F0074EA7F /* NonStopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonStopViewController.swift; sourceTree = "<group>"; };
@@ -160,9 +162,9 @@
 		63D27C8E27BD0B0C0074EA7F /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		63D27C9127BD0B830074EA7F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		63D27C9427BD0BA20074EA7F /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
-		63D27C9727BD0C2F0074EA7F /* PopupCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupCViewController.swift; sourceTree = "<group>"; };
+		63D27C9727BD0C2F0074EA7F /* PromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptViewController.swift; sourceTree = "<group>"; };
 		63D27C9C27BD12AC0074EA7F /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
-		63D27CA027BD18160074EA7F /* AudioContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioContainerViewController.swift; sourceTree = "<group>"; };
+		63D27CA027BD18160074EA7F /* MiniAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniAudioViewController.swift; sourceTree = "<group>"; };
 		63D27CA227BD1BAD0074EA7F /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
 		63D5A6E5D579EC195493DA50 /* Pods-TaleOMeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.debug.xcconfig"; sourceTree = "<group>"; };
 		63DFB4A827BCAF3500B08216 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -211,6 +213,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		630056EB27BEA0E7009CB2E2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6358434327B7B8050055DE7E /* Delegate */,
+				6358434027B7B7D60055DE7E /* Model */,
+				6358434127B7B7DF0055DE7E /* Storyboard */,
+				6358434227B7B7E70055DE7E /* Controller */,
+				63F2AAAC27BB6A08007CAFC1 /* Common */,
+				6358435E27B7CF9C0055DE7E /* Assets */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		6353708327BA26A2000A144E /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,13 +271,7 @@
 		6358430B27B7AED90055DE7E /* TaleOMeter */ = {
 			isa = PBXGroup;
 			children = (
-				638480BC27BE71D200035630 /* testAudio copy.mp3 */,
-				6358434327B7B8050055DE7E /* Delegate */,
-				6358434027B7B7D60055DE7E /* Model */,
-				6358434127B7B7DF0055DE7E /* Storyboard */,
-				6358434227B7B7E70055DE7E /* Controller */,
-				63F2AAAC27BB6A08007CAFC1 /* Common */,
-				6358435E27B7CF9C0055DE7E /* Assets */,
+				630056EB27BEA0E7009CB2E2 /* Source */,
 				6358431A27B7AEDB0055DE7E /* Info.plist */,
 			);
 			path = TaleOMeter;
@@ -320,7 +329,6 @@
 				63D27C8A27BD0ADD0074EA7F /* AboutUs */,
 				63D27C8D27BD0AFB0074EA7F /* Feedback */,
 				63FA7E7127BBC8F600AD6C97 /* Footer */,
-				63D27C9627BD0C1D0074EA7F /* Other */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -365,11 +373,12 @@
 		6358435B27B7C9DC0055DE7E /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */,
+				63D27C5F27BCF6030074EA7F /* GuestDashboardViewController.swift */,
 				63DFB4B127BCC54E00B08216 /* Collection */,
 				63DFB4AE27BCC00300B08216 /* Segment */,
 				636ED8DB27BB79CD0030D2F0 /* Preference */,
-				6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */,
-				63D27C5F27BCF6030074EA7F /* GuestDashboardViewController.swift */,
+				63D27C9627BD0C1D0074EA7F /* Other */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -377,8 +386,9 @@
 		6358435E27B7CF9C0055DE7E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				638480BC27BE71D200035630 /* testAudio.mp3 */,
+				630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */,
 				638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */,
-				638480B427BE387F00035630 /* splash_anim_new.gif */,
 				6358431527B7AEDB0055DE7E /* Assets.xcassets */,
 				6358435F27B7CFC60055DE7E /* Media.xcassets */,
 			);
@@ -442,10 +452,26 @@
 			path = Preference;
 			sourceTree = "<group>";
 		};
+		63A4F57227BFDC9600FDBB03 /* Footer */ = {
+			isa = PBXGroup;
+			children = (
+				637AD84327BF7381001D964A /* FooterManager.swift */,
+			);
+			path = Footer;
+			sourceTree = "<group>";
+		};
+		63A4F57327BFDCA500FDBB03 /* PromptScreen */ = {
+			isa = PBXGroup;
+			children = (
+				63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */,
+			);
+			path = PromptScreen;
+			sourceTree = "<group>";
+		};
 		63D27C6327BD08550074EA7F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				63D27C9F27BD17FC0074EA7F /* MinimizedPlayer */,
+				63D27C9F27BD17FC0074EA7F /* MiniPlayer */,
 				63D27C9027BD0B710074EA7F /* Search */,
 				63D27C9327BD0B8A0074EA7F /* Favorite */,
 				63D27C8327BD0A570074EA7F /* History */,
@@ -565,7 +591,7 @@
 		63D27C9627BD0C1D0074EA7F /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				63D27C9727BD0C2F0074EA7F /* PopupCViewController.swift */,
+				63D27C9727BD0C2F0074EA7F /* PromptViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -588,20 +614,20 @@
 			path = Snackbar;
 			sourceTree = "<group>";
 		};
-		63D27C9B27BD128A0074EA7F /* AudioPlayManager */ = {
+		63D27C9B27BD128A0074EA7F /* AudioPlay */ = {
 			isa = PBXGroup;
 			children = (
 				63D27C9C27BD12AC0074EA7F /* AudioPlayManager.swift */,
 			);
-			path = AudioPlayManager;
+			path = AudioPlay;
 			sourceTree = "<group>";
 		};
-		63D27C9F27BD17FC0074EA7F /* MinimizedPlayer */ = {
+		63D27C9F27BD17FC0074EA7F /* MiniPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				63D27CA027BD18160074EA7F /* AudioContainerViewController.swift */,
+				63D27CA027BD18160074EA7F /* MiniAudioViewController.swift */,
 			);
-			path = MinimizedPlayer;
+			path = MiniPlayer;
 			sourceTree = "<group>";
 		};
 		63D27CA427BD1BCA0074EA7F /* MarqueeLabel */ = {
@@ -659,7 +685,9 @@
 		63F2AAAC27BB6A08007CAFC1 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				63D27C9B27BD128A0074EA7F /* AudioPlayManager */,
+				63A4F57327BFDCA500FDBB03 /* PromptScreen */,
+				63A4F57227BFDC9600FDBB03 /* Footer */,
+				63D27C9B27BD128A0074EA7F /* AudioPlay */,
 				63DFB4A727BCAF2700B08216 /* Library */,
 				63F2AAAE27BB6A23007CAFC1 /* Constants */,
 				6361179827BA6833000C1749 /* Extension */,
@@ -678,7 +706,6 @@
 		63F2AAAE27BB6A23007CAFC1 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				6358435627B7C42C0055DE7E /* Constants.swift */,
 				636ED8D727BB6B470030D2F0 /* Core.swift */,
 			);
 			path = Constants;
@@ -832,10 +859,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				638480B527BE388000035630 /* splash_anim_new.gif in Resources */,
 				6358436027B7CFC60055DE7E /* Media.xcassets in Resources */,
 				6358433F27B7B7C80055DE7E /* SideMenu.storyboard in Resources */,
-				638480BD27BE71D200035630 /* testAudio copy.mp3 in Resources */,
+				638480BD27BE71D200035630 /* testAudio.mp3 in Resources */,
+				630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */,
 				6358431927B7AEDB0055DE7E /* LaunchScreen.storyboard in Resources */,
 				63D27C6227BD07FA0074EA7F /* Audio.storyboard in Resources */,
 				638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */,
@@ -969,7 +996,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63D27C9827BD0C2F0074EA7F /* PopupCViewController.swift in Sources */,
+				63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */,
+				63D27C9827BD0C2F0074EA7F /* PromptViewController.swift in Sources */,
 				63DFB4AD27BCB20400B08216 /* ContainerConstant.swift in Sources */,
 				6358435327B7BE200055DE7E /* RightViewCellBackgroundView.swift in Sources */,
 				636ED8EB27BB7C8E0030D2F0 /* UIView+Extension.swift in Sources */,
@@ -988,11 +1016,12 @@
 				636117A227BA68ED000C1749 /* NSLocale+Extension.swift in Sources */,
 				6361179127BA34CF000C1749 /* VerificationViewController.swift in Sources */,
 				636117A427BA75FB000C1749 /* UIViewController+Extension.swift in Sources */,
-				63D27CA127BD18160074EA7F /* AudioContainerViewController.swift in Sources */,
+				63D27CA127BD18160074EA7F /* MiniAudioViewController.swift in Sources */,
 				63D27C6627BD087F0074EA7F /* NonStopViewController.swift in Sources */,
 				63DFB4B327BCC57900B08216 /* GridViewController.swift in Sources */,
 				636ED8E427BB7BEF0030D2F0 /* Array+Extension.swift in Sources */,
 				63D27C8527BD0A680074EA7F /* HistoryViewController.swift in Sources */,
+				637AD84427BF7381001D964A /* FooterManager.swift in Sources */,
 				63D27C9527BD0BA20074EA7F /* FavoriteViewController.swift in Sources */,
 				63D27C8227BD0A470074EA7F /* UserStoryViewController.swift in Sources */,
 				636ED8DE27BB7A1B0030D2F0 /* PreferenceViewController.swift in Sources */,
@@ -1020,7 +1049,6 @@
 				63DFB4A927BCAF3500B08216 /* ContainerViewController.swift in Sources */,
 				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
-				6358435727B7C42C0055DE7E /* Constants.swift in Sources */,
 				6361179727BA5814000C1749 /* Country.swift in Sources */,
 				63D27CA327BD1BAD0074EA7F /* MarqueeLabel.swift in Sources */,
 				63F2AAAB27BB68FF007CAFC1 /* Reachability.swift in Sources */,
