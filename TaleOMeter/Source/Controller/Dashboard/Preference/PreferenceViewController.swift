@@ -7,6 +7,7 @@
 
 import UIKit
 import Magnetic
+import SpriteKit
 
 class PreferenceViewController: UIViewController {
 
@@ -38,6 +39,11 @@ class PreferenceViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+            self.timerg?.invalidate()
+            self.skipButton.isHidden = false
+        }
     }
     
     @objc func runTimedCode() {
@@ -57,24 +63,28 @@ class PreferenceViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        for idx in 0..<50 {
-            self.addNodes(idx)
-        }
+//        for idx in 0..<50 {
+//            self.addNodes(idx)
+//        }
     }
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
-        self.performSegue(withIdentifier: "dashboard", sender: sender)
+        Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
+        //self.performSegue(withIdentifier: "dashboard", sender: sender)
     }
     
-    @IBAction func addNodes(_ sender: Int) {
-        let name = UIImage.names.randomItem()
+    @IBAction func addNodes(_ sender: UIButton) {
+        //let name = UIImage.names.randomItem() //checkmark.seal.fill
         let color = UIColor.colors.randomItem()
-        let node = Node(text: name.capitalized, image: UIImage(named: name), color: color, radius: 0)
+        let node = Node(text: "", image: UIImage(named: "Default_img"), color: color, radius: 10.0)
+        node.originalTexture = SKTexture(image: UIImage(named: "Default_img")!)
+        node.selectedTexture = SKTexture(image: UIImage(named: "Default_sel_img")!)
         node.scaleToFitContent = true
-        node.selectedColor = UIColor.colors.randomItem()
+        node.selectedColor = .clear
+        node.selectedStrokeColor = .red
         node.speed = 0.1
-        node.inputView?.tag = sender
-        if sender == 0 {
+        node.inputView?.tag = sender.tag
+        if sender.tag == 0 {
             firstNode = node
         }
         magnetic.addChild(node)

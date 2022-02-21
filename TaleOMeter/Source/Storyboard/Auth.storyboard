@@ -155,13 +155,13 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bht-zK-LF7">
-                                <rect key="frame" x="310" y="545" width="60" height="60"/>
+                                <rect key="frame" x="330" y="545" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="6N9-QX-Rjg"/>
-                                    <constraint firstAttribute="height" constant="60" id="lxx-pD-c6m"/>
+                                    <constraint firstAttribute="width" constant="40" id="6N9-QX-Rjg"/>
+                                    <constraint firstAttribute="height" constant="40" id="lxx-pD-c6m"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="btn"/>
+                                <state key="normal" backgroundImage="btn"/>
                                 <connections>
                                     <action selector="tapOnSubmit:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="VNo-3v-eBV"/>
                                 </connections>
@@ -370,13 +370,13 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssX-1W-wX4">
-                                <rect key="frame" x="310" y="530" width="60" height="60"/>
+                                <rect key="frame" x="330" y="530" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="JAO-b5-NiC"/>
-                                    <constraint firstAttribute="width" constant="60" id="jVM-RA-ypS"/>
+                                    <constraint firstAttribute="height" constant="40" id="JAO-b5-NiC"/>
+                                    <constraint firstAttribute="width" constant="40" id="jVM-RA-ypS"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="btn"/>
+                                <state key="normal" backgroundImage="btn"/>
                                 <connections>
                                     <action selector="tapOnSubmit:" destination="bip-MS-FPG" eventType="touchUpInside" id="uF6-xV-DG3"/>
                                 </connections>
@@ -578,7 +578,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOc-SA-7f4">
-                                <rect key="frame" x="20" y="544" width="350" height="20"/>
+                                <rect key="frame" x="20" y="524" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="aP8-W1-hc9"/>
                                 </constraints>
@@ -613,13 +613,13 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TQe-Rv-azO">
-                                <rect key="frame" x="310" y="476" width="60" height="60"/>
+                                <rect key="frame" x="330" y="476" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="mYG-9S-dR9"/>
-                                    <constraint firstAttribute="height" constant="60" id="xJD-JP-L02"/>
+                                    <constraint firstAttribute="width" constant="40" id="mYG-9S-dR9"/>
+                                    <constraint firstAttribute="height" constant="40" id="xJD-JP-L02"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="btn"/>
+                                <state key="normal" backgroundImage="btn"/>
                                 <connections>
                                     <action selector="tapOnSubmit:" destination="IhJ-EX-XiF" eventType="touchUpInside" id="e9v-To-PaF"/>
                                 </connections>

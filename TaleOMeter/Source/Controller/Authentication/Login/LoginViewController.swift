@@ -99,7 +99,9 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func tapOnCountry(_ sender: Any) {
-        Core.present(self, storyboard: "CountryViewController", storyboardId: Storyboard.auth)
+        let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
+        myobject.delegate = self
+        (self.sideMenuController?.rootViewController as! UINavigationController).present(myobject, animated: true, completion: nil)
     }
 }
 

@@ -112,6 +112,7 @@ class NowPlayViewController: UIViewController {
                     self.player = playerk
                 }
             }
+            self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.playImageName), for: .normal)
             Core.ShowProgress(contrSelf: self, detailLbl: "Getting audio waves...")
             AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
                 waveFormcount = result.count
@@ -136,11 +137,6 @@ class NowPlayViewController: UIViewController {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         panGestureRecognizer.cancelsTouchesInView = false
         visualizationWave.addGestureRecognizer(panGestureRecognizer)
-    }
-    
-    @objc func itemDidFinishedPlaying() {
-        audioTimer.invalidate()
-        self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.playImageName), for: .normal)
     }
     
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
@@ -227,7 +223,7 @@ class NowPlayViewController: UIViewController {
             break
         case 1:
             //Previouse
-            playingNextSong()
+            itemDidFinishedPlaying()
             break
         case 2:
             //Favorite
@@ -270,10 +266,10 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    private func playingNextSong() {
-        if (player.isPlaying) {
+    @objc func itemDidFinishedPlaying() {
+        //if (player.isPlaying) {
             self.playPauseAudio(false)
-        }
+        //}
         existingAudio = false
         configureAudio()
         if let chronometer = self.visualizationWave.playChronometer {
@@ -328,11 +324,11 @@ extension NowPlayViewController: PromptViewDelegate {
             break
         case 1:
             //1 - Once more
-            playingNextSong()
+            itemDidFinishedPlaying()
             break
         default:
             //2 - play next song
-            playingNextSong()
+            itemDidFinishedPlaying()
             break
         }
     }

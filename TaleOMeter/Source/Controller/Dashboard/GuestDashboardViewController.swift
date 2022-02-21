@@ -13,6 +13,7 @@ class GuestDashboardViewController: UIViewController {
     // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
+    @IBOutlet weak var surpriseButton: UIButton!
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -33,6 +34,10 @@ class GuestDashboardViewController: UIViewController {
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
+    }
+    
+    @IBAction func tapOnSurprise(_ sender: Any) {
+        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
     }
     
     // MARK: - Navigation

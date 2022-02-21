@@ -13,6 +13,10 @@ class DashboardViewController: UIViewController {
     // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
+    @IBOutlet weak var surpriseButton: UIButton! {
+        didSet {
+        }
+    }
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -38,6 +42,10 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnNonStop(_ sender: Any) {
+    }
+    
+    @IBAction func tapOnSurprise(_ sender: Any) {
+        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
     }
     
     // MARK: - Navigation

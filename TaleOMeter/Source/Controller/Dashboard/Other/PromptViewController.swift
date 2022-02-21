@@ -79,6 +79,7 @@ class PromptViewController: UIViewController {
     @objc func updateTimer() {
         if remainingSecond < 0 {
             timer.invalidate()
+            self.delegate?.selectedOption(2)
             self.dismiss(animated: true, completion: nil)
         } else {
             setRemainTitle()

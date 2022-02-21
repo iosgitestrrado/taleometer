@@ -46,7 +46,7 @@ class SegmentViewController: UIViewController {
         gridView.title = "Inspire"
         viewsArray.append(gridView)
         
-        for _ in 0..<20 {
+        for _ in 0..<1 {
             gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
             gridView.parentController = self.parentController
             gridView.title = "Snooze"

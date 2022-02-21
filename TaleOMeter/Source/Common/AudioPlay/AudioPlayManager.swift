@@ -88,9 +88,9 @@ class AudioPlayManager: NSObject {
         
         miniVController.view.tag = AudioPlayManager.miniViewTag
         bottomConstraint.constant = UIScreen.main.bounds.size.height - miniVController.view.frame.origin.y
-        if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
-            bottomConstraint.constant = UIScreen.main.bounds.size.height - miniVController.view.frame.origin.y - window.safeAreaInsets.bottom
-        }
+//        if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+//            bottomConstraint.constant = UIScreen.main.bounds.size.height - (miniVController.view.frame.origin.y - window.safeAreaInsets.bottom)
+//        }
         controller.view.addSubview(miniVController.view)
         self.bottomConstraint = bottomConstraint
         currVController = controller
@@ -126,9 +126,9 @@ class AudioPlayManager: NSObject {
                 footerView.frame.origin.y = currVController.view.frame.size.height - 80.0
                 currVController.view.addSubview(footerView)
                 bottomConstraint.constant = UIScreen.main.bounds.size.height -  footerView.frame.origin.y
-                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
-                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  footerView.frame.origin.y - window.safeAreaInsets.bottom
-                }
+//                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+//                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  (footerView.frame.origin.y - window.safeAreaInsets.bottom)
+//                }
             }
         }
         miniVController.view.removeFromSuperview()

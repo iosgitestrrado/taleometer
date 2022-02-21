@@ -57,7 +57,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QrH-ci-525">
                                 <rect key="frame" x="10" y="88" width="372.66666666666669" height="722"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="song_audio" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
                                         <rect key="frame" x="86.999999999999986" y="0.0" width="198.66666666666663" height="199"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="abr-mx-hzm" secondAttribute="height" multiplier="1:1" id="J2O-Pp-0ff"/>
@@ -355,7 +355,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Cj8-A0-SlX">
                                         <rect key="frame" x="20" y="10" width="350" height="40"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="song_audio" translatesAutoresizingMaskIntoConstraints="NO" id="dlk-gc-bJk">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="dlk-gc-bJk">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="06M-3D-Za5"/>
@@ -475,6 +475,7 @@
         </designable>
     </designables>
     <resources>
+        <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
         <image name="background" width="360" height="640"/>
         <image name="close" width="20" height="20"/>
         <image name="favourite" width="36.666667938232422" height="36.666667938232422"/>
@@ -485,7 +486,6 @@
         <image name="share" width="36.666667938232422" height="36.666667938232422"/>
         <image name="skip-bck" width="36.666667938232422" height="36.666667938232422"/>
         <image name="skip-fwd" width="36.666667938232422" height="36.666667938232422"/>
-        <image name="song_audio" width="76.666664123535156" height="76.666664123535156"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
