@@ -11,10 +11,10 @@ import AVFoundation
 class AudioPlayManager: NSObject {
     // MARK: - Static Properties -
     static let shared = AudioPlayManager()
-    static let playImageName = "play"
-    static let pauseImageName = "pause"
-    static let playMiniImgName = "play.fill"
-    static let pauseMiniImgName = "pause.fill"
+    static let playImage = UIImage(named: "play")
+    static let pauseImage = UIImage(named: "pause")
+    static let playMiniImage = UIImage(systemName: "play.fill")
+    static let pauseMiniImage = UIImage(systemName: "pause.fill")
     static let miniViewTag = 99999995
 
     // MARK: - Public Properties -
@@ -51,7 +51,7 @@ class AudioPlayManager: NSObject {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
     
-    public func addMiniPlayer(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint) {
+    public func addMiniPlayer(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()) {
         //currVController.view.viewWithTag(AudioPlayManager.miniViewTag)?.removeFromSuperview()
         miniVController.view.removeFromSuperview()
         miniVController = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
@@ -70,12 +70,12 @@ class AudioPlayManager: NSObject {
         udpateMiniPlayerTime()
         
         if let player = playerAV, player.isPlaying {
-            miniVController.playButton.setImage(UIImage(systemName: AudioPlayManager.pauseMiniImgName), for: .normal)
+            miniVController.playButton.setImage(AudioPlayManager.pauseMiniImage, for: .normal)
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
         } else {
-            miniVController.playButton.setImage(UIImage(systemName: AudioPlayManager.playMiniImgName), for: .normal)
+            miniVController.playButton.setImage(AudioPlayManager.playMiniImage, for: .normal)
         }
         miniVController.playButton.addTarget(self, action: #selector(tapOnPlayMini(_:)), for: .touchUpInside)
         miniVController.closeButton.addTarget(self, action: #selector(tapOnCloseMini(_:)), for: .touchUpInside)
@@ -88,9 +88,9 @@ class AudioPlayManager: NSObject {
         
         miniVController.view.tag = AudioPlayManager.miniViewTag
         bottomConstraint.constant = UIScreen.main.bounds.size.height - miniVController.view.frame.origin.y
-//        if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
-//            bottomConstraint.constant = UIScreen.main.bounds.size.height - (miniVController.view.frame.origin.y - window.safeAreaInsets.bottom)
-//        }
+        if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+            bottomConstraint.constant = UIScreen.main.bounds.size.height -  (miniVController.view.frame.origin.y + window.safeAreaInsets.bottom)
+        }
         controller.view.addSubview(miniVController.view)
         self.bottomConstraint = bottomConstraint
         currVController = controller
@@ -126,9 +126,9 @@ class AudioPlayManager: NSObject {
                 footerView.frame.origin.y = currVController.view.frame.size.height - 80.0
                 currVController.view.addSubview(footerView)
                 bottomConstraint.constant = UIScreen.main.bounds.size.height -  footerView.frame.origin.y
-//                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
-//                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  (footerView.frame.origin.y - window.safeAreaInsets.bottom)
-//                }
+                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  (footerView.frame.origin.y + window.safeAreaInsets.bottom)
+                }
             }
         }
         miniVController.view.removeFromSuperview()
@@ -143,11 +143,11 @@ class AudioPlayManager: NSObject {
         guard let player = AudioPlayManager.shared.playerAV else { return }
         if player.isPlaying {
             player.pause()
-            sender.setImage(UIImage(systemName: AudioPlayManager.playMiniImgName), for: .normal)
+            sender.setImage(AudioPlayManager.playMiniImage, for: .normal)
             audioTimer.invalidate()
         } else {
             player.play()
-            sender.setImage(UIImage(systemName: AudioPlayManager.pauseMiniImgName), for: .normal)
+            sender.setImage(AudioPlayManager.pauseMiniImage, for: .normal)
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()

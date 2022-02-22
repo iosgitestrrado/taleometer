@@ -27,32 +27,33 @@ class PreferenceViewController: UIViewController {
     }
     @IBOutlet weak var skipButton: UIButton!
     
-    var magnetic: Magnetic {
+    // MARK: - Private Properties -
+    private var magnetic: Magnetic {
         return magneticView.magnetic
     }
-    
-    var firstNode: Node?
-    var timerg: Timer?
+    private var timerg: Timer?
+    private var timer = Timer()
+    private var totalNodes = 0
+    private var firstNode: Node?
+
     // MARK: - Lifecycle -
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
-            self.timerg?.invalidate()
-            self.skipButton.isHidden = false
-        }
+        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
     }
     
     @objc func runTimedCode() {
-        for node in magnetic.children {
-            if node.position.y + node.frame.size.height > UIScreen.main.bounds.size.height {
-                timerg?.invalidate()
-                skipButton.isHidden = false
-            }
+        if let nodd = firstNode, nodd.position.y + nodd.frame.size.height > UIScreen.main.bounds.size.height {
+            timerg?.invalidate()
+            skipButton.isHidden = false
         }
+//        for node in magnetic.children {
+//            if node.position.y + node.frame.size.height > UIScreen.main.bounds.size.height {
+//                timerg?.invalidate()
+//                skipButton.isHidden = false
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,6 +67,9 @@ class PreferenceViewController: UIViewController {
 //        for idx in 0..<50 {
 //            self.addNodes(idx)
 //        }
+        timer = Timer(timeInterval: 0.5, target: self, selector: #selector(PreferenceViewController.addNodes(_:)), userInfo: nil, repeats: true)
+        RunLoop.main.add(timer, forMode: .default)
+        timer.fire()
     }
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
@@ -74,6 +78,11 @@ class PreferenceViewController: UIViewController {
     }
     
     @IBAction func addNodes(_ sender: UIButton) {
+        if totalNodes > 100
+        {
+            timer.invalidate()
+            return
+        }
         //let name = UIImage.names.randomItem() //checkmark.seal.fill
         let color = UIColor.colors.randomItem()
         let node = Node(text: "", image: UIImage(named: "Default_img"), color: color, radius: 10.0)
@@ -83,12 +92,12 @@ class PreferenceViewController: UIViewController {
         node.selectedColor = .clear
         node.selectedStrokeColor = .red
         node.speed = 0.1
-        node.inputView?.tag = sender.tag
-        if sender.tag == 0 {
+        if totalNodes == 0 {
             firstNode = node
         }
         magnetic.addChild(node)
-        node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: 0)
+        node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -50)
+        totalNodes += 1
     }
 }
 

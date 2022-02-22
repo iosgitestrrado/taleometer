@@ -10,6 +10,10 @@
 		1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */; };
 		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
 		630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */; };
+		630CEFDE27C4DCA60042DBBA /* AudioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630CEFDD27C4DCA60042DBBA /* AudioListViewController.swift */; };
+		630CEFE127C4DD610042DBBA /* AudioViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630CEFE027C4DD610042DBBA /* AudioViewCell.swift */; };
+		631F9C7C27C49B0700F1B069 /* CommingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631F9C7B27C49B0700F1B069 /* CommingViewController.swift */; };
+		634985DF27C50AFD00FB6A7C /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */; };
 		6353708627BA26CF000A144E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6353708527BA26CF000A144E /* LoginViewController.swift */; };
 		6353708827BA271F000A144E /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6353708727BA271F000A144E /* Auth.storyboard */; };
 		6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6358430C27B7AED90055DE7E /* AppDelegate.swift */; };
@@ -46,6 +50,7 @@
 		636ED8E827BB7C2A0030D2F0 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */; };
 		636ED8EB27BB7C8E0030D2F0 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */; };
 		637AD84427BF7381001D964A /* FooterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637AD84327BF7381001D964A /* FooterManager.swift */; };
+		637E620727C4FF4100B31760 /* ChangeMobileNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E620627C4FF4100B31760 /* ChangeMobileNumberVC.swift */; };
 		638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */; };
 		638480BD27BE71D200035630 /* testAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480BC27BE71D200035630 /* testAudio.mp3 */; };
 		63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */; };
@@ -103,6 +108,10 @@
 		1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = splash_anim_new.gif; sourceTree = "<group>"; };
+		630CEFDD27C4DCA60042DBBA /* AudioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioListViewController.swift; sourceTree = "<group>"; };
+		630CEFE027C4DD610042DBBA /* AudioViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewCell.swift; sourceTree = "<group>"; };
+		631F9C7B27C49B0700F1B069 /* CommingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingViewController.swift; sourceTree = "<group>"; };
+		634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		6353708527BA26CF000A144E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6353708727BA271F000A144E /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		6358430927B7AED90055DE7E /* TaleOMeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaleOMeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +152,7 @@
 		636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		637AD84327BF7381001D964A /* FooterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterManager.swift; sourceTree = "<group>"; };
+		637E620627C4FF4100B31760 /* ChangeMobileNumberVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMobileNumberVC.swift; sourceTree = "<group>"; };
 		638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = file_example_MP3_5MG.mp3; sourceTree = "<group>"; };
 		638480BC27BE71D200035630 /* testAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio.mp3; sourceTree = "<group>"; };
 		63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptVManager.swift; sourceTree = "<group>"; };
@@ -224,6 +234,30 @@
 				6358435E27B7CF9C0055DE7E /* Assets */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		630CEFDC27C4DC6C0042DBBA /* List */ = {
+			isa = PBXGroup;
+			children = (
+				630CEFE227C4DD740042DBBA /* Cell */,
+				630CEFDD27C4DCA60042DBBA /* AudioListViewController.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		630CEFDF27C4DCDE0042DBBA /* Author */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Author;
+			sourceTree = "<group>";
+		};
+		630CEFE227C4DD740042DBBA /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				630CEFE027C4DD610042DBBA /* AudioViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		6353708327BA26A2000A144E /* Authentication */ = {
@@ -415,6 +449,7 @@
 				636ED8E527BB7C120030D2F0 /* CGPoint+Extension.swift */,
 				636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */,
 				636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */,
+				634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -471,13 +506,16 @@
 		63D27C6327BD08550074EA7F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				63D27C6727BD08950074EA7F /* NowPlaying */,
 				63D27C9F27BD17FC0074EA7F /* MiniPlayer */,
+				630CEFDF27C4DCDE0042DBBA /* Author */,
+				630CEFDC27C4DC6C0042DBBA /* List */,
 				63D27C9027BD0B710074EA7F /* Search */,
 				63D27C9327BD0B8A0074EA7F /* Favorite */,
 				63D27C8327BD0A570074EA7F /* History */,
 				63D27C6D27BD08DB0074EA7F /* AutoPlay */,
-				63D27C6727BD08950074EA7F /* NowPlaying */,
 				63D27C6427BD085D0074EA7F /* NonStop */,
+				631F9C7B27C49B0700F1B069 /* CommingViewController.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -527,6 +565,7 @@
 			isa = PBXGroup;
 			children = (
 				63D27C7C27BD09DC0074EA7F /* ProfileEditViewController.swift */,
+				637E620627C4FF4100B31760 /* ChangeMobileNumberVC.swift */,
 				63D27C7E27BD09ED0074EA7F /* VerificationProfileVC.swift */,
 			);
 			path = Update;
@@ -999,6 +1038,7 @@
 				63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */,
 				63D27C9827BD0C2F0074EA7F /* PromptViewController.swift in Sources */,
 				63DFB4AD27BCB20400B08216 /* ContainerConstant.swift in Sources */,
+				630CEFDE27C4DCA60042DBBA /* AudioListViewController.swift in Sources */,
 				6358435327B7BE200055DE7E /* RightViewCellBackgroundView.swift in Sources */,
 				636ED8EB27BB7C8E0030D2F0 /* UIView+Extension.swift in Sources */,
 				63D27C9227BD0B830074EA7F /* SearchViewController.swift in Sources */,
@@ -1020,8 +1060,10 @@
 				63D27C6627BD087F0074EA7F /* NonStopViewController.swift in Sources */,
 				63DFB4B327BCC57900B08216 /* GridViewController.swift in Sources */,
 				636ED8E427BB7BEF0030D2F0 /* Array+Extension.swift in Sources */,
+				637E620727C4FF4100B31760 /* ChangeMobileNumberVC.swift in Sources */,
 				63D27C8527BD0A680074EA7F /* HistoryViewController.swift in Sources */,
 				637AD84427BF7381001D964A /* FooterManager.swift in Sources */,
+				634985DF27C50AFD00FB6A7C /* UILabel+Extension.swift in Sources */,
 				63D27C9527BD0BA20074EA7F /* FavoriteViewController.swift in Sources */,
 				63D27C8227BD0A470074EA7F /* UserStoryViewController.swift in Sources */,
 				636ED8DE27BB7A1B0030D2F0 /* PreferenceViewController.swift in Sources */,
@@ -1034,6 +1076,7 @@
 				63FA7E7027BBB80000AD6C97 /* TermsAndConditionVC.swift in Sources */,
 				6358435127B7BDE30055DE7E /* RightViewCell.swift in Sources */,
 				636ED8E827BB7C2A0030D2F0 /* Double+Extension.swift in Sources */,
+				630CEFE127C4DD610042DBBA /* AudioViewCell.swift in Sources */,
 				6358435D27B7C9EC0055DE7E /* DashboardViewController.swift in Sources */,
 				63D27C8C27BD0AEC0074EA7F /* AboutUsViewController.swift in Sources */,
 				63D27C7F27BD09ED0074EA7F /* VerificationProfileVC.swift in Sources */,
@@ -1047,6 +1090,7 @@
 				6361179227BA34CF000C1749 /* RegisterViewController.swift in Sources */,
 				63D27C9D27BD12AC0074EA7F /* AudioPlayManager.swift in Sources */,
 				63DFB4A927BCAF3500B08216 /* ContainerViewController.swift in Sources */,
+				631F9C7C27C49B0700F1B069 /* CommingViewController.swift in Sources */,
 				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
 				6361179727BA5814000C1749 /* Country.swift in Sources */,
@@ -1230,23 +1274,30 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Aries Estrrado Technologies Private Limited (XLPSEH973Z)";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XLPSEH973Z;
+				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) uses the camera to update your profile picture.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) uses the photo library to update your profile picture.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Codez.TaleOMeter;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1259,23 +1310,30 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Aries Estrrado Technologies Private Limited (XLPSEH973Z)";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XLPSEH973Z;
+				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) uses the camera to update your profile picture.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) uses the photo library to update your profile picture.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Codez.TaleOMeter;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

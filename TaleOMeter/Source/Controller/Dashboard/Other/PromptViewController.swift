@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Protocol used for sending data back -
 protocol PromptViewDelegate: AnyObject {
-    func selectedOption(_ tag: Int)
+    func didActionOnPromptButton(_ tag: Int)
 }
 
 class PromptViewController: UIViewController {
@@ -19,13 +19,18 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var audioImageView: UIImageView!
     @IBOutlet weak var remainSecondLabel: UILabel!
+
+    @IBOutlet weak var verifyPromptView: UIView!
+    @IBOutlet weak var titleLabelV: UILabel!
+    @IBOutlet weak var messageLabelV: UILabel!
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var delegate: PromptViewDelegate? = nil
     
     // MARK: - Public Properties -
     public var songTitle = ""
     public var nextSongTitle = ""
-    
+    public var isAudioPrompt: Bool = false
+
     // MARK: - Private Properties -
     private var timer = Timer()
     private var remainingSecond = 5
@@ -35,23 +40,25 @@ class PromptViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        //You Just listened to "Track To Relax"
-        let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
+        if isAudioPrompt {
+            //You Just listened to "Track To Relax"
+            let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
 
-        let font16 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0) ]
-        let font22 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22.0) ]
-        let rangeTitle1 = NSRange(location: 0, length: 21)
-        let rangeTitle2 = NSRange(location: 21, length: songTitle.utf8.count + 2) // 10 is title character length
-        
-        titleString.addAttributes(font16, range: rangeTitle1)
-        titleString.addAttributes(font22, range: rangeTitle2)
-        self.titleLabel.attributedText = titleString
-        
-        setRemainTitle()
-        
-        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(PromptViewController.updateTimer), userInfo: nil, repeats: true)
-        RunLoop.main.add(self.timer, forMode: .default)
-        timer.fire()
+            let font16 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0) ]
+            let font22 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22.0) ]
+            let rangeTitle1 = NSRange(location: 0, length: 21)
+            let rangeTitle2 = NSRange(location: 21, length: songTitle.utf8.count + 2) // 10 is title character length
+            
+            titleString.addAttributes(font16, range: rangeTitle1)
+            titleString.addAttributes(font22, range: rangeTitle2)
+            self.titleLabel.attributedText = titleString
+            
+            setRemainTitle()
+            
+            timer = Timer(timeInterval: 1.0, target: self, selector: #selector(PromptViewController.updateTimer), userInfo: nil, repeats: true)
+            RunLoop.main.add(self.timer, forMode: .default)
+            timer.fire()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +86,7 @@ class PromptViewController: UIViewController {
     @objc func updateTimer() {
         if remainingSecond < 0 {
             timer.invalidate()
-            self.delegate?.selectedOption(2)
+            self.delegate?.didActionOnPromptButton(2)
             self.dismiss(animated: true, completion: nil)
         } else {
             setRemainTitle()
@@ -89,25 +96,34 @@ class PromptViewController: UIViewController {
     
     // 0 - tag
     @IBAction func tapOnAddToFav(_ sender: Any) {
-        self.delegate?.selectedOption(0)
+        self.delegate?.didActionOnPromptButton(0)
     }
     
     // 1 - tag
     @IBAction func tapOnOnceMore(_ sender: Any) {
         timer.invalidate()
-        self.delegate?.selectedOption(1)
+        self.delegate?.didActionOnPromptButton(1)
         self.dismiss(animated: true, completion: nil)
     }
     
     // 2 - tag
     @IBAction func tapOnConfirm(_ sender: Any) {
-        timer.invalidate()
-        self.delegate?.selectedOption(2)
+        if timer.isValid {
+            timer.invalidate()
+        }
+        if let delegate = delegate {
+            delegate.didActionOnPromptButton(2)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func tapOnClose(_ sender: Any) {
-        timer.invalidate()
+        if timer.isValid {
+            timer.invalidate()
+        }
+        if let delegate = delegate {
+            delegate.didActionOnPromptButton(3)
+        }
         self.dismiss(animated: true, completion: nil)
     }
 }

@@ -20,7 +20,7 @@ class Core: NSObject {
      */
     static func push(_ controller: UIViewController, storyboard: String, storyboardId: String) {
         let myobject = UIStoryboard(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: storyboardId)
-        (controller.sideMenuController?.rootViewController as! UINavigationController).pushViewController(myobject, animated: true)
+        controller.navigationController?.pushViewController(myobject, animated: true)
     }
     
     /*
@@ -28,7 +28,7 @@ class Core: NSObject {
      */
     static func present(_ controller: UIViewController, storyboard: String, storyboardId: String) {
         let myobject = UIStoryboard(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: storyboardId)
-        (controller.sideMenuController?.rootViewController as! UINavigationController).present(myobject, animated: true, completion: nil)
+        controller.navigationController?.present(myobject, animated: true, completion: nil)
     }
     
     /*
@@ -70,21 +70,31 @@ class Core: NSObject {
         }
     }
     
-//    private var activityIndicatorView: NVActivityIndicatorView?
+    /*
+     * Convert image into attribute string for label
+     */
+    static func getImageString(_ name: String) -> NSMutableAttributedString
+    {
+        let attachment:NSTextAttachment = NSTextAttachment()
+        attachment.image = UIImage(named: name)
 
-//    /* Loading progress bar add to view */
-//    static func showProgress(detailLbl: String) {
-//        let activityData = ActivityData()
-//        var detailLbl1 = detailLbl
-//        if detailLbl1.isEmpty {
-//            detailLbl1 = "Please wait!!"
-//        }
-//        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
-//        NVActivityIndicatorPresenter.sharedInstance.setMessage(detailLbl1)
-//    }
-//
-//    /* Loading progress bar remove from view */
-//    static func hideProgress() {
-//        NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
-//    }
+        let attachmentString:NSAttributedString = NSAttributedString(attachment: attachment)
+        let myString:NSMutableAttributedString = NSMutableAttributedString(string: "")
+        myString.append(attachmentString)
+        return myString
+    }
+    
+    /*
+     * Convert System image into attribute string for label
+     */
+    static func getSysImageString(_ systemName: String) -> NSMutableAttributedString
+    {
+        let attachment:NSTextAttachment = NSTextAttachment()
+        attachment.image = UIImage(systemName: systemName)?.maskWithColor(color: .white)
+
+        let attachmentString:NSAttributedString = NSAttributedString(attachment: attachment)
+        let myString:NSMutableAttributedString = NSMutableAttributedString(string: "")
+        myString.append(attachmentString)
+        return myString
+    }
 }

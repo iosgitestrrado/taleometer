@@ -59,7 +59,11 @@ class GridViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDelegate -
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        Core.push(self.parentController!, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+        if (self.parentController as? GuestDashboardViewController) != nil {
+            Core.push(self.parentController!, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+        } else {
+            Core.push(self.parentController!, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController") 
+        }
     }
 }
 

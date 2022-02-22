@@ -45,6 +45,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
+        //Core.present(self, storyboard: Storyboard.audio, storyboardId: "CommingViewController")
         Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
     }
     

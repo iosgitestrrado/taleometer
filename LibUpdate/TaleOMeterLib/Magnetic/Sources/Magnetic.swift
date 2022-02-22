@@ -87,9 +87,9 @@ import SpriteKit
     
     func configure() {
         let strength = Float(max(size.width, size.height))
-        let radius = strength.squareRoot() * 100
+        let radius = strength.squareRoot() * 200
         
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0.7)
         physicsBody = SKPhysicsBody(edgeLoopFrom: { () -> CGRect in
             var frame = self.frame
 //            frame.size.width = CGFloat(radius)
@@ -102,7 +102,7 @@ import SpriteKit
         magneticField.region = SKRegion(radius: radius)
         magneticField.minimumRadius = radius
         magneticField.strength = strength
-        magneticField.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        magneticField.position = CGPoint(x: size.width / 2, y: size.height + 100.0)
     }
     
     override open func addChild(_ node: SKNode) {

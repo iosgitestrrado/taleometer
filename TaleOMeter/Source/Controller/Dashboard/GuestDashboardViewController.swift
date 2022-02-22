@@ -23,8 +23,9 @@ class GuestDashboardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
         self.navigationItem.hidesBackButton = true
+        
         FooterManager.addFooter(self, bottomConstraint: containerBottomCons)
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
@@ -37,7 +38,7 @@ class GuestDashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+        Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
     }
     
     // MARK: - Navigation

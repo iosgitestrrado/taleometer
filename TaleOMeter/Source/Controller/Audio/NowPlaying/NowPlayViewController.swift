@@ -98,12 +98,12 @@ class NowPlayViewController: UIViewController {
                 audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
-                self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.pauseImageName), for: .normal)
+                self.playButton.setBackgroundImage(AudioPlayManager.pauseImage, for: .normal)
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [self] in
                     visualizationWave.pause()
                 }
-                self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.playImageName), for: .normal)
+                self.playButton.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
             }
         } else {
             AudioPlayManager.shared.configAudio(URL(fileURLWithPath: url))
@@ -112,7 +112,7 @@ class NowPlayViewController: UIViewController {
                     self.player = playerk
                 }
             }
-            self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.playImageName), for: .normal)
+            self.playButton.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
             Core.ShowProgress(contrSelf: self, detailLbl: "Getting audio waves...")
             AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
                 waveFormcount = result.count
@@ -185,6 +185,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
+        Core.push(self, storyboard: Storyboard.audio, storyboardId: "AuthorViewController")
         switch sender.tag {
         case 0:
             //Story
@@ -203,14 +204,14 @@ class NowPlayViewController: UIViewController {
             player.pause()
             audioTimer.invalidate()
             visualizationWave.pause()
-            self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.playImageName), for: .normal)
+            self.playButton.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
         } else {
             player.play()
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
             visualizationWave.play(for: TimeInterval(totalTimeDuration))
-            self.playButton.setBackgroundImage(UIImage(named: AudioPlayManager.pauseImageName), for: .normal)
+            self.playButton.setBackgroundImage(AudioPlayManager.pauseImage, for: .normal)
         }
     }
     
@@ -316,8 +317,9 @@ class NowPlayViewController: UIViewController {
     }
 }
 
+// MARK: - PromptViewDelegate -
 extension NowPlayViewController: PromptViewDelegate {
-    func selectedOption(_ tag: Int) {
+    func didActionOnPromptButton(_ tag: Int) {
         switch tag {
         case 0:
             //0 - Add to fav

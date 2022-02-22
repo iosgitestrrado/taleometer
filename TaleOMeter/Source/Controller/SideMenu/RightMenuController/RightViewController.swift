@@ -16,7 +16,7 @@ private let cellProfileHeight: CGFloat = 153.0
 class RightViewController: UIViewController {
     
     private let sections: [[SideViewCellItem]] = [
-        [.profile, .shareStory, .history, .preference, .aboutUs, .feedback]
+        [.profile, .profile, .shareStory, .history, .preference, .aboutUs, .feedback]
     ]
     
     required init?(coder: NSCoder) {
@@ -90,18 +90,24 @@ extension RightViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let sideMenuController = sideMenuController else { return }
-        //let item = sections[indexPath.section][indexPath.row]
+        let item = sections[indexPath.section][indexPath.row]
 
         func getNavigationController() -> UINavigationController {
             return sideMenuController.rootViewController as! UINavigationController
         }
         sideMenuController.hideRightView(animated: true)
-//        switch item {
-//            case .profile:
-//                sideMenuController.hideRightView(animated: true)
-//            default:
-//                return
-//        }
+        
+        switch item {
+            case .profile:
+            if let cont = sideMenuController.rootViewController as? UINavigationController {
+                let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController")
+                cont.pushViewController(myobject, animated: true)
+            }
+                return
+            default:
+                Core.present(self, storyboard: Storyboard.audio, storyboardId: "CommingViewController")
+                return
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

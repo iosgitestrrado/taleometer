@@ -23,14 +23,13 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.hideKeyboard()
-        self.navigationItem.hidesBackButton = true
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
@@ -64,9 +63,9 @@ class LoginViewController: UIViewController {
             Snackbar.showAlertMessage("Please Enter correct Mobile Number!")
             return
         }
+       // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
         self.performSegue(withIdentifier: "verification", sender: sender)
     }
-    
     
     @IBAction func tapOnTermsAndCond(_ sender: Any) {
         self.performSegue(withIdentifier: "termsAndCondition", sender: sender)
@@ -101,7 +100,7 @@ class LoginViewController: UIViewController {
     @IBAction func tapOnCountry(_ sender: Any) {
         let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
         myobject.delegate = self
-        (self.sideMenuController?.rootViewController as! UINavigationController).present(myobject, animated: true, completion: nil)
+        self.navigationController?.present(myobject, animated: true, completion: nil)
     }
 }
 

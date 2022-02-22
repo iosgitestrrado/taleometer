@@ -19,7 +19,8 @@ class LaunchViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            //Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "GuestDashboardViewController")
             Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
         }
     }
