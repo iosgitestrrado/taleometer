@@ -7,13 +7,39 @@
 
 import UIKit
 
-private let cellProfileIdentifier = "profileCell"
-private let cellIdentifier = "cell"
-private let tableViewInset: CGFloat = 44.0 * 2.0
-private let cellHeight: CGFloat = 44.0
-private let cellProfileHeight: CGFloat = 153.0
-
 class RightViewController: UIViewController {
+    
+    // MARK: - Privare Property -
+    private let cellProfileIdentifier = "profileCell"
+    private let cellIdentifier = "cell"
+    private let tableViewInset: CGFloat = 44.0 * 2.0
+    private let cellHeight: CGFloat = 44.0
+    private let cellProfileHeight: CGFloat = 153.0
+    private enum SideViewCellItem: Equatable {
+        case profile
+        case shareStory
+        case history
+        case preference
+        case aboutUs
+        case feedback
+
+        var description: String {
+            switch self {
+            case .profile:
+                return "My Account"
+            case .shareStory:
+                return "Share your Story"
+            case .history:
+                return "History"
+            case .preference:
+                return "Preference"
+            case .aboutUs:
+                return "About us"
+            case .feedback:
+                return "Feedback"
+            }
+        }
+    }
     
     private let sections: [[SideViewCellItem]] = [
         [.profile, .profile, .shareStory, .history, .preference, .aboutUs, .feedback]
@@ -96,17 +122,28 @@ extension RightViewController: UITableViewDelegate {
             return sideMenuController.rootViewController as! UINavigationController
         }
         sideMenuController.hideRightView(animated: true)
-        
-        switch item {
+        if UserDefaults.standard.bool(forKey: "isLogin") {
+            switch item {
             case .profile:
-            if let cont = sideMenuController.rootViewController as? UINavigationController {
-                let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController")
-                cont.pushViewController(myobject, animated: true)
-            }
+                if let cont = sideMenuController.rootViewController as? UINavigationController {
+                    let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
+                return
+            case .shareStory:
+                if let cont = sideMenuController.rootViewController as? UINavigationController {
+                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "UserStoryViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
                 return
             default:
-                Core.present(self, storyboard: Storyboard.audio, storyboardId: "CommingViewController")
                 return
+            }
+        } else {
+            if let cont = sideMenuController.rootViewController as? UINavigationController {
+                let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+                cont.pushViewController(myobject, animated: true)
+            }
         }
     }
 
@@ -157,6 +194,7 @@ extension RightViewController: UITableViewDataSource {
         cell.titleLabel.text = item.description
         cell.isFirst = (indexPath.row == 0)
         cell.isLast = (indexPath.row == sections[indexPath.section].count - 1)
+        cell.selectionStyle = .none
         return cell
     }
 }

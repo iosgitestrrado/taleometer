@@ -593,7 +593,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.font = super.font
         sublabel.textColor = super.textColor
         sublabel.backgroundColor = super.backgroundColor ?? UIColor.clear
-        sublabel.shadowColor = super.shadowColor
+        //sublabel.shadowColor = super.shadowColor
         sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
             let value = super.value(forKey: prop)

@@ -43,7 +43,7 @@ class Core: NSObject {
      * Swap menu option enable/disable.
      * From UIController
      */
-    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool) {
+    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true) {
         cont.sideMenuController?.isRightViewEnabled = isRightViewEnabled
         cont.navigationController?.setNavigationBarHidden(setNavigationBarHidden, animated: true)
         //cont.navigationController?.navigationBar.barTintColor = .white
@@ -53,6 +53,28 @@ class Core: NSObject {
         cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
+        if titleInLeft, let titleStr = cont.navigationItem.title {
+            Core.setLeftAlignTitleView(controller: cont, text: titleStr, textColor: .white)
+        }
+    }
+    
+    static func setLeftAlignTitleView(controller: UIViewController, text: String, textColor: UIColor) {
+        guard let navFrame = controller.navigationController?.navigationBar.frame else{
+            return
+        }
+        
+        let parentView = UIView(frame: CGRect(x: 0, y: 0, width: navFrame.width*3, height: navFrame.height))
+        controller.navigationItem.titleView = parentView
+        
+        let label = UILabel(frame: .init(x: parentView.frame.minX, y: parentView.frame.minY, width: parentView.frame.width, height: parentView.frame.height))
+        label.backgroundColor = .clear
+        label.numberOfLines = 2
+        label.textAlignment = .left
+        label.textColor = textColor
+        label.text = text
+        label.font = UIFont.boldSystemFont(ofSize: 17.0)
+        
+        parentView.addSubview(label)
     }
     
     /* Loading progress bar add to view */

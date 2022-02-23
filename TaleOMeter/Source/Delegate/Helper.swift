@@ -15,15 +15,8 @@ struct Storyboard {
     static let launch = "LaunchScreen"
     static let auth = "Auth"
     static let audio = "Audio"
+    static let other = "Other"
 }
-
-//Storybaord id struct
-struct SroryboardId {
-    static let main = "NavigationController"
-}
-
-//Flag for login
-public var isLogIn = false
 
 // MARK: - Side menubar properties -
 let menuIconImage: UIImage = {
@@ -80,31 +73,4 @@ func getStatusBarFrame() -> CGRect {
     }
 }
 
-enum SideViewCellItem: Equatable {
-    case profile
-    case shareStory
-    case history
-    case preference
-    case aboutUs
-    case feedback
-    case pushVC(title: String)
 
-    var description: String {
-        switch self {
-        case .profile:
-            return "My Account"
-        case .shareStory:
-            return "Share your Story"
-        case .history:
-            return "History"
-        case .preference:
-            return "Preference"
-        case .aboutUs:
-            return "About us"
-        case .feedback:
-            return "Feedback"
-        case let .pushVC(title):
-            return title
-        }
-    }
-}

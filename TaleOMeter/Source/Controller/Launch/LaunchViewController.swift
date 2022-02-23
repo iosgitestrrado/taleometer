@@ -20,8 +20,16 @@ class LaunchViewController: UIViewController {
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            //Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "GuestDashboardViewController")
-            Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
+            if UserDefaults.standard.bool(forKey: "isLogin") {
+                if !UserDefaults.standard.bool(forKey: "isRegistered"), let stName = UserDefaults.standard.string(forKey: "storyboardName"), let stId = UserDefaults.standard.string(forKey: "storyboardId") {
+                    Core.push(self, storyboard: stName, storyboardId: stId)
+                } else {
+                    Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
+                    
+                }
+            } else {
+                Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "GuestDashboardViewController")
+            }
         }
     }
     

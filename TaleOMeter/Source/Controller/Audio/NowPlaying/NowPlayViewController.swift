@@ -215,7 +215,7 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    // MARK: - Play(0) Previouse(1) Favorite(2) Back10Sec(3) Forward10Sec(4) Share(5)
+    // MARK: - Play(0) Previouse(1) Favourite(2) Back10Sec(3) Forward10Sec(4) Share(5)
     @IBAction func tapOnAudioController(_ sender: UIButton) {
         switch sender.tag {
         case 0:
@@ -227,7 +227,7 @@ class NowPlayViewController: UIViewController {
             itemDidFinishedPlaying()
             break
         case 2:
-            //Favorite
+            //Favourite
             sender.isSelected = !sender.isSelected
             sender.setImage(UIImage(systemName: "heart.circle.fill"), for: .selected)
             sender.setImage(UIImage(named: "favourite"), for: .normal)

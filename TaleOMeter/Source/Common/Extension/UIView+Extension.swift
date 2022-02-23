@@ -51,32 +51,35 @@ extension UIView {
             }
         }
     }
+    
+    @IBInspectable var shadowColor: UIColor {
+        get {
+            return UIColor.white
+        }
+        set {
+            self.layer.shadowColor = newValue.cgColor
+        }
+    }
 
     @IBInspectable var cornerRadius: CGFloat {
         get {
             return self.layer.cornerRadius
         }
         set {
-            //            if newValue > 0.0 {
-            //                self.layer.cornerRadius = (self.frame.size.height / 2.0) - 2.0
-            //            } else {
             self.layer.cornerRadius = newValue
-            //            }
-            // Don't touch the masksToBound property if a shadow is needed in addition to the cornerRadius
-            if shadow == false {
-                self.layer.masksToBounds = true
-            }
+//            if !self.shadow {
+//                self.layer.masksToBounds = true
+//            }
         }
     }
 
-    func addShadow(shadowColor: CGColor = UIColor.black.cgColor,
-                   shadowOffset: CGSize = CGSize(width: 1.0, height: 1.0),
-                   shadowOpacity: Float = 0.2,
-                   shadowRadius: CGFloat = 3.0) {
-        layer.shadowColor = shadowColor
+    func addShadow(shadowOffset: CGSize = CGSize(width: 0.0, height: 2.0),
+                   shadowOpacity: Float = 1.0,
+                   shadowRadius: CGFloat = 5.0) {
         layer.shadowOffset = shadowOffset
         layer.shadowOpacity = shadowOpacity
         layer.shadowRadius = shadowRadius
+        layer.masksToBounds = false
     }
 
     func roundCorners(corners: UIRectCorner, radius: CGFloat) {

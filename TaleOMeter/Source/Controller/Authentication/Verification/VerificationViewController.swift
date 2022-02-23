@@ -65,6 +65,10 @@ class VerificationViewController: UIViewController {
             Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
             return
         }
+        UserDefaults.standard.set(true, forKey: "isLogin")
+        UserDefaults.standard.set(Storyboard.auth, forKey: "storyboardName")
+        UserDefaults.standard.set("RegisterViewController", forKey: "storyboardId")
+        UserDefaults.standard.synchronize()
         self.performSegue(withIdentifier: "register", sender: sender)
     }
 }

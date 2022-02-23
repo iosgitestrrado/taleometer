@@ -40,6 +40,7 @@ class PreferenceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
         self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
     }
     
@@ -73,6 +74,8 @@ class PreferenceViewController: UIViewController {
     }
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
+        UserDefaults.standard.set(true, forKey: "isRegistered")
+        UserDefaults.standard.synchronize()
         Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
         //self.performSegue(withIdentifier: "dashboard", sender: sender)
     }

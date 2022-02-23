@@ -1,34 +1,27 @@
 //
-//  DashboardViewController.swift
+//  FavouriteViewController.swift
 //  TaleOMeter
 //
-//  Created by Durgesh on 12/02/22.
+//  Created by Durgesh on 16/02/22.
 //
 
 import UIKit
-import LGSideMenuController
 
-class DashboardViewController: UIViewController {
+class FavouriteViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
-    @IBOutlet weak var surpriseButton: UIButton! {
-        didSet {
-        }
-    }
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
-        self.navigationItem.hidesBackButton = true
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
         
         //Add footer view and manager current view frame
         FooterManager.addFooter(self, bottomConstraint: self.containerBottomCons)
@@ -42,23 +35,14 @@ class DashboardViewController: UIViewController {
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
-    @IBAction func tapOnNonStop(_ sender: Any) {
-    }
-    
-    @IBAction func tapOnSurprise(_ sender: Any) {
-        //Core.present(self, storyboard: Storyboard.audio, storyboardId: "CommingViewController")
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
-    }
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "segmentview", let segVC = segue.destination as? SegmentViewController {
-            segVC.parentController = self
-            segVC.parentFrame = self.containerView.frame
+        if segue.identifier == "audioList", let audListVC = segue.destination as? AudioListViewController {
+            audListVC.isFavourite = true
         }
     }
 }

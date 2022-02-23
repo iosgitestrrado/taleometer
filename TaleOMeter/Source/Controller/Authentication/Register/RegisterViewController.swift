@@ -62,6 +62,9 @@ class RegisterViewController: UIViewController {
             Snackbar.showAlertMessage("Please enter valid email!")
             return
         }
+        UserDefaults.standard.set(Storyboard.dashboard, forKey: "storyboardName")
+        UserDefaults.standard.set("PreferenceViewController", forKey: "storyboardId")
+        UserDefaults.standard.synchronize()
         Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "PreferenceViewController")
     }
 }

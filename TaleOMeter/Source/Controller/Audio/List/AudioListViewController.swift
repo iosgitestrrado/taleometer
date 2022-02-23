@@ -9,7 +9,8 @@ import UIKit
 
 class AudioListViewController: UITableViewController {
 
-    // MARK: - Weak Property -
+    // MARK: - Public Property -
+    public var isFavourite = false
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -31,11 +32,13 @@ class AudioListViewController: UITableViewController {
     }
     
     @objc func tapOnFav(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            sender.setImage(UIImage(named: "active-favour"), for: .normal)
-        } else {
-            sender.setImage(UIImage(named: "inactive-favour"), for: .normal)
+        if !isFavourite {
+            sender.isSelected = !sender.isSelected
+            if sender.isSelected {
+                sender.setImage(UIImage(named: "active-favour"), for: .normal)
+            } else {
+                sender.setImage(UIImage(named: "inactive-favour"), for: .normal)
+            }
         }
     }
         
@@ -51,6 +54,10 @@ class AudioListViewController: UITableViewController {
         }
         cell.playButton.addTarget(self, action: #selector(tapOnPlay(_:)), for: .touchUpInside)
         cell.favButton.addTarget(self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
+        if isFavourite {
+            cell.favButton.setImage(UIImage(named: "active-favour"), for: .normal)
+        }
+        cell.selectionStyle = .none
         return cell
     }
     
