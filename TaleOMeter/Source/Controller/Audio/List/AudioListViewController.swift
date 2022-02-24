@@ -11,7 +11,8 @@ class AudioListViewController: UITableViewController {
 
     // MARK: - Public Property -
     public var isFavourite = false
-    
+    public var isNonStop = false
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,22 +25,10 @@ class AudioListViewController: UITableViewController {
     
     @objc func tapOnPlay(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            sender.setBackgroundImage(AudioPlayManager.pauseImage, for: .normal)
-        } else {
-            sender.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
-        }
     }
     
     @objc func tapOnFav(_ sender: UIButton) {
-        if !isFavourite {
-            sender.isSelected = !sender.isSelected
-            if sender.isSelected {
-                sender.setImage(UIImage(named: "active-favour"), for: .normal)
-            } else {
-                sender.setImage(UIImage(named: "inactive-favour"), for: .normal)
-            }
-        }
+        sender.isSelected = !sender.isSelected
     }
         
     // MARK: - UITableViewDataSource -
@@ -52,10 +41,14 @@ class AudioListViewController: UITableViewController {
         if let image = cell.imageView {
             image.cornerRadius = image.frame.size.height / 2.0
         }
-        cell.playButton.addTarget(self, action: #selector(tapOnPlay(_:)), for: .touchUpInside)
-        cell.favButton.addTarget(self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
-        if isFavourite {
-            cell.favButton.setImage(UIImage(named: "active-favour"), for: .normal)
+        cell.playButton.isHidden = isNonStop
+        cell.favButton.isHidden = isNonStop
+        if !isNonStop {
+            cell.playButton.addTarget(self, action: #selector(tapOnPlay(_:)), for: .touchUpInside)
+            cell.favButton.addTarget(self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
+            if isFavourite {
+                cell.favButton.isSelected = isFavourite
+            }
         }
         cell.selectionStyle = .none
         return cell

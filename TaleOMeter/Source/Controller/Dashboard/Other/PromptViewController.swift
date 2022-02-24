@@ -21,6 +21,7 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var remainSecondLabel: UILabel!
 
     @IBOutlet weak var verifyPromptView: UIView!
+    @IBOutlet weak var verifyImage: UIImageView!
     @IBOutlet weak var titleLabelV: UILabel!
     @IBOutlet weak var messageLabelV: UILabel!
     // Making this a weak variable, so that it won't create a strong reference cycle

@@ -50,11 +50,6 @@ class AuthorViewController: UIViewController {
     
     @IBAction func tapOnPlay(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            sender.setBackgroundImage(AudioPlayManager.pauseImage, for: .normal)
-        } else {
-            sender.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
-        }
     }
     
     // MARK: - Navigation

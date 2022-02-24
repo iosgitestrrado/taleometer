@@ -131,12 +131,34 @@ extension RightViewController: UITableViewDelegate {
                 }
                 return
             case .shareStory:
-                if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "UserStoryViewController")
+                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? MainUserStoryVC) == nil {
+                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "MainUserStoryVC")
                     cont.pushViewController(myobject, animated: true)
                 }
                 return
-            default:
+            case .preference:
+                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? SettingViewController) == nil {
+                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "SettingViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
+                return
+            case .history:
+                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? HistoryViewController) == nil {
+                    let myobject = UIStoryboard(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
+                return
+            case .feedback:
+                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? FeedbackViewController) == nil {
+                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "FeedbackViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
+                return
+            case .aboutUs:
+                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? AboutUsViewController) == nil {
+                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "AboutUsViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
                 return
             }
         } else {

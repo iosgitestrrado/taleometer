@@ -13,16 +13,12 @@ class DashboardViewController: UIViewController {
     // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
-    @IBOutlet weak var surpriseButton: UIButton! {
-        didSet {
-        }
-    }
+    @IBOutlet weak var surpriseButton: UIButton!
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +39,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnNonStop(_ sender: Any) {
+        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NonStopViewController")
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {

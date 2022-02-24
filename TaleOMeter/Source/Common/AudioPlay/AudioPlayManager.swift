@@ -20,6 +20,7 @@ class AudioPlayManager: NSObject {
     // MARK: - Public Properties -
     public var playerAV: AVPlayer?
     public var isMiniPlayerActive = false
+    public var isNonStop = false
     public var waveFormcount = 0
     public var audioMetering = [Float]()
     
@@ -70,12 +71,12 @@ class AudioPlayManager: NSObject {
         udpateMiniPlayerTime()
         
         if let player = playerAV, player.isPlaying {
-            miniVController.playButton.setImage(AudioPlayManager.pauseMiniImage, for: .normal)
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
+            miniVController.playButton.isSelected = false
         } else {
-            miniVController.playButton.setImage(AudioPlayManager.playMiniImage, for: .normal)
+            miniVController.playButton.isSelected = true
         }
         miniVController.playButton.addTarget(self, action: #selector(tapOnPlayMini(_:)), for: .touchUpInside)
         miniVController.closeButton.addTarget(self, action: #selector(tapOnCloseMini(_:)), for: .touchUpInside)
@@ -141,13 +142,12 @@ class AudioPlayManager: NSObject {
     
     @objc func tapOnPlayMini(_ sender:UIButton) {
         guard let player = AudioPlayManager.shared.playerAV else { return }
+        miniVController.playButton.isSelected = player.isPlaying
         if player.isPlaying {
             player.pause()
-            sender.setImage(AudioPlayManager.playMiniImage, for: .normal)
             audioTimer.invalidate()
         } else {
             player.play()
-            sender.setImage(AudioPlayManager.pauseMiniImage, for: .normal)
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
@@ -160,9 +160,15 @@ class AudioPlayManager: NSObject {
     }
     
     @objc func tapOnMiniPlayer(_ sender: UIButton) {
-        let nowPlayingView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
-        nowPlayingView.existingAudio = true
-        currVController.navigationController?.pushViewController(nowPlayingView, animated: true)
+        if isNonStop {
+            let nonStopViewView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController
+            nonStopViewView.existingAudio = true
+            currVController.navigationController?.pushViewController(nonStopViewView, animated: true)
+        } else {
+            let nowPlayingView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
+            nowPlayingView.existingAudio = true
+            currVController.navigationController?.pushViewController(nowPlayingView, animated: true)
+        }
     }
     
     // MARK: Convert seconds to current time for playing audio

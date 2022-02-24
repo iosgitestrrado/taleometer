@@ -14,19 +14,14 @@ class UserStoryViewController: UIViewController {
     @IBOutlet weak var tblBottomConstraint: NSLayoutConstraint!
 
     // MARK: - Privare Property -
-    private let cellTextField = "textFieldCell"
-    private let cellTextView = "textViewCell"
-    private let cellRadio = "radioCell"
-    private let cellTerms = "termsCell"
-    private let cellButton = "buttonCell"
-    
-    private let cellTFHeight: CGFloat = 83.0
-    private let cellTVHeight: CGFloat = 170.0
-    private let cellRHeight: CGFloat = 63.0
-    private let cellTMHeight: CGFloat = 30.0
-    private let cellBTHeight: CGFloat = 50.0
-    
-    enum UserStoryCellItem: Equatable {
+    /*
+     * Create user story every cell item
+     * Cell Item Title
+     * Cell Identifier
+     * Cell Validation message
+     * Cell Height
+     */
+    private enum UserStoryCellItem: Equatable {
         case name
         case storyAbout
         case lifeMoment
@@ -50,6 +45,25 @@ class UserStoryViewController: UIViewController {
                 return "Now when you think about that incident, how does it make you feel?"
             case .anythingElse:
                 return "Anything else that you would like to share about incident? (e.g.: why this is important to you?, what was the impact of this incident?...)"
+            default:
+                return ""
+            }
+        }
+        
+        var titleTamil: String {
+            switch self {
+            case .name:
+                return "பெயர்"
+            case .storyAbout:
+                return "இந்தக் கதை யாரைப் பற்றியது?"
+            case .lifeMoment:
+                return "நீங்கள் எங்களுடன் பகிர்ந்து கொள்ள விரும்பும் வாழ்க்கை தருணம் அல்லது கதை என்ன? (எ.கா. திருமணம், 12வது வகுப்பு கணிதத் தேர்வு, என் காலில் எலும்பு முறிவு)"
+            case .sharePeople:
+                return "இது நடந்தபோது அங்கு இருந்தவர்கள் யார், முன்னுரிமை பெயர்களுடன்."
+            case .incident:
+                return "இப்போது அந்தச் சம்பவத்தை நினைக்கும் போது, அது உங்களுக்கு எப்படித் தோன்றுகிறது?"
+            case .anythingElse:
+                return "சம்பவத்தைப் பற்றி வேறு ஏதாவது பகிர்ந்து கொள்ள விரும்புகிறீர்களா? (எ.கா: இது உங்களுக்கு ஏன் முக்கியமானது?, இந்த சம்பவத்தின் தாக்கம் என்ன?...)"
             default:
                 return ""
             }
@@ -81,7 +95,7 @@ class UserStoryViewController: UIViewController {
             case .name:
                 return "Please enter your name"
             case .storyAbout:
-                return "Please enter about your story"
+                return "Please select radio button for 'Who is this stoy about?'"
             case .lifeMoment:
                 return "Please share life moment of your story"
             case .sharePeople:
@@ -119,18 +133,23 @@ class UserStoryViewController: UIViewController {
         }
     }
     
+    // MARK: - create property for story data
     private struct storyModel {
         var value = String()
         var id = String()
         var celldata = [UserStoryCellItem]()
     }
     private var storyDataList = [storyModel]()
-    private var originalBtnConstraint = 0.0
-//    private let storyData: [[UserStoryCellItem]] = [
-//        [.name, .storyAbout, .lifeMoment, .sharePeople, .incident, .anythingElse, .terms, .submitButton]
-//    ]
+    
+    // MARK: - Radio button
     private var optionButton1: UIButton?
     private var optionButton2: UIButton?
+    
+    // MARK: - Text view next and done button toolbar
+    private var doneToolbar = UIToolbar()
+    private var nextToolbar = UIToolbar()
+    
+    private let tamilTermsString = "தயவுசெய்து எங்களுடையது படியுங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகள்"
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -142,18 +161,13 @@ class UserStoryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+       // Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
-        originalBtnConstraint = self.tblBottomConstraint.constant
     }
-    
-    // MARK: - Side Menu button action -
-    @IBAction func ClickOnMenu(_ sender: Any) {
-        self.sideMenuController!.toggleRightView(animated: true)
-    }
-    
+        
+    // MARK: - Add total cells in property
     private func setStoryData() {
         storyDataList.append(storyModel(value: "", id: UserStoryCellItem.name.cellIdentifier, celldata: [.name]))
         storyDataList.append(storyModel(value: "", id: UserStoryCellItem.storyAbout.cellIdentifier, celldata: [.storyAbout]))
@@ -163,18 +177,65 @@ class UserStoryViewController: UIViewController {
         storyDataList.append(storyModel(value: "", id: UserStoryCellItem.anythingElse.cellIdentifier, celldata: [.anythingElse]))
         storyDataList.append(storyModel(value: "", id: UserStoryCellItem.terms.cellIdentifier, celldata: [.terms]))
         storyDataList.append(storyModel(value: "", id: UserStoryCellItem.submitButton.cellIdentifier, celldata: [.submitButton]))
+        
+        //Intialize toolbars for text view
+        doneToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40.0))
+        doneToolbar.barStyle = UIBarStyle.default
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        var doneString = "Done"
+        var nextString = "Next"
+        if self.title == "Tamil" {
+            doneString = "முடிந்தது"
+            nextString = "அடுத்தது"
+        }
+        var done: UIBarButtonItem = UIBarButtonItem(title: doneString, style: .done, target: self, action: #selector(self.doneToolbar(_:)))
+        var items1: [UIBarButtonItem] = [flexSpace, done]
+        doneToolbar.items = items1
+        
+        nextToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40.0))
+        nextToolbar.barStyle = UIBarStyle.default
+        done = UIBarButtonItem(title: nextString, style: .done, target: self, action: #selector(self.nextToolbar(_:)))
+        items1 = [flexSpace, done]
+        nextToolbar.items = items1
     }
     
+    // MARK: - Logic for click on radio button
     private func setOptionSelection(_ isOption1Selected: Bool){
         self.optionButton1?.isSelected = isOption1Selected
         self.optionButton2?.isSelected = !isOption1Selected
+        
+        var mySelfStr = "MySelf"
+        var someoneStr = "Someone Else"
+        if self.title == "Tamil" {
+            mySelfStr = "நானே"
+            someoneStr = "வேறு யாரோ"
+        }
         if isOption1Selected {
-            self.storyDataList[1].value = "MySelf"
+            self.storyDataList[1].value = mySelfStr
         } else {
-            self.storyDataList[1].value = "Someone Else"
+            self.storyDataList[1].value = someoneStr
         }
     }
     
+    // MARK: - Click on done button of keyborad toolbar
+    @objc private func doneToolbar(_ sender: UIBarButtonItem) {
+        self.view.endEditing(true)
+    }
+    
+    // MARK: - Click on next button of keyboard toolbar
+    @objc private func nextToolbar(_ sender: UIBarButtonItem) {
+        let nextCellData = storyDataList[sender.tag + 1]
+        let indexPath = IndexPath(row: 0, section: sender.tag + 1)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
+            if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textView = cell.textView {
+                tableView.reloadRows(at: [indexPath], with: .none)
+                textView.becomeFirstResponder()
+            }
+        }
+    }
+    
+    // MARK: Table view all button included submit terms and condition additional radio button
     @objc private func tapOnButton1(_ sender: UIButton) {
         switch sender.tag {
         case 1:
@@ -190,27 +251,29 @@ class UserStoryViewController: UIViewController {
                     return
                 }
             }
-            PromptVManager.present(self, isAudioView: false, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution")
+            PromptVManager.present(self, isAudioView: false, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", imageName: "thank")
             //print(storyDataList)
             break
         }
     }
     
+    // MARK: Table view radio button
     @objc private func tapOnButton2(_ sender: UIButton) {
         if sender.tag == 1 {
             setOptionSelection(false)
         }
     }
     
+    // MARK: Keyboard will show
     @objc private func keyboardWillShowNotification (notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
             self.tblBottomConstraint.constant = keyboardHeight
-            self.tableView.layoutIfNeeded()
         }
     }
     
+    // MARK: Keyboard will Hide
     @objc private func keyboardDidHideNotification (notification: Notification) {
         self.tblBottomConstraint.constant = 0
     }
@@ -234,6 +297,17 @@ extension UserStoryViewController: UITableViewDataSource {
         }
         if let titleLbl = cell.titleLabel {
             titleLbl.text = cellData.title
+            if self.title == "Tamil" {
+                titleLbl.text = cellData.titleTamil
+            }
+        }
+        if self.title == "Tamil" {
+            if let opt1Lbl = cell.option1Lbl {
+                opt1Lbl.text = "நானே"
+            }
+            if let opt2Lbl = cell.option2Lbl {
+                opt2Lbl.text = "வேறு யாரோ"
+            }
         }
         if let btn1 = cell.option1Btn {
             if cellData == .storyAbout {
@@ -241,6 +315,22 @@ extension UserStoryViewController: UITableViewDataSource {
             }
             btn1.tag = indexPath.section
             btn1.addTarget(self, action: #selector(tapOnButton1(_:)), for: .touchUpInside)
+            if self.title == "Tamil" && indexPath.section == 6 {
+                //cell.option1Btn.titleLabel?.attributedText = NSAttributedString("எங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளைப் படிக்கவும்")
+                let attString = NSMutableAttributedString(string: tamilTermsString)
+                let fontBlue = [ NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 116.0 / 255.0, green: 117.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0) ]
+                let fontRed = [ NSAttributedString.Key.foregroundColor:  UIColor(displayP3Red: 232.0 / 255.0, green: 56.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0) ]
+                let rangeTitle1 = NSRange(location: 0, length: 65)
+                let rangeTitle2 = NSRange(location: 33, length: 32)
+                attString.addAttributes(fontBlue, range: rangeTitle1)
+                attString.addAttributes(fontRed, range: rangeTitle2)
+                if #available(iOS 15, *) {
+                    btn1.setAttributedTitle(attString, for: .normal)
+                } else {
+                    // Fallback on earlier versions
+                    btn1.setAttributedTitle(attString, for: .normal)
+                }
+            }
         }
         if let btn2 = cell.option2Btn {
             if cellData == .storyAbout {
@@ -252,11 +342,23 @@ extension UserStoryViewController: UITableViewDataSource {
         if let textField = cell.textField {
             textField.text = storyDataList[indexPath.section].value
             textField.tag = indexPath.section
+            textField.returnKeyType = .next
             textField.delegate = self
         }
         if let textView = cell.textView {
             textView.text = storyDataList[indexPath.section].value
             textView.tag = indexPath.section
+            if indexPath.section == 5 {
+                if let doneBtn = doneToolbar.items?[1] {
+                    doneBtn.tag = indexPath.section
+                }
+                textView.inputAccessoryView = doneToolbar
+            } else {
+                if let nextBtn = nextToolbar.items?[1] {
+                    nextBtn.tag = indexPath.section
+                }
+                textView.inputAccessoryView = nextToolbar
+            }
             textView.delegate = self
         }
         cell.selectionStyle = .none
@@ -279,29 +381,24 @@ extension UserStoryViewController: UITableViewDelegate {
 // MARK: - UITextFieldDelegate -
 extension UserStoryViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        let nextCellData = storyDataList[textField.tag + 2]
+        let indexPath = IndexPath(row: 0, section: textField.tag + 2)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textView = cell.textView {
+            tableView.reloadRows(at: [indexPath], with: .none)
+            textView.becomeFirstResponder()
+        }
         return true
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        let textVal = NSMutableString.init(string: textField.text!)
-//        if string.count > 0 {
-//            textVal.insert(string, at: range.location)
-//        } else {
-//            textVal.replaceCharacters(in: range, with: "")
-//        }
-        //self.storyDataList[textField.tag].value = textVal as String
-        //self.tableView.reloadRows(at: [IndexPath(row: 0, section: textField.tag)], with: .none)
         return true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.storyDataList[textField.tag].value = textField.text!
-        //tableView.reloadRows(at: [IndexPath(row: 0, section: textField.tag)], with: .none)
     }
 }
 
@@ -309,18 +406,11 @@ extension UserStoryViewController: UITextFieldDelegate {
 extension UserStoryViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        let textVal = NSMutableString.init(string: textField.text!)
-//        if string.count > 0 {
-//            textVal.insert(string, at: range.location)
-//        } else {
-//            textVal.replaceCharacters(in: range, with: "")
-//        }
         return true
     }
     
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         self.storyDataList[textView.tag].value = textView.text!
-       // tableView.reloadData()
         return true
     }
 }

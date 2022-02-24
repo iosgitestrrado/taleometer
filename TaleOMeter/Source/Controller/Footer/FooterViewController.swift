@@ -11,8 +11,12 @@ class FooterViewController: UIViewController {
     
     // MARK: - Storyboard outlet -
     @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var searchStackView: UIStackView!
+    @IBOutlet weak var searchDotView: UIView!
     @IBOutlet weak var homeButton: UIButton!
     @IBOutlet weak var favButton: UIButton!
+    @IBOutlet weak var favStackView: UIStackView!
+    @IBOutlet weak var favDotView: UIView!
     
     // MARK: - Public Properties -
     public var parentController: UIViewController?

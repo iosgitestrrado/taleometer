@@ -19,4 +19,8 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
     }
+    
+    var className: String {
+        NSStringFromClass(self.classForCoder).components(separatedBy: ".").last!
+    }
 }

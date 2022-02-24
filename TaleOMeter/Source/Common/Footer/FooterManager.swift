@@ -17,12 +17,14 @@ class FooterManager: NSObject {
     
     // MARK: - Private Properties -
     private var curVController = UIViewController()
+//    private var searchDotStackView = UIStackView()
+//    private var favDotStackView = UIStackView()
 
     /*
      *  Custom Footer tabbar for application
      *  Add custom Footer to view
      */
-    static func addFooter(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()) {
+    static func addFooter(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint(), isFavorite: Bool = false, isSearch: Bool = false) {
         if let myobject = UIStoryboard(name: Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "FooterViewController") as? FooterViewController {
             if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
                 footerView.removeFromSuperview()
@@ -37,12 +39,17 @@ class FooterManager: NSObject {
             
             myobject.homeButton.addTarget(FooterManager.shared.self, action: #selector(tapOnHome(_:)), for: .touchUpInside)
             myobject.searchButton.addTarget(FooterManager.shared.self, action: #selector(tapOnSearch(_:)), for: .touchUpInside)
+            myobject.favStackView.isHidden = !isFavorite
+            myobject.searchStackView.isHidden = !isSearch
+//            FooterManager.shared.favDotStackView = myobject.favStackView
+//            FooterManager.shared.searchDotStackView = myobject.searchStackView
             myobject.favButton.addTarget(FooterManager.shared.self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
             bottomConstraint.constant = UIScreen.main.bounds.size.height -  myobject.view.frame.origin.y
             if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
                 bottomConstraint.constant = UIScreen.main.bounds.size.height -  (myobject.view.frame.origin.y + window.safeAreaInsets.bottom)
             }
             FooterManager.shared.isActive = true
+            
             controller.view.addSubview(myobject.view)
         }
     }
@@ -51,6 +58,15 @@ class FooterManager: NSObject {
         if curVController is GuestDashboardViewController {
             Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
         } else {
+            
+            if let navControllers = curVController.navigationController?.children {
+                for controller in navControllers {
+                    if controller is SearchViewController {
+                        curVController.navigationController?.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+            }
             Core.push(curVController, storyboard: Storyboard.audio, storyboardId: "SearchViewController")
         }
     }
@@ -60,6 +76,14 @@ class FooterManager: NSObject {
         if curVController is GuestDashboardViewController {
             Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
         } else {
+            if let navControllers = curVController.navigationController?.children {
+                for controller in navControllers {
+                    if controller is FavouriteViewController {
+                        curVController.navigationController?.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+            }
             Core.push(curVController, storyboard: Storyboard.audio, storyboardId: "FavouriteViewController")
         }
     }
@@ -71,8 +95,10 @@ class FooterManager: NSObject {
             for controller in navControllers {
                 if controller is DashboardViewController {
                     curVController.navigationController?.popToViewController(controller, animated: true)
+                    return
                 }
             }
+            Core.push(curVController, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
         }
     }
 }

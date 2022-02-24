@@ -1,17 +1,16 @@
 //
-//  FavouriteViewController.swift
+//  MainUserStoryVC.swift
 //  TaleOMeter
 //
-//  Created by Durgesh on 16/02/22.
+//  Created by Durgesh on 24/02/22.
 //
 
 import UIKit
 
-class FavouriteViewController: UIViewController {
-
+class MainUserStoryVC: UIViewController {
+    
     // MARK: - Weak Property -
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -22,12 +21,6 @@ class FavouriteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
-        
-        //Add footer view and manager current view frame
-        FooterManager.addFooter(self, bottomConstraint: self.containerBottomCons, isFavorite: true)
-        if AudioPlayManager.shared.isMiniPlayerActive {
-            AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
-        }
     }
     
     // MARK: - Side Menu button action -
@@ -41,8 +34,9 @@ class FavouriteViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "audioList", let audListVC = segue.destination as? AudioListViewController {
-            audListVC.isFavourite = true
+        if segue.identifier == "segment", let segVC = segue.destination as? StorySegmentViewController {
+            segVC.parentController = self
+            segVC.parentFrame = self.containerView.frame
         }
     }
 }

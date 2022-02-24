@@ -41,7 +41,6 @@ class NowPlayViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configureAudio()
-        self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
     
@@ -63,6 +62,7 @@ class NowPlayViewController: UIViewController {
     // MARK: Set audio wave meter
     private func configureAudio() {
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
+        AudioPlayManager.shared.isNonStop = false
         guard let url = Bundle.main.path(forResource: "testAudio", ofType: "mp3") else { return }
         
         visualizationWave.audioVisualizationMode = .write
@@ -94,16 +94,15 @@ class NowPlayViewController: UIViewController {
                 }
             }
             
+            self.playButton.isSelected = player.isPlaying
             if player.isPlaying {
                 audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
-                self.playButton.setBackgroundImage(AudioPlayManager.pauseImage, for: .normal)
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [self] in
                     visualizationWave.pause()
                 }
-                self.playButton.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
             }
         } else {
             AudioPlayManager.shared.configAudio(URL(fileURLWithPath: url))
@@ -112,7 +111,7 @@ class NowPlayViewController: UIViewController {
                     self.player = playerk
                 }
             }
-            self.playButton.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
+            self.playButton.isSelected = false
             Core.ShowProgress(contrSelf: self, detailLbl: "Getting audio waves...")
             AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
                 waveFormcount = result.count
@@ -140,7 +139,6 @@ class NowPlayViewController: UIViewController {
     }
     
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
-        
         switch recognizer.state {
             case .began:
             isPlayingTap = player.isPlaying
@@ -200,18 +198,17 @@ class NowPlayViewController: UIViewController {
     }
     
     private func playPauseAudio(_ playing: Bool) {
+        self.playButton.isSelected = playing
         if !playing {
             player.pause()
             audioTimer.invalidate()
             visualizationWave.pause()
-            self.playButton.setBackgroundImage(AudioPlayManager.playImage, for: .normal)
         } else {
             player.play()
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
             visualizationWave.play(for: TimeInterval(totalTimeDuration))
-            self.playButton.setBackgroundImage(AudioPlayManager.pauseImage, for: .normal)
         }
     }
     
@@ -229,8 +226,6 @@ class NowPlayViewController: UIViewController {
         case 2:
             //Favourite
             sender.isSelected = !sender.isSelected
-            sender.setImage(UIImage(systemName: "heart.circle.fill"), for: .selected)
-            sender.setImage(UIImage(named: "favourite"), for: .normal)
             break
         case 3:
             //Back 10 Second
@@ -267,7 +262,7 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    @objc func itemDidFinishedPlaying() {
+    @objc private func itemDidFinishedPlaying() {
         //if (player.isPlaying) {
             self.playPauseAudio(false)
         //}

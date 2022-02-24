@@ -13,7 +13,7 @@ class PromptVManager: NSObject {
      *  Dynamic Prompt screen
      *  Set prompt properties as per requirement
      */
-    static func present(_ controller: UIViewController, isAudioView: Bool = true, verifyTitle: String = "Successfull", verifyMessage: String = "") {
+    static func present(_ controller: UIViewController, isAudioView: Bool = true, verifyTitle: String = "Successfull", verifyMessage: String = "", imageName: String = "verified") {
         if let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "PromptViewController") as? PromptViewController {
             
             myobject.delegate = controller as? PromptViewDelegate
@@ -30,6 +30,7 @@ class PromptVManager: NSObject {
                 } else {
                     myobject.titleLabelV.text = verifyTitle
                     myobject.messageLabelV.text = verifyMessage
+                    myobject.verifyImage.image = UIImage(named: imageName)
                 }
             })
         }

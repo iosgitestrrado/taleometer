@@ -13,4 +13,6 @@ class UserStoryCell: UITableViewCell {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var option1Btn: UIButton!
     @IBOutlet weak var option2Btn: UIButton!
+    @IBOutlet weak var option1Lbl: UILabel!
+    @IBOutlet weak var option2Lbl: UILabel!
 }

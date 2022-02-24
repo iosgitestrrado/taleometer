@@ -19,8 +19,10 @@ class Core: NSObject {
      * Push to another view controller using navigation controller
      */
     static func push(_ controller: UIViewController, storyboard: String, storyboardId: String) {
-        let myobject = UIStoryboard(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: storyboardId)
-        controller.navigationController?.pushViewController(myobject, animated: true)
+        if let navLastChild = controller.navigationController?.children.last, navLastChild.className != storyboardId {
+            let myobject = UIStoryboard(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: storyboardId)
+            controller.navigationController?.pushViewController(myobject, animated: true)
+        }
     }
     
     /*

@@ -13,4 +13,5 @@ class AudioViewCell: UITableViewCell {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var favButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var progressBar: UIProgressView!
 }

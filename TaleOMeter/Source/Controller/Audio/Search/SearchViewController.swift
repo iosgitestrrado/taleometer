@@ -36,7 +36,7 @@ class SearchViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
         
         //Add footer view and manager current view frame
-        FooterManager.addFooter(self, bottomConstraint: self.containerBottomCons)
+        FooterManager.addFooter(self, bottomConstraint: self.containerBottomCons, isSearch: true)
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
