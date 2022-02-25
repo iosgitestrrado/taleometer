@@ -9,12 +9,16 @@ import UIKit
 
 class RightViewController: UIViewController {
     
+    // MARK: - Weak Property -
+    @IBOutlet weak var tableView: UITableView!
+    
     // MARK: - Privare Property -
     private let cellProfileIdentifier = "profileCell"
     private let cellIdentifier = "cell"
     private let tableViewInset: CGFloat = 44.0 * 2.0
     private let cellHeight: CGFloat = 44.0
     private let cellProfileHeight: CGFloat = 153.0
+    
     private enum SideViewCellItem: Equatable {
         case profile
         case shareStory
@@ -53,7 +57,11 @@ class RightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
+    }
+    
+    @objc private func updateUserData(_ notification: Notification) {
+        self.tableView.reloadData()
     }
 
     // MARK: - Status Bar -
@@ -203,11 +211,14 @@ extension RightViewController: UITableViewDataSource {
         if indexPath.row == 0 {
             //profileCell
             let cell = tableView.dequeueReusableCell(withIdentifier: cellProfileIdentifier, for: indexPath) as! RightViewCell
-            cell.titleLabel.text = "Durgesh Timbadiya"
-            cell.subTitleLabel.text = "+91 98989 98989"
+            
+            cell.titleLabel.text = UserDefaults.standard.string(forKey: "ProfileName") ?? "Guest"
+            cell.subTitleLabel.text = UserDefaults.standard.string(forKey: "ProfileMobile") ?? "+0 00000 00000"
+            if let imgData = UserDefaults.standard.object(forKey: "ProfileImage") as? Data, let img = UIImage(data: imgData) {
+                cell.profileImage.image = img
+            }
             cell.closeButton.addTarget(self, action: #selector(self.clickOnClose(_:)), for: .touchUpInside)
             cell.isFirst = (indexPath.row == 0)
-
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RightViewCell

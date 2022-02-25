@@ -18,6 +18,7 @@ private let textColorHighlighted: UIColor = .black
 class RightViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var closeButton: UIButton!
     
     var isFirst: Bool = false {

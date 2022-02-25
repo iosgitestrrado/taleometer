@@ -46,12 +46,12 @@ class SegmentViewController: UIViewController {
         gridView.title = "Inspire"
         viewsArray.append(gridView)
         
-        for _ in 0..<1 {
+       // for _ in 0..<1 {
             gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
             gridView.parentController = self.parentController
             gridView.title = "Snooze"
             viewsArray.append(gridView)
-        }
+        //}
         
         self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .red, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? 320)
     }

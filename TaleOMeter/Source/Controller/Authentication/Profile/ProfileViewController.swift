@@ -23,7 +23,10 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setProfileData("Durgesh Timbadiya", mobile: "+91 9624542749", email: "durgesh.timbadiya@hotmail.com")
+        setProfileData(UserDefaults.standard.string(forKey: "ProfileName") ?? "", mobile: UserDefaults.standard.string(forKey: "ProfileMobile") ?? "", email: UserDefaults.standard.string(forKey: "ProfileEmail") ?? "")
+        if let imgData = UserDefaults.standard.object(forKey: "ProfileImage") as? Data, let img = UIImage(data: imgData) {
+            self.profileImage.image = img
+        }
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -98,9 +101,27 @@ class ProfileViewController: UIViewController {
         default:
             //Image
             imagePicker.delegate = self
-            imagePicker.sourceType = .photoLibrary
             imagePicker.allowsEditing = true
-            self.navigationController?.present(imagePicker, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { result in
+                self.imagePicker.sourceType = .camera
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Photo library", style: .default, handler: { result in
+                self.imagePicker.sourceType = .photoLibrary
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
+                self.profileImage.image = UIImage(named: "logo")
+                if let data = self.profileImage.image?.pngData() {
+                    UserDefaults.standard.set(data, forKey: "ProfileImage")
+                }
+                UserDefaults.standard.synchronize()
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
             break
         }
     }
@@ -113,6 +134,12 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.profileImage.image = image
         }
+        
+        if let data = self.profileImage.image?.pngData() {
+            UserDefaults.standard.set(data, forKey: "ProfileImage")
+        }
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         self.imagePicker.dismiss(animated: true) {
             PromptVManager.present(self, isAudioView: false, verifyMessage: "Your Profile Image is Successfully Changed")
         }
@@ -127,15 +154,20 @@ extension ProfileViewController: ProfileEditDelegate  {
         case 1:
             //Name
             self.setProfileData(data, mobile: "", email: "")
+            UserDefaults.standard.set(data, forKey: "ProfileName")
             break
         case 2:
             //Mobile Number
             self.setProfileData("", mobile: data, email: "")
+            UserDefaults.standard.set(data, forKey: "ProfileMobile")
             break
         default:
             //Email Id
             self.setProfileData("", mobile: "", email: data)
+            UserDefaults.standard.set(data, forKey: "ProfileEmail")
             break
         }
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
 }

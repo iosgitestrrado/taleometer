@@ -11,8 +11,8 @@ class RegisterViewController: UIViewController {
     
     // MARK: - Weak Properties -
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var displayNameText: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
-    
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -34,7 +34,7 @@ class RegisterViewController: UIViewController {
     @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.view.frame.origin.y -= 100.0
+                self.view.frame.origin.y -= 170.0
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
@@ -54,17 +54,23 @@ class RegisterViewController: UIViewController {
             Snackbar.showNoInternetMessage()
             return
         }
-        if nameTextField.text!.isBlank {
-            Snackbar.showAlertMessage("Please enter valid name!")
+        if displayNameText.text!.isBlank {
+            Snackbar.showAlertMessage("Please enter valid display name!")
             return
         }
-        if emailTextField.text!.isBlank || !emailTextField.text!.isEmail {
-            Snackbar.showAlertMessage("Please enter valid email!")
-            return
+        if !emailTextField.text!.isBlank {
+            if !emailTextField.text!.isEmail {
+                UserDefaults.standard.set(emailTextField.text!, forKey: "ProfileEmail")
+            } else {
+                Snackbar.showAlertMessage("Please enter valid email!")
+                return
+            }
         }
+        UserDefaults.standard.set(displayNameText.text!, forKey: "ProfileName")
         UserDefaults.standard.set(Storyboard.dashboard, forKey: "storyboardName")
         UserDefaults.standard.set("PreferenceViewController", forKey: "storyboardId")
         UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "PreferenceViewController")
     }
 }

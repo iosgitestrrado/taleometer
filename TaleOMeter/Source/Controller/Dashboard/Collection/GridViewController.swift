@@ -65,6 +65,19 @@ class GridViewController: UICollectionViewController {
             Core.push(self.parentController!, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController") 
         }
     }
+    
+    // MARK: - UIScrollViewDelegate -
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if let cont = self.parentController as? DashboardViewController, cont.surpriseButton.isHidden, scrollView.contentOffset.y < -20.0 {
+            UIView.transition(with: cont.surpriseButton, duration: 1.0, options: .transitionCrossDissolve) {
+                cont.surpriseButton.isHidden = false
+            }
+        } else if let cont = self.parentController as? GuestDashboardViewController, cont.surpriseButton.isHidden, scrollView.contentOffset.y < -20.0 {
+            UIView.transition(with: cont.surpriseButton, duration: 1.0, options: .transitionCrossDissolve) {
+                cont.surpriseButton.isHidden = false
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout -

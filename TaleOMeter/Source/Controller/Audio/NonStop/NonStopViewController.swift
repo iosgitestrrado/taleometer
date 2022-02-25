@@ -29,13 +29,14 @@ class NonStopViewController: UIViewController {
     // MARK: - Private Properties -
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
-    private var isPlayingTap = false
+    private var isPlaying = false
     private var player = AVPlayer()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.audioImage.cornerRadius = self.audioImage.frame.size.height / 2.0
         configureAudio()
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
@@ -90,7 +91,7 @@ class NonStopViewController: UIViewController {
     }
 
     // MARK: Set audio wave meter
-    private func configureAudio() {
+    private func configureAudio(_ isNext: Bool = false) {
         AudioPlayManager.shared.isNonStop = true
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
         guard let url = Bundle.main.path(forResource: "testAudio", ofType: "mp3") else { return }
@@ -113,48 +114,46 @@ class NonStopViewController: UIViewController {
             }
         } else {
             AudioPlayManager.shared.configAudio(URL(fileURLWithPath: url))
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                self.playButton.isSelected = false
+                if let duration = player.currentItem?.asset.duration {
+                    totalTimeDuration = Float(CMTimeGetSeconds(duration))
+                }
                 if let playerk = AudioPlayManager.shared.playerAV {
                     self.player = playerk
+                    if isNext && isPlaying {
+                        if audioTimer.isValid {
+                            audioTimer.invalidate()
+                        }
+                        playPauseAudio(true)
+                    } else {
+                        self.udpateTime()
+                    }
                 }
-            }
-            self.playButton.isSelected = false
-            DispatchQueue.main.async {
-                self.udpateTime()
-            }
-            if let duration = player.currentItem?.asset.duration {
-                totalTimeDuration = Float(CMTimeGetSeconds(duration))
             }
         }
     }
     
     private func playPauseAudio(_ playing: Bool) {
         self.playButton.isSelected = playing
+        isPlaying = playing
         if !playing {
             player.pause()
             audioTimer.invalidate()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "pauseAudio"), object: nil)
         } else {
             player.play()
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NonStopViewController.udpateTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "playAudio"), object: nil)
         }
     }
     
     @objc private func itemDidFinishedPlaying() {
-        //if (player.isPlaying) {
-            self.playPauseAudio(false)
-        //}
         existingAudio = false
-        configureAudio()
-    }
-    
-    private func setTime(_ currentTime: TimeInterval) {
-        let playhead = currentTime
-        let duration = TimeInterval(totalTimeDuration)
-        if !playhead.isNaN && !duration.isNaN {
-            self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
-        }
+        configureAudio(true)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "nextAudio"), object: nil)
     }
     
     @objc func udpateTime() {

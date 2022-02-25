@@ -21,7 +21,7 @@ class PromptVManager: NSObject {
                 myobject.songTitle = "Learn Brightly"
                 myobject.nextSongTitle = "Track To Relax"
             }
-            
+            myobject.isAudioPrompt = isAudioView
             controller.navigationController?.present(myobject, animated: true, completion: {
                 myobject.audioPromptView.isHidden = !isAudioView
                 myobject.verifyPromptView.isHidden = isAudioView

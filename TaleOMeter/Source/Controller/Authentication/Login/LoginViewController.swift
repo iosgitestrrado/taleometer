@@ -64,6 +64,9 @@ class LoginViewController: UIViewController {
             return
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
+        UserDefaults.standard.set("\(countryModel.extensionCode ?? "+91") \(self.mobileNumberTxt.text!)", forKey: "ProfileMobile")
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         self.performSegue(withIdentifier: "verification", sender: sender)
     }
     

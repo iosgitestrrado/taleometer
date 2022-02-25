@@ -23,12 +23,39 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QrH-ci-525">
                                 <rect key="frame" x="10" y="88" width="372.66666666666669" height="722"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gku-sP-Vhc">
                                         <rect key="frame" x="86.999999999999986" y="0.0" width="198.66666666666663" height="199"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
+                                                <rect key="frame" x="0.0" y="0.0" width="198.66666666666666" height="199"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Concurrent Users: 1.3 k  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="Qg3-1j-ivw">
+                                                <rect key="frame" x="73.666666666666657" y="89.333333333333343" width="125" height="20"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="HzS-QK-1ZL"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="abr-mx-hzm" secondAttribute="height" multiplier="1:1" id="J2O-Pp-0ff"/>
+                                            <constraint firstAttribute="trailing" secondItem="Qg3-1j-ivw" secondAttribute="trailing" id="9c9-Ph-T5q"/>
+                                            <constraint firstItem="abr-mx-hzm" firstAttribute="top" secondItem="gku-sP-Vhc" secondAttribute="top" id="Gpf-Xn-a2O"/>
+                                            <constraint firstItem="Qg3-1j-ivw" firstAttribute="centerY" secondItem="gku-sP-Vhc" secondAttribute="centerY" id="LVN-ue-nfZ"/>
+                                            <constraint firstItem="abr-mx-hzm" firstAttribute="leading" secondItem="gku-sP-Vhc" secondAttribute="leading" id="S6R-r4-0CE"/>
+                                            <constraint firstAttribute="trailing" secondItem="abr-mx-hzm" secondAttribute="trailing" id="cfa-QI-sTZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="abr-mx-hzm" secondAttribute="bottom" id="rNa-gl-YqC"/>
+                                            <constraint firstAttribute="width" secondItem="gku-sP-Vhc" secondAttribute="height" multiplier="1:1" id="wXo-lf-VJ2"/>
                                         </constraints>
-                                    </imageView>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracks To Relax" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="B54-aL-HnB">
                                         <rect key="frame" x="100.33333333333333" y="199" width="172.33333333333337" height="50"/>
                                         <constraints>
@@ -259,11 +286,11 @@
                                 <constraints>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="4ba-q0-E0r"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="leading" secondItem="QrH-ci-525" secondAttribute="leading" constant="7.6666666666666572" id="9Me-g7-Xil"/>
+                                    <constraint firstItem="gku-sP-Vhc" firstAttribute="top" secondItem="QrH-ci-525" secondAttribute="top" id="CeC-vM-UL6"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="J6g-IH-VFS"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="leading" secondItem="18g-Ab-AV8" secondAttribute="leading" id="JJJ-ee-IKq"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="centerY" secondItem="QrH-ci-525" secondAttribute="centerY" id="TXS-eQ-9Va"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="centerX" secondItem="QrH-ci-525" secondAttribute="centerX" id="VYe-vH-Clm"/>
-                                    <constraint firstItem="abr-mx-hzm" firstAttribute="top" secondItem="QrH-ci-525" secondAttribute="top" id="ViL-pU-JWy"/>
                                     <constraint firstAttribute="bottom" secondItem="18g-Ab-AV8" secondAttribute="bottom" id="bFE-TA-uWi"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="eDz-gp-L1w"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="p5I-SJ-R9a"/>
@@ -295,6 +322,8 @@
                     <navigationItem key="navigationItem" title="Now Playing" id="cAa-zb-hDl"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="audioImageView" destination="gku-sP-Vhc" id="hxE-xj-9rK"/>
+                        <outlet property="cuncurrentUserLbl" destination="Qg3-1j-ivw" id="b9l-PM-y43"/>
                         <outlet property="endTimeLabel" destination="JOY-KK-IKu" id="8X6-d3-Eui"/>
                         <outlet property="imageView" destination="abr-mx-hzm" id="4lC-4I-UmU"/>
                         <outlet property="narrotionButton" destination="pco-Oi-ATm" id="eAE-96-gj5"/>
@@ -308,7 +337,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i7W-6b-EVZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="925" y="69"/>
+            <point key="canvasLocation" x="924.61538461538453" y="68.957345971563981"/>
         </scene>
         <!--Mini Audio View Controller-->
         <scene sceneID="RgS-3t-hc6">

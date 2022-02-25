@@ -67,9 +67,9 @@ extension UIView {
         }
         set {
             self.layer.cornerRadius = newValue
-//            if !self.shadow {
-//                self.layer.masksToBounds = true
-//            }
+            if !self.shadow {
+                self.layer.masksToBounds = true
+            }
         }
     }
 

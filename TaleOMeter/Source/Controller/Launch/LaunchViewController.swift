@@ -25,7 +25,6 @@ class LaunchViewController: UIViewController {
                     Core.push(self, storyboard: stName, storyboardId: stId)
                 } else {
                     Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
-                    
                 }
             } else {
                 Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "GuestDashboardViewController")

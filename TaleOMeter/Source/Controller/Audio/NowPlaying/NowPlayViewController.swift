@@ -14,7 +14,9 @@ class NowPlayViewController: UIViewController {
 
     // MARK: - Weak Properties -
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var audioImageView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var cuncurrentUserLbl: UILabel!
     @IBOutlet weak var storyButton: UIButton!
     @IBOutlet weak var plotButton: UIButton!
     @IBOutlet weak var narrotionButton: UIButton!
@@ -40,6 +42,7 @@ class NowPlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         configureAudio()
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
@@ -51,7 +54,7 @@ class NowPlayViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
+        self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
     }
     
     override func viewDidDisappear(_ animated: Bool) {

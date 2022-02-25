@@ -64,7 +64,6 @@
 		63D27C6627BD087F0074EA7F /* NonStopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C6527BD087F0074EA7F /* NonStopViewController.swift */; };
 		63D27C6927BD08AC0074EA7F /* NowPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C6827BD08AC0074EA7F /* NowPlayViewController.swift */; };
 		63D27C6C27BD08CB0074EA7F /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C6B27BD08CB0074EA7F /* AuthorViewController.swift */; };
-		63D27C6F27BD08EA0074EA7F /* AutoPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C6E27BD08EA0074EA7F /* AutoPlayViewController.swift */; };
 		63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C7927BD098E0074EA7F /* ProfileViewController.swift */; };
 		63D27C7D27BD09DC0074EA7F /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C7C27BD09DC0074EA7F /* ProfileEditViewController.swift */; };
 		63D27C7F27BD09ED0074EA7F /* VerificationProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D27C7E27BD09ED0074EA7F /* VerificationProfileVC.swift */; };
@@ -171,7 +170,6 @@
 		63D27C6527BD087F0074EA7F /* NonStopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonStopViewController.swift; sourceTree = "<group>"; };
 		63D27C6827BD08AC0074EA7F /* NowPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayViewController.swift; sourceTree = "<group>"; };
 		63D27C6B27BD08CB0074EA7F /* AuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorViewController.swift; sourceTree = "<group>"; };
-		63D27C6E27BD08EA0074EA7F /* AutoPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoPlayViewController.swift; sourceTree = "<group>"; };
 		63D27C7927BD098E0074EA7F /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		63D27C7C27BD09DC0074EA7F /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
 		63D27C7E27BD09ED0074EA7F /* VerificationProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationProfileVC.swift; sourceTree = "<group>"; };
@@ -240,7 +238,7 @@
 				6358434027B7B7D60055DE7E /* Model */,
 				6358434127B7B7DF0055DE7E /* Storyboard */,
 				6358434227B7B7E70055DE7E /* Controller */,
-				63F2AAAC27BB6A08007CAFC1 /* Common */,
+				63F2AAAC27BB6A08007CAFC1 /* Common Lib */,
 				6358435E27B7CF9C0055DE7E /* Assets */,
 			);
 			path = Source;
@@ -255,13 +253,6 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		630CEFDF27C4DCDE0042DBBA /* Author */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Author;
-			sourceTree = "<group>";
-		};
 		630CEFE227C4DD740042DBBA /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,14 +261,28 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		633900DA27C8B6F2001473CD /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				63D27C8027BD0A360074EA7F /* User Story */,
+				63D27C9627BD0C1D0074EA7F /* Prompt */,
+				63D27C8927BD0ACA0074EA7F /* Setting */,
+				63D27C8A27BD0ADD0074EA7F /* AboutUs */,
+				63D27C8D27BD0AFB0074EA7F /* Feedback */,
+				631F9C7B27C49B0700F1B069 /* CommingViewController.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		6353708327BA26A2000A144E /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				63FA7E6E27BBB7EA00AD6C97 /* Terms */,
-				6361179C27BA688C000C1749 /* Other */,
-				6361179E27BA68AB000C1749 /* Verification */,
-				6361179B27BA687E000C1749 /* Register */,
 				6353708427BA26B9000A144E /* Login */,
+				6361179B27BA687E000C1749 /* Register */,
+				6361179E27BA68AB000C1749 /* Verification */,
+				63D27C7627BD09600074EA7F /* Profile */,
+				63FA7E6E27BBB7EA00AD6C97 /* Terms */,
+				6361179C27BA688C000C1749 /* Country */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -362,17 +367,12 @@
 		6358434227B7B7E70055DE7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				633900DA27C8B6F2001473CD /* Other */,
 				6358435827B7C5D60055DE7E /* Launch */,
 				6358434427B7B8130055DE7E /* SideMenu */,
 				6353708327BA26A2000A144E /* Authentication */,
 				6358435B27B7C9DC0055DE7E /* Dashboard */,
 				63D27C6327BD08550074EA7F /* Audio */,
-				63D27C7627BD09600074EA7F /* Profile */,
-				63D27C8027BD0A360074EA7F /* User Story */,
-				63D27C6A27BD08BA0074EA7F /* Author */,
-				63D27C8927BD0ACA0074EA7F /* Setting */,
-				63D27C8A27BD0ADD0074EA7F /* AboutUs */,
-				63D27C8D27BD0AFB0074EA7F /* Feedback */,
 				63FA7E7127BBC8F600AD6C97 /* Footer */,
 			);
 			path = Controller;
@@ -423,7 +423,6 @@
 				63DFB4B127BCC54E00B08216 /* Collection */,
 				63DFB4AE27BCC00300B08216 /* Segment */,
 				636ED8DB27BB79CD0030D2F0 /* Preference */,
-				63D27C9627BD0C1D0074EA7F /* Other */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -473,12 +472,12 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
-		6361179C27BA688C000C1749 /* Other */ = {
+		6361179C27BA688C000C1749 /* Country */ = {
 			isa = PBXGroup;
 			children = (
 				6361179327BA553B000C1749 /* CountryViewController.swift */,
 			);
-			path = Other;
+			path = Country;
 			sourceTree = "<group>";
 		};
 		6361179E27BA68AB000C1749 /* Verification */ = {
@@ -514,12 +513,12 @@
 			path = Footer;
 			sourceTree = "<group>";
 		};
-		63A4F57327BFDCA500FDBB03 /* PromptScreen */ = {
+		63A4F57327BFDCA500FDBB03 /* Prompt */ = {
 			isa = PBXGroup;
 			children = (
 				63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */,
 			);
-			path = PromptScreen;
+			path = Prompt;
 			sourceTree = "<group>";
 		};
 		63D27C6327BD08550074EA7F /* Audio */ = {
@@ -527,14 +526,12 @@
 			children = (
 				63D27C6727BD08950074EA7F /* NowPlaying */,
 				63D27C9F27BD17FC0074EA7F /* MiniPlayer */,
-				630CEFDF27C4DCDE0042DBBA /* Author */,
+				63D27C6427BD085D0074EA7F /* NonStop */,
 				630CEFDC27C4DC6C0042DBBA /* List */,
+				63D27C6A27BD08BA0074EA7F /* Author */,
 				63D27C9027BD0B710074EA7F /* Search */,
 				63D27C9327BD0B8A0074EA7F /* Favorite */,
 				63D27C8327BD0A570074EA7F /* History */,
-				63D27C6D27BD08DB0074EA7F /* AutoPlay */,
-				63D27C6427BD085D0074EA7F /* NonStop */,
-				631F9C7B27C49B0700F1B069 /* CommingViewController.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -560,15 +557,8 @@
 			children = (
 				63D27C6B27BD08CB0074EA7F /* AuthorViewController.swift */,
 			);
-			path = Author;
-			sourceTree = "<group>";
-		};
-		63D27C6D27BD08DB0074EA7F /* AutoPlay */ = {
-			isa = PBXGroup;
-			children = (
-				63D27C6E27BD08EA0074EA7F /* AutoPlayViewController.swift */,
-			);
-			path = AutoPlay;
+			name = Author;
+			path = ../Author;
 			sourceTree = "<group>";
 		};
 		63D27C7627BD09600074EA7F /* Profile */ = {
@@ -650,12 +640,12 @@
 			path = Favorite;
 			sourceTree = "<group>";
 		};
-		63D27C9627BD0C1D0074EA7F /* Other */ = {
+		63D27C9627BD0C1D0074EA7F /* Prompt */ = {
 			isa = PBXGroup;
 			children = (
 				63D27C9727BD0C2F0074EA7F /* PromptViewController.swift */,
 			);
-			path = Other;
+			path = Prompt;
 			sourceTree = "<group>";
 		};
 		63D27C9927BD0E920074EA7F /* Container */ = {
@@ -744,17 +734,17 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		63F2AAAC27BB6A08007CAFC1 /* Common */ = {
+		63F2AAAC27BB6A08007CAFC1 /* Common Lib */ = {
 			isa = PBXGroup;
 			children = (
-				63A4F57327BFDCA500FDBB03 /* PromptScreen */,
+				63A4F57327BFDCA500FDBB03 /* Prompt */,
 				63A4F57227BFDC9600FDBB03 /* Footer */,
 				63D27C9B27BD128A0074EA7F /* AudioPlay */,
 				63DFB4A727BCAF2700B08216 /* Library */,
 				63F2AAAE27BB6A23007CAFC1 /* Constants */,
 				6361179827BA6833000C1749 /* Extension */,
 			);
-			path = Common;
+			path = "Common Lib";
 			sourceTree = "<group>";
 		};
 		63F2AAAD27BB6A16007CAFC1 /* Reachability */ = {
@@ -1073,7 +1063,6 @@
 				6358434F27B7BA980055DE7E /* RightViewController.swift in Sources */,
 				63DFB4B027BCC39600B08216 /* SegmentViewController.swift in Sources */,
 				6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */,
-				63D27C6F27BD08EA0074EA7F /* AutoPlayViewController.swift in Sources */,
 				6358430F27B7AED90055DE7E /* SceneDelegate.swift in Sources */,
 				63F2AAB027BB6A36007CAFC1 /* Snackbar.swift in Sources */,
 				63DFB4B627BCC8A700B08216 /* GridCollectionViewCell.swift in Sources */,
