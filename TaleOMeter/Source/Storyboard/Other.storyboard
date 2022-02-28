@@ -637,9 +637,8 @@ Cg
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="3WH-AE-hQF">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="3WH-AE-hQF">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq1-YL-6mn">
                                 <rect key="frame" x="0.0" y="88" width="390" height="722"/>
@@ -651,10 +650,14 @@ Cg
                         <viewLayoutGuide key="safeArea" id="zhc-t8-niH"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="3WH-AE-hQF" firstAttribute="top" secondItem="KK8-K8-msj" secondAttribute="top" id="0K1-j2-dO1"/>
+                            <constraint firstItem="3WH-AE-hQF" firstAttribute="trailing" secondItem="zhc-t8-niH" secondAttribute="trailing" id="1Zx-hP-1ow"/>
                             <constraint firstItem="Rq1-YL-6mn" firstAttribute="top" secondItem="zhc-t8-niH" secondAttribute="top" id="GNR-DP-wkA"/>
                             <constraint firstItem="Rq1-YL-6mn" firstAttribute="trailing" secondItem="zhc-t8-niH" secondAttribute="trailing" id="Oyf-yH-ETm"/>
                             <constraint firstItem="Rq1-YL-6mn" firstAttribute="bottom" secondItem="zhc-t8-niH" secondAttribute="bottom" id="Pbx-lP-XSX"/>
                             <constraint firstItem="Rq1-YL-6mn" firstAttribute="leading" secondItem="zhc-t8-niH" secondAttribute="leading" id="Wlf-vh-Wx8"/>
+                            <constraint firstItem="3WH-AE-hQF" firstAttribute="leading" secondItem="zhc-t8-niH" secondAttribute="leading" id="gvA-po-dB7"/>
+                            <constraint firstAttribute="bottom" secondItem="3WH-AE-hQF" secondAttribute="bottom" id="h1V-nd-LVs"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="User Story" id="W7V-04-fKW">

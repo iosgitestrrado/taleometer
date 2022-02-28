@@ -48,9 +48,12 @@ class Core: NSObject {
     static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true) {
         cont.sideMenuController?.isRightViewEnabled = isRightViewEnabled
         cont.navigationController?.setNavigationBarHidden(setNavigationBarHidden, animated: true)
-        //cont.navigationController?.navigationBar.barTintColor = .white
-        cont.navigationController?.navigationBar.tintColor = .white
-        //cont.navigationController?.navigationBar.isTranslucent = false
+        //cont.navigationController?.navigationBar.barTintColor = .clear
+        //cont.navigationController?.navigationBar.tintColor = .clear
+        cont.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default) //UIImage.init(named: "transparent.png")
+        cont.navigationController?.navigationBar.shadowImage = UIImage()
+        cont.navigationController?.navigationBar.isTranslucent = true
+        cont.navigationController?.view.backgroundColor = .clear
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)

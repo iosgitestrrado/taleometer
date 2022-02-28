@@ -19,7 +19,7 @@ class LaunchViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             if UserDefaults.standard.bool(forKey: "isLogin") {
                 if !UserDefaults.standard.bool(forKey: "isRegistered"), let stName = UserDefaults.standard.string(forKey: "storyboardName"), let stId = UserDefaults.standard.string(forKey: "storyboardId") {
                     Core.push(self, storyboard: stName, storyboardId: stId)

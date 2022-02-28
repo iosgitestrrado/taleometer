@@ -59,7 +59,7 @@ class RegisterViewController: UIViewController {
             return
         }
         if !emailTextField.text!.isBlank {
-            if !emailTextField.text!.isEmail {
+            if emailTextField.text!.isEmail {
                 UserDefaults.standard.set(emailTextField.text!, forKey: "ProfileEmail")
             } else {
                 Snackbar.showAlertMessage("Please enter valid email!")
