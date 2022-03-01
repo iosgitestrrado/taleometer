@@ -18,6 +18,8 @@ struct Storyboard {
     static let other = "Other"
 }
 
+let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")
+
 // MARK: - Side menubar properties -
 let menuIconImage: UIImage = {
     let size = CGSize(width: 24.0, height: 16.0)

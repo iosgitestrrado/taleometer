@@ -8,6 +8,7 @@
 import UIKit
 import CoreMedia
 import AVFoundation
+import MediaPlayer
 
 class NonStopViewController: UIViewController {
 
@@ -39,6 +40,7 @@ class NonStopViewController: UIViewController {
         self.audioImage.cornerRadius = self.audioImage.frame.size.height / 2.0
         configureAudio()
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +56,13 @@ class NonStopViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
+    }
+    
+    //MARK: - Call funcation when audio controller press in background
+    @objc private func remoteCommandHandler(_ notification: Notification) {
+        if let isPlay = notification.userInfo?["isPlaying"] as? Bool {
+            self.playPauseAudio(isPlay)
+        }
     }
     
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
@@ -169,6 +178,8 @@ class NonStopViewController: UIViewController {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
                 }
             }
+            AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
         }
     }
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -24,6 +25,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UserDefaults.standard.set("temp@temp.temp", forKey: "ProfileEmail")
             UserDefaults.standard.set("Guest", forKey: "ProfileName")
             UserDefaults.standard.synchronize()
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error {
+            print(error.localizedDescription)
         }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }

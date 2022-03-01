@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 class AudioPlayManager: NSObject {
     // MARK: - Static Properties -
@@ -23,35 +24,112 @@ class AudioPlayManager: NSObject {
     public var isNonStop = false
     public var waveFormcount = 0
     public var audioMetering = [Float]()
-    
+    public var nowPlayingInfo = [String: Any]()
+
     // MARK: - Private Properties -
     private var audioTimer = Timer()
     private var currVController = UIViewController()
     private var bottomConstraint = NSLayoutConstraint()
     private var miniVController = MiniAudioViewController()
 
+    
+    // MARK: - Configure audio as per pass url -
     public func configAudio(_ url: URL) {
-        do {
-            try
-            AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: .mixWithOthers)
-            try AVAudioSession.sharedInstance().setActive(true)
+        /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+        let playerItem = AVPlayerItem(url: url)
+        playerAV = AVPlayer(playerItem: playerItem)
+        isMiniPlayerActive = true
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishPlaying(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
+        setupRemoteTransportControls()
+    }
+    
+    // MARK: - Set audio notification on mobile application -
+    func setupRemoteTransportControls() {
+        // Get the shared MPRemoteCommandCenter
+        let commandCenter = MPRemoteCommandCenter.shared()
 
-            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
-            let playerItem = AVPlayerItem(url: url)
-            playerAV = AVPlayer(playerItem: playerItem)
-            isMiniPlayerActive = true
-            NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
-            NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishPlaying(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
-        } catch let error {
-            print(error.localizedDescription)
+        setupNowPlaying()
+        
+        // Add handler for Play Command
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            if let playerAV = playerAV, !playerAV.isPlaying {
+                playerAV.play()
+                if let miniPlayBtn = miniVController.playButton {
+                    miniPlayBtn.isSelected = !playerAV.isPlaying
+                    audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
+                    RunLoop.main.add(self.audioTimer, forMode: .default)
+                    audioTimer.fire()
+                }
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": true])
+                return .success
+            }
+            return .commandFailed
+        }
+
+        // Add handler for Pause Command
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            if let playerAV = playerAV, playerAV.isPlaying {
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": false])
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        // Add handler for Previous Command
+        commandCenter.previousTrackCommand.addTarget { [unowned self] event in
+            if playerAV != nil {
+                seekMiniPlayer(false)
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isNext": false])
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        // Add handler for Next Command
+        commandCenter.nextTrackCommand.addTarget { [unowned self] event in
+            if playerAV != nil {
+                seekMiniPlayer(true)
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isNext": true])
+                return .success
+            }
+            return .commandFailed
         }
     }
     
+    // MARK: - Setup now playing for notification on mobile application -
+    func setupNowPlaying() {
+        // Define Now Playing Info
+        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+        nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
+
+        nowPlayingInfo[MPMediaItemPropertyTitle] = "Tracts To Relax"
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = "Jane Doe"
+        nowPlayingInfo[MPMediaItemPropertyArtist] = "Story"
+
+        if let image = UIImage(named: "logo") {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] =
+                MPMediaItemArtwork(boundsSize: image.size) { size in
+                    return image
+            }
+        }
+        if let playerAV = playerAV {
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playerAV.currentTime().seconds
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = Int((playerAV.currentItem?.asset.duration.seconds)!)
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playerAV.rate
+        }
+        
+        // Set the metadata
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+    }
+    
+    // MARK: - When audio completed call function -
     @objc func itemDidFinishPlaying(notification: NSNotification) {
         audioTimer.invalidate()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
     
+    // MARK: - Add mini player to controller
     public func addMiniPlayer(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()) {
         //currVController.view.viewWithTag(AudioPlayManager.miniViewTag)?.removeFromSuperview()
         miniVController.view.removeFromSuperview()
@@ -97,11 +175,13 @@ class AudioPlayManager: NSObject {
         currVController = controller
     }
     
-    @objc private func udpateMiniPlayerTime() {
-        if let player = playerAV, let currentItem = player.currentItem {
+    // MARK: - Add mini player time and progress bar
+    @objc func udpateMiniPlayerTime() {
+        if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
             // Get the current time in seconds
             let playhead = currentItem.currentTime().seconds
             let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
+            
             // Format seconds for human readable string
             if !playhead.isNaN {
                 if playhead > 0 {
@@ -116,9 +196,45 @@ class AudioPlayManager: NSObject {
             if !playhead.isNaN && !currentItem.duration.seconds.isNaN{
                 miniVController.progressBar.progress = Float(playhead / currentItem.duration.seconds)
             }
+            miniVController.progressBar.setNeedsDisplay()
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         }
     }
     
+    // MARK: - Forward and backward miniplayer for 10 seconds
+    @objc private func seekMiniPlayer(_ forward: Bool) {
+        if let player = playerAV {
+            if forward {
+                guard let duration  = player.currentItem?.duration else {
+                    return
+                }
+                let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+                let newTime = playerCurrentTime + 10
+
+                if newTime < CMTimeGetSeconds(duration) {
+                    let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                    player.seek(to: time2)
+                } else {
+                    let time2: CMTime = CMTimeMake(value: Int64(CMTimeGetSeconds(duration)) * 1000, timescale: 1000)
+                    player.seek(to: time2)
+                }
+            } else {
+                let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+                var newTime = playerCurrentTime - 10
+                if newTime < 0 {
+                    newTime = 0
+                }
+                let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                player.seek(to: time2)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            self.udpateMiniPlayerTime()
+        }
+    }
+    
+    // MARK: - Remove mini player from view controller
     public func removeMiniPlayer() {
         bottomConstraint.constant = 0
         if (FooterManager.shared.isActive) {
@@ -140,7 +256,8 @@ class AudioPlayManager: NSObject {
         }
     }
     
-    @objc func tapOnPlayMini(_ sender:UIButton) {
+    // MARK: - Click on miniplayer play pause button
+    @objc func tapOnPlayMini(_ sender: UIButton) {
         guard let player = AudioPlayManager.shared.playerAV else { return }
         miniVController.playButton.isSelected = player.isPlaying
         if player.isPlaying {
@@ -154,11 +271,13 @@ class AudioPlayManager: NSObject {
         }
     }
     
+    // MARK: - Close miniplayer
     @objc func tapOnCloseMini(_ sender:UIButton) {
         isMiniPlayerActive = false
         removeMiniPlayer()
     }
     
+    // MARK: - Click on miniplayer
     @objc func tapOnMiniPlayer(_ sender: UIButton) {
         if isNonStop {
             let nonStopViewView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController

@@ -9,6 +9,7 @@ import UIKit
 import SoundWave
 import CoreMedia
 import AVFoundation
+import MediaPlayer
 
 class NowPlayViewController: UIViewController {
 
@@ -45,6 +46,7 @@ class NowPlayViewController: UIViewController {
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         configureAudio()
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +62,15 @@ class NowPlayViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
+    }
+    
+    //MARK: - Call funcation when audio controller press in background
+    @objc private func remoteCommandHandler(_ notification: Notification) {
+        if let isPlay = notification.userInfo?["isPlaying"] as? Bool {
+            self.playPauseAudio(isPlay)
+        } else if let isNext = notification.userInfo?["isNext"] as? Bool {
+            seekAudio(isNext)
+        }
     }
     
     // MARK: Set audio wave meter
@@ -232,28 +243,11 @@ class NowPlayViewController: UIViewController {
             break
         case 3:
             //Back 10 Second
-            let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
-            var newTime = playerCurrentTime - 10
-            if newTime < 0 {
-                newTime = 0
-            }
-            let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
-            player.seek(to: time2)
-            setTime(newTime)
+            seekAudio(false)
             break;
         case 4:
             //Forward 10 Second
-            guard let duration  = player.currentItem?.duration else {
-                    return
-            }
-            let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
-            let newTime = playerCurrentTime + 10
-
-            if newTime < CMTimeGetSeconds(duration) {
-                let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
-                player.seek(to: time2)
-                setTime(newTime)
-            }
+            seekAudio(true)
             break
         default:
             //Share
@@ -265,9 +259,38 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    private func seekAudio(_ forward: Bool) {
+        if forward {
+            guard let duration  = player.currentItem?.duration else {
+                    return
+            }
+            let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+            let newTime = playerCurrentTime + 10
+
+            if newTime < CMTimeGetSeconds(duration) {
+                let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                player.seek(to: time2)
+                setTime(newTime)
+            } else {
+                let time2: CMTime = CMTimeMake(value: Int64(CMTimeGetSeconds(duration)) * 1000, timescale: 1000)
+                player.seek(to: time2)
+                setTime(newTime)
+            }
+        } else {
+            let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+            var newTime = playerCurrentTime - 10
+            if newTime < 0 {
+                newTime = 0
+            }
+            let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+            player.seek(to: time2)
+            setTime(newTime)
+        }
+    }
+    
     @objc private func itemDidFinishedPlaying() {
         //if (player.isPlaying) {
-            self.playPauseAudio(false)
+        self.playPauseAudio(false)
         //}
         existingAudio = false
         configureAudio()
@@ -311,6 +334,8 @@ class NowPlayViewController: UIViewController {
                     PromptVManager.present(self)
                 }
             }
+            AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
         }
     }
 }
