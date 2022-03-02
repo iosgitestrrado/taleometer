@@ -44,7 +44,7 @@ class SearchViewController: UIViewController {
         if let recentData = userDefaults.object(forKey: "recentSearch") as? [String] {
             recentSearchArray = recentData
         }
-        
+        self.tableView.reloadData()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)

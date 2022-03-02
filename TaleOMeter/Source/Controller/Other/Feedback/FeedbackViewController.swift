@@ -13,6 +13,9 @@ class FeedbackViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    // MARK: - Private Property -
+    private let messageString = "Describe you feedback"
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +29,7 @@ class FeedbackViewController: UIViewController {
         doneToolbar.items = items1
         self.textView.inputAccessoryView = doneToolbar
         
-        self.textView.text = "Describe you feedback..."
+        self.textView.text = messageString
         self.textView.textColor = .darkGray
         
         self.textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
@@ -48,8 +51,8 @@ class FeedbackViewController: UIViewController {
     
     // MARK: - Side Menu button action -
     @IBAction func tapOnSubmit(_ sender: Any) {
-        if textView.text == "Describe you feedback..." || textView.text.isBlank {
-            Snackbar.showAlertMessage("Describe you feedback...")
+        if textView.text == messageString || textView.text.isBlank {
+            Snackbar.showAlertMessage(messageString)
             return
         }
         PromptVManager.present(self, isAudioView: false, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", imageName: "thank")
@@ -95,7 +98,7 @@ extension FeedbackViewController: UITextViewDelegate {
         // and set the cursor to the beginning of the text view
         if updatedText.isEmpty {
 
-            textView.text = "Describe you feedback..."
+            textView.text = messageString
             textView.textColor = .darkGray
 
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
@@ -131,7 +134,7 @@ extension FeedbackViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "Describe you feedback..."
+            textView.text = messageString
             textView.textColor = .darkGray
         }
     }

@@ -35,9 +35,9 @@ class ProfileViewController: UIViewController {
         
         //Add footer view and manager current view frame
         FooterManager.addFooter(self)
-        if AudioPlayManager.shared.isMiniPlayerActive {
-            AudioPlayManager.shared.addMiniPlayer(self)
-        }
+//        if AudioPlayManager.shared.isMiniPlayerActive {
+//            AudioPlayManager.shared.addMiniPlayer(self)
+//        }
     }
     
     private func setProfileData(_ name: String, mobile: String, email: String) {
@@ -82,12 +82,15 @@ class ProfileViewController: UIViewController {
             //Name
             guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
             myobject.titleString = "Change Name"
+            myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileName") ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
         case 2:
             //Mobile Number
             guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ChangeMobileNumberVC") as? ChangeMobileNumberVC else { break }
+            
+            myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileMobile") ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
@@ -95,6 +98,7 @@ class ProfileViewController: UIViewController {
             //Email Id
             guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
             myobject.titleString = "Change Email ID"
+            myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileEmail") ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break

@@ -17,6 +17,9 @@ class ChangeMobileNumberVC: UIViewController {
     
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var profileDelegate: ProfileEditDelegate? = nil
+
+    // MARK: - Public Properties -
+    public var fieldValue = ""
     
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
@@ -25,8 +28,13 @@ class ChangeMobileNumberVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.mobileTextField.text = fieldValue
         self.hideKeyboard()
         setDefaultCountry()
+        let contact = fieldValue.components(separatedBy: " ")
+        if contact.count > 1 {
+            self.mobileTextField.text = contact[1]
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,7 +70,7 @@ class ChangeMobileNumberVC: UIViewController {
             
             let locale = NSLocale.init(localeIdentifier: id)
             let countryCode = locale.object(forKey: NSLocale.Key.countryCode)
-            
+           
             if name != nil {
                 let model = Country()
                 model.name = name

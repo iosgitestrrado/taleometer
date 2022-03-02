@@ -367,13 +367,13 @@
 		6358434227B7B7E70055DE7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				633900DA27C8B6F2001473CD /* Other */,
 				6358435827B7C5D60055DE7E /* Launch */,
 				6358434427B7B8130055DE7E /* SideMenu */,
 				6353708327BA26A2000A144E /* Authentication */,
 				6358435B27B7C9DC0055DE7E /* Dashboard */,
 				63D27C6327BD08550074EA7F /* Audio */,
 				63FA7E7127BBC8F600AD6C97 /* Footer */,
+				633900DA27C8B6F2001473CD /* Other */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -626,8 +626,8 @@
 		63D27C9027BD0B710074EA7F /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				6325BDC527C61D00009B1AE5 /* SearchHistoryViewController.swift */,
 				63D27C9127BD0B830074EA7F /* SearchViewController.swift */,
+				6325BDC527C61D00009B1AE5 /* SearchHistoryViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1291,8 +1291,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XLPSEH973Z;
 				ENABLE_APP_SANDBOX = NO;
@@ -1311,10 +1311,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1327,10 +1327,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = XLPSEH973Z;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
@@ -1347,10 +1347,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

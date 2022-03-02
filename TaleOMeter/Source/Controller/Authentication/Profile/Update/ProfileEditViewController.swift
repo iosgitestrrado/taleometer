@@ -23,7 +23,8 @@ class ProfileEditViewController: UIViewController {
     
     // MARK: - Public Property -
     public var titleString = "Change Name"
-    
+    public var fieldValue = ""
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class ProfileEditViewController: UIViewController {
             self.titleLabelL.text = "Enter your name"
             self.textField.placeholder = "Enter your name"
         }
+        self.textField.text = fieldValue
     }
     
     override func viewWillAppear(_ animated: Bool) {

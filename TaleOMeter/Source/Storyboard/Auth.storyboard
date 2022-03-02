@@ -23,7 +23,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pjK-tQ-k0w" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
                                 <rect key="frame" x="20" y="260.33333333333331" width="350" height="138.66666666666669"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Welcome To tele'o'meter">
+                                    <fragment content="Welcome To tale'o'meter">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" metaFont="system" size="36"/>
@@ -414,7 +414,7 @@ Cg
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAm-Se-gjz" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
                                 <rect key="frame" x="20" y="202.66666666666666" width="350" height="112.33333333333334"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Welcome To tele'o'meter">
+                                    <fragment content="Welcome To tale'o'meter">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" metaFont="system" size="36"/>
@@ -624,7 +624,7 @@ Cg
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fe9-3O-gho" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
                                 <rect key="frame" x="20" y="245.66666666666666" width="350" height="112.33333333333334"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Welcome To tele'o'meter">
+                                    <fragment content="Welcome To tale'o'meter">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" metaFont="system" size="36"/>
@@ -671,7 +671,7 @@ Cg
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGv-H1-T29">
                                 <rect key="frame" x="20" y="416" width="350" height="50"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pio-Sb-T1R">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pio-Sb-T1R">
                                         <rect key="frame" x="8" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -689,7 +689,7 @@ Cg
                                             <outlet property="delegate" destination="IhJ-EX-XiF" id="FEE-u5-U11"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LaC-Si-oLv">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LaC-Si-oLv">
                                         <rect key="frame" x="106" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -707,7 +707,7 @@ Cg
                                             <outlet property="delegate" destination="IhJ-EX-XiF" id="yrU-Qo-eHL"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eh5-Oa-azE">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eh5-Oa-azE">
                                         <rect key="frame" x="204" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -725,7 +725,7 @@ Cg
                                             <outlet property="delegate" destination="IhJ-EX-XiF" id="Eqy-Fh-kA2"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qhs-oY-Kww">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qhs-oY-Kww">
                                         <rect key="frame" x="301" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -756,7 +756,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOc-SA-7f4">
-                                <rect key="frame" x="20" y="524" width="350" height="20"/>
+                                <rect key="frame" x="20" y="534" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="aP8-W1-hc9"/>
                                 </constraints>
@@ -791,10 +791,10 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TQe-Rv-azO">
-                                <rect key="frame" x="330" y="476" width="40" height="40"/>
+                                <rect key="frame" x="320" y="476" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="mYG-9S-dR9"/>
-                                    <constraint firstAttribute="height" constant="40" id="xJD-JP-L02"/>
+                                    <constraint firstAttribute="width" constant="50" id="mYG-9S-dR9"/>
+                                    <constraint firstAttribute="height" constant="50" id="xJD-JP-L02"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" backgroundImage="btn"/>
@@ -937,7 +937,7 @@ Cg
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="82l-EJ-pv1">
                                 <rect key="frame" x="20" y="162" width="350" height="50"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P9V-Hk-v42">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P9V-Hk-v42">
                                         <rect key="frame" x="8" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -955,7 +955,7 @@ Cg
                                             <outlet property="delegate" destination="nQu-LA-BAd" id="IVr-iF-UZI"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TGb-XK-QY5">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TGb-XK-QY5">
                                         <rect key="frame" x="106" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -973,7 +973,7 @@ Cg
                                             <outlet property="delegate" destination="nQu-LA-BAd" id="znr-Wb-RLL"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oya-4D-Qpg">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oya-4D-Qpg">
                                         <rect key="frame" x="204" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -991,7 +991,7 @@ Cg
                                             <outlet property="delegate" destination="nQu-LA-BAd" id="O50-gP-6Yc"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b0g-JQ-Wz9">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b0g-JQ-Wz9">
                                         <rect key="frame" x="301" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1022,10 +1022,10 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rZj-v3-88z">
-                                <rect key="frame" x="330" y="222" width="40" height="40"/>
+                                <rect key="frame" x="320" y="222" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="0F0-QG-rWc"/>
-                                    <constraint firstAttribute="width" constant="40" id="CrH-sG-LBt"/>
+                                    <constraint firstAttribute="height" constant="50" id="0F0-QG-rWc"/>
+                                    <constraint firstAttribute="width" constant="50" id="CrH-sG-LBt"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" backgroundImage="btn"/>
@@ -1040,7 +1040,7 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BZX-VR-kRa">
-                                <rect key="frame" x="20" y="272" width="350" height="20"/>
+                                <rect key="frame" x="20" y="282" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="fzd-p2-IKf"/>
                                 </constraints>

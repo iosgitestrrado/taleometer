@@ -24,7 +24,7 @@ class RegisterViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         

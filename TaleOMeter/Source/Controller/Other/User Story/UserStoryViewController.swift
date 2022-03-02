@@ -95,13 +95,13 @@ class UserStoryViewController: UIViewController {
             case .name:
                 return "Please enter your name"
             case .storyAbout:
-                return "Please select radio button for 'Who is this stoy about?'"
+                return "Please select radio button for 'Who is this story about?'"
             case .lifeMoment:
                 return "Please share life moment of your story"
             case .sharePeople:
                 return "Please enter people name who's with you when your story happened"
             case .incident:
-                return "Plesae enter incident of your story"
+                return "Please enter incident of your story"
             case .anythingElse:
                 return "Please enter anything about incident of story"
             case .terms:
@@ -354,9 +354,20 @@ extension UserStoryViewController: UITableViewDataSource {
                 }
                 textView.inputAccessoryView = doneToolbar
             } else {
-                if let nextBtn = nextToolbar.items?[1] {
-                    nextBtn.tag = indexPath.section
+//                if let nextBtn = nextToolbar.items?[1] {
+//                    nextBtn.tag = indexPath.section
+//                }
+                let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+                var nextString = "Next"
+                if self.title == "Tamil" {
+                    nextString = "அடுத்தது"
                 }
+                nextToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40.0))
+                nextToolbar.barStyle = UIBarStyle.default
+                let done = UIBarButtonItem(title: nextString, style: .done, target: self, action: #selector(self.nextToolbar(_:)))
+                done.tag = indexPath.section
+                let items1 = [flexSpace, done]
+                nextToolbar.items = items1
                 textView.inputAccessoryView = nextToolbar
             }
             textView.delegate = self
@@ -404,6 +415,13 @@ extension UserStoryViewController: UITextFieldDelegate {
 
 // MARK: - UITextViewDelegate -
 extension UserStoryViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            let indexPath = IndexPath(row: 0, section: textView.tag)
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
+    }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         return true
