@@ -178,6 +178,9 @@ class NonStopViewController: UIViewController {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
                 }
             }
+            if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+                PromptVManager.present(self)
+            }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
         }

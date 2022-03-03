@@ -29,7 +29,8 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+        
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
@@ -65,6 +66,7 @@ class LoginViewController: UIViewController {
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
         UserDefaults.standard.set("\(countryModel.extensionCode ?? "+91") \(self.mobileNumberTxt.text!)", forKey: "ProfileMobile")
+        UserDefaults.standard.set("\(countryModel.countryCode ?? "IN")", forKey: "CountryCode")
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         self.performSegue(withIdentifier: "verification", sender: sender)

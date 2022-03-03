@@ -20,6 +20,7 @@ class ChangeMobileNumberVC: UIViewController {
 
     // MARK: - Public Properties -
     public var fieldValue = ""
+    public var countryCodeVal = ""
     
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
@@ -64,7 +65,28 @@ class ChangeMobileNumberVC: UIViewController {
     // MARK: - Country
     private func setDefaultCountry() {
         //let carrier = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?.first?.value, let code = carrier.isoCountryCode
-        if let code = NSLocale.current.regionCode  {
+        
+        if !countryCodeVal.isBlank {
+            let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: countryCodeVal])
+            let name = NSLocale(localeIdentifier: "en_US").displayName(forKey: NSLocale.Key.identifier, value: id)
+            
+            let locale = NSLocale.init(localeIdentifier: id)
+            let countryCode = locale.object(forKey: NSLocale.Key.countryCode)
+           
+            if name != nil {
+                let model = Country()
+                model.name = name
+                model.countryCode = countryCode as? String
+               // model.currencyCode = currencyCode as? String
+               // model.currencySymbol = currencySymbol as? String
+                model.flag = String.flag(for: countryCodeVal)
+                if NSLocale().extensionCode(countryCode: model.countryCode) != nil {
+                    model.extensionCode = "+\(NSLocale().extensionCode(countryCode: model.countryCode) ?? "")"
+                }
+                countryModel = model
+                self.countryLabel.text = "\(model.flag!) \(model.extensionCode!)"
+            }
+        } else if let code = NSLocale.current.regionCode  {
             let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
             let name = NSLocale(localeIdentifier: "en_US").displayName(forKey: NSLocale.Key.identifier, value: id)
             
@@ -85,6 +107,7 @@ class ChangeMobileNumberVC: UIViewController {
                 self.countryLabel.text = "\(model.flag!) \(model.extensionCode!)"
             }
         }
+        
     }
     
     // MARK: - Navigation
@@ -95,8 +118,9 @@ class ChangeMobileNumberVC: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "verification", let veriVC = segue.destination as? VerificationProfileVC {
             veriVC.profileDelegate = self.profileDelegate
-            if let code = self.countryModel.extensionCode, let mobile = self.mobileTextField.text {
+            if let code = self.countryModel.extensionCode, let mobile = self.mobileTextField.text, let countryCode = self.countryModel.countryCode {
                 veriVC.mobileNumber = "\(code) \(mobile)"
+                veriVC.countryCode = countryCode
             }
         }
     }
@@ -125,7 +149,7 @@ extension ChangeMobileNumberVC: UITextFieldDelegate {
 // MARK: - ProfileEditDelegate -
 extension ChangeMobileNumberVC: ProfileEditDelegate  {
 
-    func didChangeProfileData(_ data: String) {
+    func didChangeProfileData(_ data: String, code: String) {
         
     }
 }

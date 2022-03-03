@@ -18,7 +18,8 @@ class VerificationProfileVC: UIViewController {
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var profileDelegate: ProfileEditDelegate? = nil
     public var mobileNumber = ""
-    
+    public var countryCode = ""
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,7 +108,7 @@ extension VerificationProfileVC: PromptViewDelegate {
             for controller in navControllers {
                 if controller is ProfileViewController {
                     if let del = self.profileDelegate {
-                        del.didChangeProfileData(mobileNumber)
+                        del.didChangeProfileData(mobileNumber,code: countryCode)
                     }
                     self.navigationController?.popToViewController(controller, animated: true)
                 }

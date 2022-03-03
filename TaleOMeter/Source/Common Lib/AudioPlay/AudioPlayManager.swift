@@ -196,6 +196,11 @@ class AudioPlayManager: NSObject {
             if !playhead.isNaN && !currentItem.duration.seconds.isNaN{
                 miniVController.progressBar.progress = Float(playhead / currentItem.duration.seconds)
             }
+            
+            if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+                PromptVManager.present(currVController)
+            }
+            
             miniVController.progressBar.setNeedsDisplay()
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo

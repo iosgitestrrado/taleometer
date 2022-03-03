@@ -93,7 +93,7 @@
             </objects>
             <point key="canvasLocation" x="928.98550724637698" y="45.535714285714285"/>
         </scene>
-        <!--Dashboard View Controller-->
+        <!--Listen Non-Stop-->
         <scene sceneID="8Sa-Kw-HH2">
             <objects>
                 <viewController storyboardIdentifier="DashboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5eJ-87-TSF" customClass="DashboardViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -107,17 +107,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TbW-QQ-bPH">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="173"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Listen Non-Stop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92B-AB-0xf">
-                                        <rect key="frame" x="20" y="71" width="350" height="22"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UjD-GT-jAH">
-                                        <rect key="frame" x="20" y="103" width="40" height="40"/>
+                                        <rect key="frame" x="20" y="73" width="70" height="70"/>
+                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="E95-AE-9fy"/>
-                                            <constraint firstAttribute="width" constant="40" id="hJc-aJ-svg"/>
+                                            <constraint firstAttribute="height" constant="70" id="E95-AE-9fy"/>
+                                            <constraint firstAttribute="width" constant="70" id="hJc-aJ-svg"/>
                                         </constraints>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" image="play"/>
@@ -133,13 +128,10 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.80458933119999998" green="0.1152796224" blue="0.17872706059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="92B-AB-0xf" firstAttribute="leading" secondItem="TbW-QQ-bPH" secondAttribute="leading" constant="20" symbolic="YES" id="EFc-CS-VlG"/>
                                     <constraint firstAttribute="height" constant="173" id="N1U-8V-g5Q"/>
-                                    <constraint firstAttribute="trailing" secondItem="92B-AB-0xf" secondAttribute="trailing" constant="20" id="aM4-Nz-yWJ"/>
                                     <constraint firstItem="UjD-GT-jAH" firstAttribute="leading" secondItem="TbW-QQ-bPH" secondAttribute="leading" constant="20" symbolic="YES" id="i54-fO-Eyo"/>
-                                    <constraint firstItem="UjD-GT-jAH" firstAttribute="top" secondItem="92B-AB-0xf" secondAttribute="bottom" constant="10" id="lON-eP-ard"/>
                                     <constraint firstAttribute="bottom" secondItem="UjD-GT-jAH" secondAttribute="bottom" constant="30" id="wQc-je-SHt"/>
                                 </constraints>
                             </view>
@@ -191,12 +183,13 @@
                             <constraint firstItem="XkX-U0-lAT" firstAttribute="top" secondItem="53o-ON-C05" secondAttribute="top" id="q71-um-QyC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="sgD-H4-zj0">
+                    <navigationItem key="navigationItem" title="Listen Non-Stop" id="sgD-H4-zj0">
                         <barButtonItem key="rightBarButtonItem" id="SWG-Yz-Nls">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OTL-YS-Hsm">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="menu"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="menu_white"/>
                                 <connections>
                                     <action selector="ClickOnMenu:" destination="5eJ-87-TSF" eventType="touchUpInside" id="3hb-Ue-dcc"/>
                                 </connections>
@@ -219,7 +212,7 @@
             <objects>
                 <viewController storyboardIdentifier="FooterViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ixq-gP-bfi" customClass="FooterViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FVY-57-xWY">
-                        <rect key="frame" x="0.0" y="0.0" width="334" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="yMR-1S-THT">
@@ -592,6 +585,7 @@ Cg
         <image name="logo" width="34" height="24.666666030883789"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="menu" width="25" height="16.666666030883789"/>
+        <image name="menu_white" width="25" height="16.666666030883789"/>
         <image name="play" width="41.333332061767578" height="41.333332061767578"/>
         <image name="surprise" width="170.66667175292969" height="170.66667175292969"/>
         <systemColor name="systemBackgroundColor">

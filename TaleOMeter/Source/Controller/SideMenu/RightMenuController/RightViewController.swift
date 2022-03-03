@@ -26,6 +26,7 @@ class RightViewController: UIViewController {
         case preference
         case aboutUs
         case feedback
+        case logout
 
         var description: String {
             switch self {
@@ -41,12 +42,14 @@ class RightViewController: UIViewController {
                 return "About us"
             case .feedback:
                 return "Feedback"
+            case .logout:
+                return "Logout"
             }
         }
     }
     
     private let sections: [[SideViewCellItem]] = [
-        [.profile, .profile, .shareStory, .history, .preference, .aboutUs, .feedback]
+        [.profile, .profile, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
     
     required init?(coder: NSCoder) {
@@ -168,9 +171,40 @@ extension RightViewController: UITableViewDelegate {
                     cont.pushViewController(myobject, animated: true)
                 }
                 return
+            case .logout:
+                let domain = Bundle.main.bundleIdentifier!
+                UserDefaults.standard.removePersistentDomain(forName: domain)
+                UserDefaults.standard.synchronize()
+                AudioPlayManager.shared.isMiniPlayerActive = false
+                AudioPlayManager.shared.isNonStop = false
+                if UserDefaults.standard.value(forKey: "ProfileName") == nil {
+                    if let data = UIImage(named: "logo")?.pngData() {
+                        UserDefaults.standard.set(data, forKey: "ProfileImage")
+                    }
+                    UserDefaults.standard.set("+0 00000 00000", forKey: "ProfileMobile")
+                    UserDefaults.standard.set("IN", forKey: "CountryCode")
+                    UserDefaults.standard.set("temp@temp.temp", forKey: "ProfileEmail")
+                    UserDefaults.standard.set("Guest", forKey: "ProfileName")
+                    UserDefaults.standard.synchronize()
+                }
+                if let cont = sideMenuController.rootViewController as? UINavigationController {
+                    var contStacks = [UIViewController]()
+                    if let myobject = UIStoryboard(name: Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
+                        contStacks.append(myobject)
+                    }
+                    if let myobject = UIStoryboard(name: Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "GuestDashboardViewController") as? GuestDashboardViewController {
+                        contStacks.append(myobject)
+                    }
+                    cont.viewControllers = contStacks
+                    let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
+                self.tableView.reloadData()
+                return
             }
         } else {
             if let cont = sideMenuController.rootViewController as? UINavigationController {
+                
                 let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
                 cont.pushViewController(myobject, animated: true)
             }
@@ -204,7 +238,10 @@ extension RightViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].count
+        if UserDefaults.standard.bool(forKey: "isLogin") {
+            return sections[section].count
+        }
+        return sections[section].count - 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -14,7 +14,7 @@ class FeedbackViewController: UIViewController {
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     // MARK: - Private Property -
-    private let messageString = "Describe you feedback"
+    private let messageString = "Describe your feedback"
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

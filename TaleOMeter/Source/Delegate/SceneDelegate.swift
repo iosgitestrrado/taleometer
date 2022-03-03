@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 UserDefaults.standard.set(data, forKey: "ProfileImage")
             }
             UserDefaults.standard.set("+0 00000 00000", forKey: "ProfileMobile")
+            UserDefaults.standard.set("IN", forKey: "CountryCode")
             UserDefaults.standard.set("temp@temp.temp", forKey: "ProfileEmail")
             UserDefaults.standard.set("Guest", forKey: "ProfileName")
             UserDefaults.standard.synchronize()

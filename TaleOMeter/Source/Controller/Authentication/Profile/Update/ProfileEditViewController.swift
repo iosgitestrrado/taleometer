@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Protocol used for sending data back -
 protocol ProfileEditDelegate: AnyObject {
-    func didChangeProfileData(_ data: String)
+    func didChangeProfileData(_ data: String, code: String)
 }
 
 class ProfileEditViewController: UIViewController {
@@ -71,7 +71,7 @@ extension ProfileEditViewController: PromptViewDelegate {
             for controller in navControllers {
                 if controller is ProfileViewController {
                     if let del = self.profileDelegate {
-                        del.didChangeProfileData(self.textField.text!)
+                        del.didChangeProfileData(self.textField.text!, code: "")
                     }
                     self.navigationController?.popToViewController(controller, animated: true)
                 }

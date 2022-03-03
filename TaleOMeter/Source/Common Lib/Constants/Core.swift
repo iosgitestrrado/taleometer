@@ -46,6 +46,7 @@ class Core: NSObject {
      * From UIController
      */
     static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true) {
+      
         cont.sideMenuController?.isRightViewEnabled = isRightViewEnabled
         cont.navigationController?.setNavigationBarHidden(setNavigationBarHidden, animated: true)
         //cont.navigationController?.navigationBar.barTintColor = .clear
@@ -58,6 +59,9 @@ class Core: NSObject {
         cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
+        if !setNavigationBarHidden && cont.navigationController?.children[(cont.navigationController?.children.count)! - 2] is LaunchViewController {
+            cont.navigationItem.hidesBackButton = true
+        }
         if titleInLeft, let titleStr = cont.navigationItem.title {
             Core.setLeftAlignTitleView(controller: cont, text: titleStr, textColor: .white)
         }

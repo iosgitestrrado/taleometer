@@ -16,6 +16,7 @@ struct Storyboard {
     static let auth = "Auth"
     static let audio = "Audio"
     static let other = "Other"
+    static let trivia = "Trivia"
 }
 
 let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")

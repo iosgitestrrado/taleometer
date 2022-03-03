@@ -22,7 +22,7 @@ class SearchHistoryViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.hideKeyboard()
-//        self.tableView.tableHeaderView = self.searchBar
+//        self.tableView.tableHeaderView = self.searchBar        
     }
     
     override func viewWillAppear(_ animated: Bool) {

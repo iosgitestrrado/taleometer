@@ -29,6 +29,9 @@ class SearchViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
 //        self.tableView.tableHeaderView = self.searchBar
+        self.searchBar.searchTextField.backgroundColor = .white
+        searchBar.searchTextField.leftView?.tintColor = .black
+        searchBar.searchTextField.textColor = .black
     }
     
     override func viewWillAppear(_ animated: Bool) {

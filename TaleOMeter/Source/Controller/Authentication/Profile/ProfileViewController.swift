@@ -91,6 +91,7 @@ class ProfileViewController: UIViewController {
             guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ChangeMobileNumberVC") as? ChangeMobileNumberVC else { break }
             
             myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileMobile") ?? ""
+            myobject.countryCodeVal = UserDefaults.standard.string(forKey: "CountryCode") ?? "IN"
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
@@ -153,7 +154,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
 // MARK: - ProfileEditDelegate -
 extension ProfileViewController: ProfileEditDelegate  {
 
-    func didChangeProfileData(_ data: String) {
+    func didChangeProfileData(_ data: String, code: String) {
         switch editIndex {
         case 1:
             //Name
@@ -164,6 +165,7 @@ extension ProfileViewController: ProfileEditDelegate  {
             //Mobile Number
             self.setProfileData("", mobile: data, email: "")
             UserDefaults.standard.set(data, forKey: "ProfileMobile")
+            UserDefaults.standard.set(code, forKey: "CountryCode")
             break
         default:
             //Email Id
