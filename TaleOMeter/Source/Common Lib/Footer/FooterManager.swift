@@ -55,10 +55,7 @@ class FooterManager: NSObject {
     }
     
     @objc func tapOnSearch(_ sender: Any) {
-        if curVController is GuestDashboardViewController {
-            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
-        } else {
-            
+        if UserDefaults.standard.bool(forKey: "isLogin") {
             if let navControllers = curVController.navigationController?.children {
                 for controller in navControllers {
                     if controller is SearchViewController {
@@ -68,14 +65,14 @@ class FooterManager: NSObject {
                 }
             }
             Core.push(curVController, storyboard: Storyboard.audio, storyboardId: "SearchViewController")
+        } else {
+            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
     @objc func tapOnFav(_ sender: Any) {
         //Core.present(curVController, storyboard: Storyboard.audio, storyboardId: "CommingViewController")
-        if curVController is GuestDashboardViewController {
-            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
-        } else {
+        if UserDefaults.standard.bool(forKey: "isLogin") {
             if let navControllers = curVController.navigationController?.children {
                 for controller in navControllers {
                     if controller is FavouriteViewController {
@@ -85,20 +82,24 @@ class FooterManager: NSObject {
                 }
             }
             Core.push(curVController, storyboard: Storyboard.audio, storyboardId: "FavouriteViewController")
+        } else {
+            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
     @objc func tapOnHome(_ sender: Any) {
-        if curVController is GuestDashboardViewController {
-            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
-        } else if let navControllers = curVController.navigationController?.children {
-            for controller in navControllers {
-                if controller is DashboardViewController {
-                    curVController.navigationController?.popToViewController(controller, animated: true)
-                    return
+        if UserDefaults.standard.bool(forKey: "isLogin") {
+            if let navControllers = curVController.navigationController?.children {
+                for controller in navControllers {
+                    if controller is DashboardViewController {
+                        curVController.navigationController?.popToViewController(controller, animated: true)
+                        return
+                    }
                 }
             }
             Core.push(curVController, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
+        } else {
+            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
 }

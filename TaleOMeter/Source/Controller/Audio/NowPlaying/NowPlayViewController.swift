@@ -21,9 +21,6 @@ class NowPlayViewController: UIViewController {
     @IBOutlet weak var storyButton: UIButton!
     @IBOutlet weak var plotButton: UIButton!
     @IBOutlet weak var narrotionButton: UIButton!
-    @IBOutlet weak var storyNameLabel: UILabel!
-    @IBOutlet weak var plotNameLabel: UILabel!
-    @IBOutlet weak var narrotionNameLabel: UILabel!
     @IBOutlet weak var visualizationWave: AudioVisualizationView!
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var endTimeLabel: UILabel!
@@ -51,7 +48,7 @@ class NowPlayViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -155,7 +152,7 @@ class NowPlayViewController: UIViewController {
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
             case .began:
-            isPlayingTap = player.isPlaying
+                isPlayingTap = player.isPlaying
                 if (isPlayingTap) {
                     self.playPauseAudio(false)
                 }

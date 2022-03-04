@@ -35,9 +35,9 @@ class ProfileViewController: UIViewController {
         
         //Add footer view and manager current view frame
         FooterManager.addFooter(self)
-//        if AudioPlayManager.shared.isMiniPlayerActive {
-//            AudioPlayManager.shared.addMiniPlayer(self)
-//        }
+        if AudioPlayManager.shared.isMiniPlayerActive {
+            AudioPlayManager.shared.addMiniPlayer(self)
+        }
     }
     
     private func setProfileData(_ name: String, mobile: String, email: String) {

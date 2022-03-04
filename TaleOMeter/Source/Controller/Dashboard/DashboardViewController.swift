@@ -39,13 +39,30 @@ class DashboardViewController: UIViewController {
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
-    @IBAction func tapOnNonStop(_ sender: Any) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NonStopViewController")
+    @IBAction func tapOnNonStop(_ sender: UIButton) {
+        if UserDefaults.standard.bool(forKey: "isLogin") {
+            UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
+                sender.isSelected = !sender.isSelected
+            } completion: { [self] isDone in
+                if sender.isSelected {
+                    Core.push(self, storyboard: Storyboard.audio, storyboardId: "NonStopViewController")
+                } else {
+                    AudioPlayManager.shared.isNonStop = !sender.isSelected
+                    AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
+                    AudioPlayManager.shared.removeMiniPlayer()
+                }
+            }
+        } else {
+            Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+        }
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
-        //Core.present(self, storyboard: Storyboard.audio, storyboardId: "CommingViewController")
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+        if UserDefaults.standard.bool(forKey: "isLogin") {
+            Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+        } else {
+            Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+        }
     }
     
     // MARK: - Navigation

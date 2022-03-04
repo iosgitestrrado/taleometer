@@ -15,13 +15,14 @@ class TriviaViewController: UIViewController {
     // MARK: - Private Properties -
     private var gridWidth: CGFloat = 187.0
     private var gridHeight: CGFloat = 225.0
+    private var titleViewHeight: CGFloat = 50.0
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        gridWidth = (UIScreen.main.bounds.width - 50.0) / 2.0
-        gridHeight = (260.0 * gridWidth) / 187.0
+        gridWidth = (UIScreen.main.bounds.width - titleViewHeight) / 2.0
+        gridHeight = gridWidth + titleViewHeight
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()//collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: gridWidth, height: gridHeight)
@@ -32,7 +33,7 @@ class TriviaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
         self.navigationItem.hidesBackButton = true
     }
     
@@ -61,6 +62,7 @@ extension TriviaViewController: UICollectionViewDataSource {
             return headerView
         default:
             assert(false, "Invalid element type")
+            return UICollectionReusableView()
         }
     }
     
@@ -76,17 +78,18 @@ extension TriviaViewController: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? GridCollectionViewCell {
             
             cell.imageView.image = UIImage(named: "Default_img")
-            
             if indexPath.row == 0 {
-                cell.imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - 48.0)
-                cell.titleView.frame = CGRect(x: 0.0, y: gridHeight - 48.0, width: gridWidth * 2, height: 48.0)
+                cell.imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
+                cell.titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth * 2, height: titleViewHeight)
             } else {
-                cell.imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth, height: gridHeight - 50.0)
-                
-                cell.titleView.frame = CGRect(x: 0.0, y: gridHeight - 50.0, width: gridWidth, height: 48.0)
+                cell.imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth, height: gridHeight - titleViewHeight)
+                cell.titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth, height: titleViewHeight)
+                cell.titleLabel.frame = CGRect(x: 15.0, y: 0.0, width: gridWidth - 15.0, height: titleViewHeight)
             }
             cell.titleLabel.text = "Tract To Relax"
-
+            
+            cell.titleView.layer.cornerRadius = 20
+            cell.titleView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
             return cell
         }
         return UICollectionViewCell()

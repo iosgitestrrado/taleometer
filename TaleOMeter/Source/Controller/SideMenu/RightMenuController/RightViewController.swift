@@ -192,7 +192,7 @@ extension RightViewController: UITableViewDelegate {
                     if let myobject = UIStoryboard(name: Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
                         contStacks.append(myobject)
                     }
-                    if let myobject = UIStoryboard(name: Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "GuestDashboardViewController") as? GuestDashboardViewController {
+                    if let myobject = UIStoryboard(name: Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
                         contStacks.append(myobject)
                     }
                     cont.viewControllers = contStacks
