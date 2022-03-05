@@ -21,6 +21,7 @@ class RightViewController: UIViewController {
     
     private enum SideViewCellItem: Equatable {
         case profile
+        case triviaQuiz
         case shareStory
         case history
         case preference
@@ -32,6 +33,8 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return "My Account"
+            case .triviaQuiz:
+                return "Trivia Quiz"
             case .shareStory:
                 return "Share your Story"
             case .history:
@@ -49,7 +52,7 @@ class RightViewController: UIViewController {
     }
     
     private let sections: [[SideViewCellItem]] = [
-        [.profile, .profile, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .profile, .triviaQuiz, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
     
     required init?(coder: NSCoder) {
@@ -138,6 +141,12 @@ extension RightViewController: UITableViewDelegate {
             case .profile:
                 if let cont = sideMenuController.rootViewController as? UINavigationController {
                     let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController")
+                    cont.pushViewController(myobject, animated: true)
+                }
+                return
+            case .triviaQuiz:
+                if let cont = sideMenuController.rootViewController as? UINavigationController {
+                    let myobject = UIStoryboard(name: Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TriviaViewController") 
                     cont.pushViewController(myobject, animated: true)
                 }
                 return

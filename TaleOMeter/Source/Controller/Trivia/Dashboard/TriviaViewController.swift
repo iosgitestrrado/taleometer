@@ -16,6 +16,20 @@ class TriviaViewController: UIViewController {
     private var gridWidth: CGFloat = 187.0
     private var gridHeight: CGFloat = 225.0
     private var titleViewHeight: CGFloat = 50.0
+    private struct ItemModel {
+        var title = String()
+        var count = Int()
+        var image = String()
+    }
+    private var tilesArray: [ItemModel] = {
+        var tilesArraytem = [ItemModel]()
+        tilesArraytem.append(ItemModel(title: "Daily", count: 20, image: "Book-Covers"))
+        tilesArraytem.append(ItemModel(title: "Food Stories", count: 20, image: "food"))
+        tilesArraytem.append(ItemModel(title: "Epic Tales", count: 20, image: "Book-Covers"))
+        tilesArraytem.append(ItemModel(title: "Music Stories", count: 20, image: "Album"))
+        tilesArraytem.append(ItemModel(title: "Food Stories", count: 20, image: "food"))
+        return tilesArraytem
+    }()
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -71,25 +85,14 @@ extension TriviaViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return tilesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? GridCollectionViewCell {
+            let cellData = tilesArray[indexPath.row]
+            cell.configureCell(cellData.title, coverImage: cellData.image, count: cellData.count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
             
-            cell.imageView.image = UIImage(named: "Default_img")
-            if indexPath.row == 0 {
-                cell.imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
-                cell.titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth * 2, height: titleViewHeight)
-            } else {
-                cell.imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth, height: gridHeight - titleViewHeight)
-                cell.titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth, height: titleViewHeight)
-                cell.titleLabel.frame = CGRect(x: 15.0, y: 0.0, width: gridWidth - 15.0, height: titleViewHeight)
-            }
-            cell.titleLabel.text = "Tract To Relax"
-            
-            cell.titleView.layer.cornerRadius = 20
-            cell.titleView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
             return cell
         }
         return UICollectionViewCell()
@@ -99,7 +102,7 @@ extension TriviaViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate -
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        Core.push(self, storyboard: Storyboard.trivia, storyboardId: "TRQuestionViewController")
     }
 }
 
