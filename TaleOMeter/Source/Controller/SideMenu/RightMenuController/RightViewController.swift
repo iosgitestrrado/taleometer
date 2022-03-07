@@ -146,7 +146,7 @@ extension RightViewController: UITableViewDelegate {
                 return
             case .triviaQuiz:
                 if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    let myobject = UIStoryboard(name: Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TriviaViewController") 
+                    let myobject = UIStoryboard(name: Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") 
                     cont.pushViewController(myobject, animated: true)
                 }
                 return

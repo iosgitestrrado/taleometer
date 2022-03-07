@@ -42,7 +42,6 @@ class TRQuestionViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
@@ -117,12 +116,11 @@ extension TRQuestionViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard let cell = tableView.cellForRow(at: indexPath) as? QuestionCellView else {
-//            return
+
+//        if !questionArray[indexPath.row].videoUrl.isBlank {
+//            playVideo(indexPath.row)
 //        }
-        if !questionArray[indexPath.row].videoUrl.isBlank {
-            playVideo(indexPath.row)
-        }
+        Core.push(self, storyboard: Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
 }
 
@@ -140,7 +138,7 @@ extension TRQuestionViewController: UITextFieldDelegate {
         if textField.returnKeyType == .next {
             let indexPath = IndexPath(row: textField.tag + 1, section: 0)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? QuestionCellView, let textField = cell.answerText {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "feedCell", for: indexPath) as? QuestionCellView, let textField = cell.answerText {
                 tableView.reloadRows(at: [indexPath], with: .none)
                 textField.becomeFirstResponder()
             }
