@@ -328,7 +328,7 @@ class NowPlayViewController: UIViewController {
             if !duration.isNaN {
                 self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
                 if (duration >= 5.0 && duration <= 6.0) {
-                    PromptVManager.present(self)
+                    PromptVManager.present(self, isAudioView: true)
                 }
             }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead

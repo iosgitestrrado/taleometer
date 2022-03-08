@@ -198,7 +198,7 @@ class AudioPlayManager: NSObject {
             }
             
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController)
+                PromptVManager.present(currVController, isAudioView: true)
             }
             
             miniVController.progressBar.setNeedsDisplay()

@@ -68,7 +68,7 @@ class TRQuestionViewController: UIViewController {
             Snackbar.showAlertMessage("Please answer the question")
             return
         }
-        PromptVManager.present(self, isAudioView: false, verifyTitle: questionArray[sender.tag].answer, verifyMessage: questionArray[sender.tag].question, imageName: questionArray[sender.tag].image, isQuestion: true)
+        PromptVManager.present(self, verifyTitle: questionArray[sender.tag].answer, verifyMessage: questionArray[sender.tag].question, imageName: questionArray[sender.tag].image, isQuestion: true)
     }
     
     // MARK: Keyboard will show

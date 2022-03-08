@@ -59,6 +59,7 @@
 		638150B627C64E0E003E6DE4 /* UserStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638150B527C64E0E003E6DE4 /* UserStoryCell.swift */; };
 		638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */; };
 		638480BD27BE71D200035630 /* testAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480BC27BE71D200035630 /* testAudio.mp3 */; };
+		63863DAE27D7258C00EFF6E2 /* UiTextView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DAD27D7258C00EFF6E2 /* UiTextView+Extension.swift */; };
 		63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */; };
 		63BF891B27D1098700A26E0B /* TriviaHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF891A27D1098700A26E0B /* TriviaHeaderView.swift */; };
 		63C4F63027D0F0EC00CEC0B9 /* TriviaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4F62F27D0F0EC00CEC0B9 /* TriviaViewController.swift */; };
@@ -173,6 +174,7 @@
 		638150B527C64E0E003E6DE4 /* UserStoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoryCell.swift; sourceTree = "<group>"; };
 		638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = file_example_MP3_5MG.mp3; sourceTree = "<group>"; };
 		638480BC27BE71D200035630 /* testAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio.mp3; sourceTree = "<group>"; };
+		63863DAD27D7258C00EFF6E2 /* UiTextView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiTextView+Extension.swift"; sourceTree = "<group>"; };
 		63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptVManager.swift; sourceTree = "<group>"; };
 		63BF891A27D1098700A26E0B /* TriviaHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaHeaderView.swift; sourceTree = "<group>"; };
 		63C4F62F27D0F0EC00CEC0B9 /* TriviaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaViewController.swift; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 				636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */,
 				636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */,
 				634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */,
+				63863DAD27D7258C00EFF6E2 /* UiTextView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1147,6 +1150,7 @@
 				6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */,
 				6358430F27B7AED90055DE7E /* SceneDelegate.swift in Sources */,
 				63F2AAB027BB6A36007CAFC1 /* Snackbar.swift in Sources */,
+				63863DAE27D7258C00EFF6E2 /* UiTextView+Extension.swift in Sources */,
 				63DFB4B627BCC8A700B08216 /* GridCollectionViewCell.swift in Sources */,
 				636117A227BA68ED000C1749 /* NSLocale+Extension.swift in Sources */,
 				63430C7F27C750D600C08A2A /* MainUserStoryVC.swift in Sources */,

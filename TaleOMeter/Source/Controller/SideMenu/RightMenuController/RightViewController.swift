@@ -22,6 +22,7 @@ class RightViewController: UIViewController {
     private enum SideViewCellItem: Equatable {
         case profile
         case triviaQuiz
+        case triviaComments
         case shareStory
         case history
         case preference
@@ -35,6 +36,8 @@ class RightViewController: UIViewController {
                 return "My Account"
             case .triviaQuiz:
                 return "Trivia Quiz"
+            case .triviaComments:
+                return "Trivia Comments"
             case .shareStory:
                 return "Share your Story"
             case .history:
@@ -52,7 +55,7 @@ class RightViewController: UIViewController {
     }
     
     private let sections: [[SideViewCellItem]] = [
-        [.profile, .profile, .triviaQuiz, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .profile, .triviaQuiz, .triviaComments, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
     
     required init?(coder: NSCoder) {
@@ -139,46 +142,28 @@ extension RightViewController: UITableViewDelegate {
         if UserDefaults.standard.bool(forKey: "isLogin") {
             switch item {
             case .profile:
-                if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.auth, storyBoradId: "ProfileViewController")
                 return
             case .triviaQuiz:
-                if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    let myobject = UIStoryboard(name: Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") 
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.trivia, storyBoradId: "TriviaViewController")
+                return
+            case .triviaComments:
+                self.pushToView(Storyboard.trivia, storyBoradId: "TRFeedViewController")
                 return
             case .shareStory:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? MainUserStoryVC) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "MainUserStoryVC")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.other, storyBoradId: "MainUserStoryVC")
                 return
             case .preference:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? SettingViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "SettingViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.other, storyBoradId: "SettingViewController")
                 return
             case .history:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? HistoryViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.audio, storyBoradId: "HistoryViewController")
                 return
             case .feedback:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? FeedbackViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "FeedbackViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.other, storyBoradId: "FeedbackViewController")
                 return
             case .aboutUs:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? AboutUsViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "AboutUsViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Storyboard.other, storyBoradId: "AboutUsViewController")
                 return
             case .logout:
                 let domain = Bundle.main.bundleIdentifier!
@@ -212,11 +197,21 @@ extension RightViewController: UITableViewDelegate {
                 return
             }
         } else {
-            if let cont = sideMenuController.rootViewController as? UINavigationController {
-                
-                let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-                cont.pushViewController(myobject, animated: true)
+            self.pushToView(Storyboard.auth, storyBoradId: "LoginViewController")
+        }
+    }
+    
+    private func pushToView(_ storyBoardName: String, storyBoradId: String) {
+        guard let sideMenuController = sideMenuController else { return }
+        if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last, navLastChild.className != storyBoradId {
+            for controller in cont.children {
+                if controller.className == storyBoradId {
+                    cont.popToViewController(controller, animated: true)
+                    return
+                }
             }
+            let myobject = UIStoryboard(name: storyBoardName, bundle: nil).instantiateViewController(withIdentifier: storyBoradId)
+            cont.pushViewController(myobject, animated: true)
         }
     }
 

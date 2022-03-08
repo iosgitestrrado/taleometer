@@ -18,38 +18,6 @@
             endingLineNumber = "1879"
             landmarkName = "rightViewStatusBarBackgroundBlurEffect"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "F0EC46C2-4178-4A61-A9A4-ABB91A263000 - e35ea8a585bd7524"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LGSideMenuController.LGSideMenuController.rightViewStatusBarBackgroundBlurEffect.getter : Swift.Optional&lt;__C.UIBlurEffect&gt;"
-                  moduleName = "LGSideMenuController"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/Pods/LGSideMenuController/LGSideMenuController/LGSideMenuController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1879"
-                  endingLineNumber = "1879"
-                  offsetFromSymbolStart = "224">
-               </Location>
-               <Location
-                  uuid = "F0EC46C2-4178-4A61-A9A4-ABB91A263000 - e35ea8a585bd7524"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LGSideMenuController.LGSideMenuController.rightViewStatusBarBackgroundBlurEffect.getter : Swift.Optional&lt;__C.UIBlurEffect&gt;"
-                  moduleName = "LGSideMenuController"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/Pods/LGSideMenuController/LGSideMenuController/LGSideMenuController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1879"
-                  endingLineNumber = "1879"
-                  offsetFromSymbolStart = "235">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -97,38 +65,6 @@
             startingLineNumber = "33"
             endingLineNumber = "33"
             landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9C77C232-D075-484B-98B0-0D51E58C9BB7"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Trivia/Feed/TRFeedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "tapOnViewPrevReply(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "89E347F9-7A06-4E6D-BC5F-1D69FF8A386D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Trivia/Feed/TRFeedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
-            landmarkName = "setTableViewCells()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

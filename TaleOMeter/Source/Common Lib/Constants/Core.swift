@@ -128,4 +128,37 @@ class Core: NSObject {
         myString.append(attachmentString)
         return myString
     }
+    
+    /**
+     Express the postedDate in following format: "[x] [time period] ago"
+     need to pass epochtime (since 1970)
+     */
+    static func soMuchTimeAgo(_ postedDate: Double) -> String {
+        let diff = Date().timeIntervalSince1970 - postedDate
+        var str: String = ""
+        if  diff < 60 {
+            str = "now"
+        } else if diff < 3600 {
+            let out = Int(round(diff/60))
+            str = (out == 1 ? "1 minute ago" : "\(out) minutes ago")
+        } else if diff < 3600 * 24 {
+            let out = Int(round(diff/3600))
+            str = (out == 1 ? "1 hour ago" : "\(out) hours ago")
+        } else if diff < 3600 * 24 * 2 {
+            str = "yesterday"
+        } else if diff < 3600 * 24 * 7 {
+            let out = Int(round(diff/(3600*24)))
+            str = (out == 1 ? "1 day ago" : "\(out) days ago")
+        } else if diff < 3600 * 24 * 7 * 4{
+            let out = Int(round(diff/(3600*24*7)))
+            str = (out == 1 ? "1 week ago" : "\(out) weeks ago")
+        } else if diff < 3600 * 24 * 7 * 4 * 12{
+            let out = Int(round(diff/(3600*24*7*4)))
+            str = (out == 1 ? "1 month ago" : "\(out) months ago")
+        } else {//if diff < 3600 * 24 * 7 * 4 * 12{
+            let out = Int(round(diff/(3600*24*7*4*12)))
+            str = (out == 1 ? "1 year ago" : "\(out) years ago")
+        }
+        return str
+    }
 }

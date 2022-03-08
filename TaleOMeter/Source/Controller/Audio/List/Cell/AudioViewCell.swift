@@ -14,4 +14,9 @@ class AudioViewCell: UITableViewCell {
     @IBOutlet weak var favButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var progressBar: UIProgressView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
 }

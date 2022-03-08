@@ -146,7 +146,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         self.imagePicker.dismiss(animated: true) {
-            PromptVManager.present(self, isAudioView: false, verifyMessage: "Your Profile Image is Successfully Changed")
+            PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
         }
     }
 }
