@@ -36,18 +36,18 @@ class SegmentViewController: UIViewController {
     
     // MARK: - Add views into container -
     private func addContainerViews() {
-        var gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
+        var gridView = Core.getController(Constants.Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
         gridView.title = "Entertain"
         gridView.parentController = self.parentController
         viewsArray.append(gridView)
         
-        gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
+        gridView = Core.getController(Constants.Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
         gridView.parentController = self.parentController
         gridView.title = "Inspire"
         viewsArray.append(gridView)
         
        // for _ in 0..<1 {
-            gridView = Core.getController(Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
+        gridView = Core.getController(Constants.Storyboard.dashboard, storyboardId: "GridViewController") as! GridViewController
             gridView.parentController = self.parentController
             gridView.title = "Snooze"
             viewsArray.append(gridView)

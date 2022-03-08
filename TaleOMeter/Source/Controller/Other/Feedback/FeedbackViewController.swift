@@ -21,13 +21,7 @@ class FeedbackViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.hideKeyboard()
-        let doneToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40.0))
-        doneToolbar.barStyle = UIBarStyle.default
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneToolbar(_:)))
-        let items1: [UIBarButtonItem] = [flexSpace, done]
-        doneToolbar.items = items1
-        self.textView.inputAccessoryView = doneToolbar
+        self.textView.addInputAccessoryView("Done", target: self, selector: #selector(self.doneToolbar(_:)))
         
         self.textView.text = messageString
         self.textView.textColor = .darkGray
@@ -55,7 +49,7 @@ class FeedbackViewController: UIViewController {
             Snackbar.showAlertMessage(messageString)
             return
         }
-        PromptVManager.present(self, isAudioView: false, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", imageName: "thank")
+        PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", imageName: "thank", isUserStory: true)
     }
     
     // MARK: - Click on done button of keyborad toolbar

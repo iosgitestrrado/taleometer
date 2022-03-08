@@ -66,7 +66,7 @@ class VerificationViewController: UIViewController {
             return
         }
         UserDefaults.standard.set(true, forKey: "isLogin")
-        UserDefaults.standard.set(Storyboard.auth, forKey: "storyboardName")
+        UserDefaults.standard.set(Constants.Storyboard.auth, forKey: "storyboardName")
         UserDefaults.standard.set("RegisterViewController", forKey: "storyboardId")
         UserDefaults.standard.synchronize()
         self.performSegue(withIdentifier: "register", sender: sender)

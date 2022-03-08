@@ -76,7 +76,7 @@ class PreferenceViewController: UIViewController {
     @IBAction func tapOnSkipButton(_ sender: Any) {
         UserDefaults.standard.set(true, forKey: "isRegistered")
         UserDefaults.standard.synchronize()
-        Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
+        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         //self.performSegue(withIdentifier: "dashboard", sender: sender)
     }
     

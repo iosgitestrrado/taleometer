@@ -45,7 +45,7 @@ class DashboardViewController: UIViewController {
                 sender.isSelected = !sender.isSelected
             } completion: { [self] isDone in
                 if sender.isSelected {
-                    Core.push(self, storyboard: Storyboard.audio, storyboardId: "NonStopViewController")
+                    Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NonStopViewController")
                 } else {
                     AudioPlayManager.shared.isNonStop = !sender.isSelected
                     AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
@@ -53,15 +53,15 @@ class DashboardViewController: UIViewController {
                 }
             }
         } else {
-            Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
         if UserDefaults.standard.bool(forKey: "isLogin") {
-            Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+            Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
         } else {
-            Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     

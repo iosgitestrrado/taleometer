@@ -4,6 +4,7 @@ PODS:
   - MBProgressHUD (1.2.0)
   - SoundWave (0.1.4)
   - SwiftGifOrigin (1.7.0)
+  - SwiftyJSON (5.0.1)
   - TTGSnackbar (1.10.5)
 
 DEPENDENCIES:
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.2.0)
   - SoundWave (~> 0.1.4)
   - SwiftGifOrigin (~> 1.7.0)
+  - SwiftyJSON (~> 5.0.1)
   - TTGSnackbar (~> 1.10.5)
 
 SPEC REPOS:
@@ -21,6 +23,7 @@ SPEC REPOS:
     - MBProgressHUD
     - SoundWave
     - SwiftGifOrigin
+    - SwiftyJSON
     - TTGSnackbar
 
 SPEC CHECKSUMS:
@@ -29,8 +32,9 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
   SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   TTGSnackbar: 2bd245d2bbf83639483410273fd936af0b7ba2a9
 
-PODFILE CHECKSUM: f89a287ad928f2644a512a117ef36fd1adc3da44
+PODFILE CHECKSUM: 0399e027bfd686b19045b392592766d4d89ca32e
 
 COCOAPODS: 1.11.2

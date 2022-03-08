@@ -67,10 +67,10 @@ class RegisterViewController: UIViewController {
             }
         }
         UserDefaults.standard.set(displayNameText.text!, forKey: "ProfileName")
-        UserDefaults.standard.set(Storyboard.dashboard, forKey: "storyboardName")
+        UserDefaults.standard.set(Constants.Storyboard.dashboard, forKey: "storyboardName")
         UserDefaults.standard.set("PreferenceViewController", forKey: "storyboardId")
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
-        Core.push(self, storyboard: Storyboard.dashboard, storyboardId: "PreferenceViewController")
+        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
     }
 }

@@ -66,7 +66,7 @@ class SearchViewController: UIViewController {
     }
     
     @objc private func tapOnViewAll(_ sender: UIButton) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "SearchHistoryViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "SearchHistoryViewController")
     }
     
     private func storeRecentSearch() {
@@ -164,7 +164,7 @@ extension SearchViewController: UITableViewDelegate {
             recentSearchArray.append(listArray[indexPath.row])
             storeRecentSearch()
         }
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "AuthorViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
     }
 }
 

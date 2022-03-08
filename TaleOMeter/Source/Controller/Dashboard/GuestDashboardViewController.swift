@@ -39,7 +39,7 @@ class GuestDashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
-        Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+        Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
     }
     
     // MARK: - Navigation

@@ -1232,9 +1232,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ns_pop-bg" translatesAutoresizingMaskIntoConstraints="NO" id="Two-iF-lj4">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                            </imageView>
                             <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvW-XK-3qa" customClass="AudioVisualizationView" customModule="SoundWave">
                                 <rect key="frame" x="0.0" y="394" width="390" height="179"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1402,6 +1399,9 @@
                                     <constraint firstItem="Vq9-qx-jhX" firstAttribute="centerX" secondItem="3vH-4b-Du3" secondAttribute="centerX" id="NYn-bt-Gcy"/>
                                 </constraints>
                             </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ns_pop-bg" translatesAutoresizingMaskIntoConstraints="NO" id="Two-iF-lj4">
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="N6A-Sh-qQd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1440,7 +1440,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fK3-HG-wXV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1813.8461538461538" y="-679.62085308056874"/>
+            <point key="canvasLocation" x="1889" y="-720"/>
         </scene>
         <!--Non Stop Temp-->
         <scene sceneID="w0W-BO-5Bt">
@@ -2064,7 +2064,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NIY-Wj-Zb7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="815" y="-736"/>
+            <point key="canvasLocation" x="923" y="-742"/>
         </scene>
     </scenes>
     <designables>

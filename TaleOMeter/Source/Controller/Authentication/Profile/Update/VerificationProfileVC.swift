@@ -46,7 +46,7 @@ class VerificationProfileVC: UIViewController {
             Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
             return
         }
-        PromptVManager.present(self, isAudioView: false, verifyMessage: "Your Mobile Number is Successfully Changed")
+        PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
     }
 }
 

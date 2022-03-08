@@ -72,7 +72,7 @@ extension HistoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

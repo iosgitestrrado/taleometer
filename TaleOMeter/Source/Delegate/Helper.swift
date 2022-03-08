@@ -1,23 +1,14 @@
 //
 //  Helper.swift
-//  LGSideMenuControllerDemo
+//  TaleOMeter
+//
+//  Created by Durgesh on 12/02/22.
 //
 
 import Foundation
 import UIKit
 
 //Default color: 25253C 37,37,60
-
-//Storybaord name struct
-struct Storyboard {
-    static let dashboard = "Main"
-    static let sideMenu = "SideMenu"
-    static let launch = "LaunchScreen"
-    static let auth = "Auth"
-    static let audio = "Audio"
-    static let other = "Other"
-    static let trivia = "Trivia"
-}
 
 let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")
 

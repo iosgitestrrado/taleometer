@@ -3,6 +3,7 @@
 //  TaleOMeter
 //
 //  Created by Durgesh on 16/02/22.
+//  Copyright © 2022 Durgesh. All rights reserved.
 //
 
 import UIKit
@@ -133,7 +134,7 @@ class AudioPlayManager: NSObject {
     public func addMiniPlayer(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()) {
         //currVController.view.viewWithTag(AudioPlayManager.miniViewTag)?.removeFromSuperview()
         miniVController.view.removeFromSuperview()
-        miniVController = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
+        miniVController = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
         miniVController.view.frame = CGRect.init(x: 0, y: UIScreen.main.bounds.size.height - 80.0, width: UIScreen.main.bounds.size.width, height: 60.0)
         if (FooterManager.shared.isActive) {
             if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
@@ -198,7 +199,7 @@ class AudioPlayManager: NSObject {
             }
             
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController)
+                PromptVManager.present(currVController, isAudioView: true)
             }
             
             miniVController.progressBar.setNeedsDisplay()
@@ -285,11 +286,11 @@ class AudioPlayManager: NSObject {
     // MARK: - Click on miniplayer
     @objc func tapOnMiniPlayer(_ sender: UIButton) {
         if isNonStop {
-            let nonStopViewView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController
+            let nonStopViewView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController
             nonStopViewView.existingAudio = true
             currVController.navigationController?.pushViewController(nonStopViewView, animated: true)
         } else {
-            let nowPlayingView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
+            let nowPlayingView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
             nowPlayingView.existingAudio = true
             currVController.navigationController?.pushViewController(nowPlayingView, animated: true)
         }
