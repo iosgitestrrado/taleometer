@@ -10,6 +10,11 @@ import UIKit
 
 class VerificationViewController: UIViewController {
     
+    // MARK: - Public Properties -
+    var mobileNumber = ""
+    var countryCode = ""
+    var iSDCode = 0
+
     // MARK: - Weak Properties -
     @IBOutlet weak var otp1TextField: UITextField!
     @IBOutlet weak var otp2TextField: UITextField!
@@ -65,11 +70,29 @@ class VerificationViewController: UIViewController {
             Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
             return
         }
-        UserDefaults.standard.set(true, forKey: "isLogin")
-        UserDefaults.standard.set(Constants.Storyboard.auth, forKey: "storyboardName")
-        UserDefaults.standard.set("RegisterViewController", forKey: "storyboardId")
-        UserDefaults.standard.synchronize()
-        self.performSegue(withIdentifier: "register", sender: sender)
+        
+        let otp = "\(self.otp1TextField.text!)\(self.otp2TextField.text!)\(self.otp3TextField.text!)\(self.otp4TextField.text!)"
+        Core.ShowProgress(self, detailLbl: "Verification OTP...")
+        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0)) { result, status, token, isNewRegister in
+            if var response = result, !token.isBlank {
+                UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
+                UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
+                
+                if isNewRegister {
+                    response.StoryBoardName = Constants.Storyboard.auth
+                    response.StoryBoardId = "RegisterViewController"
+                    self.performSegue(withIdentifier: "register", sender: sender)
+                } else {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                }
+                response.CountryCode = self.countryCode
+                response.Isd_code = self.iSDCode
+                Login.storeProfileData(response)
+            }
+            Core.HideProgress(self)
+        }
     }
 }
 

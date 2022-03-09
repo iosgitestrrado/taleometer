@@ -8,7 +8,7 @@
 
 struct Constants {
     
-    static let baseURL = "https://dev-taleometer.estrradoweb.com/api"
+    static let baseURL = "https://dev-taleometer.estrradoweb.com"
     
     struct Storyboard {
         static let dashboard = "Main"
@@ -22,5 +22,7 @@ struct Constants {
     
     struct UserDefault {
         static let AuthTokenStr = "authenticateToken"
+        static let IsLogin = "isLogin"
+        static let ProfileData = "ProfileData"
     }
 }

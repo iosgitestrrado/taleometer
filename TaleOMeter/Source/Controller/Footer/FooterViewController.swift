@@ -19,7 +19,7 @@ class FooterViewController: UIViewController {
     @IBOutlet weak var favDotView: UIView!
     
     // MARK: - Public Properties -
-    public var parentController: UIViewController?
+    var parentController: UIViewController?
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

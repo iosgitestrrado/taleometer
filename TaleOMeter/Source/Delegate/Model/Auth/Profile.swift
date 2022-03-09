@@ -16,7 +16,7 @@ struct Profile {
 
 
 struct ProfileRequest: Encodable {
-    var Name = String()
-    var Display_name = String()
-    var Email = String()
+    var name = String()
+    var display_name = String()
+    var email = String()
 }

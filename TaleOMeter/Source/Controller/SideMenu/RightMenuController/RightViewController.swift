@@ -58,6 +58,8 @@ class RightViewController: UIViewController {
         [.profile, .profile, .triviaQuiz, .triviaComments, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
     
+    private var profileData: ProfileData?
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -67,9 +69,15 @@ class RightViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
     }
     
     @objc private func updateUserData(_ notification: Notification) {
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
         self.tableView.reloadData()
     }
 
@@ -139,7 +147,7 @@ extension RightViewController: UITableViewDelegate {
             return sideMenuController.rootViewController as! UINavigationController
         }
         sideMenuController.hideRightView(animated: true)
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
             case .profile:
                 self.pushToView(Constants.Storyboard.auth, storyBoradId: "ProfileViewController")
@@ -171,16 +179,8 @@ extension RightViewController: UITableViewDelegate {
                 UserDefaults.standard.synchronize()
                 AudioPlayManager.shared.isMiniPlayerActive = false
                 AudioPlayManager.shared.isNonStop = false
-                if UserDefaults.standard.value(forKey: "ProfileName") == nil {
-                    if let data = UIImage(named: "logo")?.pngData() {
-                        UserDefaults.standard.set(data, forKey: "ProfileImage")
-                    }
-                    UserDefaults.standard.set("+0 00000 00000", forKey: "ProfileMobile")
-                    UserDefaults.standard.set("IN", forKey: "CountryCode")
-                    UserDefaults.standard.set("temp@temp.temp", forKey: "ProfileEmail")
-                    UserDefaults.standard.set("Guest", forKey: "ProfileName")
-                    UserDefaults.standard.synchronize()
-                }
+                
+                Login.setGusetData()
                 if let cont = sideMenuController.rootViewController as? UINavigationController {
                     var contStacks = [UIViewController]()
                     if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
@@ -242,7 +242,7 @@ extension RightViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             return sections[section].count
         }
         return sections[section].count - 1
@@ -253,9 +253,9 @@ extension RightViewController: UITableViewDataSource {
             //profileCell
             let cell = tableView.dequeueReusableCell(withIdentifier: cellProfileIdentifier, for: indexPath) as! RightViewCell
             
-            cell.titleLabel.text = UserDefaults.standard.string(forKey: "ProfileName") ?? "Guest"
-            cell.subTitleLabel.text = UserDefaults.standard.string(forKey: "ProfileMobile") ?? "+0 00000 00000"
-            if let imgData = UserDefaults.standard.object(forKey: "ProfileImage") as? Data, let img = UIImage(data: imgData) {
+            cell.titleLabel.text = profileData?.Fname ?? "Guest"
+            cell.subTitleLabel.text = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "00000 00000")"
+            if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
                 cell.profileImage.image = img
             }
             cell.closeButton.addTarget(self, action: #selector(self.clickOnClose(_:)), for: .touchUpInside)

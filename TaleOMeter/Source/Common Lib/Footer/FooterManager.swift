@@ -14,7 +14,7 @@ class FooterManager: NSObject {
     static let viewTag = 99999996
     
     // MARK: - Public Properties -
-    public var isActive = false
+    var isActive = false
     
     // MARK: - Private Properties -
     private var curVController = UIViewController()

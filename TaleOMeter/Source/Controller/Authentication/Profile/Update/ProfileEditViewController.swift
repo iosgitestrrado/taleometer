@@ -22,8 +22,8 @@ class ProfileEditViewController: UIViewController {
     weak var profileDelegate: ProfileEditDelegate? = nil
     
     // MARK: - Public Property -
-    public var titleString = "Change Name"
-    public var fieldValue = ""
+    var titleString = "Change Name"
+    var fieldValue = ""
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {

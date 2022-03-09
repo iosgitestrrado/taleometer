@@ -34,9 +34,9 @@ class PromptViewController: UIViewController {
     weak var delegate: PromptViewDelegate? = nil
     
     // MARK: - Public Properties -
-    public var songTitle = ""
-    public var nextSongTitle = ""
-    public var isAudioPrompt: Bool = false
+    var songTitle = ""
+    var nextSongTitle = ""
+    var isAudioPrompt: Bool = false
 
     // MARK: - Private Properties -
     private var timer = Timer()

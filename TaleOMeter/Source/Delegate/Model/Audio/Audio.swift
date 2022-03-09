@@ -5,21 +5,49 @@
 //  Created by Durgesh on 08/03/22.
 //
 
+import UIKit
+import SwiftyJSON
+
 struct Audio {
-    let Id: String
-    let Title: String
-    let Image: String
-    let File: String
-    let Genre_id: String
-    let Story_id: String
-    let Plot_id: String
-    let Narration_id: String
-    let Is_nonstop: String
-    let Is_active: String
-    let Created_at: String
-    let Updated_at: String
-    let Deleted_at: String
-    let Views_count: String
+    var Id = Int()
+    var Title = String()
+    var Image = UIImage()
+    var File = String()
+    var Genre_id = Int()
+    var Story_id = Int()
+    var Plot_id = Int()
+    var Narration_id = Int()
+    var Is_nonstop = Bool()
+    var Is_active = Bool()
+    var Created_at = String()
+    var Updated_at = String()
+    var Deleted_at = String()
+    var Views_count = Int()
+    
+    init() { }
+    init(_ json: JSON) {
+        Id = json["id"].intValue
+        Title = json["name"].stringValue
+        let imageURL = Constants.baseURL.appending("/\(json["image"].stringValue)")
+        Image = UIImage(named: "logo")!
+        if let url = URL(string: imageURL) {
+            do {
+                let data = try Data(contentsOf: url)
+                Image = UIImage(data: data) ?? UIImage(named: "logo")!
+            } catch { }
+        }
+        File = Constants.baseURL.appending("/\(json["File"].stringValue)")
+        Genre_id = json["genre_id"].intValue
+        Story_id = json["story_id"].intValue
+        Plot_id = json["plot_id"].intValue
+        Narration_id = json["narration_id"].intValue
+        Is_nonstop = json["is_nonstop"].boolValue
+        Is_active = json["is_active"].boolValue
+        Created_at = json["created_at"].stringValue
+        Updated_at = json["updated_at"].stringValue
+        Deleted_at = json["deleted_at"].stringValue
+        Views_count = json["views_count"].intValue
+    }
 }
 
 /*
@@ -41,24 +69,24 @@ struct Audio {
 
 
 struct AudioRequest: Codable {
-    var Page = Int()
-    var Limit = Int()
+    var page = Int()
+    var limit = Int()
 }
 
 struct AudioAddRequst: Codable {
-    var Audio_story_id = Int()
-    var Time = Int()
+    var audio_story_id = Int()
+    var time = Int()
 }
 
 struct SearchAudioRequest: Codable {
-    var Text = String()
-    var Page = Int()
+    var text = String()
+    var page = Int()
 }
 
 struct SearchDeleteRequest: Codable {
-    var Audio_search_id = Int()
+    var audio_search_id = Int()
 }
 
 struct FavoriteRequest: Codable {
-    var Audio_story_id = Int()
+    var audio_story_id = Int()
 }

@@ -12,6 +12,7 @@ target 'TaleOMeter' do
   pod "SoundWave", '~>0.1.4'
   pod 'MBProgressHUD', '~>1.2.0'
   pod 'SwiftyJSON', '~>5.0.1'
+  pod 'SDWebImage', '~>5.12.3'
 
   # Pods for TaleOMeter
 

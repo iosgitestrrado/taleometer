@@ -88,17 +88,17 @@ class Core: NSObject {
     }
     
     /* Loading progress bar add to view */
-    static func ShowProgress(contrSelf: UIViewController, detailLbl: String) {
-        let spinnerActivity = MBProgressHUD.showAdded(to: contrSelf.view, animated: true);
-        spinnerActivity.label.text = "Loading";
-        spinnerActivity.detailsLabel.text = detailLbl;
-        spinnerActivity.isUserInteractionEnabled = true;
+    static func ShowProgress(_ target: UIViewController, detailLbl: String) {
+        let spinnerActivity = MBProgressHUD.showAdded(to: target.view, animated: true)
+        spinnerActivity.label.text = "Loading"
+        spinnerActivity.detailsLabel.text = detailLbl.isBlank ? "Please Wait..." : detailLbl
+        spinnerActivity.isUserInteractionEnabled = true
     }
 
     /* Loading progress bar remove from view */
-    static func HideProgress(contrSelf: UIViewController) {
+    static func HideProgress(_ target: UIViewController) {
         DispatchQueue.main.async {
-            MBProgressHUD.hide(for: contrSelf.view, animated: true);
+            MBProgressHUD.hide(for: target.view, animated: true)
         }
     }
     
@@ -161,5 +161,22 @@ class Core: NSObject {
             str = (out == 1 ? "1 year ago" : "\(out) years ago")
         }
         return str
+    }
+    
+    /**
+        * Combile two image
+     */
+    static func combineImages(_ bottomImage: UIImage, topImage: UIImage) -> UIImage {
+        let size = CGSize(width: 100, height: 100)
+        UIGraphicsBeginImageContext(size)
+
+        let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        bottomImage.draw(in: areaSize)
+
+        topImage.draw(in: areaSize, blendMode: .normal, alpha: 1.0)
+
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
     }
 }

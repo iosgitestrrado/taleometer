@@ -176,10 +176,6 @@ class APIClient: GenericAPIClient {
         }
         return userDefault.value(forKey: "UUID") as! String
     }
-
-    static func getBaseURL() -> String {
-        return Constants.baseURL
-    }
 }
 
 /// ENDPOINT CONFORMANCE
@@ -191,8 +187,8 @@ enum Feed {
     case SendOtpProfile
     case VerifyOtpProfile
     case GetProfile
-    case ProfileImage
-    case ProfileDetails
+    case UpdateProfileImage
+    case UpdateProfileDetails
 
     //Preference
     case GetPreference
@@ -233,50 +229,50 @@ protocol CodeEnd {
 extension Feed: Endpoint {
 
     var base: String {
-        return APIClient.getBaseURL()
+        return Constants.baseURL
     }
 
     var path: String {
         switch self {
         //Auth
-        case .SendOtp:                  return "\(APIClient.basePathAuth)/sendOtp"
-        case .VerifyOtp:                return "\(APIClient.basePathAuth)/verifyOtp"
-        case .Logout:                   return "\(APIClient.basePathAuth)/logout"
-        case .SendOtpProfile:           return "\(APIClient.basePathAuth)/update-profile/sendOtp"
-        case .VerifyOtpProfile:         return "\(APIClient.basePathAuth)/update-profile/verifyOtp"
-        case .GetProfile:               return "\(APIClient.basePathAuth)/getProfile"
-        case .ProfileImage:             return "\(APIClient.basePathAuth)/update-profile/image"
-        case .ProfileDetails:           return "\(APIClient.basePathAuth)/update-profile/details"
+        case .SendOtp:                  return "/api/sendOtp"
+        case .VerifyOtp:                return "/api/verifyOtp"
+        case .Logout:                   return "/api/logout"
+        case .SendOtpProfile:           return "/api/update-profile/sendOtp"
+        case .VerifyOtpProfile:         return "/api/update-profile/verifyOtp"
+        case .GetProfile:               return "/api/getProfile"
+        case .UpdateProfileImage:       return "/api/update-profile/image"
+        case .UpdateProfileDetails:     return "/api/update-profile/details"
 
         //Preference
-        case .GetPreference:            return "\(APIClient.basePathGeneral)/preference-bubbles"
-        case .GetPrefCategory:          return "\(APIClient.basePathGeneral)/preference-categories"
-        case .UserPreferences:          return "\(APIClient.basePathGeneral)/user-preferences"
+        case .GetPreference:            return "/api/preference-bubbles"
+        case .GetPrefCategory:          return "/api/preference-categories"
+        case .UserPreferences:          return "/api/user-preferences"
             
         //Genre
-        case .Genres:                   return "\(APIClient.basePathGeneral)/genres"
+        case .Genres:                   return "/api/genres"
         
         //Audio
-        case .GuestAudioStories:        return "\(APIClient.basePathGeneral)/guest-audio-stories"
-        case .AudioStories:             return "\(APIClient.basePathGeneral)/audio-stories"
-        case .AddAudioHistory:          return "\(APIClient.basePathStock)/add-audio-history"
-        case .GetAudioHistory:          return "\(APIClient.basePathStock)/get-audio-history"
-        case .UpdateAudioHistory:       return "\(APIClient.basePathStock)/update-audio-history"
-        case .SearchAudio:              return "\(APIClient.basePathStock)/search-audio"
-        case .RecentSearchAudio:        return "\(APIClient.basePathStock)/search-audio/recent"
-        case .RemoveSearchAudio:        return "\(APIClient.basePathStock)/search-audio/remove"
-        case .RemoveAllSearchAudio:     return "\(APIClient.basePathStock)/search-audio/remove-all"
-        case .FavoriteAudio:            return "\(APIClient.basePathStock)/favorite-audio/get"
-        case .AddFavoriteAudio:         return "\(APIClient.basePathStock)/favorite-audio/add"
-        case .RemoveFavoriteAudio:      return "\(APIClient.basePathStock)/favorite-audio/remove"
-        case .PlotAudioStories:         return "\(APIClient.basePathStock)/audio-stories/plot"
-        case .NarrationAudioStories:    return "\(APIClient.basePathStock)/audio-stories/narration"
-        case .Stories:                  return "\(APIClient.basePathStock)/stories"
-        case .Plots:                    return "\(APIClient.basePathStock)/plots"
-        case .Narrations:               return "\(APIClient.basePathStock)/narrations"
+        case .GuestAudioStories:        return "/api/guest-audio-stories"
+        case .AudioStories:             return "/api/audio-stories"
+        case .AddAudioHistory:          return "/api/add-audio-history"
+        case .GetAudioHistory:          return "/api/get-audio-history"
+        case .UpdateAudioHistory:       return "/api/update-audio-history"
+        case .SearchAudio:              return "/api/search-audio"
+        case .RecentSearchAudio:        return "/api/search-audio/recent"
+        case .RemoveSearchAudio:        return "/api/search-audio/remove"
+        case .RemoveAllSearchAudio:     return "/api/search-audio/remove-all"
+        case .FavoriteAudio:            return "/api/favorite-audio/get"
+        case .AddFavoriteAudio:         return "/api/favorite-audio/add"
+        case .RemoveFavoriteAudio:      return "/api/favorite-audio/remove"
+        case .PlotAudioStories:         return "/api/audio-stories/plot"
+        case .NarrationAudioStories:    return "/api/audio-stories/narration"
+        case .Stories:                  return "/api/stories"
+        case .Plots:                    return "/api/plots"
+        case .Narrations:               return "/api/narrations"
             
         //Other
-        case .UserStories:              return "\(APIClient.basePathStock)/user-stories"
+        case .UserStories:              return "/api/user-stories"
         }
     }
 }

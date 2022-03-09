@@ -58,19 +58,33 @@ class RegisterViewController: UIViewController {
             Snackbar.showAlertMessage("Please enter valid display name!")
             return
         }
-        if !emailTextField.text!.isBlank {
-            if emailTextField.text!.isEmail {
-                UserDefaults.standard.set(emailTextField.text!, forKey: "ProfileEmail")
-            } else {
-                Snackbar.showAlertMessage("Please enter valid email!")
-                return
-            }
+        if !emailTextField.text!.isBlank && !emailTextField.text!.isEmail {
+            Snackbar.showAlertMessage("Please enter valid email!")
+            return
         }
-        UserDefaults.standard.set(displayNameText.text!, forKey: "ProfileName")
-        UserDefaults.standard.set(Constants.Storyboard.dashboard, forKey: "storyboardName")
-        UserDefaults.standard.set("PreferenceViewController", forKey: "storyboardId")
-        UserDefaults.standard.synchronize()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
-        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+        var profileReq = ProfileRequest()
+        if let name = self.nameTextField.text {
+            profileReq.name = name
+        }
+        if let disName = self.displayNameText.text {
+            profileReq.display_name = disName
+        }
+        if let email = self.emailTextField.text {
+            profileReq.email = email
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AuthClient.updateProfile(profileReq) { [self] result in
+            if var response = result {
+                response.Fname = profileReq.display_name
+                response.Email = profileReq.email
+                response.User_code = profileReq.name
+                response.StoryBoardName = Constants.Storyboard.dashboard
+                response.StoryBoardId = "PreferenceViewController"
+                Login.storeProfileData(response)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+            }
+            Core.HideProgress(self)
+        }
     }
 }

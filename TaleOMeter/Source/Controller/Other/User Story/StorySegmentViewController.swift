@@ -10,8 +10,8 @@ import UIKit
 class StorySegmentViewController: UIViewController {
     
     // MARK: - Public Properties -
-    public var parentController: UIViewController?
-    public var parentFrame: CGRect?
+    var parentController: UIViewController?
+    var parentFrame: CGRect?
     
     // MARK: - Private Properties -
     private var containerVC: ContainerViewController?

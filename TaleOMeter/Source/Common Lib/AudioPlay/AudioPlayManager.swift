@@ -20,12 +20,12 @@ class AudioPlayManager: NSObject {
     static let miniViewTag = 99999995
 
     // MARK: - Public Properties -
-    public var playerAV: AVPlayer?
-    public var isMiniPlayerActive = false
-    public var isNonStop = false
-    public var waveFormcount = 0
-    public var audioMetering = [Float]()
-    public var nowPlayingInfo = [String: Any]()
+    var playerAV: AVPlayer?
+    var isMiniPlayerActive = false
+    var isNonStop = false
+    var waveFormcount = 0
+    var audioMetering = [Float]()
+    var nowPlayingInfo = [String: Any]()
 
     // MARK: - Private Properties -
     private var audioTimer = Timer()

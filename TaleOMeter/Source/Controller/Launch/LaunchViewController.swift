@@ -21,8 +21,8 @@ class LaunchViewController: UIViewController {
 //        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if UserDefaults.standard.bool(forKey: "isLogin") && !UserDefaults.standard.bool(forKey: "isRegistered"), let stName = UserDefaults.standard.string(forKey: "storyboardName"), let stId = UserDefaults.standard.string(forKey: "storyboardId") {
-                Core.push(self, storyboard: stName, storyboardId: stId)
+            if let profileData = Login.getProfileData(), profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
+                Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
             } else {
                 Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             }

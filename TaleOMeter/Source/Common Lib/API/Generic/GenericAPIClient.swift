@@ -41,8 +41,15 @@ extension GenericAPIClient {
                 return
             }
             
+//            do {
+//                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: [])
+//                print(jsonResponse) //Response result
+//            } catch let parsingError {
+//                print("Error", parsingError)
+//            }
+            
             do {
-                let genericModel = try JSONDecoder().decode(decodingType, from: data)
+                let genericModel = try JSONDecoder().decode(decodingType, from: data)               
                 completion(genericModel, nil)
             } catch let err {
                 if decodingType != ResponseModelJSON.self {

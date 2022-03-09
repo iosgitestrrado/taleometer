@@ -19,8 +19,8 @@ class ChangeMobileNumberVC: UIViewController {
     weak var profileDelegate: ProfileEditDelegate? = nil
 
     // MARK: - Public Properties -
-    public var fieldValue = ""
-    public var countryCodeVal = ""
+    var fieldValue = ""
+    var countryCodeVal = ""
     
     // MARK: - Private Properties -
     private var countryModel: Country = Country()

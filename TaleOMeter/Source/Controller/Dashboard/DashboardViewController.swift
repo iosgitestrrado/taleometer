@@ -40,7 +40,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnNonStop(_ sender: UIButton) {
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
                 sender.isSelected = !sender.isSelected
             } completion: { [self] isDone in
@@ -58,7 +58,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
         } else {
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")

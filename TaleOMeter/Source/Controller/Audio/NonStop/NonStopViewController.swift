@@ -25,10 +25,10 @@ class NonStopViewController: UIViewController {
     @IBOutlet weak var visualizationWave: AudioVisualizationView!
     
     // MARK: - Public Properties -
-    public var existingAudio = false
+    var existingAudio = false
+    var waveFormcount = 0
 
     // MARK: - Private Properties -
-    public var waveFormcount = 0
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
     private var isPlaying = false
@@ -169,7 +169,7 @@ class NonStopViewController: UIViewController {
             }
             
             self.playButton.isSelected = false
-            Core.ShowProgress(contrSelf: self, detailLbl: "Getting audio waves...")
+            Core.ShowProgress(self, detailLbl: "Getting audio waves...")
             AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
                 waveFormcount = result.count
                 visualizationWave.audioVisualizationMode = .read
@@ -198,7 +198,7 @@ class NonStopViewController: UIViewController {
                         }
                     }
                 }
-                Core.HideProgress(contrSelf: self)
+                Core.HideProgress(self)
             }            
         }
         // Pan gesture for scrubbing support.

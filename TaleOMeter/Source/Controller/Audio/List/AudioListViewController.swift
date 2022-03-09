@@ -10,8 +10,8 @@ import UIKit
 class AudioListViewController: UITableViewController {
 
     // MARK: - Public Property -
-    public var isFavourite = false
-    public var isNonStop = false
+    var isFavourite = false
+    var isNonStop = false
     
     // MARK: - Public Property -
     private var selectedIndex = -1

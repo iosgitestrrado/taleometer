@@ -33,7 +33,6 @@ class LoginViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
@@ -65,11 +64,14 @@ class LoginViewController: UIViewController {
             return
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
-        UserDefaults.standard.set("\(countryModel.extensionCode ?? "+91") \(self.mobileNumberTxt.text!)", forKey: "ProfileMobile")
-        UserDefaults.standard.set("\(countryModel.countryCode ?? "IN")", forKey: "CountryCode")
-        UserDefaults.standard.synchronize()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
-        self.performSegue(withIdentifier: "verification", sender: sender)
+        Core.ShowProgress(self, detailLbl: "Sending OTP...")
+        AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!)) { status in
+            Core.HideProgress(self)
+            if status {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+                self.performSegue(withIdentifier: "verification", sender: sender)
+            }
+        }
     }
     
     @IBAction func tapOnTermsAndCond(_ sender: Any) {
@@ -106,6 +108,23 @@ class LoginViewController: UIViewController {
         let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
         myobject.delegate = self
         self.navigationController?.present(myobject, animated: true, completion: nil)
+    }
+    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "verification", let veryVC = segue.destination as? VerificationViewController {
+            veryVC.mobileNumber = self.mobileNumberTxt.text!
+            if let cCode = self.countryModel.countryCode {
+                veryVC.countryCode = cCode
+            }
+            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
+                veryVC.iSDCode = isdCode
+            }
+        }
     }
 }
 

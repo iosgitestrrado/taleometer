@@ -27,10 +27,11 @@ class NowPlayViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     
     // MARK: - Public Properties -
-    public var existingAudio = false
+    var existingAudio = false
+    var waveFormcount = 0
+    var audio = Audio()
 
     // MARK: - Private Properties -
-    public var waveFormcount = 0
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
     private var isPlayingTap = false
@@ -74,7 +75,9 @@ class NowPlayViewController: UIViewController {
     private func configureAudio() {
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
         AudioPlayManager.shared.isNonStop = false
-        guard let url = Bundle.main.path(forResource: "testAudio", ofType: "mp3") else { return }
+        self.imageView.image = audio.Image
+        self.titleLabel.text = audio.Title
+        guard let url = URL(string: audio.File) else { return }
         
         visualizationWave.audioVisualizationMode = .write
         visualizationWave.add(meteringLevel: 0.6)
@@ -116,15 +119,15 @@ class NowPlayViewController: UIViewController {
                 }
             }
         } else {
-            AudioPlayManager.shared.configAudio(URL(fileURLWithPath: url))
+            AudioPlayManager.shared.configAudio(url)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
                 if let playerk = AudioPlayManager.shared.playerAV {
                     self.player = playerk
                 }
             }
             self.playButton.isSelected = false
-            Core.ShowProgress(contrSelf: self, detailLbl: "Getting audio waves...")
-            AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
+            Core.ShowProgress(self, detailLbl: "Getting audio waves...")
+            AudioPlayManager.getAudioMeters(url, forChannel: 0) { [self] result in
                 waveFormcount = result.count
                 visualizationWave.audioVisualizationMode = .read
                 visualizationWave.meteringLevels = result
@@ -139,7 +142,7 @@ class NowPlayViewController: UIViewController {
                         visualizationWave.pause()
                     }
                 }
-                Core.HideProgress(contrSelf: self)
+                Core.HideProgress(self)
             }
         }
 

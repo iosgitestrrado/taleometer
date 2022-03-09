@@ -360,8 +360,8 @@
 			isa = PBXGroup;
 			children = (
 				6353708427BA26B9000A144E /* Login */,
-				6361179B27BA687E000C1749 /* Register */,
 				6361179E27BA68AB000C1749 /* Verification */,
+				6361179B27BA687E000C1749 /* Register */,
 				63D27C7627BD09600074EA7F /* Profile */,
 				63FA7E6E27BBB7EA00AD6C97 /* Terms */,
 				6361179C27BA688C000C1749 /* Country */,
@@ -504,7 +504,7 @@
 			children = (
 				6358435C27B7C9EC0055DE7E /* DashboardViewController.swift */,
 				63D27C5F27BCF6030074EA7F /* GuestDashboardViewController.swift */,
-				63DFB4B127BCC54E00B08216 /* Collection */,
+				63DFB4B127BCC54E00B08216 /* Grid */,
 				63DFB4AE27BCC00300B08216 /* Segment */,
 				636ED8DB27BB79CD0030D2F0 /* Preference */,
 			);
@@ -989,13 +989,13 @@
 			path = Segment;
 			sourceTree = "<group>";
 		};
-		63DFB4B127BCC54E00B08216 /* Collection */ = {
+		63DFB4B127BCC54E00B08216 /* Grid */ = {
 			isa = PBXGroup;
 			children = (
 				63DFB4B427BCC85D00B08216 /* Cell */,
 				63DFB4B227BCC57900B08216 /* GridViewController.swift */,
 			);
-			path = Collection;
+			path = Grid;
 			sourceTree = "<group>";
 		};
 		63DFB4B427BCC85D00B08216 /* Cell */ = {

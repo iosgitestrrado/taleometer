@@ -15,5 +15,5 @@ struct Narration {
 }
 
 struct NarrationRequest: Codable {
-    var Narration_id = Int()
+    var narration_id = Int()
 }
