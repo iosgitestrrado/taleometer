@@ -3,6 +3,7 @@
 //  TaleOMeter
 //
 //  Created by Durgesh on 16/02/22.
+//  Copyright © 2022 Durgesh. All rights reserved.
 //
 
 import UIKit
@@ -19,24 +20,29 @@ class AudioPlayManager: NSObject {
     static let miniViewTag = 99999995
 
     // MARK: - Public Properties -
-    public var playerAV: AVPlayer?
-    public var isMiniPlayerActive = false
-    public var isNonStop = false
-    public var waveFormcount = 0
-    public var audioMetering = [Float]()
-    public var nowPlayingInfo = [String: Any]()
+    var playerAV: AVPlayer?
+    var isMiniPlayerActive = false
+    var isNonStop = false
+    var waveFormcount = 0
+    var audioMetering = [Float]()
+    var nowPlayingInfo = [String: Any]()
+    var currentAudio = -1
+    var nextAudio = -1
+    var prevAudio = -1
+    var audioList: [Audio]?
 
     // MARK: - Private Properties -
     private var audioTimer = Timer()
     private var currVController = UIViewController()
     private var bottomConstraint = NSLayoutConstraint()
     private var miniVController = MiniAudioViewController()
+    private var audioURL: URL?
 
-    
     // MARK: - Configure audio as per pass url -
     public func configAudio(_ url: URL) {
         /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
         let playerItem = AVPlayerItem(url: url)
+        audioURL = url
         playerAV = AVPlayer(playerItem: playerItem)
         isMiniPlayerActive = true
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
@@ -103,16 +109,17 @@ class AudioPlayManager: NSObject {
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
 
-        nowPlayingInfo[MPMediaItemPropertyTitle] = "Tracts To Relax"
-        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = "Jane Doe"
-        nowPlayingInfo[MPMediaItemPropertyArtist] = "Story"
-
-        if let image = UIImage(named: "logo") {
+        if let audioList = audioList, currentAudio > 0 {
+            let audio = audioList[currentAudio]
+            nowPlayingInfo[MPMediaItemPropertyTitle] = audio.Title
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audio.Story?.Name ?? ""
+            nowPlayingInfo[MPMediaItemPropertyArtist] = "Story"
             nowPlayingInfo[MPMediaItemPropertyArtwork] =
-                MPMediaItemArtwork(boundsSize: image.size) { size in
-                    return image
+            MPMediaItemArtwork(boundsSize: audio.Image.size) { size in
+                    return audio.Image
             }
         }
+        
         if let playerAV = playerAV {
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playerAV.currentTime().seconds
             nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = Int((playerAV.currentItem?.asset.duration.seconds)!)
@@ -125,7 +132,24 @@ class AudioPlayManager: NSObject {
     
     // MARK: - When audio completed call function -
     @objc func itemDidFinishPlaying(notification: NSNotification) {
+        //if let player = playerAV, player.isPlaying {
         audioTimer.invalidate()
+        if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
+            // Get the current time in seconds
+            let duration = currentItem.duration.seconds
+            miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
+            miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+            miniVController.progressBar.progress = 0.0
+            miniVController.progressBar.setNeedsDisplay()
+            if let player = playerAV {
+                miniVController.playButton.isSelected = !player.isPlaying
+            }
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        }
+        if let url = audioURL {
+            configAudio(url)
+        }
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
     
@@ -133,7 +157,7 @@ class AudioPlayManager: NSObject {
     public func addMiniPlayer(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()) {
         //currVController.view.viewWithTag(AudioPlayManager.miniViewTag)?.removeFromSuperview()
         miniVController.view.removeFromSuperview()
-        miniVController = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
+        miniVController = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
         miniVController.view.frame = CGRect.init(x: 0, y: UIScreen.main.bounds.size.height - 80.0, width: UIScreen.main.bounds.size.width, height: 60.0)
         if (FooterManager.shared.isActive) {
             if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
@@ -145,7 +169,12 @@ class AudioPlayManager: NSObject {
         }
         
         //miniVContainer.songImage
-        miniVController.songTitle.text = "Tracts To Relax"
+        if let audioList = audioList, currentAudio > 0 {
+            let audio = audioList[currentAudio]
+            miniVController.songTitle.text = audio.Title
+            miniVController.songImage.image = audio.Image
+        }
+        
         udpateMiniPlayerTime()
         
         if let player = playerAV, player.isPlaying {
@@ -184,11 +213,7 @@ class AudioPlayManager: NSObject {
             
             // Format seconds for human readable string
             if !playhead.isNaN {
-                if playhead > 0 {
-                    miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead + 1)
-                } else {
-                    miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead)
-                }
+                miniVController.startTimeLabel.text = playhead > 0 ? AudioPlayManager.formatTimeFor(seconds: playhead + 1) : AudioPlayManager.formatTimeFor(seconds: playhead)
             }
             if !duration.isNaN {
                 miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
@@ -198,7 +223,7 @@ class AudioPlayManager: NSObject {
             }
             
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController)
+                PromptVManager.present(currVController, verifyTitle: audioList![currentAudio].Title, verifyMessage: audioList![nextAudio].Title, isAudioView: true, audioImage: audioList![nextAudio].Image)
             }
             
             miniVController.progressBar.setNeedsDisplay()
@@ -285,11 +310,11 @@ class AudioPlayManager: NSObject {
     // MARK: - Click on miniplayer
     @objc func tapOnMiniPlayer(_ sender: UIButton) {
         if isNonStop {
-            let nonStopViewView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController
+            let nonStopViewView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController
             nonStopViewView.existingAudio = true
             currVController.navigationController?.pushViewController(nonStopViewView, animated: true)
         } else {
-            let nowPlayingView = UIStoryboard.init(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
+            let nowPlayingView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
             nowPlayingView.existingAudio = true
             currVController.navigationController?.pushViewController(nowPlayingView, animated: true)
         }
@@ -329,8 +354,12 @@ class AudioPlayManager: NSObject {
      *  Calculate audio metering
      *
      */
+    
     static func getAudioMeters(_ audioFileURL: URL, forChannel channelNumber: Int, completionHandler: @escaping(_ success: [Float]) -> ()) {
-        let audioFile = try! AVAudioFile(forReading: audioFileURL)
+        
+        guard let audioFile = try? AVAudioFile(forReading: audioFileURL) else {
+            return
+        }
         let audioFilePFormat = audioFile.processingFormat
         let audioFileLength = audioFile.length
         
@@ -381,9 +410,4 @@ class AudioPlayManager: NSObject {
     }
 }
 
-// MARK: Check audio is playing
-extension AVPlayer {
-    var isPlaying: Bool {
-        return rate != 0 && error == nil
-    }
-}
+

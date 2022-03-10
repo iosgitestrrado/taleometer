@@ -34,18 +34,22 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
     @IBAction func tapOnNonStop(_ sender: UIButton) {
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
                 sender.isSelected = !sender.isSelected
             } completion: { [self] isDone in
                 if sender.isSelected {
-                    Core.push(self, storyboard: Storyboard.audio, storyboardId: "NonStopViewController")
+                    Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NonStopViewController")
                 } else {
                     AudioPlayManager.shared.isNonStop = !sender.isSelected
                     AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
@@ -53,15 +57,15 @@ class DashboardViewController: UIViewController {
                 }
             }
         } else {
-            Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
     @IBAction func tapOnSurprise(_ sender: Any) {
-        if UserDefaults.standard.bool(forKey: "isLogin") {
-            Core.push(self, storyboard: Storyboard.audio, storyboardId: "NowPlayViewController")
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
         } else {
-            Core.push(self, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
@@ -73,6 +77,7 @@ class DashboardViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "segmentview", let segVC = segue.destination as? SegmentViewController {
             segVC.parentController = self
+            self.containerView.frame.size.width = CGFloat((335.0 * UIScreen.main.bounds.width) / 375.0)
             segVC.parentFrame = self.containerView.frame
         }
     }

@@ -100,6 +100,6 @@ extension SearchHistoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "AuthorViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
     }
 }

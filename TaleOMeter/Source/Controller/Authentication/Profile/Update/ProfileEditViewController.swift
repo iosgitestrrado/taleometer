@@ -22,8 +22,8 @@ class ProfileEditViewController: UIViewController {
     weak var profileDelegate: ProfileEditDelegate? = nil
     
     // MARK: - Public Property -
-    public var titleString = "Change Name"
-    public var fieldValue = ""
+    var titleString = "Change Name"
+    var fieldValue = ""
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -52,13 +52,13 @@ class ProfileEditViewController: UIViewController {
                 Snackbar.showAlertMessage("Please enter valid name!")
                 return
             }
-            PromptVManager.present(self, isAudioView: false, verifyMessage: "Your name is Successfully Changed")
+            PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
         } else {
             if textField.text!.isBlank || !textField.text!.isEmail {
                 Snackbar.showAlertMessage("Please enter valid email!")
                 return
             }
-            PromptVManager.present(self, isAudioView: false, verifyMessage: "Your Email ID is Successfully Changed")
+            PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
         }
     }
 }

@@ -3,6 +3,7 @@
 //  TaleOMeter
 //
 //  Created by Durgesh on 15/02/22.
+//  Copyright © 2022 Durgesh. All rights reserved.
 //
 
 import Foundation
@@ -45,7 +46,7 @@ class Core: NSObject {
      * Swap menu option enable/disable.
      * From UIController
      */
-    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true) {
+    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false) {
       
         cont.sideMenuController?.isRightViewEnabled = isRightViewEnabled
         cont.navigationController?.setNavigationBarHidden(setNavigationBarHidden, animated: true)
@@ -59,6 +60,16 @@ class Core: NSObject {
         cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
+
+        if backImage {
+            let yourBackImage = UIImage(systemName: "arrow.backward")
+            cont.navigationController?.navigationBar.backIndicatorImage = yourBackImage
+            cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = yourBackImage
+        } else {
+            let defaultImage = UIImage(systemName: "chevron.backward")
+            cont.navigationController?.navigationBar.backIndicatorImage = defaultImage
+            cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = defaultImage
+        }
         if !setNavigationBarHidden && cont.navigationController?.children[(cont.navigationController?.children.count)! - 2] is LaunchViewController {
             cont.navigationItem.hidesBackButton = true
         }
@@ -87,17 +98,17 @@ class Core: NSObject {
     }
     
     /* Loading progress bar add to view */
-    static func ShowProgress(contrSelf: UIViewController, detailLbl: String) {
-        let spinnerActivity = MBProgressHUD.showAdded(to: contrSelf.view, animated: true);
-        spinnerActivity.label.text = "Loading";
-        spinnerActivity.detailsLabel.text = detailLbl;
-        spinnerActivity.isUserInteractionEnabled = true;
+    static func ShowProgress(_ target: UIViewController, detailLbl: String) {
+        let spinnerActivity = MBProgressHUD.showAdded(to: target.view, animated: true)
+        spinnerActivity.label.text = "Loading"
+        spinnerActivity.detailsLabel.text = detailLbl.isBlank ? "Please Wait..." : detailLbl
+        spinnerActivity.isUserInteractionEnabled = true
     }
 
     /* Loading progress bar remove from view */
-    static func HideProgress(contrSelf: UIViewController) {
+    static func HideProgress(_ target: UIViewController) {
         DispatchQueue.main.async {
-            MBProgressHUD.hide(for: contrSelf.view, animated: true);
+            MBProgressHUD.hide(for: target.view, animated: true)
         }
     }
     
@@ -127,5 +138,55 @@ class Core: NSObject {
         let myString:NSMutableAttributedString = NSMutableAttributedString(string: "")
         myString.append(attachmentString)
         return myString
+    }
+    
+    /**
+     Express the postedDate in following format: "[x] [time period] ago"
+     need to pass epochtime (since 1970)
+     */
+    static func soMuchTimeAgo(_ postedDate: Double) -> String {
+        let diff = Date().timeIntervalSince1970 - postedDate
+        var str: String = ""
+        if  diff < 60 {
+            str = "now"
+        } else if diff < 3600 {
+            let out = Int(round(diff/60))
+            str = (out == 1 ? "1 minute ago" : "\(out) minutes ago")
+        } else if diff < 3600 * 24 {
+            let out = Int(round(diff/3600))
+            str = (out == 1 ? "1 hour ago" : "\(out) hours ago")
+        } else if diff < 3600 * 24 * 2 {
+            str = "yesterday"
+        } else if diff < 3600 * 24 * 7 {
+            let out = Int(round(diff/(3600*24)))
+            str = (out == 1 ? "1 day ago" : "\(out) days ago")
+        } else if diff < 3600 * 24 * 7 * 4{
+            let out = Int(round(diff/(3600*24*7)))
+            str = (out == 1 ? "1 week ago" : "\(out) weeks ago")
+        } else if diff < 3600 * 24 * 7 * 4 * 12{
+            let out = Int(round(diff/(3600*24*7*4)))
+            str = (out == 1 ? "1 month ago" : "\(out) months ago")
+        } else {//if diff < 3600 * 24 * 7 * 4 * 12{
+            let out = Int(round(diff/(3600*24*7*4*12)))
+            str = (out == 1 ? "1 year ago" : "\(out) years ago")
+        }
+        return str
+    }
+    
+    /**
+        * Combile two image
+     */
+    static func combineImages(_ bottomImage: UIImage, topImage: UIImage) -> UIImage {
+        let size = CGSize(width: 100, height: 100)
+        UIGraphicsBeginImageContext(size)
+
+        let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        bottomImage.draw(in: areaSize)
+
+        topImage.draw(in: areaSize, blendMode: .normal, alpha: 1.0)
+
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
     }
 }

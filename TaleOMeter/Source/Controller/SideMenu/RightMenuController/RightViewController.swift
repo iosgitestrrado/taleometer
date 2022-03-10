@@ -21,6 +21,8 @@ class RightViewController: UIViewController {
     
     private enum SideViewCellItem: Equatable {
         case profile
+        case triviaQuiz
+        case triviaComments
         case shareStory
         case history
         case preference
@@ -32,6 +34,10 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return "My Account"
+            case .triviaQuiz:
+                return "Trivia Quiz"
+            case .triviaComments:
+                return "Trivia Comments"
             case .shareStory:
                 return "Share your Story"
             case .history:
@@ -49,8 +55,10 @@ class RightViewController: UIViewController {
     }
     
     private let sections: [[SideViewCellItem]] = [
-        [.profile, .profile, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .profile, .triviaQuiz, .triviaComments, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
+    
+    private var profileData: ProfileData?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -61,9 +69,15 @@ class RightViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
     }
     
     @objc private func updateUserData(_ notification: Notification) {
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
         self.tableView.reloadData()
     }
 
@@ -133,81 +147,72 @@ extension RightViewController: UITableViewDelegate {
             return sideMenuController.rootViewController as! UINavigationController
         }
         sideMenuController.hideRightView(animated: true)
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
             case .profile:
-                if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Constants.Storyboard.auth, storyBoradId: "ProfileViewController")
+                return
+            case .triviaQuiz:
+                self.pushToView(Constants.Storyboard.trivia, storyBoradId: "TriviaViewController")
+                return
+            case .triviaComments:
+                self.pushToView(Constants.Storyboard.trivia, storyBoradId: "TRFeedViewController")
                 return
             case .shareStory:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? MainUserStoryVC) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "MainUserStoryVC")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Constants.Storyboard.other, storyBoradId: "MainUserStoryVC")
                 return
             case .preference:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? SettingViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "SettingViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Constants.Storyboard.other, storyBoradId: "SettingViewController")
                 return
             case .history:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? HistoryViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Constants.Storyboard.audio, storyBoradId: "HistoryViewController")
                 return
             case .feedback:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? FeedbackViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "FeedbackViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Constants.Storyboard.other, storyBoradId: "FeedbackViewController")
                 return
             case .aboutUs:
-                if let cont = sideMenuController.rootViewController as? UINavigationController, let lastView = cont.children.last, (lastView as? AboutUsViewController) == nil {
-                    let myobject = UIStoryboard(name: Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "AboutUsViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                self.pushToView(Constants.Storyboard.other, storyBoradId: "AboutUsViewController")
                 return
             case .logout:
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.synchronize()
-                AudioPlayManager.shared.isMiniPlayerActive = false
-                AudioPlayManager.shared.isNonStop = false
-                if UserDefaults.standard.value(forKey: "ProfileName") == nil {
-                    if let data = UIImage(named: "logo")?.pngData() {
-                        UserDefaults.standard.set(data, forKey: "ProfileImage")
-                    }
-                    UserDefaults.standard.set("+0 00000 00000", forKey: "ProfileMobile")
-                    UserDefaults.standard.set("IN", forKey: "CountryCode")
-                    UserDefaults.standard.set("temp@temp.temp", forKey: "ProfileEmail")
-                    UserDefaults.standard.set("Guest", forKey: "ProfileName")
-                    UserDefaults.standard.synchronize()
-                }
-                if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    var contStacks = [UIViewController]()
-                    if let myobject = UIStoryboard(name: Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
-                        contStacks.append(myobject)
-                    }
-                    if let myobject = UIStoryboard(name: Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
-                        contStacks.append(myobject)
-                    }
-                    cont.viewControllers = contStacks
-                    let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                AuthClient.logout()
+//                let domain = Bundle.main.bundleIdentifier!
+//                UserDefaults.standard.removePersistentDomain(forName: domain)
+//                UserDefaults.standard.synchronize()
+//                AudioPlayManager.shared.isMiniPlayerActive = false
+//                AudioPlayManager.shared.isNonStop = false
+//
+//                Login.setGusetData()
+//                if let cont = sideMenuController.rootViewController as? UINavigationController {
+//                    var contStacks = [UIViewController]()
+//                    if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
+//                        contStacks.append(myobject)
+//                    }
+//                    if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
+//                        contStacks.append(myobject)
+//                    }
+//                    cont.viewControllers = contStacks
+//                    let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+//                    cont.pushViewController(myobject, animated: true)
+//                }
                 self.tableView.reloadData()
                 return
             }
         } else {
-            if let cont = sideMenuController.rootViewController as? UINavigationController {
-                
-                let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-                cont.pushViewController(myobject, animated: true)
+            self.pushToView(Constants.Storyboard.auth, storyBoradId: "LoginViewController")
+        }
+    }
+    
+    private func pushToView(_ storyBoardName: String, storyBoradId: String) {
+        guard let sideMenuController = sideMenuController else { return }
+        if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last, navLastChild.className != storyBoradId {
+            for controller in cont.children {
+                if controller.className == storyBoradId {
+                    cont.popToViewController(controller, animated: true)
+                    return
+                }
             }
+            let myobject = UIStoryboard(name: storyBoardName, bundle: nil).instantiateViewController(withIdentifier: storyBoradId)
+            cont.pushViewController(myobject, animated: true)
         }
     }
 
@@ -238,7 +243,7 @@ extension RightViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if UserDefaults.standard.bool(forKey: "isLogin") {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             return sections[section].count
         }
         return sections[section].count - 1
@@ -249,9 +254,9 @@ extension RightViewController: UITableViewDataSource {
             //profileCell
             let cell = tableView.dequeueReusableCell(withIdentifier: cellProfileIdentifier, for: indexPath) as! RightViewCell
             
-            cell.titleLabel.text = UserDefaults.standard.string(forKey: "ProfileName") ?? "Guest"
-            cell.subTitleLabel.text = UserDefaults.standard.string(forKey: "ProfileMobile") ?? "+0 00000 00000"
-            if let imgData = UserDefaults.standard.object(forKey: "ProfileImage") as? Data, let img = UIImage(data: imgData) {
+            cell.titleLabel.text = profileData?.Fname ?? "Guest"
+            cell.subTitleLabel.text = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "00000 00000")"
+            if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
                 cell.profileImage.image = img
             }
             cell.closeButton.addTarget(self, action: #selector(self.clickOnClose(_:)), for: .touchUpInside)

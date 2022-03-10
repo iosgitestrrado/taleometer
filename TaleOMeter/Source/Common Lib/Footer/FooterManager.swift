@@ -3,6 +3,7 @@
 //  TaleOMeter
 //
 //  Created by Durgesh on 18/02/22.
+//  Copyright © 2022 Durgesh. All rights reserved.
 //
 
 import UIKit
@@ -13,7 +14,7 @@ class FooterManager: NSObject {
     static let viewTag = 99999996
     
     // MARK: - Public Properties -
-    public var isActive = false
+    var isActive = false
     
     // MARK: - Private Properties -
     private var curVController = UIViewController()
@@ -25,7 +26,7 @@ class FooterManager: NSObject {
      *  Add custom Footer to view
      */
     static func addFooter(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint(), isFavorite: Bool = false, isSearch: Bool = false) {
-        if let myobject = UIStoryboard(name: Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "FooterViewController") as? FooterViewController {
+        if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "FooterViewController") as? FooterViewController {
             if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
                 footerView.removeFromSuperview()
             }
@@ -64,9 +65,9 @@ class FooterManager: NSObject {
                     }
                 }
             }
-            Core.push(curVController, storyboard: Storyboard.audio, storyboardId: "SearchViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.audio, storyboardId: "SearchViewController")
         } else {
-            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
@@ -81,9 +82,9 @@ class FooterManager: NSObject {
                     }
                 }
             }
-            Core.push(curVController, storyboard: Storyboard.audio, storyboardId: "FavouriteViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.audio, storyboardId: "FavouriteViewController")
         } else {
-            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
     
@@ -97,9 +98,9 @@ class FooterManager: NSObject {
                     }
                 }
             }
-            Core.push(curVController, storyboard: Storyboard.dashboard, storyboardId: "DashboardViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         } else {
-            Core.push(curVController, storyboard: Storyboard.auth, storyboardId: "LoginViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
     }
 }

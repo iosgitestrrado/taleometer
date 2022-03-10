@@ -25,10 +25,10 @@ class NonStopViewController: UIViewController {
     @IBOutlet weak var visualizationWave: AudioVisualizationView!
     
     // MARK: - Public Properties -
-    public var existingAudio = false
+    var existingAudio = false
+    var waveFormcount = 0
 
     // MARK: - Private Properties -
-    public var waveFormcount = 0
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
     private var isPlaying = false
@@ -80,7 +80,7 @@ class NonStopViewController: UIViewController {
     
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "AuthorViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
         switch sender.tag {
         case 0:
             //Story
@@ -118,9 +118,6 @@ class NonStopViewController: UIViewController {
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
         guard let url = Bundle.main.path(forResource: "testAudio", ofType: "mp3") else { return }
         
-        visualizationWave.audioVisualizationMode = .write
-        visualizationWave.add(meteringLevel: 0.6)
-
         visualizationWave.meteringLevelBarWidth = 1.0
         visualizationWave.meteringLevelBarInterItem = 1.0
         visualizationWave.audioVisualizationTimeInterval = 0.30
@@ -134,7 +131,6 @@ class NonStopViewController: UIViewController {
             AudioPlayManager.shared.isMiniPlayerActive = true
             
             waveFormcount = AudioPlayManager.shared.audioMetering.count
-            visualizationWave.audioVisualizationMode = .read
             visualizationWave.meteringLevels = AudioPlayManager.shared.audioMetering
             DispatchQueue.main.async {
                 self.visualizationWave.setNeedsDisplay()
@@ -169,10 +165,9 @@ class NonStopViewController: UIViewController {
             }
             
             self.playButton.isSelected = false
-            Core.ShowProgress(contrSelf: self, detailLbl: "Getting audio waves...")
+            Core.ShowProgress(self, detailLbl: "Getting audio waves...")
             AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
                 waveFormcount = result.count
-                visualizationWave.audioVisualizationMode = .read
                 visualizationWave.meteringLevels = result
                 DispatchQueue.main.async {
                     visualizationWave.setNeedsDisplay()
@@ -198,7 +193,7 @@ class NonStopViewController: UIViewController {
                         }
                     }
                 }
-                Core.HideProgress(contrSelf: self)
+                Core.HideProgress(self)
             }            
         }
         // Pan gesture for scrubbing support.
@@ -292,7 +287,7 @@ class NonStopViewController: UIViewController {
                 }
             }
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(self)
+                PromptVManager.present(self, isAudioView: true)
             }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo

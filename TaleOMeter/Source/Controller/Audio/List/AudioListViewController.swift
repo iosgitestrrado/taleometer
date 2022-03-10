@@ -10,8 +10,8 @@ import UIKit
 class AudioListViewController: UITableViewController {
 
     // MARK: - Public Property -
-    public var isFavourite = false
-    public var isNonStop = false
+    var isFavourite = false
+    var isNonStop = false
     
     // MARK: - Public Property -
     private var selectedIndex = -1
@@ -90,34 +90,8 @@ class AudioListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "audioCell", for: indexPath) as? AudioViewCell else { return UITableViewCell() }
-        cell.isSelected = indexPath.row == selectedIndex
-        if let image = cell.imageView {
-            image.cornerRadius = image.frame.size.height / 2.0
-        }
-        cell.playButton.isHidden = isNonStop
-        cell.favButton.isHidden = isNonStop
-        if let titleLbl = cell.titleLabel {
-            if cell.isSelected {
-                let soundWave = Core.getImageString("wave")
-                let titleAttText = NSMutableAttributedString(string: "\(self.titleStr)  ")
-                titleAttText.append(soundWave)
-                titleLbl.attributedText = titleAttText
-                titleLbl.textColor = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0)
-            } else {
-                titleLbl.text = titleStr
-                titleLbl.textColor = .white
-            }
-        }
-        if !isNonStop {
-            cell.playButton.tag = indexPath.row
-            cell.playButton.isSelected = cell.isSelected
-            cell.playButton.addTarget(self, action: #selector(tapOnPlay(_:)), for: .touchUpInside)
-            cell.favButton.addTarget(self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
-            if isFavourite {
-                cell.favButton.isSelected = isFavourite
-            }
-        }
-        cell.selectionStyle = .none
+        
+        cell.configureCell(self.titleStr, isNonStop: isNonStop, isFavourite: isFavourite, row: indexPath.row, selectedIndex: selectedIndex, target: self, selectors: [#selector(tapOnPlay(_:)), #selector(tapOnFav(_:))])
         return cell
     }
     

@@ -17,8 +17,8 @@ class VerificationProfileVC: UIViewController {
     
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var profileDelegate: ProfileEditDelegate? = nil
-    public var mobileNumber = ""
-    public var countryCode = ""
+    var mobileNumber = ""
+    var countryCode = ""
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -46,7 +46,7 @@ class VerificationProfileVC: UIViewController {
             Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
             return
         }
-        PromptVManager.present(self, isAudioView: false, verifyMessage: "Your Mobile Number is Successfully Changed")
+        PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
     }
 }
 

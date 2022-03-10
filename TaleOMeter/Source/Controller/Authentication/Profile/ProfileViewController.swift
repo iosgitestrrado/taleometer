@@ -18,13 +18,15 @@ class ProfileViewController: UIViewController {
     // MARK: - Private Property -
     private let imagePicker = UIImagePickerController()
     private var editIndex = -1
+    private var profileData: ProfileData?
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setProfileData(UserDefaults.standard.string(forKey: "ProfileName") ?? "", mobile: UserDefaults.standard.string(forKey: "ProfileMobile") ?? "", email: UserDefaults.standard.string(forKey: "ProfileEmail") ?? "")
-        if let imgData = UserDefaults.standard.object(forKey: "ProfileImage") as? Data, let img = UIImage(data: imgData) {
+        
+        setProfileData()
+        if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
             self.profileImage.image = img
         }
     }
@@ -40,7 +42,16 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func setProfileData(_ name: String, mobile: String, email: String) {
+    private func setProfileData() {
+        
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
+        
+        let name = profileData?.Fname ?? ""
+        let mobile = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "")"
+        let email = profileData?.Email ?? ""
+        
         let pencilAtt = Core.getImageString("pencil")
         let phoneAtt = Core.getImageString("phone")
         let emailAtt = Core.getImageString("email")
@@ -80,26 +91,26 @@ class ProfileViewController: UIViewController {
         switch sender.tag {
         case 1:
             //Name
-            guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
+            guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
             myobject.titleString = "Change Name"
-            myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileName") ?? ""
+            myobject.fieldValue = profileData?.Fname ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
         case 2:
             //Mobile Number
-            guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ChangeMobileNumberVC") as? ChangeMobileNumberVC else { break }
+            guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ChangeMobileNumberVC") as? ChangeMobileNumberVC else { break }
             
-            myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileMobile") ?? ""
-            myobject.countryCodeVal = UserDefaults.standard.string(forKey: "CountryCode") ?? "IN"
+            myobject.fieldValue = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "")"
+            myobject.countryCodeVal = profileData?.CountryCode ?? "IN"
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
         case 3:
             //Email Id
-            guard let myobject = UIStoryboard(name: Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
+            guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
             myobject.titleString = "Change Email ID"
-            myobject.fieldValue = UserDefaults.standard.string(forKey: "ProfileEmail") ?? ""
+            myobject.fieldValue = profileData?.Email ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
@@ -119,15 +130,64 @@ class ProfileViewController: UIViewController {
             }))
             
             alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
-                self.profileImage.image = UIImage(named: "logo")
-                if let data = self.profileImage.image?.pngData() {
-                    UserDefaults.standard.set(data, forKey: "ProfileImage")
+                self.profileImage.image = defaultImage
+                if let imgData = self.profileImage.image?.pngData() {
+                    self.uploadProfileImage(imgData)
                 }
-                UserDefaults.standard.synchronize()
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
             }))
             self.present(alert, animated: true, completion: nil)
             break
+        }
+    }
+    
+    private func uploadProfileImage(_ imageData: Data) {
+        var imgData = imageData
+        Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
+        if Double(imgData.count) / 1000.0 > 2048.0 {
+            let imageis = UIImage(data: imgData)
+            imgData = imageis!.jpegData(compressionQuality: 0.5)!
+        }
+        if Double(imgData.count) / 1000.0 > 2048.0 {
+            let imageis = UIImage(data: imgData)
+            imgData = imageis!.jpegData(compressionQuality: 0.5)!
+        }
+        AuthClient.updateProfilePicture(imgData) { result in
+            if var response = result {
+                response.ImageData = imgData
+                response.CountryCode = self.profileData?.CountryCode ?? "IN"
+                self.profileData = response
+                Login.storeProfileData(response)
+            }
+            Core.HideProgress(self)
+            
+        }
+    }
+    
+    private func updateProfileDetails(_ name: String, email: String) {
+        Core.ShowProgress(self, detailLbl: "Udpating profile details...")
+        var profRequest = ProfileRequest()
+        if !name.isBlank {
+            profRequest.name = name
+        } else {
+            profRequest.name = self.profileData?.Fname ?? ""
+        }
+        
+        if !email.isBlank {
+            profRequest.email = email
+        } else {
+            profRequest.email = self.profileData?.Email ?? ""
+        }
+        
+        AuthClient.updateProfile(profRequest) { result in
+            if var response = result {
+                response.ImageData = self.profileData?.ImageData ?? Data()
+                response.CountryCode = self.profileData?.CountryCode ?? "IN"
+                self.profileData = response
+                Login.storeProfileData(response)
+                self.setProfileData()
+            }
+            Core.HideProgress(self)
+            
         }
     }
 }
@@ -140,13 +200,13 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
             self.profileImage.image = image
         }
         
-        if let data = self.profileImage.image?.pngData() {
-            UserDefaults.standard.set(data, forKey: "ProfileImage")
+        if let imgData = self.profileImage.image?.pngData() {
+            uploadProfileImage(imgData)
         }
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         self.imagePicker.dismiss(animated: true) {
-            PromptVManager.present(self, isAudioView: false, verifyMessage: "Your Profile Image is Successfully Changed")
+            PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
         }
     }
 }
@@ -158,22 +218,18 @@ extension ProfileViewController: ProfileEditDelegate  {
         switch editIndex {
         case 1:
             //Name
-            self.setProfileData(data, mobile: "", email: "")
-            UserDefaults.standard.set(data, forKey: "ProfileName")
+            self.updateProfileDetails(data, email: "")
             break
         case 2:
             //Mobile Number
-            self.setProfileData("", mobile: data, email: "")
-            UserDefaults.standard.set(data, forKey: "ProfileMobile")
-            UserDefaults.standard.set(code, forKey: "CountryCode")
+//            self.setProfileData("", mobile: data, email: "")
+//            UserDefaults.standard.set(data, forKey: "ProfileMobile")
+//            UserDefaults.standard.set(code, forKey: "CountryCode")
             break
         default:
             //Email Id
-            self.setProfileData("", mobile: "", email: data)
-            UserDefaults.standard.set(data, forKey: "ProfileEmail")
+            self.updateProfileDetails("", email: data)
             break
         }
-        UserDefaults.standard.synchronize()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
 }

@@ -24,13 +24,19 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var verifyImage: UIImageView!
     @IBOutlet weak var titleLabelV: UILabel!
     @IBOutlet weak var messageLabelV: UILabel!
+    
+    @IBOutlet weak var answerPromptView: UIView!
+    @IBOutlet weak var answerImage: UIImageView!
+    @IBOutlet weak var answerTitle: UILabel!
+    @IBOutlet weak var answerMessage: UILabel!
+    
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var delegate: PromptViewDelegate? = nil
     
     // MARK: - Public Properties -
-    public var songTitle = ""
-    public var nextSongTitle = ""
-    public var isAudioPrompt: Bool = false
+    var songTitle = ""
+    var nextSongTitle = ""
+    var isAudioPrompt: Bool = false
 
     // MARK: - Private Properties -
     private var timer = Timer()

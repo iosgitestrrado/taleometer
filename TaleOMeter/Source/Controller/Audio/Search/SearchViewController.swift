@@ -50,7 +50,7 @@ class SearchViewController: UIViewController {
         self.tableView.reloadData()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @IBAction func tapOnBack(_ sender: Any) {
@@ -66,7 +66,7 @@ class SearchViewController: UIViewController {
     }
     
     @objc private func tapOnViewAll(_ sender: UIButton) {
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "SearchHistoryViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "SearchHistoryViewController")
     }
     
     private func storeRecentSearch() {
@@ -81,7 +81,7 @@ class SearchViewController: UIViewController {
         }
     }
     
-    @objc private func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardWillHideNotification (notification: Notification) {
         if self.containerBottomCons.constant != originalConBotCons {
             self.containerBottomCons.constant = originalConBotCons
         }
@@ -164,7 +164,7 @@ extension SearchViewController: UITableViewDelegate {
             recentSearchArray.append(listArray[indexPath.row])
             storeRecentSearch()
         }
-        Core.push(self, storyboard: Storyboard.audio, storyboardId: "AuthorViewController")
+        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
     }
 }
 
