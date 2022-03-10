@@ -33,7 +33,7 @@ class LoginViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
@@ -45,7 +45,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @objc private func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardWillHideNotification (notification: Notification) {
         if self.view.frame.origin.y != 0.0 {
             UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.view.frame.origin.y = 0

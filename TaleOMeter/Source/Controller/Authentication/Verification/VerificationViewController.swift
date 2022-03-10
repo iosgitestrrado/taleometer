@@ -35,7 +35,7 @@ class VerificationViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
@@ -47,7 +47,7 @@ class VerificationViewController: UIViewController {
         }
     }
     
-    @objc private func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardWillHideNotification (notification: Notification) {
         if self.view.frame.origin.y != 0.0 {
             UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.view.frame.origin.y = 0
@@ -78,6 +78,10 @@ class VerificationViewController: UIViewController {
                 UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
                 UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
                 
+                response.CountryCode = self.countryCode
+                response.Isd_code = self.iSDCode
+                Login.storeProfileData(response)
+                
                 if isNewRegister {
                     response.StoryBoardName = Constants.Storyboard.auth
                     response.StoryBoardId = "RegisterViewController"
@@ -87,9 +91,6 @@ class VerificationViewController: UIViewController {
                     response.StoryBoardId = "PreferenceViewController"
                     Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
                 }
-                response.CountryCode = self.countryCode
-                response.Isd_code = self.iSDCode
-                Login.storeProfileData(response)
             }
             Core.HideProgress(self)
         }

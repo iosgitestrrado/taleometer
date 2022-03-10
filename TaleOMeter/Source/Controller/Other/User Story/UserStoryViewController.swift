@@ -42,7 +42,7 @@ class UserStoryViewController: UIViewController {
        // Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
         
     // MARK: - Add total cells in property
@@ -132,7 +132,7 @@ class UserStoryViewController: UIViewController {
     }
     
     // MARK: Keyboard will Hide
-    @objc private func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardWillHideNotification (notification: Notification) {
         self.tblBottomConstraint.constant = 0
     }
 }

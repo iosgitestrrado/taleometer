@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 let profileImageName = "profilePic.jpeg"
 
@@ -51,10 +52,30 @@ class AuthClient {
         }
     }
     
-    static func logout(_ loginReq: LoginRequest, completion: @escaping(Bool) -> Void) {
-        APIClient.shared.getJson("", feed: .Logout) { result in
-            ResponseAPI.getResponseJsonBool(result) { status in
-                completion(status)
+    static func logout(_ message: String = "") {
+        if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController, !(cont.viewControllers.last is LoginViewController) {
+            let domain = Bundle.main.bundleIdentifier!
+            UserDefaults.standard.removePersistentDomain(forName: domain)
+            UserDefaults.standard.synchronize()
+            AudioPlayManager.shared.isMiniPlayerActive = false
+            AudioPlayManager.shared.isNonStop = false
+            
+            Login.setGusetData()
+            var contStacks = [UIViewController]()
+            if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
+                contStacks.append(myobject)
+            }
+            if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
+                contStacks.append(myobject)
+            }
+            cont.viewControllers = contStacks
+            let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+            cont.pushViewController(myobject, animated: true)
+            if !message.isBlank {
+                Snackbar.showAlertMessage(message)
+            }
+            APIClient.shared.getJson("", feed: .Logout) { result in
+                
             }
         }
     }
@@ -123,7 +144,7 @@ class AuthClient {
                         let mutableResponse = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
                         print(mutableResponse)
                         //completionHandler(mutableResponse as? NSDictionary, (response as! HTTPURLResponse).allHeaderFields as NSDictionary, error)
-                    } catch let error {
+                    } catch _ {
                         //completionHandler([:], [:], error)
                     }
                     

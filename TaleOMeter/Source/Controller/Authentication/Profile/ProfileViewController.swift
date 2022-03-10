@@ -130,7 +130,7 @@ class ProfileViewController: UIViewController {
             }))
             
             alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
-                self.profileImage.image = UIImage(named: "logo")
+                self.profileImage.image = defaultImage
                 if let imgData = self.profileImage.image?.pngData() {
                     self.uploadProfileImage(imgData)
                 }
@@ -159,7 +159,7 @@ class ProfileViewController: UIViewController {
                 Login.storeProfileData(response)
             }
             Core.HideProgress(self)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+            
         }
     }
     
@@ -187,7 +187,7 @@ class ProfileViewController: UIViewController {
                 self.setProfileData()
             }
             Core.HideProgress(self)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+            
         }
     }
 }

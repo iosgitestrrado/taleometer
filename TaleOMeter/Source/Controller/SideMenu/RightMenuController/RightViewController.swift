@@ -174,25 +174,26 @@ extension RightViewController: UITableViewDelegate {
                 self.pushToView(Constants.Storyboard.other, storyBoradId: "AboutUsViewController")
                 return
             case .logout:
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.synchronize()
-                AudioPlayManager.shared.isMiniPlayerActive = false
-                AudioPlayManager.shared.isNonStop = false
-                
-                Login.setGusetData()
-                if let cont = sideMenuController.rootViewController as? UINavigationController {
-                    var contStacks = [UIViewController]()
-                    if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
-                        contStacks.append(myobject)
-                    }
-                    if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
-                        contStacks.append(myobject)
-                    }
-                    cont.viewControllers = contStacks
-                    let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-                    cont.pushViewController(myobject, animated: true)
-                }
+                AuthClient.logout()
+//                let domain = Bundle.main.bundleIdentifier!
+//                UserDefaults.standard.removePersistentDomain(forName: domain)
+//                UserDefaults.standard.synchronize()
+//                AudioPlayManager.shared.isMiniPlayerActive = false
+//                AudioPlayManager.shared.isNonStop = false
+//
+//                Login.setGusetData()
+//                if let cont = sideMenuController.rootViewController as? UINavigationController {
+//                    var contStacks = [UIViewController]()
+//                    if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
+//                        contStacks.append(myobject)
+//                    }
+//                    if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
+//                        contStacks.append(myobject)
+//                    }
+//                    cont.viewControllers = contStacks
+//                    let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+//                    cont.pushViewController(myobject, animated: true)
+//                }
                 self.tableView.reloadData()
                 return
             }

@@ -85,9 +85,14 @@ struct ResponseAPI {
                 completion(responseData)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
-                completion(nil)
-                if showAlert {
-                    Snackbar.showErrorMessage(messageis)
+                if messageis.lowercased().contains("unauthorized") {
+                    AuthClient.logout(messageis)
+                    completion(nil)
+                } else {
+                    completion(nil)
+                    if showAlert {
+                        Snackbar.showErrorMessage(messageis)
+                    }
                 }
             } else {
                 completion(nil)
@@ -103,15 +108,22 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJson(_ result: Result<ResponseModelJSON?, APIError>, completion: @escaping (JSON?) -> ()) {
+    static func getResponseJson(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, completion: @escaping (JSON?) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
                     completion(responseData)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
-                completion(nil)
-                Snackbar.showErrorMessage(messageis)
+                if messageis.lowercased().contains("unauthorized") {
+                    AuthClient.logout(messageis)
+                    completion(nil)
+                } else {
+                    completion(nil)
+                    if showAlert {
+                        Snackbar.showErrorMessage(messageis)
+                    }
+                }
             } else {
                 completion(nil)
                 Snackbar.showErrorMessage(errorMessage)
@@ -122,15 +134,22 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJsonBool(_ result: Result<ResponseModelJSON?, APIError>, completion: @escaping (Bool) -> ()) {
+    static func getResponseJsonBool(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, completion: @escaping (Bool) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status {
                 completion(status)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
-                completion(false)
-                Snackbar.showErrorMessage(messageis)
+                if messageis.lowercased().contains("unauthorized") {
+                    AuthClient.logout(messageis)
+                    completion(false)
+                } else {
+                    completion(false)
+                    if showAlert {
+                        Snackbar.showErrorMessage(messageis)
+                    }
+                }
             } else {
                 completion(false)
                 Snackbar.showErrorMessage(errorMessage)
@@ -141,7 +160,7 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJsonToken(_ result: Result<ResponseModelJSON?, APIError>, completion: @escaping (JSON?, Bool, String, Bool) -> ()) {
+    static func getResponseJsonToken(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, completion: @escaping (JSON?, Bool, String, Bool) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status {
@@ -152,8 +171,15 @@ struct ResponseAPI {
                 }
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
-                completion(nil, false, "", false)
-                Snackbar.showErrorMessage(messageis)
+                if messageis.lowercased().contains("unauthorized") {
+                    AuthClient.logout(messageis)
+                    completion(nil, false, "", false)
+                } else {
+                    completion(nil, false, "", false)
+                    if showAlert {
+                        Snackbar.showErrorMessage(messageis)
+                    }
+                }
             } else {
                 completion(nil, false, "", false)
                 Snackbar.showErrorMessage(errorMessage)

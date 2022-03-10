@@ -21,7 +21,15 @@ class NowPlayViewController: UIViewController {
     @IBOutlet weak var storyButton: UIButton!
     @IBOutlet weak var plotButton: UIButton!
     @IBOutlet weak var narrotionButton: UIButton!
-    @IBOutlet weak var visualizationWave: AudioVisualizationView!
+    @IBOutlet weak var visualizationWave: AudioVisualizationView! {
+        didSet {
+            visualizationWave.meteringLevelBarWidth = 1.0
+            visualizationWave.meteringLevelBarInterItem = 1.0
+            visualizationWave.audioVisualizationTimeInterval = 0.30
+            visualizationWave.gradientStartColor = .white
+            visualizationWave.gradientEndColor = .red
+        }
+    }
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var endTimeLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
@@ -29,20 +37,30 @@ class NowPlayViewController: UIViewController {
     // MARK: - Public Properties -
     var existingAudio = false
     var waveFormcount = 0
-    var audio = Audio()
 
     // MARK: - Private Properties -
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
     private var isPlayingTap = false
     private var player = AVPlayer()
+    private var audio = Audio()
+    private var audioURL = URL(string: "")
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
-        configureAudio()
+        
+        if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
+            audio = audList[AudioPlayManager.shared.currentAudio]
+            // Configure audio data
+            setupAudioData(false)
+        } else {
+            Snackbar.showErrorMessage("Selected Audio not found!")
+        }
+                
+        // Set notification center for audio playing completed
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
@@ -71,77 +89,157 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    // MARK: Set audio wave meter
-    private func configureAudio() {
+    // MARK: Set audio data
+    private func setupAudioData(_ playNow: Bool) {
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
         AudioPlayManager.shared.isNonStop = false
+        
         self.imageView.image = audio.Image
         self.titleLabel.text = audio.Title
-        guard let url = URL(string: audio.File) else { return }
+        if let story = audio.Story {
+            self.storyButton.setTitle("Story: \(story.Name)", for: .normal)
+        }
+        if let plot = audio.Plot {
+            self.storyButton.setTitle("Plot: \(plot.Name)", for: .normal)
+        }
+        if let narration = audio.Story {
+            self.storyButton.setTitle("Narration: \(narration.Name)", for: .normal)
+        }
         
-        visualizationWave.audioVisualizationMode = .write
-        visualizationWave.add(meteringLevel: 0.6)
+        self.cuncurrentUserLbl.text = "Concurrent Users: \(audio.Views_count.formatPoints())"
+        
+        guard let url = URL(string: audio.File) else { return }
+        stramingAudio(url, playNow: playNow)
+    }
+    
+    // MARK: - Streaming audio file -
+    func stramingAudio(_ audioUrl: URL, playNow: Bool) {
+        Core.ShowProgress(self, detailLbl: "Streaming Audio...")
+        // then lets create your document folder url
+        let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 
-        visualizationWave.meteringLevelBarWidth = 1.0
-        visualizationWave.meteringLevelBarInterItem = 1.0
-        visualizationWave.audioVisualizationTimeInterval = 0.30
-        visualizationWave.gradientStartColor = .white
-        visualizationWave.gradientEndColor = .red
+        // lets create your destination file url
+        let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
 
+        // to check if it exists before downloading it
+        if FileManager.default.fileExists(atPath: destinationUrl.path) {
+            audioURL = destinationUrl
+            configureAudio(playNow)
+        } else {
+            // you can use NSURLSession.sharedSession to download the data asynchronously
+            URLSession.shared.downloadTask(with: audioUrl, completionHandler: { [self] (location, response, error) -> Void in
+                guard let location = location, error == nil else { return }
+                do {
+                    // after downloading your file you need to move it to your destination url
+                    try FileManager.default.moveItem(at: location, to: destinationUrl)
+                    audioURL = destinationUrl
+                    configureAudio(playNow)
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }).resume()
+        }
+    }
+    
+    //  MARK: - Set up audio wave and play
+    func configureAudio(_ playNow: Bool) {
+        // Hide loading
+        Core.HideProgress(self)
+        guard let url = audioURL else { return }
+        
+        // Reset wave
         visualizationWave.reset()
+        // Check existing audio play and get player
         if existingAudio, let playerk = AudioPlayManager.shared.playerAV {
             player = playerk
+            
+            // Miniplayer active
             AudioPlayManager.shared.isMiniPlayerActive = true
+            
+            // Set waveform count
             waveFormcount = AudioPlayManager.shared.audioMetering.count
-            visualizationWave.audioVisualizationMode = .read
+            
+            // Set merering level of wave
             visualizationWave.meteringLevels = AudioPlayManager.shared.audioMetering
-            DispatchQueue.main.async {
+            
+            // Update time duration in label
+            DispatchQueue.main.async { [self] in
                 self.visualizationWave.setNeedsDisplay()
                 self.udpateTime()
-            }
-            if let duration = player.currentItem?.asset.duration {
-                totalTimeDuration = Float(CMTimeGetSeconds(duration))
-                visualizationWave.play(for: TimeInterval(totalTimeDuration))
-                if let chronometer = self.visualizationWave.playChronometer, let waveformsToBeRecolored = player.currentItem?.currentTime().seconds {
-                    chronometer.timerCurrentValue = TimeInterval(waveformsToBeRecolored)
-                    chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
+                
+                // Get audio duration and set in private variable
+                if let duration = player.currentItem?.asset.duration {
+                    totalTimeDuration = Float(CMTimeGetSeconds(duration))
+                    if player.isPlaying {
+                        visualizationWave.play(for: TimeInterval(totalTimeDuration))
+                    }
+                    if let chronometer = self.visualizationWave.playChronometer, let waveformsToBeRecolored = player.currentItem?.currentTime().seconds {
+                        chronometer.timerCurrentValue = TimeInterval(waveformsToBeRecolored)
+                        chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
+                    }
                 }
-            }
-            
-            self.playButton.isSelected = player.isPlaying
-            if player.isPlaying {
-                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
-                RunLoop.main.add(self.audioTimer, forMode: .default)
-                audioTimer.fire()
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [self] in
-                    visualizationWave.pause()
+                
+                // Update play button image as per audio playing and enable timer
+                self.playButton.isSelected = player.isPlaying
+                if player.isPlaying {
+                    audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                    RunLoop.main.add(self.audioTimer, forMode: .default)
+                    audioTimer.fire()
+                } else {
+    //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [self] in
+    //                    visualizationWave.pause()
+    //                }
                 }
             }
         } else {
+            // Configure new audio in audio player manager
             AudioPlayManager.shared.configAudio(url)
+            
+            // Get audio play for use this class
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
                 if let playerk = AudioPlayManager.shared.playerAV {
                     self.player = playerk
                 }
             }
             self.playButton.isSelected = false
+            
+            // Show loading
             Core.ShowProgress(self, detailLbl: "Getting audio waves...")
+            // Get audio meter from audio file
             AudioPlayManager.getAudioMeters(url, forChannel: 0) { [self] result in
+                // Set waveform count
                 waveFormcount = result.count
-                visualizationWave.audioVisualizationMode = .read
                 visualizationWave.meteringLevels = result
+                
+                // Update time duration in label
                 DispatchQueue.main.async {
                     visualizationWave.setNeedsDisplay()
-                    udpateTime()
-                }
-                if let duration = player.currentItem?.asset.duration {
-                    totalTimeDuration = Float(CMTimeGetSeconds(duration))
-                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
-                        visualizationWave.pause()
+                    if let chronometer = self.visualizationWave.playChronometer {
+                        chronometer.timerCurrentValue = TimeInterval(0)
+                        chronometer.timerDidUpdate?(TimeInterval(0))
+                    }
+                    // Get audio duration and set in private variable
+                    if let duration = player.currentItem?.asset.duration {
+                        totalTimeDuration = Float(CMTimeGetSeconds(duration))
+                        if !playNow {
+//                            visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
+//                                visualizationWave.pause()
+//                            }
+                            udpateTime()
+                        } else {
+                            self.visualizationWave.playChronometer = nil
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
+                                if let playerk = AudioPlayManager.shared.playerAV {
+                                    self.player = playerk
+                                }
+                            }
+                            self.playPauseAudio(true)
+                        }
                     }
                 }
+                                
+                // Hide loading
                 Core.HideProgress(self)
             }
         }
@@ -212,7 +310,9 @@ class NowPlayViewController: UIViewController {
     }
     
     private func playPauseAudio(_ playing: Bool) {
-        self.playButton.isSelected = playing
+        DispatchQueue.main.async {
+            self.playButton.isSelected = playing
+        }
         if !playing {
             player.pause()
             audioTimer.invalidate()
@@ -289,15 +389,36 @@ class NowPlayViewController: UIViewController {
     }
     
     @objc private func itemDidFinishedPlaying() {
-        //if (player.isPlaying) {
         self.playPauseAudio(false)
-        //}
         existingAudio = false
-        configureAudio()
+        configureAudio(false)
         if let chronometer = self.visualizationWave.playChronometer {
             chronometer.timerCurrentValue = TimeInterval(0)
             chronometer.timerDidUpdate?(TimeInterval(0))
         }
+    }
+    
+    private func nextPrevPlay(_ isNext: Bool = true) {
+        if let audioUrl = URL(string: AudioPlayManager.shared.audioList![isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio].File) {
+            let fileName = NSString(string: audioUrl.lastPathComponent)
+            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+                Snackbar.showErrorMessage("Audio File \"\(fileName.pathExtension)\" is not supported!")
+                return
+            }
+        }
+        let currentAudio = isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio
+        guard let audioList = AudioPlayManager.shared.audioList else {
+            Snackbar.showAlertMessage("No Next audio found")
+            return
+        }
+        AudioPlayManager.shared.currentAudio = currentAudio
+        AudioPlayManager.shared.nextAudio = audioList.count - 1 > currentAudio ? currentAudio + 1 : 0
+        AudioPlayManager.shared.prevAudio = currentAudio > 0 ? currentAudio - 1 : audioList.count - 1
+        audio = audioList[currentAudio]
+        
+        
+        // Configure audio data
+        setupAudioData(true)
     }
     
     private func setTime(_ currentTime: TimeInterval) {
@@ -317,25 +438,27 @@ class NowPlayViewController: UIViewController {
     
     @objc func udpateTime() {
         if let currentItem = player.currentItem {
-            // Get the current time in seconds
-            let playhead = currentItem.currentTime().seconds
-            let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
-            // Format seconds for human readable string
-            if !playhead.isNaN {
-                if playhead > 0 {
-                    self.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead + 1)
-                } else {
-                    self.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead)
+            DispatchQueue.main.async { [self] in
+                // Get the current time in seconds
+                let playhead = currentItem.currentTime().seconds
+                let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
+                // Format seconds for human readable string
+                if !playhead.isNaN {
+                    if playhead > 0 {
+                        self.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead + 1)
+                    } else {
+                        self.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead)
+                    }
                 }
-            }
-            if !duration.isNaN {
-                self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-                if (duration >= 5.0 && duration <= 6.0) {
-                    PromptVManager.present(self, isAudioView: true)
+                if !duration.isNaN {
+                    self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+                    if (duration >= 5.0 && duration <= 6.0) {
+                        PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                    }
                 }
+                AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
             }
-            AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
         }
     }
 }
@@ -349,11 +472,15 @@ extension NowPlayViewController: PromptViewDelegate {
             break
         case 1:
             //1 - Once more
-            itemDidFinishedPlaying()
+            playPauseAudio(false)
+            existingAudio = false
+            configureAudio(true)
             break
         default:
             //2 - play next song
-            itemDidFinishedPlaying()
+            playPauseAudio(false)
+            visualizationWave.stop()
+            nextPrevPlay()
             break
         }
     }

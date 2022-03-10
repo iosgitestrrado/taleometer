@@ -28,7 +28,7 @@ class RegisterViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
@@ -40,7 +40,7 @@ class RegisterViewController: UIViewController {
         }
     }
     
-    @objc private func keyboardDidHideNotification (notification: Notification) {
+    @objc private func keyboardWillHideNotification (notification: Notification) {
         if self.view.frame.origin.y != 0.0 {
             UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.view.frame.origin.y = 0
@@ -81,7 +81,7 @@ class RegisterViewController: UIViewController {
                 response.StoryBoardName = Constants.Storyboard.dashboard
                 response.StoryBoardId = "PreferenceViewController"
                 Login.storeProfileData(response)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+                
                 Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
             }
             Core.HideProgress(self)

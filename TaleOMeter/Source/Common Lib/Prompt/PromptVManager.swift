@@ -14,12 +14,12 @@ class PromptVManager: NSObject {
      *  Dynamic Prompt screen
      *  Set prompt properties as per requirement
      */
-    static func present(_ controller: UIViewController, verifyTitle: String = "Successfull", verifyMessage: String = "", imageName: String = "verified", isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false) {
+    static func present(_ controller: UIViewController, verifyTitle: String = "Successfull", verifyMessage: String = "", imageName: String = "verified", isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: UIImage = defaultImage) {
         if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "PromptViewController") as? PromptViewController {
             myobject.delegate = controller as? PromptViewDelegate
             if (isAudioView) {
-                myobject.songTitle = "Learn Brightly"
-                myobject.nextSongTitle = "Track To Relax"
+                myobject.songTitle = verifyTitle
+                myobject.nextSongTitle = verifyMessage
             }
             myobject.isAudioPrompt = isAudioView
             controller.navigationController?.present(myobject, animated: true, completion: {
@@ -27,6 +27,7 @@ class PromptVManager: NSObject {
                 myobject.verifyPromptView.isHidden = !isUserStory
                 myobject.answerPromptView.isHidden = !isQuestion
                 if isAudioView {
+                    myobject.audioImageView.image = audioImage
                     myobject.audioImageView.cornerRadius = myobject.audioImageView.frame.size.height / 2.0
                 } else if isQuestion {
                     myobject.answerImage.image = UIImage(named: imageName)

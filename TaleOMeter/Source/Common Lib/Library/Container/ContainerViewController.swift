@@ -62,7 +62,6 @@ open class ContainerViewController: UIViewController {
     open var menuMargin:CGFloat = 5.0
     open var indicatorHeight:CGFloat = 2.0
     
-    
     // MARK: - Intialize container view
     public init(controllers: NSArray, topBarHeight: CGFloat, parentViewController: UIViewController) {
         super.init(nibName: nil, bundle: nil)
@@ -121,8 +120,16 @@ open class ContainerViewController: UIViewController {
         menuView!.delegate = self
         menuView!.viewbackgroundColor = self.menuBackGroudColor
         menuView!.itemfont = self.menuItemFont
-        menuView!.itemTitleColor = self.menuItemTitleColor!
-        menuView!.itemIndicatorColor = self.menuIndicatorColor!
+        if let col = self.menuItemTitleColor {
+            menuView!.itemTitleColor = col
+        } else {
+            menuView!.itemTitleColor = .white
+        }
+        if let col1 = self.menuIndicatorColor {
+            menuView!.itemIndicatorColor = col1
+        } else {
+            menuView!.itemIndicatorColor = .red
+        }
         menuView!.scrollView!.scrollsToTop = false
         
         menuView!.itemTitleArray = self.titles as NSArray as? [NSString]

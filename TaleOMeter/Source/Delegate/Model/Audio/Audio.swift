@@ -24,19 +24,27 @@ struct Audio {
     var Deleted_at = String()
     var Views_count = Int()
     
+    var Story: Story?
+    var Plot: Story?
+    var Narration: Story?
+    
+    var Stories: [Story]?
+    var Plots: [Story]?
+    var Narrations: [Story]?
+
     init() { }
-    init(_ json: JSON) {
+    init(_ json: JSON, strories: [Story] , plots: [Story], narrations: [Story]) {
         Id = json["id"].intValue
-        Title = json["name"].stringValue
+        Title = json["title"].stringValue
         let imageURL = Constants.baseURL.appending("/\(json["image"].stringValue)")
-        Image = UIImage(named: "logo")!
+        Image = defaultImage
         if let url = URL(string: imageURL) {
             do {
                 let data = try Data(contentsOf: url)
-                Image = UIImage(data: data) ?? UIImage(named: "logo")!
+                Image = UIImage(data: data) ?? defaultImage
             } catch { }
         }
-        File = Constants.baseURL.appending("/\(json["File"].stringValue)")
+        File = Constants.baseURL.appending("/\(json["file"].stringValue)")
         Genre_id = json["genre_id"].intValue
         Story_id = json["story_id"].intValue
         Plot_id = json["plot_id"].intValue
@@ -47,6 +55,19 @@ struct Audio {
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
         Views_count = json["views_count"].intValue
+        
+        if let story = strories.first(where: { $0.Id == Story_id }) {
+            Story = story
+        }
+        if let plot = plots.first(where: { $0.Id == Plot_id }) {
+            Plot = plot
+        }
+        if let narration = narrations.first(where: { $0.Id == Narration_id }) {
+            Narration = narration
+        }
+        Stories = strories
+        Plots = plots
+        Narrations = narrations
     }
 }
 

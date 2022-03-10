@@ -20,11 +20,11 @@ struct Story {
         Id = json["id"].intValue
         Name = json["name"].stringValue
         let imageURL = Constants.baseURL.appending("/\(json["image"].stringValue)")
-        Image = UIImage(named: "logo")!
+        Image = defaultImage
         if let url = URL(string: imageURL) {
             do {
                 let data = try Data(contentsOf: url)
-                Image = UIImage(data: data) ?? UIImage(named: "logo")!
+                Image = UIImage(data: data) ?? defaultImage
             } catch { }
         }
         Created_at = json["created_at"].stringValue

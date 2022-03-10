@@ -34,6 +34,10 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
@@ -73,6 +77,7 @@ class DashboardViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "segmentview", let segVC = segue.destination as? SegmentViewController {
             segVC.parentController = self
+            self.containerView.frame.size.width = CGFloat((335.0 * UIScreen.main.bounds.width) / 375.0)
             segVC.parentFrame = self.containerView.frame
         }
     }

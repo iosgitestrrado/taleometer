@@ -14,7 +14,7 @@ struct Login {
         if self.getProfileData() == nil {
             var profileData = ProfileData()
             
-            if let data = UIImage(named: "logo")?.pngData() {
+            if let data = defaultImage.pngData() {
                 profileData.ImageData = data
             }
             profileData.Phone = "00000 00000"
@@ -44,6 +44,8 @@ struct Login {
             // Write/Set Data
             UserDefaults.standard.set(data, forKey: Constants.UserDefault.ProfileData)
             UserDefaults.standard.synchronize()
+            
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         } catch {
             UserDefaults.standard.synchronize()
             print("Unable to Encode (\(error))")

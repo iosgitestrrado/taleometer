@@ -8,7 +8,7 @@
 class GenreClient {
     static func get(_ completion: @escaping([Genre]?) -> Void) {
         APIClient.shared.get("", feed: .Genres, completion: { result in
-            ResponseAPI.getResponseArray(result) { response in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
                 var genres = [Genre]()
                 if let genre = response {
                     genre.forEach({ (object) in

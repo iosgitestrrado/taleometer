@@ -22,11 +22,14 @@ class SegmentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        getGenres()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if self.genreList.count <= 0 {
+            getGenres()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +60,7 @@ class SegmentViewController: UIViewController {
             gridView.parentFrame = self.parentFrame
             gridView.title = genre.Name
             gridView.genreId = genre.Id
+            gridView.totalGenres = genreList.count
             viewsArray.append(gridView)
         }
         

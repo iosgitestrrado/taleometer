@@ -118,9 +118,6 @@ class NonStopViewController: UIViewController {
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
         guard let url = Bundle.main.path(forResource: "testAudio", ofType: "mp3") else { return }
         
-        visualizationWave.audioVisualizationMode = .write
-        visualizationWave.add(meteringLevel: 0.6)
-
         visualizationWave.meteringLevelBarWidth = 1.0
         visualizationWave.meteringLevelBarInterItem = 1.0
         visualizationWave.audioVisualizationTimeInterval = 0.30
@@ -134,7 +131,6 @@ class NonStopViewController: UIViewController {
             AudioPlayManager.shared.isMiniPlayerActive = true
             
             waveFormcount = AudioPlayManager.shared.audioMetering.count
-            visualizationWave.audioVisualizationMode = .read
             visualizationWave.meteringLevels = AudioPlayManager.shared.audioMetering
             DispatchQueue.main.async {
                 self.visualizationWave.setNeedsDisplay()
@@ -172,7 +168,6 @@ class NonStopViewController: UIViewController {
             Core.ShowProgress(self, detailLbl: "Getting audio waves...")
             AudioPlayManager.getAudioMeters(URL(fileURLWithPath: url), forChannel: 0) { [self] result in
                 waveFormcount = result.count
-                visualizationWave.audioVisualizationMode = .read
                 visualizationWave.meteringLevels = result
                 DispatchQueue.main.async {
                     visualizationWave.setNeedsDisplay()

@@ -43,6 +43,6 @@ class GridCollectionViewCell: UICollectionViewCell {
         let countString = NSMutableAttributedString(string: "\(count)\nNew Qus")
         countString.addAttributes(font15, range: rangeTitle1)
         countString.addAttributes(font8, range: rangeTitle2)
-        countLable.attributedText = countString
+        countLable.text = "\(count)"//countString
     }
 }

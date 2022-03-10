@@ -12,6 +12,9 @@ import UIKit
 
 let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")
 
+let supportedAudioExtenstion = ["mp3", "mp4", "m4a", "wav", "aac", "adts", "ac3", "aif", "aiff", "aifc", "caf", "snd", "au", "sd2"]
+let defaultImage = UIImage(named: "logo")!
+
 // MARK: - Side menubar properties -
 let menuIconImage: UIImage = {
     let size = CGSize(width: 24.0, height: 16.0)
