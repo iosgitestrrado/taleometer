@@ -86,12 +86,15 @@ class VerificationViewController: UIViewController {
                     Login.storeProfileData(response)
                     self.performSegue(withIdentifier: "register", sender: sender)
                 } else {
-                    response.StoryBoardName = Constants.Storyboard.dashboard
-                    response.StoryBoardId = "PreferenceViewController"
+                    if isOnlyTrivia {
+                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                    } else {
+                        response.StoryBoardName = Constants.Storyboard.dashboard
+                        response.StoryBoardId = "PreferenceViewController"
 
-                    Login.storeProfileData(response)
-                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
-//                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                        Login.storeProfileData(response)
+                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                    }
                 }
                 
             }

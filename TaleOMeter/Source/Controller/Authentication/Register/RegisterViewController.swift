@@ -78,12 +78,16 @@ class RegisterViewController: UIViewController {
                 response.Fname = profileReq.display_name
                 response.Email = profileReq.email
                 response.User_code = profileReq.name
-                response.StoryBoardName = Constants.Storyboard.dashboard
-                response.StoryBoardId = "PreferenceViewController"
+                if isOnlyTrivia {
+                    response.StoryBoardName = ""
+                    response.StoryBoardId = ""
+                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                } else {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                }
                 Login.storeProfileData(response)
-                
-//                Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
             }
             Core.HideProgress(self)
         }

@@ -68,7 +68,7 @@ class TRQuestionViewController: UIViewController {
             Snackbar.showAlertMessage("Please answer the question")
             return
         }
-        PromptVManager.present(self, verifyTitle: questionArray[sender.tag].answer, verifyMessage: questionArray[sender.tag].question, imageName: questionArray[sender.tag].image, isQuestion: true, closeBtnHide: true)
+        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
     
     // MARK: Keyboard will show
@@ -152,12 +152,5 @@ extension TRQuestionViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.questionArray[textField.tag].value = textField.text!
-    }
-}
-
-// MARK: - PromptViewDelegate -
-extension TRQuestionViewController: PromptViewDelegate {
-    func didActionOnPromptButton(_ tag: Int) {
-        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
 }

@@ -44,6 +44,7 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var viewMore: UIButton!
     @IBOutlet weak var postButton: UIButton!
     @IBOutlet weak var replyButton: UIButton!
+    @IBOutlet weak var answerButton: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -102,11 +103,15 @@ class FeedCellView: UITableViewCell {
             viewPrevReplyBtn.addTarget(target, action: selectors[2], for: .touchUpInside)
         }
         if let replyBtn = self.replyButton {
-            replyButton.tag = row
+            replyBtn.tag = row
             replyBtn.layer.setValue(cellIndex, forKey: "CellIndex")
             replyBtn.layer.setValue(commentIndex, forKey: "CommentIndex")
             replyBtn.layer.setValue(replyIndex, forKey: "ReplyIndex")
             replyBtn.addTarget(target, action: selectors[3], for: .touchUpInside)
+        }
+        if let answerBtn = self.answerButton {
+            answerBtn.tag = cellIndex
+            answerBtn.addTarget(target, action: selectors[5], for: .touchUpInside)
         }
     }
     

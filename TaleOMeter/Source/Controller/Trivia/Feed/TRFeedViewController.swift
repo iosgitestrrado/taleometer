@@ -223,6 +223,10 @@ class TRFeedViewController: UIViewController {
         return nil
     }
     
+    @objc private func tapOnAnswer(_ sender: UIButton) {
+        PromptVManager.present(self, verifyTitle: feedArray[sender.tag].answer, verifyMessage: feedArray[sender.tag].question, imageName: feedArray[sender.tag].image, isQuestion: true, closeBtnHide: true)
+    }
+    
     private func setTableViewCells() {
         cellDataArray = [CellItem]()
         for index in 0..<feedArray.count {
@@ -358,7 +362,7 @@ extension TRFeedViewController : UITableViewDataSource {
                            messageString: messageString, row: indexPath.row,
                            cellIndex: cellData.index, commentIndex: cellData.commentIndex,
                            replyIndex: cellData.replyIndex, target: self,
-                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:))])
+                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:))])
         return cell
     }
 }
@@ -482,5 +486,13 @@ extension TRFeedViewController: UITextViewDelegate {
             textView.text = messageString
             textView.textColor = .darkGray
         }
+    }
+}
+
+
+// MARK: - PromptViewDelegate -
+extension TRFeedViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        //Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
 }

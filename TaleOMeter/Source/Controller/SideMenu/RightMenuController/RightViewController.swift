@@ -92,8 +92,12 @@ class RightViewController: UIViewController {
         }
     }
     
-    private let sections: [[SideViewCellItem]] = [
+    private var sections: [[SideViewCellItem]] = [
         [.profile, .profile, .triviaQuiz, .triviaComments, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+    ]
+    
+    private let triviaSections: [[SideViewCellItem]] = [
+        [.profile, .profile, .logout]
     ]
     
     private var profileData: ProfileData?
@@ -109,6 +113,9 @@ class RightViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
         if let pfData = Login.getProfileData() {
             profileData = pfData
+        }
+        if isOnlyTrivia {
+            sections = triviaSections
         }
     }
     

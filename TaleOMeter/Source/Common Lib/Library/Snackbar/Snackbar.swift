@@ -89,7 +89,7 @@ class Snackbar {
         snackbar.messageTextColor = .white
         snackbar.messageTextFont = UIFont.boldSystemFont(ofSize: 18)
 
-        snackbar.backgroundColor = .green
+        snackbar.backgroundColor = .blue
         snackbar.animationDuration = 0.5
         snackbar.animationType = .slideFromTopBackToTop
 

@@ -19,29 +19,28 @@ class LaunchViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if let profileData = Login.getProfileData(), profileData.Is_login {
-                if !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
-                   Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
-                    return
+            if isOnlyTrivia {
+                if let profileData = Login.getProfileData() {
+                    if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
+                       Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
+                    } else if profileData.Is_login {
+                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                    } else {
+                        Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
+                    }
+                } else {
+                    Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
                 }
+            } else {
+                if let profileData = Login.getProfileData(), profileData.Is_login {
+                    if !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
+                       Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
+                        return
+                    }
+                }
+                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             }
-            Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         }
-        
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            if let profileData = Login.getProfileData() {
-//                if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
-//                   Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
-//                } else if profileData.Is_login {
-//                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-//                } else {
-//                    Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
-//                }
-//            } else {
-//                Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
-//            }
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
