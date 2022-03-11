@@ -108,6 +108,4 @@ struct SearchDeleteRequest: Codable {
     var audio_search_id = Int()
 }
 
-struct FavoriteRequest: Codable {
-    var audio_story_id = Int()
-}
+

@@ -21,8 +21,8 @@ class CountryViewController: UIViewController {
     weak var delegate: CountryCodeDelegate? = nil
     
     // MARK: - Private Properties -
-    private var list: [Country] = [Country]()
-    private var dupList: [Country] = [Country]()
+    fileprivate var list: [Country] = [Country]()
+    fileprivate var dupList: [Country] = [Country]()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

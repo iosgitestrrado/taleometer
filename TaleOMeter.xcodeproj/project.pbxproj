@@ -17,6 +17,9 @@
 		63342CDC27D2552400331806 /* QuestionCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63342CDB27D2552400331806 /* QuestionCellView.swift */; };
 		633B82C927D9E1E400236CA2 /* Int+Extenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633B82C827D9E1E400236CA2 /* Int+Extenstion.swift */; };
 		633B82CB27D9E2F300236CA2 /* AVPlayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633B82CA27D9E2F300236CA2 /* AVPlayer+Extension.swift */; };
+		63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63420B6427DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift */; };
+		63420B6727DB8F9500C4CAF9 /* FavouriteAudioClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63420B6627DB8F9500C4CAF9 /* FavouriteAudioClient.swift */; };
+		63420B6927DB8FD300C4CAF9 /* Favourite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63420B6827DB8FD300C4CAF9 /* Favourite.swift */; };
 		63430C7F27C750D600C08A2A /* MainUserStoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63430C7E27C750D600C08A2A /* MainUserStoryVC.swift */; };
 		63430C8127C7516C00C08A2A /* StorySegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63430C8027C7516C00C08A2A /* StorySegmentViewController.swift */; };
 		634985DF27C50AFD00FB6A7C /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */; };
@@ -156,6 +159,9 @@
 		63342CDB27D2552400331806 /* QuestionCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCellView.swift; sourceTree = "<group>"; };
 		633B82C827D9E1E400236CA2 /* Int+Extenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extenstion.swift"; sourceTree = "<group>"; };
 		633B82CA27D9E2F300236CA2 /* AVPlayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Extension.swift"; sourceTree = "<group>"; };
+		63420B6427DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInfiniteIndicator.swift; sourceTree = "<group>"; };
+		63420B6627DB8F9500C4CAF9 /* FavouriteAudioClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteAudioClient.swift; sourceTree = "<group>"; };
+		63420B6827DB8FD300C4CAF9 /* Favourite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourite.swift; sourceTree = "<group>"; };
 		63430C7E27C750D600C08A2A /* MainUserStoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUserStoryVC.swift; sourceTree = "<group>"; };
 		63430C8027C7516C00C08A2A /* StorySegmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorySegmentViewController.swift; sourceTree = "<group>"; };
 		634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
@@ -358,6 +364,14 @@
 				631F9C7B27C49B0700F1B069 /* CommingViewController.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		63420B6327DB8A4B00C4CAF9 /* InfiniteScroll */ = {
+			isa = PBXGroup;
+			children = (
+				63420B6427DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift */,
+			);
+			path = InfiniteScroll;
 			sourceTree = "<group>";
 		};
 		6353708327BA26A2000A144E /* Authentication */ = {
@@ -688,6 +702,7 @@
 			isa = PBXGroup;
 			children = (
 				63863DD627D782B200EFF6E2 /* AudioClient.swift */,
+				63420B6627DB8F9500C4CAF9 /* FavouriteAudioClient.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -735,6 +750,7 @@
 				63863DF427D7848200EFF6E2 /* Plot.swift */,
 				63863DF727D7849700EFF6E2 /* Narration.swift */,
 				63863DFA27D784AF00EFF6E2 /* Audio.swift */,
+				63420B6827DB8FD300C4CAF9 /* Favourite.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -1031,6 +1047,7 @@
 		63F2AAAC27BB6A08007CAFC1 /* Common Lib */ = {
 			isa = PBXGroup;
 			children = (
+				63420B6327DB8A4B00C4CAF9 /* InfiniteScroll */,
 				63863DFC27D78DE700EFF6E2 /* JsonSwiftson.swift */,
 				63863DB027D7732000EFF6E2 /* API */,
 				63A4F57327BFDCA500FDBB03 /* Prompt */,
@@ -1385,7 +1402,9 @@
 				63863DE027D7837D00EFF6E2 /* Login.swift in Sources */,
 				63863DFB27D784AF00EFF6E2 /* Audio.swift in Sources */,
 				63D27C6627BD087F0074EA7F /* NonStopViewController.swift in Sources */,
+				63420B6927DB8FD300C4CAF9 /* Favourite.swift in Sources */,
 				63DFB4B327BCC57900B08216 /* GridViewController.swift in Sources */,
+				63420B6727DB8F9500C4CAF9 /* FavouriteAudioClient.swift in Sources */,
 				636ED8E427BB7BEF0030D2F0 /* Array+Extension.swift in Sources */,
 				637E620727C4FF4100B31760 /* ChangeMobileNumberVC.swift in Sources */,
 				63863DBE27D7735C00EFF6E2 /* HTTPMethods.swift in Sources */,
@@ -1440,6 +1459,7 @@
 				63863DF827D7849700EFF6E2 /* Narration.swift in Sources */,
 				631F9C7C27C49B0700F1B069 /* CommingViewController.swift in Sources */,
 				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
+				63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
 				6361179727BA5814000C1749 /* Country.swift in Sources */,
 				63D27CA327BD1BAD0074EA7F /* MarqueeLabel.swift in Sources */,

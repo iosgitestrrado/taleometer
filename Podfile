@@ -13,6 +13,7 @@ target 'TaleOMeter' do
   pod 'MBProgressHUD', '~>1.2.0'
   pod 'SwiftyJSON', '~>5.0.1'
   pod 'SDWebImage', '~>5.12.3'
+  pod 'UIScrollView-InfiniteScroll', '~>1.1.0'
 
   # Pods for TaleOMeter
 

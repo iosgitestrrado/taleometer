@@ -23,8 +23,8 @@ class ChangeMobileNumberVC: UIViewController {
     var countryCodeVal = ""
     
     // MARK: - Private Properties -
-    private var countryModel: Country = Country()
-    private var profileData: ProfileData?
+    fileprivate var countryModel: Country = Country()
+    fileprivate var profileData: ProfileData?
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

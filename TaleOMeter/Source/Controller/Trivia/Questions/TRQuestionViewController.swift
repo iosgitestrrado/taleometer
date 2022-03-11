@@ -15,14 +15,14 @@ class TRQuestionViewController: UIViewController {
     @IBOutlet weak var tblBottomConstraint: NSLayoutConstraint!
     
     // MARK: - Private Properties -
-    private struct QuestionModel {
+    fileprivate struct QuestionModel {
         var question = String()
         var answer = String()
         var value = String()
         var videoUrl = ""
         var image = String()
     }
-    private var questionArray: [QuestionModel] = {
+    fileprivate var questionArray: [QuestionModel] = {
         var questionArraytemp = [QuestionModel]()
         questionArraytemp.append(QuestionModel(question: "Who is the Character in this Image?", answer: "Tenali Raman", value: "", videoUrl: "", image: "tenali.jpg"))
         questionArraytemp.append(QuestionModel(question: "Watch video and answer the question in it", answer: "Dummy Video", value: "", videoUrl: "https://v.pinimg.com/videos/720p/77/4f/21/774f219598dde62c33389469f5c1b5d1.mp4", image: "acastro_180403_1777_youtube_0001.jpg"))

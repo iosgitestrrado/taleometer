@@ -14,8 +14,8 @@ class StorySegmentViewController: UIViewController {
     var parentFrame: CGRect?
     
     // MARK: - Private Properties -
-    private var containerVC: ContainerViewController?
-    private var viewsArray = [UIViewController]()
+    fileprivate var containerVC: ContainerViewController?
+    fileprivate var viewsArray = [UIViewController]()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

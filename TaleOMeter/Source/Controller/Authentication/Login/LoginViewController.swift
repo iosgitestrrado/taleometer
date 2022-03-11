@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var mobileNumberTxt: UITextField!
     
     // MARK: - Private Properties -
-    private var countryModel: Country = Country()
+    fileprivate var countryModel: Country = Country()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

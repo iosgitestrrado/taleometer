@@ -85,7 +85,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.postRequest(parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.postRequest("", parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
         fetch(with: request, decode: { (json) -> ResponseModel? in
             guard let apiResponse = json as? ResponseModel else { return  nil }
             return apiResponse
@@ -97,31 +97,31 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.postRequest(parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.postRequest("", parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
         fetch(with: request, decode: { (json) -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse
         }, completion: completion)
     }
 
-    func delete(_ query: String, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
+    func delete<T: Encodable>(_ parameters: T, query: String, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.getDeleteRequest(query, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.deleteRequest(query, parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
         fetch(with: request, decode: { json -> ResponseModel? in
             guard let apiResponse = json as? ResponseModel else { return  nil }
             return apiResponse
         }, completion: completion)
     }
 
-    func deleteJson(_ query: String, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
+    func deleteJson<T: Encodable>(_ parameters: T, query: String, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.getDeleteRequest(query, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.deleteRequest(query, parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
         fetch(with: request, decode: { json -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse

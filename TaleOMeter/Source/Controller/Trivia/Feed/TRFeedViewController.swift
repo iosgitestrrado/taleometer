@@ -15,8 +15,8 @@ class TRFeedViewController: UIViewController {
     @IBOutlet weak var tblBottomConstraint: NSLayoutConstraint!
     
     // MARK: - Private Properties -
-    private let viewMoreText = "--------------------  View More  --------------------"
-    private struct CommentModel: Codable {
+    fileprivate let viewMoreText = "--------------------  View More  --------------------"
+    fileprivate struct CommentModel: Codable {
         var image = String()
         var name = String()
         var comment = String()
@@ -24,7 +24,7 @@ class TRFeedViewController: UIViewController {
         var isExpanded = false
         var replies = [CommentModel]()
     }
-    private struct FeedModel: Codable {
+    fileprivate struct FeedModel: Codable {
         var image = String()
         var videoUrl = String()
         var question = String()
@@ -34,7 +34,7 @@ class TRFeedViewController: UIViewController {
         var time: Date?
         var description = String()
     }
-    private struct Data {
+    fileprivate struct Data {
         var image = String()
         var title = String()
         var description = String()
@@ -43,14 +43,14 @@ class TRFeedViewController: UIViewController {
         var commentIndex = Int()
         var replyIndex = Int()
     }
-    private struct CellItem {
+    fileprivate struct CellItem {
         var cellId = String()
         var data = Data()
     }
 
-    private var feedArray: [FeedModel] = [FeedModel]()
-    private var cellDataArray: [CellItem] = [CellItem]()
-    private let messageString = "Write A Comment..."
+    fileprivate var feedArray: [FeedModel] = [FeedModel]()
+    fileprivate var cellDataArray: [CellItem] = [CellItem]()
+    fileprivate let messageString = "Write A Comment..."
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {

@@ -39,12 +39,12 @@ class NowPlayViewController: UIViewController {
     var waveFormcount = 0
 
     // MARK: - Private Properties -
-    private var totalTimeDuration: Float = 0.0
-    private var audioTimer = Timer()
-    private var isPlayingTap = false
-    private var player = AVPlayer()
-    private var audio = Audio()
-    private var audioURL = URL(string: "")
+    fileprivate var totalTimeDuration: Float = 0.0
+    fileprivate var audioTimer = Timer()
+    fileprivate var isPlayingTap = false
+    fileprivate var player = AVPlayer()
+    fileprivate var audio = Audio()
+    fileprivate var audioURL = URL(string: "")
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -111,13 +111,18 @@ class NowPlayViewController: UIViewController {
         if existingAudio {
             setupExistingAudio()
         } else {
+            if let player = AudioPlayManager.shared.playerAV {
+                player.pause()
+            }
             Core.ShowProgress(self, detailLbl: "Streaming Audio")
             AudioPlayManager.shared.configAudio { result in
                 self.configureAudio(playNow, result: result)
+                Core.HideProgress(self)
             }
         }
     }
     
+    // MARK: - Playing existing Audio
     private func setupExistingAudio() {
         if let playerk = AudioPlayManager.shared.playerAV {
             player = playerk
@@ -183,11 +188,45 @@ class NowPlayViewController: UIViewController {
             let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
             panGestureRecognizer.cancelsTouchesInView = false
             visualizationWave.addGestureRecognizer(panGestureRecognizer)
-            Core.HideProgress(self)
+        }
+    }
+    
+    // MARK: - Play next or previous audio
+    private func nextPrevPlay(_ isNext: Bool = true) {
+        // Check current audio supported or not
+        var isSupported = true
+        if let audioUrl = URL(string: AudioPlayManager.shared.audioList![isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio].File) {
+            let fileName = NSString(string: audioUrl.lastPathComponent)
+            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+                Snackbar.showErrorMessage("Audio File \"\(fileName)\" is not supported!")
+                isSupported = false
+            }
+        }
+        
+        // Set current auio index
+        let currentAudio = isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio
+        guard let audioList = AudioPlayManager.shared.audioList else {
+            Snackbar.showAlertMessage("No next audio found!")
+            return
+        }
+        
+        //Set up next previous audio index
+        AudioPlayManager.shared.currentAudio = currentAudio
+        AudioPlayManager.shared.nextAudio = audioList.count - 1 > currentAudio ? currentAudio + 1 : 0
+        AudioPlayManager.shared.prevAudio = currentAudio > 0 ? currentAudio - 1 : audioList.count - 1
+        audio = audioList[currentAudio]
+        
+        if isSupported {
+            // Configure audio data
+            self.existingAudio = false
+            setupAudioData(true)
+        } else {
+            // Check next or previous audio
+            self.nextPrevPlay(isNext)
         }
     }
 
-    
+    // MARK: - When swipe wave handle here
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
             case .began:
@@ -219,6 +258,7 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    // MARK: - Update wave as per swipe
     private func updateWaveWith(_ location: Float) {
         let percentageInSelf = location / Float(self.visualizationWave.bounds.width)
         var waveformsToBeRecolored = Float(totalTimeDuration) * percentageInSelf
@@ -247,6 +287,7 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    // MARK: - Handle play pause audio
     private func playPauseAudio(_ playing: Bool) {
         DispatchQueue.main.async {
             self.playButton.isSelected = playing
@@ -297,6 +338,7 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    // MARK: - Seek audio time
     private func seekAudio(_ forward: Bool) {
         if forward {
             guard let duration  = player.currentItem?.duration else {
@@ -328,33 +370,11 @@ class NowPlayViewController: UIViewController {
     
     @objc private func itemDidFinishedPlaying() {
         // Configure audio data
-        existingAudio = false
-        setupAudioData(false)
+//        existingAudio = false
+//        setupAudioData(false)
     }
     
-    private func nextPrevPlay(_ isNext: Bool = true) {
-        if let audioUrl = URL(string: AudioPlayManager.shared.audioList![isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio].File) {
-            let fileName = NSString(string: audioUrl.lastPathComponent)
-            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                Snackbar.showErrorMessage("Audio File \"\(fileName.pathExtension)\" is not supported!")
-                return
-            }
-        }
-        let currentAudio = isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio
-        guard let audioList = AudioPlayManager.shared.audioList else {
-            Snackbar.showAlertMessage("No Next audio found")
-            return
-        }
-        AudioPlayManager.shared.currentAudio = currentAudio
-        AudioPlayManager.shared.nextAudio = audioList.count - 1 > currentAudio ? currentAudio + 1 : 0
-        AudioPlayManager.shared.prevAudio = currentAudio > 0 ? currentAudio - 1 : audioList.count - 1
-        audio = audioList[currentAudio]
-        
-        // Configure audio data
-        self.existingAudio = false
-        setupAudioData(true)
-    }
-    
+    // MARK: - Set start and end time
     private func setTime(_ currentTime: TimeInterval) {
         let playhead = currentTime
         let duration = TimeInterval(totalTimeDuration) - currentTime
@@ -370,6 +390,7 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    // MARK: - Update time as per playing audio
     @objc func udpateTime() {
         if let currentItem = player.currentItem {
             DispatchQueue.main.async { [self] in
@@ -386,7 +407,7 @@ class NowPlayViewController: UIViewController {
                 }
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-                    if (duration >= 5.0 && duration <= 6.0) {
+                    if player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
                         PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
                     }
                 }
@@ -422,4 +443,3 @@ extension NowPlayViewController: PromptViewDelegate {
         }
     }
 }
-

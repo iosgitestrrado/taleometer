@@ -34,10 +34,10 @@ class AudioPlayManager: NSObject {
     var audio = Audio()
 
     // MARK: - Private Properties -
-    private var audioTimer = Timer()
-    private var currVController = UIViewController()
-    private var bottomConstraint = NSLayoutConstraint()
-    private var miniVController = MiniAudioViewController()
+    fileprivate var audioTimer = Timer()
+    fileprivate var currVController = UIViewController()
+    fileprivate var bottomConstraint = NSLayoutConstraint()
+    fileprivate var miniVController = MiniAudioViewController()
 
     // MARK: - Configure audio as per pass url -
     public func configAudio(_ playNow: Bool = false, isNonStop: Bool = false, completionHandler: @escaping(_ success: [Float]) -> ()) {
@@ -402,7 +402,10 @@ class AudioPlayManager: NSObject {
     }
     
     // MARK: - Close miniplayer
-    @objc func tapOnCloseMini(_ sender:UIButton) {
+    @objc func tapOnCloseMini(_ sender: UIButton) {
+        if isNonStop {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+        }
         isMiniPlayerActive = false
         removeMiniPlayer()
     }

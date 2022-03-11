@@ -29,15 +29,15 @@ class PreferenceViewController: UIViewController {
     @IBOutlet weak var skipButton: UIButton!
     
     // MARK: - Private Properties -
-    private var magnetic: Magnetic {
+    fileprivate var magnetic: Magnetic {
         return magneticView.magnetic
     }
-    private var timerg: Timer?
-    private var timer = Timer()
-    private var totalNodes = 0
-    private var firstNode: Node?
-    private var bubbles = [Preference]()
-    private var selectedBubbles = [Int]()
+    fileprivate var timerg: Timer?
+    fileprivate var timer = Timer()
+    fileprivate var totalNodes = 0
+    fileprivate var firstNode: Node?
+    fileprivate var bubbles = [Preference]()
+    fileprivate var selectedBubbles = [Int]()
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {

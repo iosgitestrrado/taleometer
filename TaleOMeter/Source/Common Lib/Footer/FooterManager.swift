@@ -17,9 +17,9 @@ class FooterManager: NSObject {
     var isActive = false
     
     // MARK: - Private Properties -
-    private var curVController = UIViewController()
-//    private var searchDotStackView = UIStackView()
-//    private var favDotStackView = UIStackView()
+    fileprivate var curVController = UIViewController()
+//    fileprivate var searchDotStackView = UIStackView()
+//    fileprivate var favDotStackView = UIStackView()
 
     /*
      *  Custom Footer tabbar for application

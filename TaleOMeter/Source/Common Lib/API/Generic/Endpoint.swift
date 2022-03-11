@@ -36,10 +36,24 @@ extension Endpoint {
         return request
     }
 
-    func getDeleteRequest<T: Encodable>(_ query: T, headers: [HTTPHeader]) -> URLRequest? {
+//    func getDeleteRequest<T: Encodable>(_ query: T, headers: [HTTPHeader]) -> URLRequest? {
+//        guard let url = URL(string: "\(self.base)\(self.path)\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return nil }
+//        var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 60.0)
+//        request.httpMethod = HTTPMethods.delete.rawValue
+//        headers.forEach { request.addValue($0.header.value, forHTTPHeaderField: $0.header.field) }
+//        return request
+//    }
+    
+    func deleteRequest<T: Encodable>(_ query: String, parameters: T, headers: [HTTPHeader]) -> URLRequest? {
         guard let url = URL(string: "\(self.base)\(self.path)\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return nil }
         var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 60.0)
         request.httpMethod = HTTPMethods.delete.rawValue
+        do {
+            request.httpBody = try JSONEncoder().encode(parameters)
+        } catch let error {
+            print(APIError.postParametersEncodingFalure("\(error)").customDescription)
+            return nil
+        }
         headers.forEach { request.addValue($0.header.value, forHTTPHeaderField: $0.header.field) }
         return request
     }
@@ -58,16 +72,16 @@ extension Endpoint {
         return request
     }
 
-    func postRequest<T: Encodable>(_ parameters: T, headers: [HTTPHeader]) -> URLRequest? {
-        guard var request = self.request else { return nil }
-        request.httpMethod = HTTPMethods.post.rawValue
-        do {
-            request.httpBody = try JSONEncoder().encode(parameters)
-        } catch let error {
-            print(APIError.postParametersEncodingFalure("\(error)").customDescription)
-            return nil
-        }
-        headers.forEach { request.addValue($0.header.value, forHTTPHeaderField: $0.header.field) }
-        return request
-    }
+//    func postRequest<T: Encodable>(_ parameters: T, headers: [HTTPHeader]) -> URLRequest? {
+//        guard var request = self.request else { return nil }
+//        request.httpMethod = HTTPMethods.post.rawValue
+//        do {
+//            request.httpBody = try JSONEncoder().encode(parameters)
+//        } catch let error {
+//            print(APIError.postParametersEncodingFalure("\(error)").customDescription)
+//            return nil
+//        }
+//        headers.forEach { request.addValue($0.header.value, forHTTPHeaderField: $0.header.field) }
+//        return request
+//    }
 }

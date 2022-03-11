@@ -14,9 +14,9 @@ class SegmentViewController: UIViewController {
     var parentFrame: CGRect?
     
     // MARK: - Private Properties -
-    private var containerVC: ContainerViewController?
-    private var viewsArray = [UIViewController]()
-    private var genreList = [Genre]()
+    fileprivate var containerVC: ContainerViewController?
+    fileprivate var viewsArray = [UIViewController]()
+    fileprivate var genreList = [Genre]()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
