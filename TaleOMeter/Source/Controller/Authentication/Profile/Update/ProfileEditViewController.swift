@@ -24,16 +24,28 @@ class ProfileEditViewController: UIViewController {
     // MARK: - Public Property -
     var titleString = "Change Name"
     var fieldValue = ""
+    
+    // MARK: - Private Property -
+    private var profileData: ProfileData?
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
+        self.textField.text = fieldValue
         if titleString == "Change Name" {
             self.titleLabelL.text = "Enter your name"
             self.textField.placeholder = "Enter your name"
+            if let pfData = profileData {
+                self.textField.text = pfData.Fname
+            }
+        } else if let pfData = profileData {
+            self.textField.text = pfData.Email
         }
-        self.textField.text = fieldValue
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +53,28 @@ class ProfileEditViewController: UIViewController {
         self.navigationItem.title = titleString
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
     }
+        
+    private func updateProfileData() {
+        if let prof = profileData {
+            Core.ShowProgress(self, detailLbl: "Updating Profile")
+            AuthClient.updateProfile(ProfileRequest(name: prof.User_code, display_name: titleString == "Change Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Name" ? prof.Email : self.textField.text!)) { [self] result in
+                if var response = result {
+                    response.CountryCode = prof.CountryCode
+                    response.Isd_code = prof.Isd_code
+                    Login.storeProfileData(response)
+                    if titleString == "Change Name" {
+                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
+                    } else {
+                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
+                    }
+                }
+                Core.HideProgress(self)
+            }
+        } else {
+            Snackbar.showAlertMessage("No Profile data found!")
+        }
+    }
+    
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
@@ -52,13 +86,14 @@ class ProfileEditViewController: UIViewController {
                 Snackbar.showAlertMessage("Please enter valid name!")
                 return
             }
-            PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
+            
+            self.updateProfileData()
         } else {
             if textField.text!.isBlank || !textField.text!.isEmail {
                 Snackbar.showAlertMessage("Please enter valid email!")
                 return
             }
-            PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
+            self.updateProfileData()
         }
     }
 }

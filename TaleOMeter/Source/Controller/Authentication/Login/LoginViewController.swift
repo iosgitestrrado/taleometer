@@ -29,8 +29,7 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -94,12 +93,12 @@ class LoginViewController: UIViewController {
                 model.countryCode = countryCode as? String
                // model.currencyCode = currencyCode as? String
                // model.currencySymbol = currencySymbol as? String
-                model.flag = String.flag(for: code)
+               //model.flag = String.flag(for: code)
                 if NSLocale().extensionCode(countryCode: model.countryCode) != nil {
                     model.extensionCode = "+\(NSLocale().extensionCode(countryCode: model.countryCode) ?? "")"
                 }
                 countryModel = model
-                self.countryCodeLbl.text = "\(model.flag!) \(model.extensionCode!)"
+                self.countryCodeLbl.text = model.extensionCode!
             }
         }
     }
@@ -132,7 +131,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: CountryCodeDelegate {
     func selectedCountryCode(country: Country) {
         self.countryModel = country
-        self.countryCodeLbl.text = "\(country.flag!) \(country.extensionCode!)"
+        self.countryCodeLbl.text = country.extensionCode!
        // print("Country: \(country.flag!) \(country.extensionCode!)")
     }
 }

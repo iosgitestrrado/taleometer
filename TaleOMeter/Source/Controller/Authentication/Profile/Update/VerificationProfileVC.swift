@@ -19,11 +19,17 @@ class VerificationProfileVC: UIViewController {
     weak var profileDelegate: ProfileEditDelegate? = nil
     var mobileNumber = ""
     var countryCode = ""
+    
+    // MARK: - Private Property -
+    private var profileData: ProfileData?
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
         self.hideKeyboard()
     }
     
@@ -46,7 +52,28 @@ class VerificationProfileVC: UIViewController {
             Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
             return
         }
-        PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
+        if let otp = Int("\(self.otp1Text.text!)\(self.otp2Text.text!)\(self.otp3Text.text!)\(self.otp4Text.text!)") {
+            self.verifyOTP(otp)
+        } else {
+            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+        }
+    }
+    
+    private func verifyOTP(_ otp: Int) {
+        if let prof = profileData {
+            Core.ShowProgress(self, detailLbl: "Verifying OTP")
+            AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp)) { result in
+                if var response = result {
+                    response.CountryCode = prof.CountryCode
+                    response.Isd_code = prof.Isd_code
+                    Login.storeProfileData(response)
+                    PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
+                }
+                Core.HideProgress(self)
+            }
+        } else {
+            Snackbar.showAlertMessage("No Profile data found!")
+        }
     }
 }
 
@@ -108,7 +135,7 @@ extension VerificationProfileVC: PromptViewDelegate {
             for controller in navControllers {
                 if controller is ProfileViewController {
                     if let del = self.profileDelegate {
-                        del.didChangeProfileData(mobileNumber,code: countryCode)
+                        del.didChangeProfileData(mobileNumber, code: countryCode)
                     }
                     self.navigationController?.popToViewController(controller, animated: true)
                 }

@@ -24,18 +24,27 @@ class ChangeMobileNumberVC: UIViewController {
     
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
+    private var profileData: ProfileData?
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.mobileTextField.text = fieldValue
-        self.hideKeyboard()
-        setDefaultCountry()
-        let contact = fieldValue.components(separatedBy: " ")
-        if contact.count > 1 {
-            self.mobileTextField.text = contact[1]
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
         }
+        
+        self.hideKeyboard()
+//        let contact = fieldValue.components(separatedBy: " ")
+//        if contact.count > 1 {
+//            self.mobileTextField.text = contact[1]
+//        }
+        if let pfData = profileData {
+            countryCodeVal = pfData.CountryCode
+            countryCodeVal = "IN"
+            self.mobileTextField.text = pfData.Phone
+        }
+        setDefaultCountry()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +68,17 @@ class ChangeMobileNumberVC: UIViewController {
             return
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
-        self.performSegue(withIdentifier: "verification", sender: sender)
+        self.sendOpt()
+    }
+    
+    private func sendOpt() {
+        Core.ShowProgress(self, detailLbl: "Sending OTP")
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!)) { status in
+            if status {
+                self.performSegue(withIdentifier: "verification", sender: self)
+            }
+            Core.HideProgress(self)
+        }
     }
     
     // MARK: - Country
@@ -79,12 +98,12 @@ class ChangeMobileNumberVC: UIViewController {
                 model.countryCode = countryCode as? String
                // model.currencyCode = currencyCode as? String
                // model.currencySymbol = currencySymbol as? String
-                model.flag = String.flag(for: countryCodeVal)
+                //model.flag = String.flag(for: countryCodeVal)
                 if NSLocale().extensionCode(countryCode: model.countryCode) != nil {
                     model.extensionCode = "+\(NSLocale().extensionCode(countryCode: model.countryCode) ?? "")"
                 }
                 countryModel = model
-                self.countryLabel.text = "\(model.flag!) \(model.extensionCode!)"
+                self.countryLabel.text = model.extensionCode!
             }
         } else if let code = NSLocale.current.regionCode  {
             let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
@@ -99,12 +118,12 @@ class ChangeMobileNumberVC: UIViewController {
                 model.countryCode = countryCode as? String
                // model.currencyCode = currencyCode as? String
                // model.currencySymbol = currencySymbol as? String
-                model.flag = String.flag(for: code)
+                //model.flag = String.flag(for: code)
                 if NSLocale().extensionCode(countryCode: model.countryCode) != nil {
                     model.extensionCode = "+\(NSLocale().extensionCode(countryCode: model.countryCode) ?? "")"
                 }
                 countryModel = model
-                self.countryLabel.text = "\(model.flag!) \(model.extensionCode!)"
+                self.countryLabel.text = model.extensionCode!
             }
         }
         
@@ -118,8 +137,8 @@ class ChangeMobileNumberVC: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "verification", let veriVC = segue.destination as? VerificationProfileVC {
             veriVC.profileDelegate = self.profileDelegate
-            if let code = self.countryModel.extensionCode, let mobile = self.mobileTextField.text, let countryCode = self.countryModel.countryCode {
-                veriVC.mobileNumber = "\(code) \(mobile)"
+            if let mobile = self.mobileTextField.text, let countryCode = self.countryModel.countryCode {
+                veriVC.mobileNumber = mobile
                 veriVC.countryCode = countryCode
             }
         }
@@ -131,7 +150,7 @@ class ChangeMobileNumberVC: UIViewController {
 extension ChangeMobileNumberVC: CountryCodeDelegate {
     func selectedCountryCode(country: Country) {
         self.countryModel = country
-        self.countryLabel.text = "\(country.flag!) \(country.extensionCode!)"
+        self.countryLabel.text = country.extensionCode
        // print("Country: \(country.flag!) \(country.extensionCode!)")
     }
 }

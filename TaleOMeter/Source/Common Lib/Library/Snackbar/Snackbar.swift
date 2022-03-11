@@ -79,7 +79,7 @@ class Snackbar {
 
     class func showSuccessMessage(_ messagestr: String) {
         snackbar.message = messagestr
-        snackbar.duration = .long
+        snackbar.duration = .middle
         snackbar.shouldDismissOnSwipe = true
         snackbar.contentInset = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
 

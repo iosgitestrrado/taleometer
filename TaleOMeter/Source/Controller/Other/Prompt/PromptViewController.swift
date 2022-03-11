@@ -16,9 +16,11 @@ class PromptViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var audioPromptView: UIView!
+    @IBOutlet weak var songTitleLbl: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var audioImageView: UIImageView!
     @IBOutlet weak var remainSecondLabel: UILabel!
+    @IBOutlet weak var closeButton: UIButton!
 
     @IBOutlet weak var verifyPromptView: UIView!
     @IBOutlet weak var verifyImage: UIImageView!
@@ -37,6 +39,7 @@ class PromptViewController: UIViewController {
     var songTitle = ""
     var nextSongTitle = ""
     var isAudioPrompt: Bool = false
+    var isCloseBtnHide: Bool = false
 
     // MARK: - Private Properties -
     private var timer = Timer()
@@ -46,7 +49,7 @@ class PromptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        closeButton.isHidden = isCloseBtnHide
         if isAudioPrompt {
             //You Just listened to "Track To Relax"
             let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
@@ -58,7 +61,7 @@ class PromptViewController: UIViewController {
             
             titleString.addAttributes(font16, range: rangeTitle1)
             titleString.addAttributes(font22, range: rangeTitle2)
-            self.titleLabel.attributedText = titleString
+            self.songTitleLbl.attributedText = titleString
             
             setRemainTitle()
             

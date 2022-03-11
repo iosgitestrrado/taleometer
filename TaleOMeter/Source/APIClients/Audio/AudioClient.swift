@@ -8,7 +8,7 @@
 import Foundation
 
 class AudioClient {
-    static func get(_ audioReq: AudioRequest, genreId: Int, completion: @escaping([Audio]?) -> Void) {
+    static func get(_ audioReq: AudioRequest, genreId: Int = -1, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
         var stories = [Story]()
         var plots = [Story]()
         var narrations = [Story]()
@@ -39,7 +39,9 @@ class AudioClient {
                                     audio.forEach({ (object) in
                                         // Set refrence for Story, Plot and Narration
                                         let aud = Audio(object, strories: stories, plots: plots, narrations: narrations)
-                                        if aud.Genre_id == genreId {
+                                        if isNonStop && aud.Is_nonstop {
+                                            audios.append(aud)
+                                        } else if aud.Genre_id == genreId {
                                             audios.append(aud)
                                         }
                                     })

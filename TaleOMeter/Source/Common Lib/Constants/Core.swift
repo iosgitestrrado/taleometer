@@ -46,7 +46,7 @@ class Core: NSObject {
      * Swap menu option enable/disable.
      * From UIController
      */
-    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false) {
+    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white) {
       
         cont.sideMenuController?.isRightViewEnabled = isRightViewEnabled
         cont.navigationController?.setNavigationBarHidden(setNavigationBarHidden, animated: true)
@@ -56,23 +56,28 @@ class Core: NSObject {
         cont.navigationController?.navigationBar.shadowImage = UIImage()
         cont.navigationController?.navigationBar.isTranslucent = true
         cont.navigationController?.view.backgroundColor = .clear
-        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
-        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
-        cont.navigationItem.backBarButtonItem = backButton
-
-        if backImage {
-            let yourBackImage = UIImage(systemName: "arrow.backward")
-            cont.navigationController?.navigationBar.backIndicatorImage = yourBackImage
-            cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = yourBackImage
+        
+        if backImageColor != .white {
+            let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24.0)]
+            cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         } else {
-            let defaultImage = UIImage(systemName: "chevron.backward")
-            cont.navigationController?.navigationBar.backIndicatorImage = defaultImage
-            cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = defaultImage
+            let textAttributes1 = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            cont.navigationController?.navigationBar.titleTextAttributes = textAttributes1
         }
+
         if !setNavigationBarHidden && cont.navigationController?.children[(cont.navigationController?.children.count)! - 2] is LaunchViewController {
             cont.navigationItem.hidesBackButton = true
         }
+        cont.navigationController?.navigationBar.tintColor = backImageColor
+        var backImageI = UIImage(systemName: "chevron.backward")
+        if backImage {
+            backImageI =  UIImage(systemName: "arrow.backward")
+        }
+        cont.navigationController?.navigationBar.backIndicatorImage = backImageI
+        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImageI
+        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
+        cont.navigationItem.backBarButtonItem = backButton
+        
         if titleInLeft, let titleStr = cont.navigationItem.title {
             Core.setLeftAlignTitleView(controller: cont, text: titleStr, textColor: .white)
         }

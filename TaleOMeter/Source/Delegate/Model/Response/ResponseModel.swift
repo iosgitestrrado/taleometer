@@ -42,7 +42,7 @@ struct ResponseModelJSON: Decodable {
     let message: AnyObject?
     let data: JSON?
     let token: String?
-    let new_registeration: Bool?
+    let new_registeration: Int?
     
     private enum CodingKeys : String, CodingKey { case status, message, data, token, new_registeration }
     init(from decoder : Decoder) throws {
@@ -66,9 +66,9 @@ struct ResponseModelJSON: Decodable {
             self.token = String()
         }
         do {
-            self.new_registeration = try container.decode(Bool.self, forKey: .data)
+            self.new_registeration = try container.decode(Int.self, forKey: .new_registeration)
         } catch {
-            self.new_registeration = Bool()
+            self.new_registeration = 0
         }
     }
 }
@@ -78,10 +78,13 @@ struct ResponseAPI {
     
     static let errorMessage = "Something was so wrong in your request or your handling that the API simply couldn't parse the passed data"
     
-    static func getResponseArray(_ result: Result<ResponseModel?, APIError>, showAlert: Bool = true, completion: @escaping ([JSON]?) -> ()) {
+    static func getResponseArray(_ result: Result<ResponseModel?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping ([JSON]?) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
+                if showSuccMessage, let msg = response.message as? String {
+                    Snackbar.showSuccessMessage(msg)
+                }
                 completion(responseData)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
@@ -108,11 +111,14 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJson(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, completion: @escaping (JSON?) -> ()) {
+    static func getResponseJson(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping (JSON?) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
-                    completion(responseData)
+                if showSuccMessage, let msg = response.message as? String {
+                    Snackbar.showSuccessMessage(msg)
+                }
+                completion(responseData)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
@@ -134,10 +140,13 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJsonBool(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, completion: @escaping (Bool) -> ()) {
+    static func getResponseJsonBool(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping (Bool) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status {
+                if showSuccMessage, let msg = response.message as? String {
+                    Snackbar.showSuccessMessage(msg)
+                }
                 completion(status)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
@@ -160,12 +169,15 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJsonToken(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, completion: @escaping (JSON?, Bool, String, Bool) -> ()) {
+    static func getResponseJsonToken(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping (JSON?, Bool, String, Bool) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status {
                 if let responseData = response.data {
-                    completion(responseData, status, response.token ?? "", response.new_registeration ?? false)
+                    if showSuccMessage, let msg = response.message as? String {
+                        Snackbar.showSuccessMessage(msg)
+                    }
+                    completion(responseData, status, response.token ?? "", response.new_registeration == 1)
                 } else {
                     completion(nil, status, "", false)
                 }

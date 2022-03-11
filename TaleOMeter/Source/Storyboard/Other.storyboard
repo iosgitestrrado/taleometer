@@ -633,7 +633,7 @@ Cg
                                                             <constraint firstAttribute="height" constant="30" id="Xrc-8o-S3c"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                        <color key="textColor" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9v-6m-aHt">
@@ -642,22 +642,22 @@ Cg
                                                             <constraint firstAttribute="height" constant="20" id="Btb-5F-a1S"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                        <color key="textColor" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9zQ-Db-pco">
                                                         <rect key="frame" x="0.0" y="230" width="350" height="40"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GIZ-Yh-nuc">
-                                                                <rect key="frame" x="0.0" y="0.0" width="145" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="135" height="40"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </view>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BUT-Fg-Vyu">
-                                                                <rect key="frame" x="145" y="0.0" width="60" height="40"/>
+                                                                <rect key="frame" x="135" y="0.0" width="80" height="40"/>
                                                                 <color key="backgroundColor" red="0.92950266599999998" green="0.1708542109" blue="0.23323071000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="40" id="Skt-kY-KtS"/>
-                                                                    <constraint firstAttribute="width" constant="60" id="r6n-Hc-44Z"/>
+                                                                    <constraint firstAttribute="width" constant="80" id="r6n-Hc-44Z"/>
                                                                 </constraints>
                                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -672,7 +672,7 @@ Cg
                                                                 </connections>
                                                             </button>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="53W-JI-hAf">
-                                                                <rect key="frame" x="205" y="0.0" width="145" height="40"/>
+                                                                <rect key="frame" x="215" y="0.0" width="135" height="40"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </view>
                                                         </subviews>
@@ -745,8 +745,10 @@ Cg
                         <outlet property="answerTitle" destination="A9v-6m-aHt" id="ogE-Qq-yWp"/>
                         <outlet property="audioImageView" destination="4BB-tB-pNN" id="L3u-Lg-kmc"/>
                         <outlet property="audioPromptView" destination="kZ9-uB-ENI" id="obP-EK-Cat"/>
+                        <outlet property="closeButton" destination="yXX-ei-Kyb" id="QLb-Bs-m7H"/>
                         <outlet property="messageLabelV" destination="DeF-1Y-s3M" id="j4f-R0-afF"/>
                         <outlet property="remainSecondLabel" destination="46P-JC-mei" id="Bof-GO-dVk"/>
+                        <outlet property="songTitleLbl" destination="Asp-ul-veF" id="VaI-Ew-qkH"/>
                         <outlet property="titleLabel" destination="CFG-pl-1qE" id="YHn-XE-vPe"/>
                         <outlet property="titleLabelV" destination="CFG-pl-1qE" id="Mgp-E1-rv2"/>
                         <outlet property="verifyImage" destination="1nL-Zr-JJf" id="3tv-Kg-iGz"/>

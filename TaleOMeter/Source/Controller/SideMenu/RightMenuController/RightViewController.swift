@@ -52,6 +52,44 @@ class RightViewController: UIViewController {
                 return "Logout"
             }
         }
+        
+        var storyboardId: String {
+            switch self {
+            case .profile:
+                return Constants.Storyboard.auth
+            case .triviaQuiz, .triviaComments:
+                return Constants.Storyboard.trivia
+            case .shareStory, .preference, .aboutUs, .feedback:
+                return Constants.Storyboard.other
+            case .history:
+                return Constants.Storyboard.audio
+            case .logout:
+                return "Logout"
+            }
+        }
+        
+        var storyboardName: String {
+            switch self {
+            case .profile:
+                return "ProfileViewController"
+            case .triviaQuiz:
+                return "TriviaViewController"
+            case .triviaComments:
+                return "TRFeedViewController"
+            case .shareStory:
+                return "MainUserStoryVC"
+            case .history:
+                return "HistoryViewController"
+            case .preference:
+                return "SettingViewController"
+            case .aboutUs:
+                return "AboutUsViewController"
+            case .feedback:
+                return "FeedbackViewController"
+            case .logout:
+                return "Logout"
+            }
+        }
     }
     
     private let sections: [[SideViewCellItem]] = [
@@ -149,32 +187,11 @@ extension RightViewController: UITableViewDelegate {
         sideMenuController.hideRightView(animated: true)
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
-            case .profile:
-                self.pushToView(Constants.Storyboard.auth, storyBoradId: "ProfileViewController")
-                return
-            case .triviaQuiz:
-                self.pushToView(Constants.Storyboard.trivia, storyBoradId: "TriviaViewController")
-                return
-            case .triviaComments:
-                self.pushToView(Constants.Storyboard.trivia, storyBoradId: "TRFeedViewController")
-                return
-            case .shareStory:
-                self.pushToView(Constants.Storyboard.other, storyBoradId: "MainUserStoryVC")
-                return
-            case .preference:
-                self.pushToView(Constants.Storyboard.other, storyBoradId: "SettingViewController")
-                return
-            case .history:
-                self.pushToView(Constants.Storyboard.audio, storyBoradId: "HistoryViewController")
-                return
-            case .feedback:
-                self.pushToView(Constants.Storyboard.other, storyBoradId: "FeedbackViewController")
-                return
-            case .aboutUs:
-                self.pushToView(Constants.Storyboard.other, storyBoradId: "AboutUsViewController")
-                return
             case .logout:
                 AuthClient.logout()
+                self.tableView.reloadData()
+            default:
+                self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
 //                let domain = Bundle.main.bundleIdentifier!
 //                UserDefaults.standard.removePersistentDomain(forName: domain)
 //                UserDefaults.standard.synchronize()
@@ -194,7 +211,6 @@ extension RightViewController: UITableViewDelegate {
 //                    let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
 //                    cont.pushViewController(myobject, animated: true)
 //                }
-                self.tableView.reloadData()
                 return
             }
         } else {

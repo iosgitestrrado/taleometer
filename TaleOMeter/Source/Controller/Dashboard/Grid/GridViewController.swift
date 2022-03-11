@@ -19,6 +19,7 @@ class GridViewController: UIViewController {
     // MARK: - Private Properties -
     private var gridSize: CGFloat = 100.0
     private var audioList = [Audio]()
+    private var currentIndex = -1
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -44,22 +45,22 @@ class GridViewController: UIViewController {
         AudioClient.get(AudioRequest(page: 1, limit: totalGenres * 12), genreId: genreId, completion: { [self] result in
             if let response = result {
                 audioList = response
-                let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-                layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
-
-                if audioList.count > 0 {
-                    gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
-                    layout.itemSize = CGSize(width: gridSize, height: gridSize)
-                    
-                } else {
-                    gridSize = parentFrame!.size.width
-                    layout.itemSize = CGSize(width: gridSize, height: 30)
-                }
-                layout.minimumInteritemSpacing = 0
-                layout.minimumLineSpacing = 10
-                collectionView.collectionViewLayout = layout
-                self.collectionView.reloadData()
             }
+            let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+
+            if audioList.count > 0 {
+                gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
+                layout.itemSize = CGSize(width: gridSize, height: gridSize)
+            } else {
+                gridSize = parentFrame!.size.width
+                layout.itemSize = CGSize(width: gridSize, height: 30)
+            }
+            layout.minimumInteritemSpacing = 0
+            layout.minimumLineSpacing = 10
+            collectionView.collectionViewLayout = layout
+            currentIndex = 0
+            self.collectionView.reloadData()
             Core.HideProgress(parentController!)
         })
     }
@@ -76,16 +77,12 @@ extension GridViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if audioList.count > 0 {
-            return audioList.count
-        }
-        return 1
+        return audioList.count > 0 ?  audioList.count : 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if audioList.count > 0 {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as? GridCollectionViewCell {
-                
                 cell.imageView.image = audioList[indexPath.row].Image
                 cell.imageView.frame = CGRect(x: 25.0, y: 5.0, width: gridSize - 40.0, height: gridSize - 40.0)
                 cell.imageView.cornerRadius = cell.imageView.frame.size.width / 2.0
@@ -103,7 +100,6 @@ extension GridViewController: UICollectionViewDataSource {
                 return cell
             }
         }
-       
         return UICollectionViewCell()
     }
 }
@@ -124,7 +120,7 @@ extension GridViewController: UICollectionViewDelegate {
                 AudioPlayManager.shared.audioList = audioList
                 AudioPlayManager.shared.currentAudio = indexPath.row
                 AudioPlayManager.shared.nextAudio = audioList.count - 1 > indexPath.row ? indexPath.row + 1 : 0
-                AudioPlayManager.shared.prevAudio = indexPath.row > 0 ? indexPath.row - 1 : audioList.count - 1                
+                AudioPlayManager.shared.prevAudio = indexPath.row > 0 ? indexPath.row - 1 : audioList.count - 1
                 parentController!.navigationController?.pushViewController(myobject, animated: true)
             }
         } else {
@@ -151,6 +147,6 @@ extension GridViewController: UIScrollViewDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout -
 extension GridViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: gridSize, height: audioList.count > 0 ? gridSize : 30.0)
+        return CGSize(width:  currentIndex >= 0 ? gridSize : 0, height: audioList.count > 0 ? gridSize : (currentIndex >= 0 ? 30.0 : 0.0))
     }
 }

@@ -80,17 +80,20 @@ class VerificationViewController: UIViewController {
                 
                 response.CountryCode = self.countryCode
                 response.Isd_code = self.iSDCode
-                Login.storeProfileData(response)
-                
                 if isNewRegister {
                     response.StoryBoardName = Constants.Storyboard.auth
                     response.StoryBoardId = "RegisterViewController"
+                    Login.storeProfileData(response)
                     self.performSegue(withIdentifier: "register", sender: sender)
                 } else {
                     response.StoryBoardName = Constants.Storyboard.dashboard
                     response.StoryBoardId = "PreferenceViewController"
+
+                    Login.storeProfileData(response)
                     Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+//                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
                 }
+                
             }
             Core.HideProgress(self)
         }

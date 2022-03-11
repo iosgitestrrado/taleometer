@@ -63,7 +63,18 @@ struct ProfileData: Codable {
 //        Fb_id = json["fb_id"].stringValue
 //        Google_id = json["google_id"].stringValue
 //        Apple_id = json["apple_id"].stringValue
-        Avatar = json["avatar"].stringValue
+        Avatar = Constants.baseURL.appending("/\(json["avatar"].stringValue)")
+        if let url = URL(string: Avatar) {
+            do {
+                let data = try Data(contentsOf: url)
+                self.ImageData = data
+            } catch {
+                if let iData = defaultImage.pngData() {
+                    self.ImageData = iData
+                }
+            }
+        }
+        
         Thumb = json["thumb"].stringValue
         Is_active = json["is_active"].boolValue
         Active_link = json["active_link"].stringValue

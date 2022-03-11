@@ -148,6 +148,25 @@ public class AudioVisualizationView: BaseNibView {
 		self.setNeedsDisplay()
 		return self.meteringLevelsClusteredArray
 	}
+    
+    public func setplayChronometer(for duration: TimeInterval) {
+        self.playChronometer = Chronometer(withTimeInterval: self.audioVisualizationTimeInterval)
+        self.playChronometer?.timerDidUpdate = { [weak self] timerDuration in
+            guard let this = self else {
+                return
+            }
+            
+            if timerDuration >= duration {
+                this.stop()
+                return
+            }
+            
+            this.currentGradientPercentage = Float(timerDuration) / Float(duration)
+            DispatchQueue.main.async {
+                this.setNeedsDisplay()
+            }
+        }
+    }
 
 	// PRAGMA: - Play Mode Handling
 	public func play(for duration: TimeInterval) {
@@ -163,25 +182,24 @@ public class AudioVisualizationView: BaseNibView {
 			currentChronometer.start() // resume current
 			return
 		}
+        self.playChronometer = Chronometer(withTimeInterval: self.audioVisualizationTimeInterval)
+        self.playChronometer?.start(shouldFire: false)
 
-		self.playChronometer = Chronometer(withTimeInterval: self.audioVisualizationTimeInterval)
-		self.playChronometer?.start(shouldFire: false)
-
-		self.playChronometer?.timerDidUpdate = { [weak self] timerDuration in
-			guard let this = self else {
-				return
-			}
-			
-			if timerDuration >= duration {
-				this.stop()
-				return
-			}
-			
-			this.currentGradientPercentage = Float(timerDuration) / Float(duration)
+        self.playChronometer?.timerDidUpdate = { [weak self] timerDuration in
+            guard let this = self else {
+                return
+            }
+            
+            if timerDuration >= duration {
+                this.stop()
+                return
+            }
+            
+            this.currentGradientPercentage = Float(timerDuration) / Float(duration)
             DispatchQueue.main.async {
                 this.setNeedsDisplay()
             }
-		}
+        }
 	}
 
 	public func pause() {

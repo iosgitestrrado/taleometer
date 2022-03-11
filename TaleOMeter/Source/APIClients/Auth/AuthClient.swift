@@ -14,7 +14,7 @@ class AuthClient {
     
     static func login(_ loginReq: LoginRequest, completion: @escaping(Bool) -> Void) {
         APIClient.shared.postJson(loginReq, feed: .SendOtp) { (result) in
-            ResponseAPI.getResponseJsonBool(result) { status in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
         }
@@ -22,7 +22,7 @@ class AuthClient {
     
     static func verifyOtp(_ veriReq: VerificationRequest, completion: @escaping(ProfileData?, Bool, String, Bool) -> Void) {
         APIClient.shared.postJson(veriReq, feed: .VerifyOtp) { (result) in
-            ResponseAPI.getResponseJsonToken(result, completion: { responseJson, status, token, isNewRegister in
+            ResponseAPI.getResponseJsonToken(result, showSuccMessage: true, completion: { responseJson, status, token, isNewRegister in
                 var verification: ProfileData?
                 if let response = responseJson {
                     verification = ProfileData(response)
@@ -34,7 +34,7 @@ class AuthClient {
     
     static func sendProfileOtp(_ loginReq: LoginRequest, completion: @escaping(Bool) -> Void) {
         APIClient.shared.postJson(loginReq, feed: .SendOtpProfile) { (result) in
-            ResponseAPI.getResponseJsonBool(result) { status in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
         }
@@ -167,7 +167,7 @@ class AuthClient {
         fullData.append(lineOne.data(using: String.Encoding.utf8, allowLossyConversion: false)!)
 
         // 2
-        let lineTwo = "Content-Disposition: form-data; name=\"file\"; filename=\"" + fileName + "\"\r\n"
+        let lineTwo = "Content-Disposition: form-data; name=\"image\"; filename=\"" + fileName + "\"\r\n"
         NSLog(lineTwo)
         fullData.append(lineTwo.data(using: String.Encoding.utf8, allowLossyConversion: false)!)
 

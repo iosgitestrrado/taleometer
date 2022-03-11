@@ -24,11 +24,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        setProfileData()
-        if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
-            self.profileImage.image = img
-        }
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +35,16 @@ class ProfileViewController: UIViewController {
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self)
         }
+        Core.ShowProgress(self, detailLbl: "Getting Profile details...")
+        setProfileData()
+        if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
+            self.profileImage.image = img
+        }
+        Core.HideProgress(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     private func setProfileData() {
@@ -130,9 +135,11 @@ class ProfileViewController: UIViewController {
             }))
             
             alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
-                self.profileImage.image = defaultImage
-                if let imgData = self.profileImage.image?.pngData() {
-                    self.uploadProfileImage(imgData)
+                Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
+                if let imgData = defaultImage.pngData() {
+                    self.uploadProfileImage(imgData, image: defaultImage)
+                } else {
+                    Core.HideProgress(self)
                 }
             }))
             self.present(alert, animated: true, completion: nil)
@@ -140,9 +147,8 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func uploadProfileImage(_ imageData: Data) {
+    private func uploadProfileImage(_ imageData: Data, image: UIImage) {
         var imgData = imageData
-        Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
         if Double(imgData.count) / 1000.0 > 2048.0 {
             let imageis = UIImage(data: imgData)
             imgData = imageis!.jpegData(compressionQuality: 0.5)!
@@ -157,37 +163,10 @@ class ProfileViewController: UIViewController {
                 response.CountryCode = self.profileData?.CountryCode ?? "IN"
                 self.profileData = response
                 Login.storeProfileData(response)
+                self.profileImage.image = image
+                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
             }
             Core.HideProgress(self)
-            
-        }
-    }
-    
-    private func updateProfileDetails(_ name: String, email: String) {
-        Core.ShowProgress(self, detailLbl: "Udpating profile details...")
-        var profRequest = ProfileRequest()
-        if !name.isBlank {
-            profRequest.name = name
-        } else {
-            profRequest.name = self.profileData?.Fname ?? ""
-        }
-        
-        if !email.isBlank {
-            profRequest.email = email
-        } else {
-            profRequest.email = self.profileData?.Email ?? ""
-        }
-        
-        AuthClient.updateProfile(profRequest) { result in
-            if var response = result {
-                response.ImageData = self.profileData?.ImageData ?? Data()
-                response.CountryCode = self.profileData?.CountryCode ?? "IN"
-                self.profileData = response
-                Login.storeProfileData(response)
-                self.setProfileData()
-            }
-            Core.HideProgress(self)
-            
         }
     }
 }
@@ -196,17 +175,17 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate  {
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            self.profileImage.image = image
-        }
-        
-        if let imgData = self.profileImage.image?.pngData() {
-            uploadProfileImage(imgData)
-        }
-        UserDefaults.standard.synchronize()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
-        self.imagePicker.dismiss(animated: true) {
-            PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
+        self.imagePicker.dismiss(animated: true) { [self] in
+            Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
+            if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                if let imgData = image.pngData() {
+                    uploadProfileImage(imgData, image: image)
+                } else {
+                    Core.HideProgress(self)
+                }
+            } else {
+                Core.HideProgress(self)
+            }
         }
     }
 }
@@ -215,20 +194,22 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
 extension ProfileViewController: ProfileEditDelegate  {
 
     func didChangeProfileData(_ data: String, code: String) {
+        self.setProfileData()
         switch editIndex {
         case 1:
             //Name
-            self.updateProfileDetails(data, email: "")
+//            self.setProfileData()
             break
         case 2:
             //Mobile Number
+//            self.setProfileData()
 //            self.setProfileData("", mobile: data, email: "")
 //            UserDefaults.standard.set(data, forKey: "ProfileMobile")
 //            UserDefaults.standard.set(code, forKey: "CountryCode")
             break
         default:
             //Email Id
-            self.updateProfileDetails("", email: data)
+//            self.setProfileData()
             break
         }
     }

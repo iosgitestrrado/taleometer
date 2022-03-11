@@ -30,24 +30,79 @@ class AudioPlayManager: NSObject {
     var nextAudio = -1
     var prevAudio = -1
     var audioList: [Audio]?
+    var audioURL = URL(string: "")
+    var audio = Audio()
 
     // MARK: - Private Properties -
     private var audioTimer = Timer()
     private var currVController = UIViewController()
     private var bottomConstraint = NSLayoutConstraint()
     private var miniVController = MiniAudioViewController()
-    private var audioURL: URL?
 
     // MARK: - Configure audio as per pass url -
-    public func configAudio(_ url: URL) {
-        /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+    public func configAudio(_ playNow: Bool = false, isNonStop: Bool = false, completionHandler: @escaping(_ success: [Float]) -> ()) {
+        
+        guard let audList = audioList else {
+            Snackbar.showAlertMessage("No audio found!")
+            return
+        }
+        self.isNonStop = isNonStop
+        audio = audList[currentAudio]
+        
+        guard let url = URL(string: audio.File) else { return }
+        stramingAudio(url, playNow: playNow) { result in
+            completionHandler(result)
+        }
+    }
+    
+    // MARK: - Streaming audio file -
+    private func stramingAudio(_ audioUrl: URL, playNow: Bool, completionHandler: @escaping(_ success: [Float]) -> ()) {
+        // then lets create your document folder url
+        let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+
+        // lets create your destination file url
+        let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
+
+        // to check if it exists before downloading it
+        if FileManager.default.fileExists(atPath: destinationUrl.path) {
+            audioURL = destinationUrl
+            configureAudio(playNow) { result in
+                completionHandler(result)
+            }
+        } else {
+            // you can use NSURLSession.sharedSession to download the data asynchronously
+            URLSession.shared.downloadTask(with: audioUrl, completionHandler: { [self] (location, response, error) -> Void in
+                guard let location = location, error == nil else { return }
+                do {
+                    // after downloading your file you need to move it to your destination url
+                    try FileManager.default.moveItem(at: location, to: destinationUrl)
+                    audioURL = destinationUrl
+                    configureAudio(playNow) { result in
+                        completionHandler(result)
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }).resume()
+        }
+    }
+    
+    private func configureAudio(_ playNow: Bool, completionHandler: @escaping(_ success: [Float]) -> ()) {
+        guard let url = audioURL else {
+            Snackbar.showAlertMessage("No audio found!")
+            return
+        }
         let playerItem = AVPlayerItem(url: url)
-        audioURL = url
         playerAV = AVPlayer(playerItem: playerItem)
         isMiniPlayerActive = true
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishPlaying(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         setupRemoteTransportControls()
+        
+        AudioPlayManager.getAudioMeters(url, forChannel: 0) { success in
+            self.audioMetering = success
+            completionHandler(success)
+        }
     }
     
     // MARK: - Set audio notification on mobile application -
@@ -147,9 +202,54 @@ class AudioPlayManager: NSObject {
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         }
-        if let url = audioURL {
-            configAudio(url)
+//        if let url = audioURL {
+//            configAudio(isNonStop: isNonStop)
+//        }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
+    }
+    
+    // MARK: - Next Previous audio play
+    @objc func nextPrevAudio(_ isNext: Bool) {
+        //if let player = playerAV, player.isPlaying {
+        
+        if let audioUrl = URL(string: AudioPlayManager.shared.audioList![isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio].File) {
+            let fileName = NSString(string: audioUrl.lastPathComponent)
+            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+                Snackbar.showErrorMessage("Audio File \"\(fileName.pathExtension)\" is not supported!")
+                return
+            }
         }
+        let currentAudio = isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio
+        guard let audioList = AudioPlayManager.shared.audioList else {
+            Snackbar.showAlertMessage("No Next audio found")
+            return
+        }
+        AudioPlayManager.shared.currentAudio = currentAudio
+        AudioPlayManager.shared.nextAudio = audioList.count - 1 > currentAudio ? currentAudio + 1 : 0
+        AudioPlayManager.shared.prevAudio = currentAudio > 0 ? currentAudio - 1 : audioList.count - 1
+        audio = audioList[currentAudio]
+        
+        // Configure audio data
+       // setupAudioData(true)
+        
+        
+        audioTimer.invalidate()
+        if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
+            // Get the current time in seconds
+            let duration = currentItem.duration.seconds
+            miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
+            miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+            miniVController.progressBar.progress = 0.0
+            miniVController.progressBar.setNeedsDisplay()
+            if let player = playerAV {
+                miniVController.playButton.isSelected = !player.isPlaying
+            }
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        }
+//        if let url = audioURL {
+//            configAudio(isNonStop: isNonStop)
+//        }
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
     }
     
@@ -406,6 +506,25 @@ class AudioPlayManager: NSObject {
             }
             AudioPlayManager.shared.audioMetering = returnArray
             completionHandler(returnArray)
+        }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension AudioPlayManager: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        switch tag {
+        case 0:
+            //0 - Add to fav
+            break
+        case 1:
+            //1 - Once more
+            self.itemDidFinishPlaying(notification: NSNotification())
+            break
+        default:
+            //2 - play next song
+            
+            break
         }
     }
 }

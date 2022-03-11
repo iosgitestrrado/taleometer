@@ -39,7 +39,7 @@ class TRQuestionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -68,7 +68,7 @@ class TRQuestionViewController: UIViewController {
             Snackbar.showAlertMessage("Please answer the question")
             return
         }
-        PromptVManager.present(self, verifyTitle: questionArray[sender.tag].answer, verifyMessage: questionArray[sender.tag].question, imageName: questionArray[sender.tag].image, isQuestion: true)
+        PromptVManager.present(self, verifyTitle: questionArray[sender.tag].answer, verifyMessage: questionArray[sender.tag].question, imageName: questionArray[sender.tag].image, isQuestion: true, closeBtnHide: true)
     }
     
     // MARK: Keyboard will show
@@ -112,7 +112,7 @@ extension TRQuestionViewController : UITableViewDataSource {
 extension TRQuestionViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 286
+        return 292
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -152,5 +152,12 @@ extension TRQuestionViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.questionArray[textField.tag].value = textField.text!
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension TRQuestionViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
 }

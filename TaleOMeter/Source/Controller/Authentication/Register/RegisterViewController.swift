@@ -82,6 +82,7 @@ class RegisterViewController: UIViewController {
                 response.StoryBoardId = "PreferenceViewController"
                 Login.storeProfileData(response)
                 
+//                Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
                 Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
             }
             Core.HideProgress(self)
