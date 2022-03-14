@@ -58,7 +58,7 @@ class Core: NSObject {
         cont.navigationController?.view.backgroundColor = .clear
         
         if backImageColor != .white {
-            let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24.0)]
+            let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25.0, weight: .bold)]
             cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         } else {
             let textAttributes1 = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -71,7 +71,7 @@ class Core: NSObject {
         cont.navigationController?.navigationBar.tintColor = backImageColor
         var backImageI = UIImage(systemName: "chevron.backward")
         if backImage {
-            backImageI =  UIImage(systemName: "arrow.backward")
+            backImageI =  UIImage(named: "back_red")
         }
         cont.navigationController?.navigationBar.backIndicatorImage = backImageI
         cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImageI
@@ -193,5 +193,34 @@ class Core: NSObject {
         let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return newImage
+    }
+    
+    
+    /*
+     Set image using url
+     */
+    static func setImage(_ url: String, image: inout UIImage) {
+        if let url = URL(string: url) {
+            do {
+                let data = try Data(contentsOf: url)
+                image = UIImage(data: data) ?? defaultImage
+            } catch {
+                image = defaultImage
+            }
+        } else {
+            image = defaultImage
+        }
+    }
+    
+    /*
+     Check it is a URL or not
+     */
+    static func verifyUrl(_ urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = NSURL(string: urlString) {
+                return UIApplication.shared.canOpenURL(url as URL)
+            }
+        }
+        return false
     }
 }

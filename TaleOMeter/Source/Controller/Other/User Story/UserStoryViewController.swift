@@ -109,7 +109,7 @@ class UserStoryViewController: UIViewController {
                     return
                 }
             }
-            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", imageName: "thank", isUserStory: true)
+            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", image: UIImage(named: "thank")!, isUserStory: true)
             //print(storyDataList)
             break
         }

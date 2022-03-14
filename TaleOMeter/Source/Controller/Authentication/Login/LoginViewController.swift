@@ -120,9 +120,10 @@ class LoginViewController: UIViewController {
             if let cCode = self.countryModel.countryCode {
                 veryVC.countryCode = cCode
             }
-            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
-                veryVC.iSDCode = isdCode
-            }
+            veryVC.iSDCode = 91
+//            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
+//                veryVC.iSDCode = isdCode
+//            }
         }
     }
 }

@@ -14,8 +14,9 @@ class PromptVManager: NSObject {
      *  Dynamic Prompt screen
      *  Set prompt properties as per requirement
      */
-    static func present(_ controller: UIViewController, verifyTitle: String = "Successfull", verifyMessage: String = "", imageName: String = "verified", isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: UIImage = defaultImage, closeBtnHide: Bool = false) {
+    static func present(_ controller: UIViewController, verifyTitle: String = "Successfull", verifyMessage: String = "", image: UIImage?, isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: UIImage = defaultImage, closeBtnHide: Bool = false) {
         if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "PromptViewController") as? PromptViewController {
+
             myobject.delegate = controller as? PromptViewDelegate
             if isAudioView {
                 myobject.songTitle = verifyTitle
@@ -31,13 +32,21 @@ class PromptVManager: NSObject {
                     myobject.audioImageView.image = audioImage
                     myobject.audioImageView.cornerRadius = myobject.audioImageView.frame.size.height / 2.0
                 } else if isQuestion {
-                    myobject.answerImage.image = UIImage(named: imageName)
+                    if let imageIs = image {
+                        myobject.answerImage.image = imageIs
+                    } else {
+                        myobject.answerImage.image = defaultImage
+                    }
                     myobject.answerTitle.text = verifyTitle
                     myobject.answerMessage.text = verifyMessage
                 } else {
                     myobject.titleLabelV.text = verifyTitle
                     myobject.messageLabelV.text = verifyMessage
-                    myobject.verifyImage.image = UIImage(named: imageName)
+                    if let imageIs = image {
+                        myobject.verifyImage.image = imageIs
+                    } else {
+                        myobject.verifyImage.image = UIImage(named: "verified")!
+                    }
                 }
             })
         }

@@ -26,7 +26,7 @@ struct Favourite {
         Ypdated_at = json["updated_at"].stringValue
         
         if let audio_story = json["audio_story"].dictionaryObject {
-            Audio_story = Audio(JSON(audio_story), strories: [Story](), plots: [Story](), narrations: [Story]())
+            Audio_story = Audio(JSON(audio_story))
         }
     }
 }

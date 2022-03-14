@@ -20,10 +20,14 @@ class AudioViewCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    func configureCell(_ titleStr: String, isNonStop: Bool, isFavourite: Bool, row: Int, selectedIndex: Int, target: Any, selectors: [Selector]) {
+    func configureCell(_ titleStr: String, audioImage: UIImage, likesCount: Int, duration: Double, isNonStop: Bool, isFavourite: Bool, row: Int, selectedIndex: Int, target: Any, selectors: [Selector]) {
         self.isSelected = row == selectedIndex
-        if let image = self.imageView {
+        if let image = self.profileImage {
+            image.image = audioImage
             image.cornerRadius = image.frame.size.height / 2.0
+        }
+        if let subTitle = self.subTitleLabel {
+            subTitle.text = "\(likesCount.formatPoints()) Likes | \(duration.asString(style: .short))"
         }
         self.playButton.isHidden = isNonStop
         self.favButton.isHidden = isNonStop

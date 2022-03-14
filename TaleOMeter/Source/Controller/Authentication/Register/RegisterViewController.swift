@@ -14,6 +14,10 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var displayNameText: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     
+    // MARK: - Public Properties -
+    var countryCode = ""
+    var iSDCode = 0
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +82,8 @@ class RegisterViewController: UIViewController {
                 response.Fname = profileReq.display_name
                 response.Email = profileReq.email
                 response.User_code = profileReq.name
+                response.CountryCode = self.countryCode
+                response.Isd_code = self.iSDCode
                 if isOnlyTrivia {
                     response.StoryBoardName = ""
                     response.StoryBoardId = ""

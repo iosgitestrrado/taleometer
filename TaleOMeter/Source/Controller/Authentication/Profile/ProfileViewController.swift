@@ -164,7 +164,7 @@ class ProfileViewController: UIViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
-                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", image: nil, isUserStory: true)
             }
             Core.HideProgress(self)
         }

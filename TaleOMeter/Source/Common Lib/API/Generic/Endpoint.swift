@@ -28,8 +28,10 @@ extension Endpoint {
         return request
     }
 
-    func getRequest<T: Encodable>(_ query: T, headers: [HTTPHeader]) -> URLRequest? {
+    func getRequest<T: Encodable>(_ query: T) -> URLRequest? {
         guard let url = URL(string: "\(self.base)\(self.path)\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return nil }
+        
+        let headers = [HTTPHeader.contentType("application/json"), HTTPHeader.authorization(APIClient.shared.getAuthentication())]
         var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 60.0)
         request.httpMethod = HTTPMethods.get.rawValue
         headers.forEach { request.addValue($0.header.value, forHTTPHeaderField: $0.header.field) }
@@ -44,10 +46,12 @@ extension Endpoint {
 //        return request
 //    }
     
-    func deleteRequest<T: Encodable>(_ query: String, parameters: T, headers: [HTTPHeader]) -> URLRequest? {
+    func deleteRequest<T: Encodable>(_ query: String, parameters: T) -> URLRequest? {
         guard let url = URL(string: "\(self.base)\(self.path)\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return nil }
         var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 60.0)
         request.httpMethod = HTTPMethods.delete.rawValue
+        let headers = [HTTPHeader.contentType("application/json"), HTTPHeader.authorization(APIClient.shared.getAuthentication())]
+
         do {
             request.httpBody = try JSONEncoder().encode(parameters)
         } catch let error {
@@ -58,10 +62,12 @@ extension Endpoint {
         return request
     }
 
-    func postRequest<T: Encodable>(_ query: String, parameters: T, headers: [HTTPHeader]) -> URLRequest? {
+    func postRequest<T: Encodable>(_ query: String, parameters: T) -> URLRequest? {
         guard let url = URL(string: "\(self.base)\(self.path)\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else { return nil }
         var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 60.0)
         request.httpMethod = HTTPMethods.post.rawValue
+        let headers = [HTTPHeader.contentType("application/json"), HTTPHeader.authorization(APIClient.shared.getAuthentication())]
+
         do {
             request.httpBody = try JSONEncoder().encode(parameters)
         } catch let error {

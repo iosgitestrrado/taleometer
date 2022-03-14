@@ -25,6 +25,7 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var descText: UITextView!
     @IBOutlet weak var mainVStackView: UIStackView!
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var videoButton: UIButton!
 
     @IBOutlet weak var postStackView: UIStackView!
     @IBOutlet weak var pSProfileImage: UIImageView!
@@ -51,9 +52,9 @@ class FeedCellView: UITableViewCell {
         selectionStyle = .none
     }
     
-    func configureCell(_ image: String, title: String, description: String, time: Date?, cellId: String, messageString: String, row: Int, cellIndex: Int, commentIndex: Int, replyIndex: Int, target: Any, selectors: [Selector]) {
-        if !image.isBlank, let cImage = self.coverImage {
-            cImage.image = UIImage(named: image)
+    func configureCell(_ image: UIImage, title: String, description: String, time: String, cellId: String, messageString: String, videoUrl: String, row: Int, cellIndex: Int, commentIndex: Int, replyIndex: Int, target: Any, selectors: [Selector]) {
+        if let cImage = self.coverImage {
+            cImage.image = image
         }
         if !title.isBlank, let titl = self.titleLabel {
             titl.text = title
@@ -67,8 +68,8 @@ class FeedCellView: UITableViewCell {
             descText.tag = row
             descText.layer.setValue(cellIndex, forKey: "IndexVal")
         }
-        if let timeLbl = self.timeLabel, let date = time {
-            timeLbl.text = Core.soMuchTimeAgo(date.timeIntervalSince1970)
+        if let timeLbl = self.timeLabel/*, let date = time*/ {
+            timeLbl.text = time//Core.soMuchTimeAgo(date.timeIntervalSince1970)
         }
         
         if !title.isBlank, let viewPR = self.viewPrevReply {
@@ -76,9 +77,12 @@ class FeedCellView: UITableViewCell {
         }
         
         if cellId == FeedCellIdentifier.image {
-            self.coverImage.layer.cornerRadius = 20
-            self.coverImage.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            self.videoButton.layer.cornerRadius = 20
+            self.videoButton.layer.masksToBounds = true
+            self.videoButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            
             self.mainView.layer.cornerRadius = 20
+            self.videoButton.layer.masksToBounds = true
             self.mainView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
         
@@ -112,6 +116,13 @@ class FeedCellView: UITableViewCell {
         if let answerBtn = self.answerButton {
             answerBtn.tag = cellIndex
             answerBtn.addTarget(target, action: selectors[5], for: .touchUpInside)
+        }
+        if let videoBtn = self.videoButton {
+            if !videoUrl.isBlank {
+                videoBtn.tag = cellIndex
+                videoBtn.addTarget(target, action: selectors[6], for: .touchUpInside)
+            }
+            videoBtn.setBackgroundImage(image, for: .normal)
         }
     }
     

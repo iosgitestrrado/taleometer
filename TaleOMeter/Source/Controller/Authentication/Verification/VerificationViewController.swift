@@ -92,13 +92,24 @@ class VerificationViewController: UIViewController {
                         response.StoryBoardName = Constants.Storyboard.dashboard
                         response.StoryBoardId = "PreferenceViewController"
 
-                        Login.storeProfileData(response)
                         Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
                     }
+                    Login.storeProfileData(response)
                 }
-                
             }
             Core.HideProgress(self)
+        }
+    }
+    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "register", let veryVC = segue.destination as? RegisterViewController {
+            veryVC.countryCode = self.countryCode
+            veryVC.iSDCode = self.iSDCode
         }
     }
 }

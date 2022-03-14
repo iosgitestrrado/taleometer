@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import UIKit
 
 struct ResponseModel: Decodable {
     let status: Bool?
@@ -73,11 +74,15 @@ struct ResponseModelJSON: Decodable {
     }
 }
 
+struct EmptyRequest: Encodable {
+    
+}
 
 struct ResponseAPI {
     
     static let errorMessage = "Something was so wrong in your request or your handling that the API simply couldn't parse the passed data"
     
+    // MARK: check response and parse as per requirement
     static func getResponseArray(_ result: Result<ResponseModel?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping ([JSON]?) -> ()) {
         switch result {
         case .success(let aPIResponse):
@@ -92,22 +97,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(nil)
                 } else {
-                    completion(nil)
                     if showAlert {
                         Snackbar.showErrorMessage(messageis)
                     }
+                    completion(nil)
                 }
             } else {
-                completion(nil)
                 if showAlert {
                     Snackbar.showErrorMessage(errorMessage)
                 }
+                completion(nil)
             }
         case .failure(let error):
-            completion(nil)
             if showAlert {
                 Snackbar.showErrorMessage(error.customDescription)
             }
+            completion(nil)
         }
     }
     
@@ -125,18 +130,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(nil)
                 } else {
-                    completion(nil)
                     if showAlert {
                         Snackbar.showErrorMessage(messageis)
                     }
+                    completion(nil)
                 }
             } else {
+                if showAlert {
+                    Snackbar.showErrorMessage(errorMessage)
+                }
                 completion(nil)
-                Snackbar.showErrorMessage(errorMessage)
             }
         case .failure(let error):
+            if showAlert {
+                Snackbar.showErrorMessage(error.customDescription)
+            }
             completion(nil)
-            Snackbar.showErrorMessage(error.customDescription)
         }
     }
     
@@ -154,18 +163,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(false)
                 } else {
-                    completion(false)
                     if showAlert {
                         Snackbar.showErrorMessage(messageis)
                     }
+                    completion(false)
                 }
             } else {
+                if showAlert {
+                    Snackbar.showErrorMessage(errorMessage)
+                }
                 completion(false)
-                Snackbar.showErrorMessage(errorMessage)
             }
         case .failure(let error):
+            if showAlert {
+                Snackbar.showErrorMessage(error.customDescription)
+            }
             completion(false)
-            Snackbar.showErrorMessage(error.customDescription)
         }
     }
     
@@ -187,18 +200,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(nil, false, "", false)
                 } else {
-                    completion(nil, false, "", false)
                     if showAlert {
                         Snackbar.showErrorMessage(messageis)
                     }
+                    completion(nil, false, "", false)
                 }
             } else {
+                if showAlert {
+                    Snackbar.showErrorMessage(errorMessage)
+                }
                 completion(nil, false, "", false)
-                Snackbar.showErrorMessage(errorMessage)
             }
         case .failure(let error):
+            if showAlert {
+                Snackbar.showErrorMessage(error.customDescription)
+            }
             completion(nil, false, "", false)
-            Snackbar.showErrorMessage(error.customDescription)
         }
     }
     

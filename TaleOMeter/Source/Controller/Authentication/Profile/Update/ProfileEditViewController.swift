@@ -63,9 +63,9 @@ class ProfileEditViewController: UIViewController {
                     response.Isd_code = prof.Isd_code
                     Login.storeProfileData(response)
                     if titleString == "Change Name" {
-                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
+                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", image: nil, isUserStory: true)
                     } else {
-                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
+                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", image: nil, isUserStory: true)
                     }
                 }
                 Core.HideProgress(self)

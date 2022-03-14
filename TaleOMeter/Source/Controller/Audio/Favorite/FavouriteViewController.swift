@@ -13,6 +13,8 @@ class FavouriteViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     
+    // MARK: - Private Property -
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()

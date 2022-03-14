@@ -49,7 +49,7 @@ class FeedbackViewController: UIViewController {
             Snackbar.showAlertMessage(messageString)
             return
         }
-        PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", imageName: "thank", isUserStory: true)
+        PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", image: UIImage(named: "thank"), isUserStory: true)
     }
     
     // MARK: - Click on done button of keyborad toolbar

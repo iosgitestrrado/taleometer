@@ -67,7 +67,7 @@ class VerificationProfileVC: UIViewController {
                     response.CountryCode = prof.CountryCode
                     response.Isd_code = prof.Isd_code
                     Login.storeProfileData(response)
-                    PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
+                    PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", image: nil, isUserStory: true)
                 }
                 Core.HideProgress(self)
             }

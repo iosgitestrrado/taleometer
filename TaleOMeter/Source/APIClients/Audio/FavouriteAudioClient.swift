@@ -7,7 +7,7 @@
 
 class FavouriteAudioClient {
     static func get(_ pageNumber: Int, completion: @escaping([Favourite]?) -> Void) {
-        APIClient.shared.get("page=\(pageNumber)", feed: .FavoriteAudio) { result in
+        APIClient.shared.get("?page=\(pageNumber)", feed: .FavoriteAudio) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var favs = [Favourite]()
                 if let fav = response {
@@ -22,7 +22,7 @@ class FavouriteAudioClient {
     
     static func add(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(favRequest, feed: .AddFavoriteAudio) { result in
-            ResponseAPI.getResponseJsonBool(result) { status in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
         }
@@ -30,7 +30,7 @@ class FavouriteAudioClient {
     
     static func remove(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.deleteJson(favRequest, query: "", feed: .RemoveFavoriteAudio) { result in
-            ResponseAPI.getResponseJsonBool(result) { status in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
         }

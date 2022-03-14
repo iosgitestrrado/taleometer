@@ -28,8 +28,8 @@ class GridCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureCell(_ title: String, coverImage: String, count: Int, gridWidth: CGFloat, gridHeight: CGFloat, titleViewHeight: CGFloat, row: Int) {
-        imageView.image = UIImage(named: coverImage)
+    func configureCell(_ title: String, coverImage: UIImage, count: Int, gridWidth: CGFloat, gridHeight: CGFloat, titleViewHeight: CGFloat, row: Int) {
+        imageView.image = coverImage
         if row == 0 {
             imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
             titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth * 2, height: titleViewHeight)
@@ -40,9 +40,9 @@ class GridCollectionViewCell: UICollectionViewCell {
         }
         titleLabel.text = title
                 
-        let countString = NSMutableAttributedString(string: "\(count)\nNew Qus")
-        countString.addAttributes(font15, range: rangeTitle1)
-        countString.addAttributes(font8, range: rangeTitle2)
+//        let countString = NSMutableAttributedString(string: "\(count)\nNew Qus")
+//        countString.addAttributes(font15, range: rangeTitle1)
+//        countString.addAttributes(font8, range: rangeTitle2)
         countLable.text = "\(count)"//countString
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import LGSideMenuController
+import AVFoundation
 
 class DashboardViewController: UIViewController {
 
@@ -91,5 +92,12 @@ class DashboardViewController: UIViewController {
             self.containerView.frame.size.width = CGFloat((335.0 * UIScreen.main.bounds.width) / 375.0)
             segVC.parentFrame = self.containerView.frame
         }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension DashboardViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

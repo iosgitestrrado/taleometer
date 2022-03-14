@@ -728,7 +728,7 @@
         <scene sceneID="A7X-mJ-Let">
             <objects>
                 <tableViewController storyboardIdentifier="AudioListViewController" id="BZ2-7S-NI9" customClass="AudioListViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="njp-Po-3Us">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="njp-Po-3Us">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="545"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -853,7 +853,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fhn-lw-Hw3">
-                                <rect key="frame" x="0.0" y="172" width="390" height="638"/>
+                                <rect key="frame" x="0.0" y="84" width="390" height="726"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -990,19 +990,23 @@
                                 </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YCh-NU-ddO">
-                                <rect key="frame" x="8" y="44" width="374" height="128"/>
+                                <rect key="frame" x="8" y="44" width="374" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ptX-tB-6BF">
-                                        <rect key="frame" x="0.0" y="0.0" width="143" height="128"/>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ptX-tB-6BF">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="BSd-JW-035"/>
+                                            <constraint firstAttribute="height" constant="40" id="h7Y-ea-xeZ"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="back"/>
+                                        <state key="normal" image="back-arrow"/>
                                         <connections>
                                             <action selector="tapOnBack:" destination="BVW-ro-8og" eventType="touchUpInside" id="WdY-SP-nfm"/>
                                         </connections>
                                     </button>
                                     <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for stories" translatesAutoresizingMaskIntoConstraints="NO" id="wW5-og-7VZ">
-                                        <rect key="frame" x="143" y="0.0" width="231" height="128"/>
+                                        <rect key="frame" x="40" y="0.0" width="334" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2076,7 +2080,7 @@
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
         <image name="active-fav" width="21.333333969116211" height="21.333333969116211"/>
         <image name="active-favour" width="16.666666030883789" height="16.666666030883789"/>
-        <image name="back" width="128" height="128"/>
+        <image name="back-arrow" width="20" height="20"/>
         <image name="background" width="360" height="640"/>
         <image name="close" width="20" height="20"/>
         <image name="favourite" width="36.666667938232422" height="36.666667938232422"/>

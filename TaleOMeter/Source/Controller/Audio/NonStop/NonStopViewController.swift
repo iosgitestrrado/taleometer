@@ -75,15 +75,9 @@ class NonStopViewController: UIViewController {
             if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
                 audio = audList[AudioPlayManager.shared.currentAudio]
                 self.audioTitle.text = audio.Title
-                if let story = audio.Story {
-                    self.storyLabel.setTitle("Story: \(story.Name)", for: .normal)
-                }
-                if let plot = audio.Plot {
-                    self.plotLabel.setTitle("Plot: \(plot.Name)", for: .normal)
-                }
-                if let narration = audio.Story {
-                    self.narrotionLabel.setTitle("Narration: \(narration.Name)", for: .normal)
-                }
+                self.storyLabel.setTitle("Story: \(audio.Story.Name)", for: .normal)
+                self.plotLabel.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
+                self.narrotionLabel.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
             }
         } else {
             Core.ShowProgress(self, detailLbl: "Getting Audio...")
@@ -171,7 +165,19 @@ class NonStopViewController: UIViewController {
             break
         default:
             //Favourite
-            sender.isSelected = !sender.isSelected
+            if sender.isSelected {
+                self.removeFromFav(audio.Story_id) { status in
+                    if let st = status, st {
+                        sender.isSelected = !sender.isSelected
+                    }
+                }
+            } else {
+                self.addToFav(audio.Story_id) { status in
+                    if let st = status, st {
+                        sender.isSelected = !sender.isSelected
+                    }
+                }
+            }
             break
         }
     }
@@ -179,15 +185,9 @@ class NonStopViewController: UIViewController {
     // MARK: Set audio data
     private func setupAudioData(_ playNow: Bool) {
         self.audioTitle.text = audio.Title
-        if let story = audio.Story {
-            self.storyLabel.setTitle("Story: \(story.Name)", for: .normal)
-        }
-        if let plot = audio.Plot {
-            self.plotLabel.setTitle("Plot: \(plot.Name)", for: .normal)
-        }
-        if let narration = audio.Story {
-            self.narrotionLabel.setTitle("Narration: \(narration.Name)", for: .normal)
-        }
+        self.storyLabel.setTitle("Story: \(audio.Story.Name)", for: .normal)
+        self.plotLabel.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
+        self.narrotionLabel.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
         
         if existingAudio {
             setupExistingAudio()
@@ -196,7 +196,7 @@ class NonStopViewController: UIViewController {
                 player.pause()
             }
             Core.ShowProgress(self, detailLbl: "Streaming Audio")
-            AudioPlayManager.shared.configAudio(isNonStop: true) { result in
+            AudioPlayManager.shared.initPlayerManager(isNonStop: true) { result in
                 self.configureAudio(playNow, result: result)
                 Core.HideProgress(self)
             }
@@ -393,7 +393,7 @@ class NonStopViewController: UIViewController {
                 }
             }
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
             }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
@@ -413,6 +413,26 @@ class NonStopViewController: UIViewController {
 
 }
 
+extension NonStopViewController {
+    // Add to favourite
+    private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            Core.HideProgress(self)
+            completion(status)
+        }
+    }
+    
+    // Remove from favourite
+    private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            Core.HideProgress(self)
+            completion(status)
+        }
+    }
+}
+
 
 // MARK: - PromptViewDelegate -
 extension NonStopViewController: PromptViewDelegate {
@@ -420,6 +440,7 @@ extension NonStopViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
+            self.addToFav(audio.Story_id) { status in }
             break
         case 1:
             //1 - Once more

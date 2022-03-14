@@ -43,27 +43,11 @@ class GridViewController: UIViewController {
         // Enable vertical scroll always
         self.collectionView.alwaysBounceVertical = true
         
-        // Set infinite scroll
-        let indicatorRect: CGRect = CGRect(x: 0, y: 0, width: 24, height: 24)
-        self.collectionView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: indicatorRect)
         
-        // Set custom indicator margin
-        collectionView?.infiniteScrollIndicatorMargin = 40
-        
-        // Add infinite scroll handler
-        collectionView?.addInfiniteScroll { [weak self] (scrollView) -> Void in
-            self?.getAudioList({
-                scrollView.finishInfiniteScroll()
-            })
-        }
-        
-        // load initial data
-        collectionView?.beginInfiniteScroll(true)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
         //collectionViewLayout.invalidateLayout()
     }
     
@@ -71,49 +55,75 @@ class GridViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Add infinite scroll handler
+    }
+    
+    func loadAudioList() {
+        if audioList.count <= 0 {
+            // Set infinite scroll
+            let indicatorRect: CGRect = CGRect(x: 0, y: 0, width: 24, height: 24)
+            self.collectionView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: indicatorRect)
+            
+            // Set custom indicator margin
+            collectionView?.infiniteScrollIndicatorMargin = 40
+            
+            collectionView?.addInfiniteScroll { [weak self] (scrollView) -> Void in
+                self?.getAudioList({
+                    scrollView.finishInfiniteScroll()
+                })
+            }
+            
+            // load initial data
+            collectionView?.beginInfiniteScroll(true)
+        }
+    }
     
     private func getAudioList(_ completionHandler: (() -> Void)?) {
-        //Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
-        AudioClient.get(AudioRequest(page: pageNumber, limit: pageLimit), genreId: genreId, completion: { [self] result in
-            if let response = result, response.count > 0 {
-                if pageNumber == 1 {
-                    let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-                    layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
+            AudioClient.get(AudioRequest(page: pageNumber, limit: pageLimit), genreId: genreId, completion: { [self] result in
+                if let response = result, response.count > 0 {
+                    if pageNumber == 1 {
+                        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+                        layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
 
-                    if audioList.count > 0 {
-                        gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
-                        layout.itemSize = CGSize(width: gridSize, height: gridSize)
-                    } else {
-                        gridSize = parentFrame!.size.width
-                        layout.itemSize = CGSize(width: gridSize, height: 30)
+                        if audioList.count > 0 {
+                            gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
+                            layout.itemSize = CGSize(width: gridSize, height: gridSize)
+                        } else {
+                            gridSize = parentFrame!.size.width
+                            layout.itemSize = CGSize(width: gridSize, height: 30)
+                        }
+                        layout.minimumInteritemSpacing = 0
+                        layout.minimumLineSpacing = 10
+                        collectionView.collectionViewLayout = layout
+                        currentIndex = 0
+                        pageNumber += 1
                     }
-                    layout.minimumInteritemSpacing = 0
-                    layout.minimumLineSpacing = 10
-                    collectionView.collectionViewLayout = layout
-                    currentIndex = 0
-                    pageNumber += 1
+                    
+                    let newItems = response
+                    
+                    // create new index paths
+                    let photoCount = self.audioList.count
+                    let (start, end) = (photoCount, newItems.count + photoCount)
+                    let indexPaths = (start..<end).map { return IndexPath(row: $0, section: 0) }
+                    
+                    // update data source
+                    self.audioList.append(contentsOf: newItems)
+                                                
+                    // update collection view
+                    self.collectionView?.performBatchUpdates({ () -> Void in
+                        self.collectionView?.insertItems(at: indexPaths)
+                    }, completion: { (finished) -> Void in
+                        completionHandler?()
+                        Core.HideProgress(parentController!)
+                        return
+                    });
                 }
-                
-                let newItems = response
-                
-                // create new index paths
-                let photoCount = self.audioList.count
-                let (start, end) = (photoCount, newItems.count + photoCount)
-                let indexPaths = (start..<end).map { return IndexPath(row: $0, section: 0) }
-                
-                // update data source
-                self.audioList.append(contentsOf: newItems)
-                                            
-                // update collection view
-                self.collectionView?.performBatchUpdates({ () -> Void in
-                    self.collectionView?.insertItems(at: indexPaths)
-                }, completion: { (finished) -> Void in
-                    completionHandler?()
-                });
-            }
-            completionHandler?()
-            //Core.HideProgress(parentController!)
-        })
+                completionHandler?()
+                Core.HideProgress(parentController!)
+            })
     }
     
     // MARK: - Actions

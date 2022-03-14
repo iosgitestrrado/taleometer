@@ -18,11 +18,16 @@ class AudioListViewController: UITableViewController {
     private var highLightedLabel: UILabel?
     private var titleStr = "Asked The Mentor"
     private var currentAudioIdx = 0
+    fileprivate var favAudioList = [Favourite]()
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        if isFavourite {
+            self.getFavourite()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,6 +36,18 @@ class AudioListViewController: UITableViewController {
             NotificationCenter.default.addObserver(self, selector: #selector(nextAudioPlay(_:)), name: Notification.Name(rawValue: "nextAudio"), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(playCurrentAudio(_:)), name: Notification.Name(rawValue: "playAudio"), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(pauseCurrentAudio(_:)), name: Notification.Name(rawValue: "pauseAudio"), object: nil)
+        }
+    }
+    
+    // MARK: - Get Favourite audios
+    private func getFavourite() {
+        Core.ShowProgress(self, detailLbl: "Getting Favourite Audio...")
+        FavouriteAudioClient.get(1) { [self] result in
+            if let response = result {
+                favAudioList = response
+                self.tableView.reloadData()
+            }
+            Core.HideProgress(self)
         }
     }
     
@@ -77,6 +94,14 @@ class AudioListViewController: UITableViewController {
     
     @objc private func tapOnFav(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
+        if isFavourite {
+            self.removeFromFav(favAudioList[sender.tag].Audio_story_id) { [self] status in
+                if let st = status, st {
+                    favAudioList.remove(at: sender.tag)
+                    tableView.reloadData()
+                }
+            }
+        }
     }
     
     private func highlightedRow(_ rowIndex: Int) {
@@ -85,22 +110,47 @@ class AudioListViewController: UITableViewController {
         
     // MARK: - UITableViewDataSource -
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return isFavourite ? (self.favAudioList.count > 0 ? self.favAudioList.count : 1) : 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "audioCell", for: indexPath) as? AudioViewCell else { return UITableViewCell() }
+        if isFavourite && self.favAudioList.count <= 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
+            return cell
+        }
         
-        cell.configureCell(self.titleStr, isNonStop: isNonStop, isFavourite: isFavourite, row: indexPath.row, selectedIndex: selectedIndex, target: self, selectors: [#selector(tapOnPlay(_:)), #selector(tapOnFav(_:))])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "audioCell", for: indexPath) as? AudioViewCell else { return UITableViewCell() }
+        let favourite = favAudioList[indexPath.row].Audio_story
+        cell.configureCell(favourite.Title, audioImage: favourite.Image, likesCount: 0, duration: 0, isNonStop: isNonStop, isFavourite: isFavourite, row: indexPath.row, selectedIndex: selectedIndex, target: self, selectors: [#selector(tapOnPlay(_:)), #selector(tapOnFav(_:))])
         return cell
     }
     
     // MARK: - UITableViewDelegate -
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return  isFavourite && self.favAudioList.count <= 0 ? 30 : 60
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+    }
+}
+
+extension AudioListViewController {
+    // Add to favourite
+    private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            Core.HideProgress(self)
+            completion(status)
+        }
+    }
+    
+    // Remove from favourite
+    private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            Core.HideProgress(self)
+            completion(status)
+        }
     }
 }

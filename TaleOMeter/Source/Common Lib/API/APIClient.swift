@@ -37,7 +37,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.getRequest(query, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.getRequest(query) else { return }
         fetch(with: request, decode: { json -> ResponseModel? in
             guard let apiResponse = json as? ResponseModel else { return  nil }
             return apiResponse
@@ -49,7 +49,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.getRequest(query, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.getRequest(query) else { return }
         fetch(with: request, decode: { json -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse
@@ -61,7 +61,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.postRequest(query, parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.postRequest(query, parameters: parameters) else { return }
         fetch(with: request, decode: { (json) -> ResponseModel? in
             guard let apiResponse = json as? ResponseModel else { return  nil }
             return apiResponse
@@ -73,7 +73,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.postRequest(query, parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.postRequest(query, parameters: parameters) else { return }
         fetch(with: request, decode: { (json) -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse
@@ -85,7 +85,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.postRequest("", parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.postRequest("", parameters: parameters) else { return }
         fetch(with: request, decode: { (json) -> ResponseModel? in
             guard let apiResponse = json as? ResponseModel else { return  nil }
             return apiResponse
@@ -97,7 +97,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.postRequest("", parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.postRequest("", parameters: parameters) else { return }
         fetch(with: request, decode: { (json) -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse
@@ -109,7 +109,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.deleteRequest(query, parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.deleteRequest(query, parameters: parameters) else { return }
         fetch(with: request, decode: { json -> ResponseModel? in
             guard let apiResponse = json as? ResponseModel else { return  nil }
             return apiResponse
@@ -121,7 +121,7 @@ class APIClient: GenericAPIClient {
             Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
             return
         }
-        guard let request = feed.deleteRequest(query, parameters: parameters, headers: [HTTPHeader.contentType("application/json"), HTTPHeader.device(GetDeviceInfo()), HTTPHeader.authorization(getAuthentication())]) else { return }
+        guard let request = feed.deleteRequest(query, parameters: parameters) else { return }
         fetch(with: request, decode: { json -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse
@@ -219,6 +219,16 @@ enum Feed {
     
     //Other
     case UserStories
+    
+    //Trivia
+    case TriviaHome
+    case TriviaDaily
+    case TriviaCategoryPost
+    case TriviaPosts
+    case TriviaSubmitAnswer
+    case TriviaViewAnswer
+    case TriviaViewCommnets
+    case TriviaAddCommennt
 }
 
 protocol CodeEnd {
@@ -273,6 +283,16 @@ extension Feed: Endpoint {
             
         //Other
         case .UserStories:              return "/api/user-stories"
+            
+        //Trivia
+        case .TriviaHome:               return "/api/trivia-home"
+        case .TriviaDaily:              return "/api/trivia/daily"
+        case .TriviaCategoryPost:       return "/api/trivia/category-post"
+        case .TriviaPosts:              return "/api/trivia/posts"
+        case .TriviaSubmitAnswer:       return "/api/trivia/submit-answer"
+        case .TriviaViewAnswer:         return "/api/trivia/view-answer"
+        case .TriviaViewCommnets:       return "/api/trivia/view-comments"
+        case .TriviaAddCommennt:        return "/api/trivia/add-comment"
         }
     }
 }

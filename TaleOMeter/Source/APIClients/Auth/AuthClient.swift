@@ -8,8 +8,6 @@
 import Foundation
 import UIKit
 
-let profileImageName = "profilePic.jpeg"
-
 class AuthClient {
     
     static func login(_ loginReq: LoginRequest, completion: @escaping(Bool) -> Void) {

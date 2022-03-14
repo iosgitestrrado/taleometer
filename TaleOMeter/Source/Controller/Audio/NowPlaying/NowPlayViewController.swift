@@ -96,15 +96,9 @@ class NowPlayViewController: UIViewController {
         
         self.imageView.image = audio.Image
         self.titleLabel.text = audio.Title
-        if let story = audio.Story {
-            self.storyButton.setTitle("Story: \(story.Name)", for: .normal)
-        }
-        if let plot = audio.Plot {
-            self.storyButton.setTitle("Plot: \(plot.Name)", for: .normal)
-        }
-        if let narration = audio.Story {
-            self.storyButton.setTitle("Narration: \(narration.Name)", for: .normal)
-        }
+        self.storyButton.setTitle("Story: \(audio.Story.Name)", for: .normal)
+        self.storyButton.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
+        self.storyButton.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
         
         self.cuncurrentUserLbl.text = "Concurrent Users: \(audio.Views_count.formatPoints())"
                 
@@ -115,7 +109,8 @@ class NowPlayViewController: UIViewController {
                 player.pause()
             }
             Core.ShowProgress(self, detailLbl: "Streaming Audio")
-            AudioPlayManager.shared.configAudio { result in
+            
+            AudioPlayManager.shared.initPlayerManager { result in
                 self.configureAudio(playNow, result: result)
                 Core.HideProgress(self)
             }
@@ -318,7 +313,19 @@ class NowPlayViewController: UIViewController {
             break
         case 2:
             //Favourite
-            sender.isSelected = !sender.isSelected
+            if sender.isSelected {
+                self.removeFromFav(audio.Story_id) { status in
+                    if let st = status, st {
+                        sender.isSelected = !sender.isSelected
+                    }
+                }
+            } else {
+                self.addToFav(audio.Story_id) { status in
+                    if let st = status, st {
+                        sender.isSelected = !sender.isSelected
+                    }
+                }
+            }
             break
         case 3:
             //Back 10 Second
@@ -408,12 +415,32 @@ class NowPlayViewController: UIViewController {
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
                     if player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
-                        PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                        PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
                     }
                 }
                 AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
             }
+        }
+    }
+}
+
+extension NowPlayViewController {
+    // Add to favourite
+    private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            Core.HideProgress(self)
+            completion(status)
+        }
+    }
+    
+    // Remove from favourite
+    private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            Core.HideProgress(self)
+            completion(status)
         }
     }
 }
@@ -424,6 +451,7 @@ extension NowPlayViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
+            self.addToFav(audio.Story_id) { status in }
             break
         case 1:
             //1 - Once more

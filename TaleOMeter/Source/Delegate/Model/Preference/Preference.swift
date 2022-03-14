@@ -22,14 +22,7 @@ struct Preference {
         Id = json["id"].intValue
         Name = json["name"].stringValue
         Preference_category_id = json["preference_category_id"].intValue
-        let imageURL = Constants.baseURL.appending("/\(json["image"].stringValue)")
-        Image = UIImage(named: "Default_img")!
-        if let url = URL(string: imageURL) {
-            do {
-                let data = try Data(contentsOf: url)
-                Image = UIImage(data: data) ?? UIImage(named: "Default_img")!
-            } catch { }
-        }
+        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
