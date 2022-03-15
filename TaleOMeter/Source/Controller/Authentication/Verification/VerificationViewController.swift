@@ -57,17 +57,20 @@ class VerificationViewController: UIViewController {
     }
     
     @IBAction func tapOnResendOTP(_ sender: Any) {
-        Snackbar.showSuccessMessage("One time password send to your mobile number!")
+        Core.ShowProgress(self, detailLbl: "Sending OTP...")
+        AuthClient.login(LoginRequest(mobile: self.mobileNumber)) { status in
+            Core.HideProgress(self)
+        }
     }
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if self.otp1TextField.text!.isEmpty || self.otp2TextField.text!.isEmpty || self.otp3TextField.text!.isEmpty ||
-            self.otp4TextField.text!.isEmpty{
-            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+            self.otp4TextField.text!.isEmpty {
+            Toast.show("Please Enter valid OTP to complete verification!")
             return
         }
         
@@ -102,7 +105,6 @@ class VerificationViewController: UIViewController {
     }
     
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
@@ -161,5 +163,10 @@ extension VerificationViewController: UITextFieldDelegate {
             //self.OTPVerify()
             return false
         }
+    }
+    
+    // Set error
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
     }
 }

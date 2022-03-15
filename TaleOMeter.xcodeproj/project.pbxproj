@@ -22,6 +22,7 @@
 		631E6D8127DF11F8006DC031 /* TriviaPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631E6D8027DF11F8006DC031 /* TriviaPost.swift */; };
 		631F9C7C27C49B0700F1B069 /* CommingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631F9C7B27C49B0700F1B069 /* CommingViewController.swift */; };
 		6325BDC627C61D00009B1AE5 /* SearchHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325BDC527C61D00009B1AE5 /* SearchHistoryViewController.swift */; };
+		632F674927E0C4B700C3F579 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632F674827E0C4B700C3F579 /* Toast.swift */; };
 		63342CDC27D2552400331806 /* PostCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63342CDB27D2552400331806 /* PostCellView.swift */; };
 		6337E6AA27DF57B90039C370 /* NoDataTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6337E6A827DF57B90039C370 /* NoDataTableViewCell.xib */; };
 		6337E6AB27DF57B90039C370 /* NoDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6337E6A927DF57B90039C370 /* NoDataTableViewCell.swift */; };
@@ -74,7 +75,7 @@
 		638150B627C64E0E003E6DE4 /* UserStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638150B527C64E0E003E6DE4 /* UserStoryCell.swift */; };
 		638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */; };
 		638480BD27BE71D200035630 /* testAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480BC27BE71D200035630 /* testAudio.mp3 */; };
-		63863DAE27D7258C00EFF6E2 /* UiTextView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DAD27D7258C00EFF6E2 /* UiTextView+Extension.swift */; };
+		63863DAE27D7258C00EFF6E2 /* UITextView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DAD27D7258C00EFF6E2 /* UITextView+Extension.swift */; };
 		63863DBA27D7735C00EFF6E2 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DB427D7735A00EFF6E2 /* APIError.swift */; };
 		63863DBB27D7735C00EFF6E2 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DB527D7735B00EFF6E2 /* Endpoint.swift */; };
 		63863DBC27D7735C00EFF6E2 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DB627D7735B00EFF6E2 /* Result.swift */; };
@@ -131,10 +132,10 @@
 		63DFB4B027BCC39600B08216 /* SegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DFB4AF27BCC39600B08216 /* SegmentViewController.swift */; };
 		63DFB4B327BCC57900B08216 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DFB4B227BCC57900B08216 /* GridViewController.swift */; };
 		63DFB4B627BCC8A700B08216 /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DFB4B527BCC8A700B08216 /* GridCollectionViewCell.swift */; };
+		63E6E2E627E0B1EC00B82B08 /* UITextField+Extenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E6E2E527E0B1EC00B82B08 /* UITextField+Extenstion.swift */; };
 		63EA2DB227D3986D0066DC76 /* FeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EA2DB127D3986D0066DC76 /* FeedCellView.swift */; };
 		63ED4EAB27D2649800C4BA42 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED4EAA27D2649800C4BA42 /* PlayerView.swift */; };
 		63F2AAAB27BB68FF007CAFC1 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F2AAAA27BB68FF007CAFC1 /* Reachability.swift */; };
-		63F2AAB027BB6A36007CAFC1 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F2AAAF27BB6A36007CAFC1 /* Snackbar.swift */; };
 		63FA7E7027BBB80000AD6C97 /* TermsAndConditionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA7E6F27BBB80000AD6C97 /* TermsAndConditionVC.swift */; };
 		63FA7E7327BBC90C00AD6C97 /* FooterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA7E7227BBC90C00AD6C97 /* FooterViewController.swift */; };
 		76AD30E196281466F1D06E7F /* Pods_TaleOMeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */; };
@@ -173,6 +174,7 @@
 		631E6D8027DF11F8006DC031 /* TriviaPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaPost.swift; sourceTree = "<group>"; };
 		631F9C7B27C49B0700F1B069 /* CommingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommingViewController.swift; sourceTree = "<group>"; };
 		6325BDC527C61D00009B1AE5 /* SearchHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistoryViewController.swift; sourceTree = "<group>"; };
+		632F674827E0C4B700C3F579 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		63342CDB27D2552400331806 /* PostCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellView.swift; sourceTree = "<group>"; };
 		6337E6A827DF57B90039C370 /* NoDataTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoDataTableViewCell.xib; sourceTree = "<group>"; };
 		6337E6A927DF57B90039C370 /* NoDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataTableViewCell.swift; sourceTree = "<group>"; };
@@ -229,7 +231,7 @@
 		638150B527C64E0E003E6DE4 /* UserStoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoryCell.swift; sourceTree = "<group>"; };
 		638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = file_example_MP3_5MG.mp3; sourceTree = "<group>"; };
 		638480BC27BE71D200035630 /* testAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio.mp3; sourceTree = "<group>"; };
-		63863DAD27D7258C00EFF6E2 /* UiTextView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiTextView+Extension.swift"; sourceTree = "<group>"; };
+		63863DAD27D7258C00EFF6E2 /* UITextView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extension.swift"; sourceTree = "<group>"; };
 		63863DB427D7735A00EFF6E2 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		63863DB527D7735B00EFF6E2 /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		63863DB627D7735B00EFF6E2 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -287,10 +289,10 @@
 		63DFB4AF27BCC39600B08216 /* SegmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentViewController.swift; sourceTree = "<group>"; };
 		63DFB4B227BCC57900B08216 /* GridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		63DFB4B527BCC8A700B08216 /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
+		63E6E2E527E0B1EC00B82B08 /* UITextField+Extenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extenstion.swift"; sourceTree = "<group>"; };
 		63EA2DB127D3986D0066DC76 /* FeedCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCellView.swift; sourceTree = "<group>"; };
 		63ED4EAA27D2649800C4BA42 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		63F2AAAA27BB68FF007CAFC1 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
-		63F2AAAF27BB6A36007CAFC1 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
 		63FA7E6F27BBB80000AD6C97 /* TermsAndConditionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionVC.swift; sourceTree = "<group>"; };
 		63FA7E7227BBC90C00AD6C97 /* FooterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterViewController.swift; sourceTree = "<group>"; };
 		6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter_TaleOMeterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -603,7 +605,8 @@
 				636ED8E727BB7C2A0030D2F0 /* Double+Extension.swift */,
 				636ED8EA27BB7C8E0030D2F0 /* UIView+Extension.swift */,
 				634985DE27C50AFD00FB6A7C /* UILabel+Extension.swift */,
-				63863DAD27D7258C00EFF6E2 /* UiTextView+Extension.swift */,
+				63863DAD27D7258C00EFF6E2 /* UITextView+Extension.swift */,
+				63E6E2E527E0B1EC00B82B08 /* UITextField+Extenstion.swift */,
 				633B82C827D9E1E400236CA2 /* Int+Extenstion.swift */,
 				633B82CA27D9E2F300236CA2 /* AVPlayer+Extension.swift */,
 			);
@@ -1005,14 +1008,6 @@
 			path = Container;
 			sourceTree = "<group>";
 		};
-		63D27C9A27BD0EA30074EA7F /* Snackbar */ = {
-			isa = PBXGroup;
-			children = (
-				63F2AAAF27BB6A36007CAFC1 /* Snackbar.swift */,
-			);
-			path = Snackbar;
-			sourceTree = "<group>";
-		};
 		63D27C9B27BD128A0074EA7F /* AudioPlay */ = {
 			isa = PBXGroup;
 			children = (
@@ -1042,7 +1037,6 @@
 			children = (
 				63D27CA427BD1BCA0074EA7F /* MarqueeLabel */,
 				63F2AAAD27BB6A16007CAFC1 /* Reachability */,
-				63D27C9A27BD0EA30074EA7F /* Snackbar */,
 				63D27C9927BD0E920074EA7F /* Container */,
 			);
 			path = Library;
@@ -1115,6 +1109,7 @@
 			isa = PBXGroup;
 			children = (
 				636ED8D727BB6B470030D2F0 /* Core.swift */,
+				632F674827E0C4B700C3F579 /* Toast.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -1429,10 +1424,10 @@
 				63DFB4B027BCC39600B08216 /* SegmentViewController.swift in Sources */,
 				6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */,
 				63863DD727D782B200EFF6E2 /* AudioClient.swift in Sources */,
+				63E6E2E627E0B1EC00B82B08 /* UITextField+Extenstion.swift in Sources */,
 				633B82C927D9E1E400236CA2 /* Int+Extenstion.swift in Sources */,
 				6358430F27B7AED90055DE7E /* SceneDelegate.swift in Sources */,
-				63F2AAB027BB6A36007CAFC1 /* Snackbar.swift in Sources */,
-				63863DAE27D7258C00EFF6E2 /* UiTextView+Extension.swift in Sources */,
+				63863DAE27D7258C00EFF6E2 /* UITextView+Extension.swift in Sources */,
 				63863DBD27D7735C00EFF6E2 /* HTTPHeader.swift in Sources */,
 				63DFB4B627BCC8A700B08216 /* GridCollectionViewCell.swift in Sources */,
 				631E6D7A27DEF7B5006DC031 /* TriviaComment.swift in Sources */,
@@ -1485,6 +1480,7 @@
 				636ED8E827BB7C2A0030D2F0 /* Double+Extension.swift in Sources */,
 				63863DF127D7846600EFF6E2 /* PreferenceCategory.swift in Sources */,
 				63863DC627D7749600EFF6E2 /* ResponseModel.swift in Sources */,
+				632F674927E0C4B700C3F579 /* Toast.swift in Sources */,
 				630CEFE127C4DD610042DBBA /* AudioViewCell.swift in Sources */,
 				6358435D27B7C9EC0055DE7E /* DashboardViewController.swift in Sources */,
 				6325BDC627C61D00009B1AE5 /* SearchHistoryViewController.swift in Sources */,
@@ -1703,7 +1699,6 @@
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Trivia;
 				INFOPLIST_KEY_NSCameraUsageDescription = "TaleOMeter uses the camera to update your profile picture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "TaleOMeter uses the photo library to update your profile picture.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1740,7 +1735,6 @@
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Trivia;
 				INFOPLIST_KEY_NSCameraUsageDescription = "TaleOMeter uses the camera to update your profile picture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "TaleOMeter uses the photo library to update your profile picture.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

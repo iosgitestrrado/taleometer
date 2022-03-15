@@ -46,7 +46,7 @@ class LaunchViewController: UIViewController {
     
     private func getFavAudio() {
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.get(1) { response in
+            FavouriteAudioClient.get("all") { response in
                 if let fav = response {
                     favouriteAudio = fav
                 }

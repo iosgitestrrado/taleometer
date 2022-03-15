@@ -13,15 +13,15 @@ class TriviaViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Private Properties -
-    fileprivate var gridWidth: CGFloat = 187.0
-    fileprivate var gridHeight: CGFloat = 225.0
-    fileprivate var titleViewHeight: CGFloat = 50.0
-//    fileprivate struct ItemModel {
+    private var gridWidth: CGFloat = 187.0
+    private var gridHeight: CGFloat = 225.0
+    private var titleViewHeight: CGFloat = 50.0
+//    private struct ItemModel {
 //        var title = String()
 //        var count = Int()
 //        var image = String()
 //    }
-//    fileprivate var tilesArray: [ItemModel] = {
+//    private var tilesArray: [ItemModel] = {
 //        var tilesArraytem = [ItemModel]()
 //        tilesArraytem.append(ItemModel(title: "Daily", count: 20, image: "Book-Covers"))
 //        tilesArraytem.append(ItemModel(title: "Food Stories", count: 20, image: "food"))
@@ -31,7 +31,7 @@ class TriviaViewController: UIViewController {
 //        return tilesArraytem
 //    }()
     
-    fileprivate var triviaHome = TriviaHome()
+    private var triviaHome = TriviaHome()
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {

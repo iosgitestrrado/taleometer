@@ -47,6 +47,9 @@
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="DtI-RR-bpN" id="Zpc-zR-mn6"/>
+                                                            </connections>
                                                         </textField>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -101,16 +104,22 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cGG-dP-iXv">
                                                     <rect key="frame" x="20" y="65" width="350" height="100"/>
                                                     <subviews>
-                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Jdn-M6-9BW">
-                                                            <rect key="frame" x="7" y="7.3333339691162109" width="358" height="84"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OY5-32-mzb">
+                                                            <rect key="frame" x="8" y="8" width="334" height="84"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                        </textView>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="DtI-RR-bpN" id="OtV-Kj-cCz"/>
+                                                            </connections>
+                                                        </textField>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="OY5-32-mzb" firstAttribute="leading" secondItem="cGG-dP-iXv" secondAttribute="leading" constant="8" id="HgY-Q4-JaQ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="OY5-32-mzb" secondAttribute="trailing" constant="8" id="TO6-y1-TZT"/>
+                                                        <constraint firstAttribute="bottom" secondItem="OY5-32-mzb" secondAttribute="bottom" constant="8" id="hRb-7e-LQT"/>
+                                                        <constraint firstItem="OY5-32-mzb" firstAttribute="top" secondItem="cGG-dP-iXv" secondAttribute="top" constant="8" id="vOt-VH-6zn"/>
+                                                    </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                             <real key="value" value="25"/>
@@ -131,7 +140,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="textView" destination="Jdn-M6-9BW" id="pwS-Ev-ruT"/>
+                                            <outlet property="textField" destination="OY5-32-mzb" id="KOF-xo-QqD"/>
                                             <outlet property="titleLabel" destination="m7f-f9-AZk" id="lJy-rn-8fb"/>
                                         </connections>
                                     </tableViewCell>

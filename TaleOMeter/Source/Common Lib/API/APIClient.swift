@@ -34,7 +34,7 @@ class APIClient: GenericAPIClient {
     //in the signature of the function in the success case we define the Class type thats is the generic one in the API
     func get(_ query: String, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.getRequest(query) else { return }
@@ -46,7 +46,7 @@ class APIClient: GenericAPIClient {
 
     func getJson(_ query: String, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.getRequest(query) else { return }
@@ -58,7 +58,7 @@ class APIClient: GenericAPIClient {
 
     func post<T: Encodable>(_ query: String, parameters: T, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.postRequest(query, parameters: parameters) else { return }
@@ -70,7 +70,7 @@ class APIClient: GenericAPIClient {
 
     func postJson<T: Encodable>(_ query: String, parameters: T, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.postRequest(query, parameters: parameters) else { return }
@@ -82,7 +82,7 @@ class APIClient: GenericAPIClient {
 
     func post<T: Encodable>(_ parameters: T, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.postRequest("", parameters: parameters) else { return }
@@ -94,7 +94,7 @@ class APIClient: GenericAPIClient {
 
     func postJson<T: Encodable>(_ parameters: T, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.postRequest("", parameters: parameters) else { return }
@@ -106,7 +106,7 @@ class APIClient: GenericAPIClient {
 
     func delete<T: Encodable>(_ parameters: T, query: String, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.deleteRequest(query, parameters: parameters) else { return }
@@ -118,7 +118,7 @@ class APIClient: GenericAPIClient {
 
     func deleteJson<T: Encodable>(_ parameters: T, query: String, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showErrorMessage("Please check your Internet connetction! and Try again!")
+            Toast.show()
             return
         }
         guard let request = feed.deleteRequest(query, parameters: parameters) else { return }

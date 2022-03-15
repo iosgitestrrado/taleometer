@@ -39,23 +39,29 @@ class VerificationProfileVC: UIViewController {
     }
     
     @IBAction func tapOnResend(_ sender: Any) {
-        Snackbar.showSuccessMessage("One time password send to your mobile number!")
+        Core.ShowProgress(self, detailLbl: "Sending OTP")
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileNumber)) { status in
+            if status {
+                self.performSegue(withIdentifier: "verification", sender: self)
+            }
+            Core.HideProgress(self)
+        }
     }
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if self.otp1Text.text!.isEmpty || self.otp2Text.text!.isEmpty || self.otp3Text.text!.isEmpty ||
             self.otp4Text.text!.isEmpty{
-            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+            Toast.show("Please Enter valid OTP to complete verification!")
             return
         }
         if let otp = Int("\(self.otp1Text.text!)\(self.otp2Text.text!)\(self.otp3Text.text!)\(self.otp4Text.text!)") {
             self.verifyOTP(otp)
         } else {
-            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+            Toast.show("Please Enter valid OTP to complete verification!")
         }
     }
     
@@ -72,7 +78,7 @@ class VerificationProfileVC: UIViewController {
                 Core.HideProgress(self)
             }
         } else {
-            Snackbar.showAlertMessage("No Profile data found!")
+            Toast.show("No Profile data found!")
         }
     }
 }

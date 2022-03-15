@@ -105,7 +105,7 @@ class UserStoryViewController: UIViewController {
         default:
             for story in storyDataList {
                 if story.value.isBlank && story.id != UserStoryCellItem.submitButton.cellIdentifier && story.id != UserStoryCellItem.terms.cellIdentifier {
-                    Snackbar.showAlertMessage(story.celldata[0].errorMessge)
+                    Toast.show(story.celldata[0].errorMessge)
                     return
                 }
             }
@@ -172,7 +172,9 @@ extension UserStoryViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate -
 extension UserStoryViewController: UITextFieldDelegate {
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -191,6 +193,10 @@ extension UserStoryViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.storyDataList[textField.tag].value = textField.text!
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
     }
 }
 

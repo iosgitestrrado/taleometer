@@ -20,7 +20,7 @@ class AudioViewCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    func configureCell(_ titleStr: String, audioImage: UIImage, likesCount: Int, duration: Double, isNonStop: Bool, isFavourite: Bool, row: Int, selectedIndex: Int, target: Any, selectors: [Selector]) {
+    func configureCell(_ titleStr: String, audioImage: UIImage, likesCount: Int, duration: Double, isFavourite: Bool, row: Int, selectedIndex: Int, target: Any, selectors: [Selector]) {
         self.isSelected = row == selectedIndex
         if let image = self.profileImage {
             image.image = audioImage
@@ -29,8 +29,6 @@ class AudioViewCell: UITableViewCell {
         if let subTitle = self.subTitleLabel {
             subTitle.text = "\(likesCount.formatPoints()) Likes | \(duration.asString(style: .short))"
         }
-        self.playButton.isHidden = isNonStop
-        self.favButton.isHidden = isNonStop
         if let titleLbl = self.titleLabel {
             if self.isSelected {
                 let soundWave = Core.getImageString("wave")
@@ -43,14 +41,12 @@ class AudioViewCell: UITableViewCell {
                 titleLbl.textColor = .white
             }
         }
-        if !isNonStop {
-            self.playButton.tag = row
-            self.playButton.isSelected = self.isSelected
-            self.playButton.addTarget(target, action: selectors[0], for: .touchUpInside)
-            self.favButton.addTarget(target, action: selectors[1], for: .touchUpInside)
-            if isFavourite {
-                self.favButton.isSelected = isFavourite
-            }
+        self.playButton.tag = row
+        self.playButton.isSelected = self.isSelected
+        self.playButton.addTarget(target, action: selectors[0], for: .touchUpInside)
+        self.favButton.addTarget(target, action: selectors[1], for: .touchUpInside)
+        if isFavourite {
+            self.favButton.isSelected = isFavourite
         }
     }
 }

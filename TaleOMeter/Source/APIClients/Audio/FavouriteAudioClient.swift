@@ -6,13 +6,14 @@
 //
 
 class FavouriteAudioClient {
-    static func get(_ pageNumber: Int, completion: @escaping([Favourite]?) -> Void) {
+    static func get(_ pageNumber: String, completion: @escaping([Audio]?) -> Void) {
         APIClient.shared.get("?page=\(pageNumber)", feed: .FavoriteAudio) { result in
             ResponseAPI.getResponseArray(result) { response in
-                var favs = [Favourite]()
+                var favs = [Audio]()
                 if let fav = response {
                     fav.forEach({ (object) in
-                        favs.append(Favourite(object))
+                        let favor = Favourite(object)
+                        favs.append(favor.Audio_story)
                     })
                 }
                 completion(favs)
@@ -23,7 +24,12 @@ class FavouriteAudioClient {
     static func add(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(favRequest, feed: .AddFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
-                completion(status)
+                self.get("all") { response in
+                    if let data = response, data.count > 0 {
+                        favouriteAudio = data
+                    }
+                    completion(status)
+                }
             }
         }
     }
@@ -31,7 +37,12 @@ class FavouriteAudioClient {
     static func remove(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.deleteJson(favRequest, query: "", feed: .RemoveFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
-                completion(status)
+                self.get("all") { response in
+                    if let data = response, data.count > 0 {
+                        favouriteAudio = data
+                    }
+                    completion(status)
+                }
             }
         }
     }

@@ -18,14 +18,14 @@ class TRPostViewController: UIViewController {
     var categoryId = -1
     
     // MARK: - Private Properties -
-//    fileprivate struct QuestionModel {
+//    private struct QuestionModel {
 //        var question = String()
 //        var answer = String()
 //        var value = String()
 //        var videoUrl = ""
 //        var image = String()
 //    }
-//    fileprivate var questionArray: [QuestionModel] = {
+//    private var questionArray: [QuestionModel] = {
 //        var questionArraytemp = [QuestionModel]()
 //        questionArraytemp.append(QuestionModel(question: "Who is the Character in this Image?", answer: "Tenali Raman", value: "", videoUrl: "", image: "tenali.jpg"))
 //        questionArraytemp.append(QuestionModel(question: "Watch video and answer the question in it", answer: "Dummy Video", value: "", videoUrl: "https://v.pinimg.com/videos/720p/77/4f/21/774f219598dde62c33389469f5c1b5d1.mp4", image: "acastro_180403_1777_youtube_0001.jpg"))
@@ -33,7 +33,7 @@ class TRPostViewController: UIViewController {
 //        return questionArraytemp
 //    }()
     
-    fileprivate var postArray = [TriviaPost]()
+    private var postArray = [TriviaPost]()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -59,7 +59,7 @@ class TRPostViewController: UIViewController {
     // MARK: Tap on submit Button
     @objc private func tapOnSubmit(_ sender: UIButton) {
         if postArray[sender.tag].Value.isBlank {
-            Snackbar.showAlertMessage("Please answer the question")
+            Toast.show("Please answer the question")
             return
         }
         Core.ShowProgress(self, detailLbl: "Submitting Answer...")
@@ -85,7 +85,7 @@ class TRPostViewController: UIViewController {
                 playerViewController.player?.play()
             }
         } else {
-            Snackbar.showAlertMessage("No video found!")
+            Toast.show("No video found!")
         }
     }
     
@@ -168,6 +168,7 @@ extension TRPostViewController: UITextFieldDelegate {
             let indexPath = IndexPath(row: textField.tag, section: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
+        textField.setError()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -191,5 +192,9 @@ extension TRPostViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.postArray[textField.tag].Value = textField.text!
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
     }
 }

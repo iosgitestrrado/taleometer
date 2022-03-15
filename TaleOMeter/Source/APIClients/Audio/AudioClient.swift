@@ -61,7 +61,7 @@ class AudioClient {
     }
     
     static func getPlots(_ completion: @escaping([StoryModel]?) -> Void) {
-        APIClient.shared.get("", feed: .Stories) { result in
+        APIClient.shared.get("", feed: .Plots) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var plots = [StoryModel]()
                 if let plot = response {
@@ -75,7 +75,7 @@ class AudioClient {
     }
     
     static func getNarrations(_ completion: @escaping([StoryModel]?) -> Void) {
-        APIClient.shared.get("", feed: .Stories) { result in
+        APIClient.shared.get("", feed: .Narrations) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var narrations = [StoryModel]()
                 if let narration = response {
@@ -84,6 +84,34 @@ class AudioClient {
                     })
                 }
                 completion(narrations)
+            }
+        }
+    }
+    
+    static func getAudiosByPlot(_ req: PlotRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(req, feed: .PlotAudioStories) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var audios = [Audio]()
+                if let data = response {
+                    data.forEach { object in
+                        audios.append(Audio(object))
+                    }
+                }
+                completion(audios)
+            }
+        }
+    }
+    
+    static func getAudiosByNarration(_ req: NarrationRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(req, feed: .NarrationAudioStories) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var audios = [Audio]()
+                if let data = response {
+                    data.forEach { object in
+                        audios.append(Audio(object))
+                    }
+                }
+                completion(audios)
             }
         }
     }

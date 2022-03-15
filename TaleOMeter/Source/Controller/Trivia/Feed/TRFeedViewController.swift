@@ -19,8 +19,8 @@ class TRFeedViewController: UIViewController {
     var postData = [TriviaPost]()
         
     // MARK: - Private Properties -
-    fileprivate let viewMoreText = "--------------------  View More  --------------------"
-//    fileprivate struct CommentModel: Codable {
+    private let viewMoreText = "--------------------  View More  --------------------"
+//    private struct CommentModel: Codable {
 //        var image = String()
 //        var name = String()
 //        var comment = String()
@@ -28,7 +28,7 @@ class TRFeedViewController: UIViewController {
 //        var isExpanded = false
 //        var replies = [CommentModel]()
 //    }
-//    fileprivate struct FeedModel: Codable {
+//    private struct FeedModel: Codable {
 //        var image = String()
 //        var videoUrl = String()
 //        var question = String()
@@ -38,7 +38,7 @@ class TRFeedViewController: UIViewController {
 //        var time: Date?
 //        var description = String()
 //    }
-    fileprivate struct Data {
+    private struct Data {
         var image = UIImage()
         var title = String()
         var description = String()
@@ -47,15 +47,15 @@ class TRFeedViewController: UIViewController {
         var commentIndex = Int()
         var replyIndex = Int()
     }
-    fileprivate struct CellItem {
+    private struct CellItem {
         var cellId = String()
         var data = Data()
     }
 
-    //fileprivate var feedArray: [FeedModel] = [FeedModel]()
-    fileprivate var cellDataArray: [CellItem] = [CellItem]()
-    fileprivate let messageString = "Write A Comment..."
-    fileprivate let personImage = UIImage(named: "person")!
+    //private var feedArray: [FeedModel] = [FeedModel]()
+    private var cellDataArray: [CellItem] = [CellItem]()
+    private let messageString = "Write A Comment..."
+    private let personImage = UIImage(named: "person")!
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -232,7 +232,7 @@ class TRFeedViewController: UIViewController {
         if let myComment = postData[sender.tag].Comments.first(where: { $0.You == 1 }) {
             PromptVManager.present(self, verifyTitle: myComment.Comment, verifyMessage: postData[sender.tag].Question, image: postData[sender.tag].Question_media, isQuestion: true, closeBtnHide: true)
         } else {
-            Snackbar.showAlertMessage("Answer not found!")
+            Toast.show("Answer not found!")
         }
     }
     
@@ -274,7 +274,7 @@ class TRFeedViewController: UIViewController {
     // MARK: Tap on post button
     @objc private func tapOnPost(_ sender: UIButton) {
         if postData[sender.tag].Value.isBlank {
-            Snackbar.showAlertMessage(messageString)
+            Toast.show(messageString)
             return
         }
         
@@ -341,7 +341,7 @@ class TRFeedViewController: UIViewController {
                 playerViewController.player?.play()
             }
         } else {
-            Snackbar.showAlertMessage("No video found!")
+            Toast.show("No video found!")
         }
     }
     

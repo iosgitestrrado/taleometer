@@ -18,11 +18,11 @@ class GridViewController: UIViewController {
     var totalGenres = 0
     
     // MARK: - Private Properties -
-    fileprivate var gridSize: CGFloat = 100.0
-    fileprivate var audioList = [Audio]()
-    fileprivate var currentIndex = -1
-    fileprivate var pageNumber = 1
-    fileprivate var pageLimit = 12
+    private var gridSize: CGFloat = 100.0
+    private var audioList = [Audio]()
+    private var currentIndex = -1
+    private var pageNumber = 1
+    private var pageLimit = 12
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -175,7 +175,7 @@ extension GridViewController: UICollectionViewDelegate {
                 if let audioUrl = URL(string: audioList[indexPath.row].File) {
                     let fileName = NSString(string: audioUrl.lastPathComponent)
                     if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                        Snackbar.showErrorMessage("Audio File \"\(fileName.pathExtension)\" is not supported!")
+                        Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
                         return
                     }
                 }
@@ -183,9 +183,7 @@ extension GridViewController: UICollectionViewDelegate {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
                 }
                 AudioPlayManager.shared.audioList = audioList
-                AudioPlayManager.shared.currentAudio = indexPath.row
-                AudioPlayManager.shared.nextAudio = audioList.count - 1 > indexPath.row ? indexPath.row + 1 : 0
-                AudioPlayManager.shared.prevAudio = indexPath.row > 0 ? indexPath.row - 1 : audioList.count - 1
+                AudioPlayManager.shared.setAudioIndex(indexPath.row ,isNext: false)
                 parentController!.navigationController?.pushViewController(myobject, animated: true)
             }
         } else {

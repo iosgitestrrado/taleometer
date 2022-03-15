@@ -55,15 +55,15 @@ class RegisterViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if displayNameText.text!.isBlank {
-            Snackbar.showAlertMessage("Please enter valid display name!")
+            Validator.showRequiredError(displayNameText)
             return
         }
         if !emailTextField.text!.isBlank && !emailTextField.text!.isEmail {
-            Snackbar.showAlertMessage("Please enter valid email!")
+            Validator.showError(emailTextField, message: "Invalid email")
             return
         }
         var profileReq = ProfileRequest()
@@ -96,6 +96,24 @@ class RegisterViewController: UIViewController {
                 Login.storeProfileData(response)
             }
             Core.HideProgress(self)
+        }
+    }
+}
+
+
+extension RegisterViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == displayNameText && textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if  textField == emailTextField && !textField.text!.isBlank && !textField.text!.isEmail {
+            Validator.showError(textField, message: "Invalid email")
+            return
         }
     }
 }

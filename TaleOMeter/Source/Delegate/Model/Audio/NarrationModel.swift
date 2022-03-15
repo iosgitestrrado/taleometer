@@ -13,7 +13,3 @@ struct Narration {
     init(_ json: JSON) {
     }
 }
-
-struct NarrationRequest: Codable {
-    var narration_id = Int()
-}

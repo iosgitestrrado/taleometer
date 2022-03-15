@@ -71,26 +71,30 @@ class ProfileEditViewController: UIViewController {
                 Core.HideProgress(self)
             }
         } else {
-            Snackbar.showAlertMessage("No Profile data found!")
+            Toast.show("No Profile data found!")
         }
     }
     
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if titleString == "Change Name" {
             if textField.text!.isBlank {
-                Snackbar.showAlertMessage("Please enter valid name!")
+                Validator.showRequiredError(textField)
                 return
             }
             
             self.updateProfileData()
         } else {
-            if textField.text!.isBlank || !textField.text!.isEmail {
-                Snackbar.showAlertMessage("Please enter valid email!")
+            if textField.text!.isBlank {
+                Validator.showRequiredError(textField)
+                return
+            }
+            if !textField.text!.isEmail {
+                Validator.showError(textField, message: "Invalid email")
                 return
             }
             self.updateProfileData()
@@ -111,6 +115,24 @@ extension ProfileEditViewController: PromptViewDelegate {
                     self.navigationController?.popToViewController(controller, animated: true)
                 }
             }
+        }
+    }
+}
+
+
+extension ProfileEditViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if titleString != "Change Name" && !textField.text!.isEmail {
+            Validator.showError(textField, message: "Invalid email")
+            return
         }
     }
 }

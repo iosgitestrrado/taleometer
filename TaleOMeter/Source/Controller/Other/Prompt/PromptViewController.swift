@@ -42,8 +42,8 @@ class PromptViewController: UIViewController {
     var isCloseBtnHide: Bool = false
 
     // MARK: - Private Properties -
-    fileprivate var timer = Timer()
-    fileprivate var remainingSecond = 5
+    private var timer = Timer()
+    private var remainingSecond = 5
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {

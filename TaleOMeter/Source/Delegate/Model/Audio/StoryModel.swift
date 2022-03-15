@@ -27,8 +27,16 @@ struct StoryModel {
 }
 
 struct StoryRequest: Codable {
+    var story_id = Int()
+}
+
+struct PlotRequest: Codable {
     var plot_id = Int()
-    var page = Int()
+    var page = String()
+}
+
+struct NarrationRequest: Codable {
+    var narration_id = Int()
 }
 /* {
  "id": 8,

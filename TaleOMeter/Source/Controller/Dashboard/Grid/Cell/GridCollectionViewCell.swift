@@ -15,10 +15,10 @@ class GridCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleView: UIView!
     
     // MARK: - Private Properties -
-    fileprivate let font15 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0) ]
-    fileprivate let font8 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 8.0) ]
-    fileprivate let rangeTitle1 = NSRange(location: 0, length: 2)
-    fileprivate let rangeTitle2 = NSRange(location: 2, length: 8)
+    private let font15 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0) ]
+    private let font8 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 8.0) ]
+    private let rangeTitle1 = NSRange(location: 0, length: 2)
+    private let rangeTitle2 = NSRange(location: 2, length: 8)
     
     override func awakeFromNib() {
         super.awakeFromNib()

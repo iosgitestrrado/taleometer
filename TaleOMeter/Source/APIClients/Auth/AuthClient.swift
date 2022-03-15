@@ -70,7 +70,7 @@ class AuthClient {
             let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
             cont.pushViewController(myobject, animated: true)
             if !message.isBlank {
-                Snackbar.showAlertMessage(message)
+                Toast.show(message)
             }
             APIClient.shared.getJson("", feed: .Logout) { result in
                 

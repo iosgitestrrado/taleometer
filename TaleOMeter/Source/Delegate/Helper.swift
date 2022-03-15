@@ -15,7 +15,7 @@ let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")
 let supportedAudioExtenstion = ["mp3", "mp4", "m4a", "wav", "aac", "adts", "ac3", "aif", "aiff", "aifc", "caf", "snd", "au", "sd2"]
 let defaultImage = UIImage(named: "logo")!
 let isOnlyTrivia = true
-var favouriteAudio = [Favourite]()
+var favouriteAudio = [Audio]()
 
 // MARK: - Side menubar properties -
 let menuIconImage: UIImage = {

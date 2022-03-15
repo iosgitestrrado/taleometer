@@ -19,6 +19,12 @@ class AuthorViewController: UIViewController {
     @IBOutlet weak var lengthLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
+    // MARK: - Public Property -
+    var storyData = StoryModel()
+    var isStroy = false
+    var isPlot = false
+    var isNarration = false
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,9 +64,19 @@ class AuthorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-//        if segue.identifier == "audioList", let segVC = segue.destination as? AudioListViewController {
-//            segVC.parentController = self
-//            segVC.parentFrame = self.containerView.frame
-//        }
+        if segue.identifier == "audioList", let segVC = segue.destination as? AudioListViewController {
+            segVC.parentConroller = self
+            segVC.storyData = self.storyData
+            segVC.isStroy = self.isStroy
+            segVC.isPlot = self.isPlot
+            segVC.isNarration = self.isNarration
+        }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension AuthorViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

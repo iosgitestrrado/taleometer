@@ -23,8 +23,8 @@ class ChangeMobileNumberVC: UIViewController {
     var countryCodeVal = ""
     
     // MARK: - Private Properties -
-    fileprivate var countryModel: Country = Country()
-    fileprivate var profileData: ProfileData?
+    private var countryModel: Country = Country()
+    private var profileData: ProfileData?
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -60,11 +60,15 @@ class ChangeMobileNumberVC: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
+            return
+        }
+        if self.mobileTextField.text!.isBlank {
+            Validator.showRequiredError(self.mobileTextField)
             return
         }
         if !self.mobileTextField.text!.isPhoneNumber {
-            Snackbar.showAlertMessage("Please Enter correct Mobile Number!")
+            Validator.showError(self.mobileTextField, message: "Invalid phone number")
             return
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
@@ -158,10 +162,22 @@ extension ChangeMobileNumberVC: CountryCodeDelegate {
 // MARK: - Textfield delegate
 extension ChangeMobileNumberVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !string.isEmpty && textField.text!.utf8.count >= 10 {
-            return "\(self.countryModel.extensionCode!)\(textField.text!)".isPhoneNumber
-        }
         return string.isBlank || string.isNumber
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if !textField.text!.isPhoneNumber {
+            Validator.showError(textField, message: "Invalid phone number")
+            return
+        }
     }
 }
 

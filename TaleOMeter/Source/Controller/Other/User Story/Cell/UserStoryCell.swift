@@ -129,7 +129,6 @@ public enum UserStoryCellItem: Equatable {
 class UserStoryCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textField: UITextField!
-    @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var option1Btn: UIButton!
     @IBOutlet weak var option2Btn: UIButton!
     @IBOutlet weak var option1Lbl: UILabel!

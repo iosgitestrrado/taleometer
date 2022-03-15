@@ -33,18 +33,20 @@ class NowPlayViewController: UIViewController {
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var endTimeLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
-    
+    @IBOutlet weak var favButton: UIButton!
+
     // MARK: - Public Properties -
     var existingAudio = false
+    var isPlaying = false
     var waveFormcount = 0
 
     // MARK: - Private Properties -
-    fileprivate var totalTimeDuration: Float = 0.0
-    fileprivate var audioTimer = Timer()
-    fileprivate var isPlayingTap = false
-    fileprivate var player = AVPlayer()
-    fileprivate var audio = Audio()
-    fileprivate var audioURL = URL(string: "")
+    private var totalTimeDuration: Float = 0.0
+    private var audioTimer = Timer()
+    private var isPlayingTap = false
+    private var player = AVPlayer()
+    private var audio = Audio()
+    private var audioURL = URL(string: "")
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -55,13 +57,12 @@ class NowPlayViewController: UIViewController {
         if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
             audio = audList[AudioPlayManager.shared.currentAudio]
             // Configure audio data
-            setupAudioData(false)
+            setupAudioData(isPlaying)
         } else {
-            Snackbar.showErrorMessage("Selected Audio not found!")
+            Toast.show("Selected Audio not found!")
         }
-                
+        
         // Set notification center for audio playing completed
-        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: NSNotification.Name(rawValue: "FinishedPlaying"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
@@ -101,9 +102,11 @@ class NowPlayViewController: UIViewController {
         self.storyButton.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
         
         self.cuncurrentUserLbl.text = "Concurrent Users: \(audio.Views_count.formatPoints())"
+        
+        self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
                 
         if existingAudio {
-            setupExistingAudio()
+            setupExistingAudio(playNow)
         } else {
             if let player = AudioPlayManager.shared.playerAV {
                 player.pause()
@@ -118,7 +121,7 @@ class NowPlayViewController: UIViewController {
     }
     
     // MARK: - Playing existing Audio
-    private func setupExistingAudio() {
+    private func setupExistingAudio(_ playNow: Bool) {
         if let playerk = AudioPlayManager.shared.playerAV {
             player = playerk
             
@@ -145,7 +148,7 @@ class NowPlayViewController: UIViewController {
                     chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
                 }
             }
-            self.playPauseAudio(player.isPlaying)
+            self.playPauseAudio(playNow)
         }
     }
     
@@ -188,36 +191,22 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - Play next or previous audio
     private func nextPrevPlay(_ isNext: Bool = true) {
-        // Check current audio supported or not
-        var isSupported = true
-        if let audioUrl = URL(string: AudioPlayManager.shared.audioList![isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio].File) {
-            let fileName = NSString(string: audioUrl.lastPathComponent)
-            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                Snackbar.showErrorMessage("Audio File \"\(fileName)\" is not supported!")
-                isSupported = false
-            }
-        }
+        // Setup audio index
+        AudioPlayManager.shared.setAudioIndex(isNext: isNext)
         
-        // Set current auio index
-        let currentAudio = isNext ? AudioPlayManager.shared.nextAudio : AudioPlayManager.shared.prevAudio
-        guard let audioList = AudioPlayManager.shared.audioList else {
-            Snackbar.showAlertMessage("No next audio found!")
-            return
-        }
+        // No existing audio play
+        self.existingAudio = false
         
-        //Set up next previous audio index
-        AudioPlayManager.shared.currentAudio = currentAudio
-        AudioPlayManager.shared.nextAudio = audioList.count - 1 > currentAudio ? currentAudio + 1 : 0
-        AudioPlayManager.shared.prevAudio = currentAudio > 0 ? currentAudio - 1 : audioList.count - 1
-        audio = audioList[currentAudio]
+        // Setup current audio variable
+        self.audio = AudioPlayManager.shared.audio
         
-        if isSupported {
-            // Configure audio data
-            self.existingAudio = false
-            setupAudioData(true)
-        } else {
-            // Check next or previous audio
-            self.nextPrevPlay(isNext)
+        // Configure audio data
+        setupAudioData(player.isPlaying)
+        
+        // Current player pause and visualization wave stop
+        if player.isPlaying {
+            playPauseAudio(false)
+            visualizationWave.stop()
         }
     }
 
@@ -268,18 +257,25 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
-        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
+        let authorView = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "AuthorViewController") as! AuthorViewController
         switch sender.tag {
         case 0:
             //Story
+            authorView.isStroy = true
+            authorView.storyData = audio.Story
             break
         case 1:
             //Plot
+            authorView.isPlot = true
+            authorView.storyData = audio.Plot
             break
         default:
             //Narrotion
+            authorView.isNarration = true
+            authorView.storyData = audio.Narration
             break
         }
+        self.navigationController?.pushViewController(authorView, animated: true)
     }
     
     // MARK: - Handle play pause audio
@@ -308,19 +304,19 @@ class NowPlayViewController: UIViewController {
             self.playPauseAudio(!player.isPlaying)
             break
         case 1:
-            //Previouse
-            itemDidFinishedPlaying()
+            //Previouse song
+            nextPrevPlay(false)
             break
         case 2:
             //Favourite
             if sender.isSelected {
-                self.removeFromFav(audio.Story_id) { status in
+                self.removeFromFav(audio.Id) { status in
                     if let st = status, st {
                         sender.isSelected = !sender.isSelected
                     }
                 }
             } else {
-                self.addToFav(audio.Story_id) { status in
+                self.addToFav(audio.Id) { status in
                     if let st = status, st {
                         sender.isSelected = !sender.isSelected
                     }
@@ -373,12 +369,6 @@ class NowPlayViewController: UIViewController {
             player.seek(to: time2)
             setTime(newTime)
         }
-    }
-    
-    @objc private func itemDidFinishedPlaying() {
-        // Configure audio data
-//        existingAudio = false
-//        setupAudioData(false)
     }
     
     // MARK: - Set start and end time
@@ -451,21 +441,18 @@ extension NowPlayViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            self.addToFav(audio.Story_id) { status in }
+            self.addToFav(audio.Id) { status in }
             break
-        case 1:
-            //1 - Once more
+        case 1, 3:
+            //1 - Once more //3 - Close mini player
             self.player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
             self.visualizationWave.stop()
+            self.player.pause()
             self.existingAudio = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.setupAudioData(false)
-            }
+            self.setupAudioData(tag == 1)
             break
         default:
             //2 - play next song
-            playPauseAudio(false)
-            visualizationWave.stop()
             nextPrevPlay()
             break
         }

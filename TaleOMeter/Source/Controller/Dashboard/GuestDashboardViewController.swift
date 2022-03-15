@@ -54,3 +54,10 @@ class GuestDashboardViewController: UIViewController {
         }
     }
 }
+
+// MARK: - PromptViewDelegate -
+extension GuestDashboardViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
+    }
+}
