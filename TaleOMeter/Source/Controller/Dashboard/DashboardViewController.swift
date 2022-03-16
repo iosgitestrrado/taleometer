@@ -22,7 +22,6 @@ class DashboardViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.surpriseButton.isHidden = true
-        NotificationCenter.default.addObserver(self, selector: #selector(closeMiniPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +34,12 @@ class DashboardViewController: UIViewController {
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(closeMiniPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {

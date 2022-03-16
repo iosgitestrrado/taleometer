@@ -146,7 +146,8 @@ class AudioPlayManager: NSObject {
         // Add handler for Pause Command
         commandCenter.pauseCommand.addTarget { [unowned self] event in
             if let playerAV = playerAV, playerAV.isPlaying {
-                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": false])
+                self.playPauseAudio(false)
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": true])
                 return .success
             }
             return .commandFailed
@@ -202,27 +203,29 @@ class AudioPlayManager: NSObject {
     
     // MARK: Play pause audio
     func playPauseAudio(_ isPlay: Bool) {
-        guard let player = playerAV else { return }
-        if let miniPlayBtn = miniVController.playButton {
-            miniPlayBtn.isSelected = !isPlay
-        }
-        if isPlay {
-            if !player.isPlaying {
-                player.play()
+        DispatchQueue.main.async { [self] in
+            guard let player = playerAV else { return }
+            if let miniPlayBtn = miniVController.playButton {
+                miniPlayBtn.isSelected = !isPlay
             }
-            
-            if audioTimer.isValid {
-                self.audioTimer.invalidate()
-            }
-            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
-            RunLoop.main.add(self.audioTimer, forMode: .default)
-            audioTimer.fire()
-        } else {
-            if player.isPlaying {
-                player.pause()
-            }
-            if audioTimer.isValid {
-                self.audioTimer.invalidate()
+            if isPlay {
+                if !player.isPlaying {
+                    player.play()
+                }
+                
+                if audioTimer.isValid {
+                    self.audioTimer.invalidate()
+                }
+                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+            } else {
+                if player.isPlaying {
+                    player.pause()
+                }
+                if audioTimer.isValid {
+                    self.audioTimer.invalidate()
+                }
             }
         }
     }
@@ -230,28 +233,31 @@ class AudioPlayManager: NSObject {
     // MARK: - When audio completed call function -
     @objc private func itemDidFinishPlaying(notification: NSNotification) {
         //if let player = playerAV, player.isPlaying {
-        audioTimer.invalidate()
-        if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
-            // Get the current time in seconds
-            let duration = currentItem.duration.seconds
-            miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
-            miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-            miniVController.progressBar.progress = 0.0
-            miniVController.progressBar.setNeedsDisplay()
-            if let player = playerAV {
-                miniVController.playButton.isSelected = !player.isPlaying
+        DispatchQueue.main.async { [self] in
+            audioTimer.invalidate()
+            if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
+                // Get the current time in seconds
+                let duration = currentItem.duration.seconds
+                miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
+                miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+                miniVController.progressBar.progress = 0.0
+                miniVController.progressBar.setNeedsDisplay()
+                if let player = playerAV {
+                    miniVController.playButton.isSelected = !player.isPlaying
+                }
+                nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             }
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            if let player = playerAV {
+                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+            }
+            NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
         }
-        if let player = playerAV {
-            player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-        }
-        NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
     }
     
     // MARK: - Play next or previous audio
     private func nextPrevPlay(_ isNext: Bool = true) {
+        DispatchQueue.main.async { [self] in
         // Check current audio supported or not
         var isSupported = true
         if let audioUrl = URL(string: audioList![isNext ? nextAudio : prevAudio].File) {
@@ -295,7 +301,7 @@ class AudioPlayManager: NSObject {
             // Check next or previous audio
             self.nextPrevPlay(isNext)
         }
-        
+        }
     }
     
     // Action on promt screen button

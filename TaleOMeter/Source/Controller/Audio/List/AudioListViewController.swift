@@ -45,13 +45,21 @@ class AudioListViewController: UITableViewController {
         } else if isNarration {
             self.getNarrationAudios()
         }
-        // Set notification center for audio playing completed
-        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: AudioPlayManager.favPlayNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: AudioPlayManager.favPlayNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: remoteCommandName, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: AudioPlayManager.favPlayNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: AudioPlayManager.finishNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: remoteCommandName, object: nil)
     }
     
     // MARK: - Initialize table footer view
@@ -67,22 +75,24 @@ class AudioListViewController: UITableViewController {
     
     // MARK: - Play Pause current audio -
     @objc private func playPauseAudio(_ notification: Notification) {
-        if let isPlaying = notification.userInfo?["isPlaying"] as? Bool {
-            if !AudioPlayManager.shared.isFavourite {
-                selectedIndex = -2
-                if let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.audio.Id }) {
-                    selectedIndex = selectedAudio
-                }
-            }
-            if selectedIndex >= -1 {
-                if isPlaying {
+        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            if let player = AudioPlayManager.shared.playerAV {
+                if !player.isPlaying {
+                    if !AudioPlayManager.shared.isFavourite {
+                        selectedIndex = -2
+                        if let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.audio.Id }) {
+                            selectedIndex = selectedAudio
+                        }
+                    }
+                    if selectedIndex >= -1 {
+                        let indexPath = IndexPath(row: !AudioPlayManager.shared.isFavourite ? selectedIndex : AudioPlayManager.shared.currentAudio, section: 0)
+                        selectedIndex = indexPath.row
+                        self.tableView.reloadData()
+                        self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                    }
+                } else {
                     selectedIndex = -1
                     self.tableView.reloadData()
-                } else if selectedIndex >= 0 {
-                    let indexPath = IndexPath(row: !AudioPlayManager.shared.isFavourite ? selectedIndex : AudioPlayManager.shared.currentAudio, section: 0)
-                    selectedIndex = indexPath.row
-                    self.tableView.reloadData()
-                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                 }
             }
         }

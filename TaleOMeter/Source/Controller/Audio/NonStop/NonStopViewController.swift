@@ -51,12 +51,17 @@ class NonStopViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view
         getAudioList()
-        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
+        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -212,8 +217,8 @@ class NonStopViewController: UIViewController {
     
     //MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
-        if let isPlay = notification.userInfo?["isPlaying"] as? Bool {
-            self.playPauseAudio(isPlay)
+        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            self.playPauseWave()
         }
     }
     
@@ -350,6 +355,26 @@ class NonStopViewController: UIViewController {
         if let chronometer = self.visualizationWave.playChronometer {
             chronometer.timerCurrentValue = TimeInterval(waveformsToBeRecolored)
             chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
+        }
+    }
+    
+    private func playPauseWave() {
+        if let player = AudioPlayManager.shared.playerAV {
+            if !player.isPlaying {
+                if audioTimer.isValid {
+                    audioTimer.invalidate()
+                }
+                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
+                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
+                }
+            } else {
+                audioTimer.invalidate()
+                visualizationWave.pause()
+            }
+            self.playButton.isSelected = !player.isPlaying
         }
     }
     

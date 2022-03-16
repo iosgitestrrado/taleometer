@@ -70,6 +70,9 @@ class Core: NSObject {
 
         if !setNavigationBarHidden && cont.navigationController?.children[(cont.navigationController?.children.count)! - 2] is LaunchViewController {
             cont.navigationItem.hidesBackButton = true
+            if cont is RegisterViewController || cont is PreferenceViewController {
+                cont.navigationController?.setNavigationBarHidden(true, animated: true)
+            }
         }
         cont.navigationController?.navigationBar.tintColor = backImageColor
         var backImageI = UIImage(systemName: "chevron.backward")

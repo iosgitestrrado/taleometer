@@ -61,31 +61,35 @@ class NowPlayViewController: UIViewController {
         } else {
             Toast.show("Selected Audio not found!")
         }
-        
-        // Set notification center for audio playing completed
-        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
     }
+        
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         setAudioData()
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
-        if let isPlay = notification.userInfo?["isPlaying"] as? Bool {
-            self.playPauseAudio(isPlay)
+        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            self.playPauseWave()
         } else if let isNext = notification.userInfo?["isNext"] as? Bool {
             seekAudio(isNext)
         }
@@ -279,6 +283,26 @@ class NowPlayViewController: UIViewController {
             break
         }
         self.navigationController?.pushViewController(authorView, animated: true)
+    }
+    
+    private func playPauseWave() {
+        if let player = AudioPlayManager.shared.playerAV {
+            if !player.isPlaying {
+                if audioTimer.isValid {
+                    audioTimer.invalidate()
+                }
+                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
+                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
+                }
+            } else {
+                audioTimer.invalidate()
+                visualizationWave.pause()
+            }
+            self.playButton.isSelected = !player.isPlaying
+        }
     }
     
     // MARK: - Handle play pause audio

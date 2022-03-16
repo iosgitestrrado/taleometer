@@ -110,7 +110,6 @@ class RightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
         if let pfData = Login.getProfileData() {
             profileData = pfData
         }
@@ -154,6 +153,8 @@ class RightViewController: UIViewController {
         super.viewWillAppear(animated)
         struct Counter { static var count = 0 }
         Counter.count += 1
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -166,6 +167,7 @@ class RightViewController: UIViewController {
         super.viewWillDisappear(animated)
         struct Counter { static var count = 0 }
         Counter.count += 1
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {

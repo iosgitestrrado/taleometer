@@ -38,6 +38,12 @@ class VerificationViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
