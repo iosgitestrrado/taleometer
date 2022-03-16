@@ -369,9 +369,45 @@ extension AudioPlayManager {
 extension AudioPlayManager {
     // MARK: - Add mini player to controller
     public func addMiniPlayer(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()) {
-        
-        // Check mini player is already added
-        if controller.view.viewWithTag(AudioPlayManager.miniViewTag) != nil, miniVController.songTitle != nil {
+        DispatchQueue.main.async { [self] in
+            // Check mini player is already added
+            if controller.view.viewWithTag(AudioPlayManager.miniViewTag) != nil, miniVController.songTitle != nil {
+                // Set audio data to mini view
+                if let audioList = audioList, currentAudio >= 0 {
+                    let audio = audioList[currentAudio]
+                    miniVController.songTitle.text = audio.Title
+                    miniVController.songImage.image = audio.Image
+                }
+                // Update audio timer
+                udpateMiniPlayerTime()
+                // Play audio
+                if let player = playerAV, player.isPlaying {
+                    self.playPauseAudio(true)
+                } else {
+                    miniVController.playButton.isSelected = true
+                }
+                return
+            }
+            
+            // Remove mini player for duplication
+            miniVController.view.removeFromSuperview()
+            
+            // Initialize mini player
+            miniVController = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
+            
+            // Set mini player view frame
+            miniVController.view.frame = CGRect.init(x: 0, y: UIScreen.main.bounds.size.height - 80.0, width: UIScreen.main.bounds.size.width, height: 60.0)
+            
+            // If footer view active update footer view frame
+            if FooterManager.shared.isActive {
+                if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
+                    footerView.removeFromSuperview()
+                    miniVController.view.frame = CGRect.init(x: 0, y: footerView.frame.origin.y - 60.0, width: UIScreen.main.bounds.size.width, height: (UIScreen.main.bounds.size.height - footerView.frame.origin.y) + 60.0)
+                    footerView.frame.origin.y = 60.0
+                    miniVController.view.addSubview(footerView)
+                }
+            }
+            
             // Set audio data to mini view
             if let audioList = audioList, currentAudio >= 0 {
                 let audio = audioList[currentAudio]
@@ -386,71 +422,36 @@ extension AudioPlayManager {
             } else {
                 miniVController.playButton.isSelected = true
             }
-            return
-        }
-        
-        // Remove mini player for duplication
-        miniVController.view.removeFromSuperview()
-        
-        // Initialize mini player
-        miniVController = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "MiniAudioViewController") as! MiniAudioViewController
-        
-        // Set mini player view frame
-        miniVController.view.frame = CGRect.init(x: 0, y: UIScreen.main.bounds.size.height - 80.0, width: UIScreen.main.bounds.size.width, height: 60.0)
-        
-        // If footer view active update footer view frame
-        if FooterManager.shared.isActive {
-            if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
-                footerView.removeFromSuperview()
-                miniVController.view.frame = CGRect.init(x: 0, y: footerView.frame.origin.y - 60.0, width: UIScreen.main.bounds.size.width, height: (UIScreen.main.bounds.size.height - footerView.frame.origin.y) + 60.0)
-                footerView.frame.origin.y = 60.0
-                miniVController.view.addSubview(footerView)
+            
+            // Set button action
+            miniVController.playButton.addTarget(self, action: #selector(tapOnPlayMini(_:)), for: .touchUpInside)
+            miniVController.closeButton.addTarget(self, action: #selector(tapOnCloseMini(_:)), for: .touchUpInside)
+            miniVController.fullViewButton.addTarget(self, action: #selector(tapOnMiniPlayer(_:)), for: .touchUpInside)
+            
+            // Set progressbar tap recognizer
+            let tapRecognizer = UITapGestureRecognizer()
+            tapRecognizer.numberOfTapsRequired = 1
+            miniVController.progressBar.tag = 9995555
+            miniVController.progressBar.addGestureRecognizer(tapRecognizer)
+            
+            // Set mini player tag
+            miniVController.view.tag = AudioPlayManager.miniViewTag
+            
+            // Update current controller as per footer view action
+            bottomConstraint.constant = UIScreen.main.bounds.size.height - miniVController.view.frame.origin.y
+            if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+                bottomConstraint.constant = UIScreen.main.bounds.size.height -  (miniVController.view.frame.origin.y + window.safeAreaInsets.bottom)
             }
+            
+            // Add to mini player view to current controller
+            controller.view.addSubview(miniVController.view)
+            
+            // Set audio player bottom constraint
+            self.bottomConstraint = bottomConstraint
+            
+            // Set audio player current controller
+            currVController = controller
         }
-        
-        // Set audio data to mini view
-        if let audioList = audioList, currentAudio >= 0 {
-            let audio = audioList[currentAudio]
-            miniVController.songTitle.text = audio.Title
-            miniVController.songImage.image = audio.Image
-        }
-        // Update audio timer
-        udpateMiniPlayerTime()
-        // Play audio
-        if let player = playerAV, player.isPlaying {
-            self.playPauseAudio(true)
-        } else {
-            miniVController.playButton.isSelected = true
-        }
-        
-        // Set button action
-        miniVController.playButton.addTarget(self, action: #selector(tapOnPlayMini(_:)), for: .touchUpInside)
-        miniVController.closeButton.addTarget(self, action: #selector(tapOnCloseMini(_:)), for: .touchUpInside)
-        miniVController.fullViewButton.addTarget(self, action: #selector(tapOnMiniPlayer(_:)), for: .touchUpInside)
-        
-        // Set progressbar tap recognizer
-        let tapRecognizer = UITapGestureRecognizer()
-        tapRecognizer.numberOfTapsRequired = 1
-        miniVController.progressBar.tag = 9995555
-        miniVController.progressBar.addGestureRecognizer(tapRecognizer)
-        
-        // Set mini player tag
-        miniVController.view.tag = AudioPlayManager.miniViewTag
-        
-        // Update current controller as per footer view action
-        bottomConstraint.constant = UIScreen.main.bounds.size.height - miniVController.view.frame.origin.y
-        if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
-            bottomConstraint.constant = UIScreen.main.bounds.size.height -  (miniVController.view.frame.origin.y + window.safeAreaInsets.bottom)
-        }
-        
-        // Add to mini player view to current controller
-        controller.view.addSubview(miniVController.view)
-        
-        // Set audio player bottom constraint
-        self.bottomConstraint = bottomConstraint
-        
-        // Set audio player current controller
-        currVController = controller
     }
     
     // MARK: - Add mini player time and progress bar
@@ -515,22 +516,24 @@ extension AudioPlayManager {
     
     // MARK: - Remove mini player from view controller
     public func removeMiniPlayer() {
-        bottomConstraint.constant = 0
-        if (FooterManager.shared.isActive) {
-            if let footerView = miniVController.view.viewWithTag(FooterManager.viewTag) {
-                footerView.removeFromSuperview()
-                footerView.frame.origin.y = currVController.view.frame.size.height - 80.0
-                currVController.view.addSubview(footerView)
-                bottomConstraint.constant = UIScreen.main.bounds.size.height -  footerView.frame.origin.y
-                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
-                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  (footerView.frame.origin.y + window.safeAreaInsets.bottom)
+        DispatchQueue.main.async { [self] in
+            bottomConstraint.constant = 0
+            if (FooterManager.shared.isActive) {
+                if let footerView = miniVController.view.viewWithTag(FooterManager.viewTag) {
+                    footerView.removeFromSuperview()
+                    footerView.frame.origin.y = currVController.view.frame.size.height - 80.0
+                    currVController.view.addSubview(footerView)
+                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  footerView.frame.origin.y
+                    if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+                        bottomConstraint.constant = UIScreen.main.bounds.size.height -  (footerView.frame.origin.y + window.safeAreaInsets.bottom)
+                    }
                 }
             }
-        }
-        miniVController.view.removeFromSuperview()
-        guard let player = AudioPlayManager.shared.playerAV else { return }
-        if player.isPlaying {
-            playPauseAudio(false)
+            miniVController.view.removeFromSuperview()
+            guard let player = AudioPlayManager.shared.playerAV else { return }
+            if player.isPlaying {
+                playPauseAudio(false)
+            }
         }
     }
     

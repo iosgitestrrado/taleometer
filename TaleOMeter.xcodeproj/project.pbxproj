@@ -101,6 +101,8 @@
 		63863DF527D7848200EFF6E2 /* PlotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DF427D7848200EFF6E2 /* PlotModel.swift */; };
 		63863DF827D7849700EFF6E2 /* NarrationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DF727D7849700EFF6E2 /* NarrationModel.swift */; };
 		63863DFB27D784AF00EFF6E2 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DFA27D784AF00EFF6E2 /* Audio.swift */; };
+		638FD58F27E20B810053CD79 /* SearchAudioClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638FD58E27E20B810053CD79 /* SearchAudioClient.swift */; };
+		638FD59127E20BD30053CD79 /* SearchAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638FD59027E20BD30053CD79 /* SearchAudio.swift */; };
 		63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */; };
 		63BF891B27D1098700A26E0B /* TriviaHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF891A27D1098700A26E0B /* TriviaHeaderView.swift */; };
 		63C4F63027D0F0EC00CEC0B9 /* TriviaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4F62F27D0F0EC00CEC0B9 /* TriviaViewController.swift */; };
@@ -257,6 +259,8 @@
 		63863DF427D7848200EFF6E2 /* PlotModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotModel.swift; sourceTree = "<group>"; };
 		63863DF727D7849700EFF6E2 /* NarrationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NarrationModel.swift; sourceTree = "<group>"; };
 		63863DFA27D784AF00EFF6E2 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		638FD58E27E20B810053CD79 /* SearchAudioClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAudioClient.swift; sourceTree = "<group>"; };
+		638FD59027E20BD30053CD79 /* SearchAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAudio.swift; sourceTree = "<group>"; };
 		63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptVManager.swift; sourceTree = "<group>"; };
 		63BF891A27D1098700A26E0B /* TriviaHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaHeaderView.swift; sourceTree = "<group>"; };
 		63C4F62F27D0F0EC00CEC0B9 /* TriviaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaViewController.swift; sourceTree = "<group>"; };
@@ -750,6 +754,7 @@
 			children = (
 				63863DD627D782B200EFF6E2 /* AudioClient.swift */,
 				63420B6627DB8F9500C4CAF9 /* FavouriteAudioClient.swift */,
+				638FD58E27E20B810053CD79 /* SearchAudioClient.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -798,6 +803,7 @@
 				63863DF727D7849700EFF6E2 /* NarrationModel.swift */,
 				63863DFA27D784AF00EFF6E2 /* Audio.swift */,
 				63420B6827DB8FD300C4CAF9 /* Favourite.swift */,
+				638FD59027E20BD30053CD79 /* SearchAudio.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -1498,6 +1504,7 @@
 				63863DE627D783F100EFF6E2 /* Logout.swift in Sources */,
 				636ED8E227BB7BB30030D2F0 /* UIImage+Extension.swift in Sources */,
 				6337E6AB27DF57B90039C370 /* NoDataTableViewCell.swift in Sources */,
+				638FD59127E20BD30053CD79 /* SearchAudio.swift in Sources */,
 				63EA2DB227D3986D0066DC76 /* FeedCellView.swift in Sources */,
 				6358435A27B7C5EA0055DE7E /* LaunchViewController.swift in Sources */,
 				6361179227BA34CF000C1749 /* RegisterViewController.swift in Sources */,
@@ -1509,6 +1516,7 @@
 				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
 				63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
+				638FD58F27E20B810053CD79 /* SearchAudioClient.swift in Sources */,
 				6361179727BA5814000C1749 /* Country.swift in Sources */,
 				63D27CA327BD1BAD0074EA7F /* MarqueeLabel.swift in Sources */,
 				63F2AAAB27BB68FF007CAFC1 /* Reachability.swift in Sources */,
@@ -1692,13 +1700,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Aries Estrrado Technologies Private Limited (XLPSEH973Z)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XLPSEH973Z;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "tale'o'meter";
 				INFOPLIST_KEY_NSCameraUsageDescription = "TaleOMeter uses the camera to update your profile picture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "TaleOMeter uses the photo library to update your profile picture.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1712,10 +1721,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeterV1_appstore;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1728,13 +1737,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Aries Estrrado Technologies Private Limited (XLPSEH973Z)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XLPSEH973Z;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "tale'o'meter";
 				INFOPLIST_KEY_NSCameraUsageDescription = "TaleOMeter uses the camera to update your profile picture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "TaleOMeter uses the photo library to update your profile picture.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1748,10 +1758,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeterV1_appstore;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

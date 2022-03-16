@@ -27,6 +27,7 @@ struct Audio {
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
+    var IsFavourite = Bool()
     
 //    var Stories: [Story]?
 //    var Plots: [Story]?
@@ -60,6 +61,8 @@ struct Audio {
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
         }
+        
+        IsFavourite = favouriteAudio.contains(where: { $0.Id == Id })
         
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story
@@ -102,13 +105,4 @@ struct AudioRequest: Codable {
 struct AudioAddRequst: Codable {
     var audio_story_id = Int()
     var time = Int()
-}
-
-struct SearchAudioRequest: Codable {
-    var text = String()
-    var page = Int()
-}
-
-struct SearchDeleteRequest: Codable {
-    var audio_search_id = Int()
 }

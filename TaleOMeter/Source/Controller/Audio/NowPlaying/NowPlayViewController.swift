@@ -57,7 +57,7 @@ class NowPlayViewController: UIViewController {
         if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
             audio = audList[AudioPlayManager.shared.currentAudio]
             // Configure audio data
-            setupAudioData(isPlaying)
+            setupAudioDataPlay(isPlaying)
         } else {
             Toast.show("Selected Audio not found!")
         }
@@ -74,6 +74,7 @@ class NowPlayViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
+        setAudioData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -90,20 +91,22 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    // MARK: Set audio data
-    private func setupAudioData(_ playNow: Bool) {
-        //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
-        AudioPlayManager.shared.isNonStop = false
-        
+    // MARK: Set audio data only
+    private func setAudioData() {
         self.imageView.image = audio.Image
         self.titleLabel.text = audio.Title
         self.storyButton.setTitle("Story: \(audio.Story.Name)", for: .normal)
-        self.storyButton.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
-        self.storyButton.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
+        self.plotButton.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
+        self.narrotionButton.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
         
         self.cuncurrentUserLbl.text = "Concurrent Users: \(audio.Views_count.formatPoints())"
-        
         self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
+    }
+    
+    // MARK: Set audio data and play audio
+    private func setupAudioDataPlay(_ playNow: Bool) {
+        //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
+        AudioPlayManager.shared.isNonStop = false
                 
         if existingAudio {
             setupExistingAudio(playNow)
@@ -201,7 +204,7 @@ class NowPlayViewController: UIViewController {
         self.audio = AudioPlayManager.shared.audio
         
         // Configure audio data
-        setupAudioData(player.isPlaying)
+        setupAudioDataPlay(player.isPlaying)
         
         // Current player pause and visualization wave stop
         if player.isPlaying {
@@ -457,7 +460,7 @@ extension NowPlayViewController: PromptViewDelegate {
             self.visualizationWave.stop()
             self.player.pause()
             self.existingAudio = true
-            self.setupAudioData(tag == 1)
+            self.setupAudioDataPlay(tag == 1)
             break
         default:
             //2 - play next song

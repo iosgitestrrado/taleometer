@@ -87,16 +87,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B13DC709-32BE-4B9F-AC41-AB46A76DB187"
+            uuid = "5925CF7D-73F5-4A03-A2A8-DC9032E620E2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Dashboard/Preference/PreferenceViewController.swift"
+            filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "runTimedCodeLast()"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
+            landmarkName = "tapOnAudioController(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

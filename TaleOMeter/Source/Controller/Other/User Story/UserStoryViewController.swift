@@ -18,6 +18,8 @@ class UserStoryViewController: UIViewController {
     // MARK: - create property for story data
     private struct storyModel {
         var value = String()
+        var textField: UITextField?
+        var textView: UITextView?
         var id = String()
         var celldata = [UserStoryCellItem]()
     }
@@ -103,9 +105,21 @@ class UserStoryViewController: UIViewController {
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "TermsAndConditionVC")
             break
         default:
-            for story in storyDataList {
+            for i in 0..<storyDataList.count {
+                let story = storyDataList[i]
                 if story.value.isBlank && story.id != UserStoryCellItem.submitButton.cellIdentifier && story.id != UserStoryCellItem.terms.cellIdentifier {
+                    if let text = story.textView {
+                        Validator.showRequiredErrorTextView(text)
+                        tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
+                        return
+                    }
+                    if let text = story.textField {
+                        Validator.showRequiredError(text)
+                        tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
+                        return
+                    }
                     Toast.show(story.celldata[0].errorMessge)
+                    tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
                     return
                 }
             }
@@ -154,6 +168,12 @@ extension UserStoryViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.configuration(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
+        if let textField = cell.textField {
+            storyDataList[indexPath.section].textField = textField
+        }
+        if let textView = cell.textView {
+            storyDataList[indexPath.section].textView = textView
+        }
         return cell
     }
 }
@@ -199,7 +219,6 @@ extension UserStoryViewController: UITextFieldDelegate {
         self.storyDataList[textField.tag].value = textField.text!
         if textField.text!.isBlank {
             Validator.showRequiredError(textField)
-            return
         }
     }
 }
@@ -208,6 +227,7 @@ extension UserStoryViewController: UITextFieldDelegate {
 extension UserStoryViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.setError()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             let indexPath = IndexPath(row: 0, section: textView.tag)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
@@ -220,6 +240,9 @@ extension UserStoryViewController: UITextViewDelegate {
     
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         self.storyDataList[textView.tag].value = textView.text!
+        if textView.text!.isBlank {
+            Validator.showRequiredErrorTextView(textView)
+        }
         return true
     }
 }

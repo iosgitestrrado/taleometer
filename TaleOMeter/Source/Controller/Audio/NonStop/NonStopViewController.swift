@@ -51,7 +51,6 @@ class NonStopViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view
         getAudioList()
-        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
     }
     
@@ -62,6 +61,7 @@ class NonStopViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setAudioData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -75,11 +75,7 @@ class NonStopViewController: UIViewController {
             setupExistingAudio(isPlayingExisting)
             if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
                 audio = audList[AudioPlayManager.shared.currentAudio]
-                self.audioTitle.text = audio.Title
-                self.storyLabel.setTitle("Story: \(audio.Story.Name)", for: .normal)
-                self.plotLabel.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
-                self.narrotionLabel.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
-                self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
+                setAudioData()
             }
         } else {
             if !Reachability.isConnectedToNetwork() {
@@ -109,7 +105,7 @@ class NonStopViewController: UIViewController {
                             audio = audList[AudioPlayManager.shared.currentAudio]
                             // Configure audio data
                             Core.HideProgress(self)
-                            setupAudioData(false)
+                            setupAudioDataPlay(false)
                             return
                         }
                     }
@@ -120,14 +116,17 @@ class NonStopViewController: UIViewController {
         }
     }
     
-    // MARK: Set audio data
-    private func setupAudioData(_ playNow: Bool) {
+    // MARK: Set audio data only
+    private func setAudioData() {
         self.audioTitle.text = audio.Title
         self.storyLabel.setTitle("Story: \(audio.Story.Name)", for: .normal)
         self.plotLabel.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
         self.narrotionLabel.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
         self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
-        
+    }
+    
+    // MARK: Set audio data and play
+    private func setupAudioDataPlay(_ playNow: Bool) {
         if existingAudio {
             setupExistingAudio(playNow)
         } else {
@@ -233,18 +232,25 @@ class NonStopViewController: UIViewController {
     
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
-        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
+        let authorView = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "AuthorViewController") as! AuthorViewController
         switch sender.tag {
         case 0:
             //Story
+            authorView.isStroy = true
+            authorView.storyData = audio.Story
             break
         case 1:
             //Plot
+            authorView.isPlot = true
+            authorView.storyData = audio.Plot
             break
         default:
             //Narrotion
+            authorView.isNarration = true
+            authorView.storyData = audio.Narration
             break
         }
+        self.navigationController?.pushViewController(authorView, animated: true)
     }
     
     // MARK: - Play(0) Next(1) Favourite(2)
@@ -293,7 +299,7 @@ class NonStopViewController: UIViewController {
         self.audio = AudioPlayManager.shared.audio
         
         // Configure audio data
-        setupAudioData(player.isPlaying)
+        setupAudioDataPlay(player.isPlaying)
         
         // Current player pause and visualization wave stop
         if player.isPlaying {
@@ -364,13 +370,6 @@ class NonStopViewController: UIViewController {
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "playAudio"), object: nil)
             visualizationWave.play(for: TimeInterval(totalTimeDuration))
         }
-    }
-    
-    // MARK: - One audio playing completed
-    @objc private func itemDidFinishedPlaying() {
-        // Configure audio data
-//        existingAudio = false
-//        setupAudioData(false)
     }
     
     // MARK: - Set start and end time
@@ -450,7 +449,7 @@ extension NonStopViewController: PromptViewDelegate {
             self.visualizationWave.stop()
             self.player.pause()
             self.existingAudio = true
-            self.setupAudioData(tag == 1)
+            self.setupAudioDataPlay(tag == 1)
         default:
             //2 - play next song
             nextPrevPlay()

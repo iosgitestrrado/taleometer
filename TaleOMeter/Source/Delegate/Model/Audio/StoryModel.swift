@@ -33,10 +33,13 @@ struct StoryRequest: Codable {
 struct PlotRequest: Codable {
     var plot_id = Int()
     var page = String()
+    var limit = String()
 }
 
 struct NarrationRequest: Codable {
     var narration_id = Int()
+    var page = String()
+    var limit = String()
 }
 /* {
  "id": 8,

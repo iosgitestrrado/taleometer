@@ -29,6 +29,13 @@ class AuthorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        //bannerImage.image = storyData.Image
+        profileImage.image = storyData.Image
+        favButton.isSelected = favouriteAudio.contains(where: { $0.Id == storyData.Id })
+        titleLabel.text = storyData.Name
+        storiesLabel.text = "0\nStories"
+        lengthLabel.text = "0\nLength"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +62,16 @@ class AuthorViewController: UIViewController {
     }
     
     @IBAction func tapOnPlay(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        //sender.isSelected = !sender.isSelected
+    }
+    
+    // MARK: - Play Pause current audio -
+    @objc private func playPauseAudio(_ notification: Notification) {
+        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            self.playButton.isSelected = true
+        } else {
+            self.playButton.isSelected = true
+        }
     }
     
     // MARK: - Navigation

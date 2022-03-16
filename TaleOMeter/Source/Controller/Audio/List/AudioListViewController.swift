@@ -28,7 +28,7 @@ class AudioListViewController: UITableViewController {
     private var footerView = UIView()
     private var morePage = true
     private var pageNumber = 1
-    private var showNoData = false
+    private var showNoData = 0
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -38,12 +38,16 @@ class AudioListViewController: UITableViewController {
         self.initFooterView()
         if isFavourite {
             self.getFavourite()
+        } else if isStroy {
+            self.getStoryAudios()
+        } else if isPlot {
+            self.getPlotAudios()
+        } else if isNarration {
+            self.getNarrationAudios()
         }
-        if isFavourite {
-            // Set notification center for audio playing completed
-            NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: AudioPlayManager.favPlayNotification, object: nil)
-        }
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: AudioPlayManager.favPlayNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,6 +142,11 @@ class AudioListViewController: UITableViewController {
     
     // MARK: - Initialize audio play manager
     private func initPlayerManager() {
+        if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            // Pause current playing audio
+            AudioPlayManager.shared.playPauseAudio(false)
+        }
+        
         // Show progress bar
         Core.ShowProgress(parentConroller, detailLbl: "")
                     
@@ -168,7 +177,7 @@ class AudioListViewController: UITableViewController {
                     selectedIndex = selectedAudio
             }
         } else {
-            if let audioList = AudioPlayManager.shared.audioList, let selectedAudio = audioList.firstIndex(where: { $0.Id == audioList[AudioPlayManager.shared.nextAudio].Id }) {
+            if let audioList2 = AudioPlayManager.shared.audioList, let selectedAudio = audioList.firstIndex(where: { $0.Id == audioList2[AudioPlayManager.shared.nextAudio].Id }) {
                     selectedIndex = selectedAudio
             }
         }
@@ -183,12 +192,26 @@ class AudioListViewController: UITableViewController {
     
     // MARK: - Add to favourite and remove from favourite
     @objc private func tapOnFav(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
         if isFavourite {
             self.removeFromFav(audioList[sender.tag].Id) { [self] status in
                 if let st = status, st {
+                    sender.isSelected = !sender.isSelected
                     audioList.remove(at: sender.tag)
+                    if AudioPlayManager.shared.isFavourite, AudioPlayManager.shared.currentAudio == sender.tag {
+                        AudioPlayManager.shared.removeMiniPlayer()
+                        selectedIndex = -1
+                    }
                     tableView.reloadData()
+                }
+            }
+        } else {
+            if !sender.isSelected {
+                self.addToFav(audioList[sender.tag].Id) { status in
+                    sender.isSelected = !sender.isSelected
+                }
+            } else if sender.isSelected {
+                self.removeFromFav(audioList[sender.tag].Id) { status in
+                    sender.isSelected = !sender.isSelected
                 }
             }
         }
@@ -206,6 +229,7 @@ extension AudioListViewController {
         }
         Core.ShowProgress(self, detailLbl: "Getting Favourite Audio...")
         FavouriteAudioClient.get("\(pageNumber)") { [self] result in
+            showNoData = 1
             if let response = result {
                 morePage = response.count > 0
                 audioList = audioList + response
@@ -255,7 +279,10 @@ extension AudioListViewController {
 // MARK: - Story, Plot and Narration API Calls
 extension AudioListViewController {
     private func getStoryAudios() {
-        
+        Toast.show("No Story audio list found")
+        showNoData = 1
+        tableView.reloadData()
+        tableView.tableFooterView = UIView()
     }
     
     private func getPlotAudios() {
@@ -263,25 +290,61 @@ extension AudioListViewController {
             Toast.show()
             return
         }
-        AudioClient.getAudiosByPlot(PlotRequest(plot_id: storyData.Id, page: "\(pageNumber)")) { [self] response in
+        Core.ShowProgress(self, detailLbl: "Getting Audios...")
+        AudioClient.getAudiosByPlot(PlotRequest(plot_id: storyData.Id, page: "\(pageNumber)", limit: "10")) { [self] response in
+            showNoData = 1
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
                 audioList = audioList + data
-                tableView.reloadData()
+                if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.audio.Id }) {
+                    selectedIndex = selectedAudio
+                }
+                if selectedIndex >= 0 {
+                    let indexPath = IndexPath(row: selectedIndex, section: 0)
+                    self.tableView.reloadData()
+                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                } else {
+                    tableView.reloadData()
+                }
                 tableView.tableFooterView = UIView()
             }
+            Core.HideProgress(self)
         }
     }
     
     private func getNarrationAudios() {
-        
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "Getting Audios...")
+        AudioClient.getAudiosByNarration(NarrationRequest(narration_id: storyData.Id, page: "\(pageNumber)", limit: "10")) { [self] response in
+            showNoData = 1
+            if let data = response, data.count > 0 {
+                morePage = data.count > 0
+                audioList = audioList + data
+                
+                if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.audio.Id }) {
+                    selectedIndex = selectedAudio
+                }
+                if selectedIndex >= 0 {
+                    let indexPath = IndexPath(row: selectedIndex, section: 0)
+                    self.tableView.reloadData()
+                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                } else {
+                    tableView.reloadData()
+                }
+                tableView.tableFooterView = UIView()
+            }
+            Core.HideProgress(self)
+        }
     }
 }
 
 // MARK: - UITableViewDataSource -
 extension AudioListViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.audioList.count > 0 ? self.audioList.count : 1
+        return self.audioList.count > 0 ? self.audioList.count : showNoData
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -291,13 +354,8 @@ extension AudioListViewController {
         }
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "audioCell", for: indexPath) as? AudioViewCell else { return UITableViewCell() }
-        var audioData = Audio()
-        if isFavourite {
-            audioData = audioList[indexPath.row]
-        } else {
-            audioData = audioList[indexPath.row]
-        }
-        cell.configureCell(audioData.Title, audioImage: audioData.Image, likesCount: 0, duration: 0, isFavourite: isFavourite, row: indexPath.row, selectedIndex: selectedIndex, target: self, selectors: [#selector(tapOnPlay(_:)), #selector(tapOnFav(_:))])
+        let audioData = audioList[indexPath.row]
+        cell.configureCell(audioData, likesCount: 0, duration: 0, isFavourite: isFavourite, row: indexPath.row, selectedIndex: selectedIndex, target: self, selectors: [#selector(tapOnPlay(_:)), #selector(tapOnFav(_:))])
         return cell
     }
 }

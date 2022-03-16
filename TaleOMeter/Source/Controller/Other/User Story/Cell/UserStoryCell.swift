@@ -129,6 +129,7 @@ public enum UserStoryCellItem: Equatable {
 class UserStoryCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var option1Btn: UIButton!
     @IBOutlet weak var option2Btn: UIButton!
     @IBOutlet weak var option1Lbl: UILabel!
@@ -184,24 +185,27 @@ class UserStoryCell: UITableViewCell {
             btn2.tag = section
             btn2.addTarget(target, action: selectors[1], for: .touchUpInside)
         }
-        
         if let textField = self.textField {
             textField.tag = section
-            textField.returnKeyType = .default
+            textField.returnKeyType = .next
+            textField.delegate = target as? UITextFieldDelegate
+        }
+        if let textView = self.textView {
+            textView.tag = section
             if section == 5 {
                 var doneString = "Done"
                 if viewTitle == "Tamil" {
                     doneString = "முடிந்தது"
                 }
-                textField.addInputAccessoryView(doneString, target: target, selector: selectors[2], tag: section)
+                textView.addInputAccessoryView(doneString, target: target, selector: selectors[2], tag: section)
             } else {
                 var nextString = "Next"
                 if viewTitle == "Tamil" {
                     nextString = "அடுத்தது"
                 }
-                textField.addInputAccessoryView(nextString, target: target, selector: selectors[3], tag: section)
+                textView.addInputAccessoryView(nextString, target: target, selector: selectors[3], tag: section)
             }
-            textField.delegate = target as? UITextFieldDelegate
+            textView.delegate = target as? UITextViewDelegate
         }
     }
     

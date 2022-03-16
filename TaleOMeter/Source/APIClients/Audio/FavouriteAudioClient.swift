@@ -7,14 +7,17 @@
 
 class FavouriteAudioClient {
     static func get(_ pageNumber: String, completion: @escaping([Audio]?) -> Void) {
-        APIClient.shared.get("?page=\(pageNumber)", feed: .FavoriteAudio) { result in
-            ResponseAPI.getResponseArray(result) { response in
+        APIClient.shared.get(pageNumber == "all" ? "?page=\(pageNumber)" : "?page=\(pageNumber)&limit=10", feed: .FavoriteAudio) { result in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
                 var favs = [Audio]()
                 if let fav = response {
                     fav.forEach({ (object) in
                         let favor = Favourite(object)
                         favs.append(favor.Audio_story)
                     })
+                }
+                if pageNumber == "all" {
+                    favouriteAudio = favs
                 }
                 completion(favs)
             }
@@ -25,9 +28,6 @@ class FavouriteAudioClient {
         APIClient.shared.postJson(parameters: favRequest, feed: .AddFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 self.get("all") { response in
-                    if let data = response, data.count > 0 {
-                        favouriteAudio = data
-                    }
                     completion(status)
                 }
             }
@@ -38,9 +38,6 @@ class FavouriteAudioClient {
         APIClient.shared.deleteJson(favRequest, query: "", feed: .RemoveFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 self.get("all") { response in
-                    if let data = response, data.count > 0 {
-                        favouriteAudio = data
-                    }
                     completion(status)
                 }
             }

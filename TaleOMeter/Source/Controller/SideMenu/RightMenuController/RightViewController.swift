@@ -21,8 +21,8 @@ class RightViewController: UIViewController {
     
     private enum SideViewCellItem: Equatable {
         case profile
-        case triviaQuiz
-        case triviaComments
+//        case triviaQuiz
+//        case triviaComments
         case shareStory
         case history
         case preference
@@ -34,10 +34,10 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return "My Account"
-            case .triviaQuiz:
-                return "Trivia Quiz"
-            case .triviaComments:
-                return "Trivia Comments"
+//            case .triviaQuiz:
+//                return "Trivia Quiz"
+//            case .triviaComments:
+//                return "Trivia Comments"
             case .shareStory:
                 return "Share your Story"
             case .history:
@@ -57,8 +57,8 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return Constants.Storyboard.auth
-            case .triviaQuiz, .triviaComments:
-                return Constants.Storyboard.trivia
+//            case .triviaQuiz, .triviaComments:
+//                return Constants.Storyboard.trivia
             case .shareStory, .preference, .aboutUs, .feedback:
                 return Constants.Storyboard.other
             case .history:
@@ -72,10 +72,10 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return "ProfileViewController"
-            case .triviaQuiz:
-                return "TriviaViewController"
-            case .triviaComments:
-                return "TRFeedViewController"
+//            case .triviaQuiz:
+//                return "TriviaViewController"
+//            case .triviaComments:
+//                return "TRFeedViewController"
             case .shareStory:
                 return "MainUserStoryVC"
             case .history:
@@ -93,7 +93,7 @@ class RightViewController: UIViewController {
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .profile, .triviaQuiz, .triviaComments, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .profile/*, .triviaQuiz, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
