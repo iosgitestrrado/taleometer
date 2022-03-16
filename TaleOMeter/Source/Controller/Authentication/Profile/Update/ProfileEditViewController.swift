@@ -56,41 +56,47 @@ class ProfileEditViewController: UIViewController {
         
     private func updateProfileData() {
         if let prof = profileData {
+            if !Reachability.isConnectedToNetwork() {
+                Toast.show()
+                return
+            }
             Core.ShowProgress(self, detailLbl: "Updating Profile")
             AuthClient.updateProfile(ProfileRequest(name: prof.User_code, display_name: titleString == "Change Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Name" ? prof.Email : self.textField.text!)) { [self] result in
-                if var response = result {
-                    response.CountryCode = prof.CountryCode
-                    response.Isd_code = prof.Isd_code
+                if let response = result {
                     Login.storeProfileData(response)
                     if titleString == "Change Name" {
-                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
+                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
                     } else {
-                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
+                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
                     }
                 }
                 Core.HideProgress(self)
             }
         } else {
-            Snackbar.showAlertMessage("No Profile data found!")
+            Toast.show("No Profile data found!")
         }
     }
     
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if titleString == "Change Name" {
             if textField.text!.isBlank {
-                Snackbar.showAlertMessage("Please enter valid name!")
+                Validator.showRequiredError(textField)
                 return
             }
             
             self.updateProfileData()
         } else {
-            if textField.text!.isBlank || !textField.text!.isEmail {
-                Snackbar.showAlertMessage("Please enter valid email!")
+            if textField.text!.isBlank {
+                Validator.showRequiredError(textField)
+                return
+            }
+            if !textField.text!.isEmail {
+                Validator.showError(textField, message: "Invalid email")
                 return
             }
             self.updateProfileData()
@@ -111,6 +117,24 @@ extension ProfileEditViewController: PromptViewDelegate {
                     self.navigationController?.popToViewController(controller, animated: true)
                 }
             }
+        }
+    }
+}
+
+
+extension ProfileEditViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if titleString != "Change Name" && !textField.text!.isEmail {
+            Validator.showError(textField, message: "Invalid email")
+            return
         }
     }
 }

@@ -200,6 +200,7 @@
                     <connections>
                         <outlet property="containerBottomCons" destination="SaC-ao-lKX" id="5VL-r4-8pf"/>
                         <outlet property="containerView" destination="grX-M6-tQh" id="u7G-QL-KSd"/>
+                        <outlet property="nonStopBtn" destination="UjD-GT-jAH" id="CUf-aO-KJP"/>
                         <outlet property="surpriseButton" destination="aga-Bi-wlv" id="MNC-jX-igT"/>
                     </connections>
                 </viewController>

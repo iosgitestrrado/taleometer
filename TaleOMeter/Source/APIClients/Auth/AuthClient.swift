@@ -8,12 +8,10 @@
 import Foundation
 import UIKit
 
-let profileImageName = "profilePic.jpeg"
-
 class AuthClient {
     
     static func login(_ loginReq: LoginRequest, completion: @escaping(Bool) -> Void) {
-        APIClient.shared.postJson(loginReq, feed: .SendOtp) { (result) in
+        APIClient.shared.postJson(parameters: loginReq, feed: .SendOtp) { (result) in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
@@ -21,7 +19,7 @@ class AuthClient {
     }
     
     static func verifyOtp(_ veriReq: VerificationRequest, completion: @escaping(ProfileData?, Bool, String, Bool) -> Void) {
-        APIClient.shared.postJson(veriReq, feed: .VerifyOtp) { (result) in
+        APIClient.shared.postJson(parameters: veriReq, feed: .VerifyOtp) { (result) in
             ResponseAPI.getResponseJsonToken(result, showSuccMessage: true, completion: { responseJson, status, token, isNewRegister in
                 var verification: ProfileData?
                 if let response = responseJson {
@@ -33,7 +31,7 @@ class AuthClient {
     }
     
     static func sendProfileOtp(_ loginReq: LoginRequest, completion: @escaping(Bool) -> Void) {
-        APIClient.shared.postJson(loginReq, feed: .SendOtpProfile) { (result) in
+        APIClient.shared.postJson(parameters: loginReq, feed: .SendOtpProfile) { (result) in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
@@ -41,7 +39,7 @@ class AuthClient {
     }
     
     static func verifyProfileOtp(_ veriReq: VerificationRequest, completion: @escaping(ProfileData?) -> Void) {
-        APIClient.shared.postJson(veriReq, feed: .VerifyOtpProfile) { (result) in
+        APIClient.shared.postJson(parameters: veriReq, feed: .VerifyOtpProfile) { (result) in
             ResponseAPI.getResponseJson(result, completion: { responseJson in
                 var verification: ProfileData?
                 if let response = responseJson {
@@ -72,7 +70,7 @@ class AuthClient {
             let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
             cont.pushViewController(myobject, animated: true)
             if !message.isBlank {
-                Snackbar.showAlertMessage(message)
+                Toast.show(message)
             }
             APIClient.shared.getJson("", feed: .Logout) { result in
                 
@@ -93,7 +91,7 @@ class AuthClient {
     }
 
     static func updateProfile(_ profileReq: ProfileRequest, completion: @escaping(ProfileData?) -> Void) {
-        APIClient.shared.postJson(profileReq, feed: .UpdateProfileDetails) { result in
+        APIClient.shared.postJson(parameters: profileReq, feed: .UpdateProfileDetails) { result in
             ResponseAPI.getResponseJson(result) { responseJson in
                 var verification: ProfileData?
                 if let response = responseJson {

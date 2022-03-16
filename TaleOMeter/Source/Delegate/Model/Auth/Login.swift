@@ -19,7 +19,7 @@ struct Login {
             }
             profileData.Phone = "00000 00000"
             profileData.Isd_code = 0
-            profileData.CountryCode = "IN"
+            profileData.Country_code = "IN"
             profileData.Email = "temp@temp.temp"
             profileData.Fname = "Guest"
             self.storeProfileData(profileData)
@@ -72,5 +72,7 @@ struct Login {
 
 struct LoginRequest: Encodable {
     var mobile = String()
+    var isd_code = String()
+    var country_code = String()
 }
 

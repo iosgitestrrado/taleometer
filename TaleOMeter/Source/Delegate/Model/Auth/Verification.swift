@@ -14,6 +14,7 @@ struct ProfileData: Codable {
     var Lname = String()
     var Phone = String()
     var Isd_code = Int()
+    var Country_code = String()
     var Email = String()
     var Email_verified_at = String()
 //    var Address1 = String()
@@ -42,7 +43,6 @@ struct ProfileData: Codable {
     var StoryBoardName = String()
     var StoryBoardId = String()
     var ImageData = Data()
-    var CountryCode = String()
     
     init() { }
     init(_ json: JSON) {
@@ -52,6 +52,7 @@ struct ProfileData: Codable {
         Lname = json["lname"].stringValue
         Phone = json["phone"].stringValue
         Isd_code = json["isd_code"].intValue
+        Country_code = json["country_code"].stringValue
         Email = json["email"].stringValue
         Email_verified_at = json["email_verified_at"].stringValue
 //        Address1 = json["address1"].stringValue
@@ -74,7 +75,6 @@ struct ProfileData: Codable {
                 }
             }
         }
-        
         Thumb = json["thumb"].stringValue
         Is_active = json["is_active"].boolValue
         Active_link = json["active_link"].stringValue

@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import UIKit
 
 struct ResponseModel: Decodable {
     let status: Bool?
@@ -73,17 +74,21 @@ struct ResponseModelJSON: Decodable {
     }
 }
 
+struct EmptyRequest: Encodable {
+    
+}
 
 struct ResponseAPI {
     
     static let errorMessage = "Something was so wrong in your request or your handling that the API simply couldn't parse the passed data"
     
+    // MARK: check response and parse as per requirement
     static func getResponseArray(_ result: Result<ResponseModel?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping ([JSON]?) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
                 if showSuccMessage, let msg = response.message as? String {
-                    Snackbar.showSuccessMessage(msg)
+                    Toast.show(msg)
                 }
                 completion(responseData)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
@@ -92,22 +97,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(nil)
                 } else {
-                    completion(nil)
                     if showAlert {
-                        Snackbar.showErrorMessage(messageis)
+                        Toast.show(messageis)
                     }
+                    completion(nil)
                 }
             } else {
-                completion(nil)
                 if showAlert {
-                    Snackbar.showErrorMessage(errorMessage)
+                    Toast.show(errorMessage)
                 }
+                completion(nil)
             }
         case .failure(let error):
-            completion(nil)
             if showAlert {
-                Snackbar.showErrorMessage(error.customDescription)
+                Toast.show(error.customDescription)
             }
+            completion(nil)
         }
     }
     
@@ -116,7 +121,7 @@ struct ResponseAPI {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
                 if showSuccMessage, let msg = response.message as? String {
-                    Snackbar.showSuccessMessage(msg)
+                    Toast.show(msg)
                 }
                 completion(responseData)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
@@ -125,18 +130,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(nil)
                 } else {
-                    completion(nil)
                     if showAlert {
-                        Snackbar.showErrorMessage(messageis)
+                        Toast.show(messageis)
                     }
+                    completion(nil)
                 }
             } else {
+                if showAlert {
+                    Toast.show(errorMessage)
+                }
                 completion(nil)
-                Snackbar.showErrorMessage(errorMessage)
             }
         case .failure(let error):
+            if showAlert {
+                Toast.show(error.customDescription)
+            }
             completion(nil)
-            Snackbar.showErrorMessage(error.customDescription)
         }
     }
     
@@ -145,7 +154,7 @@ struct ResponseAPI {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status {
                 if showSuccMessage, let msg = response.message as? String {
-                    Snackbar.showSuccessMessage(msg)
+                    Toast.show(msg)
                 }
                 completion(status)
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
@@ -154,18 +163,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(false)
                 } else {
-                    completion(false)
                     if showAlert {
-                        Snackbar.showErrorMessage(messageis)
+                        Toast.show(messageis)
                     }
+                    completion(false)
                 }
             } else {
+                if showAlert {
+                    Toast.show(errorMessage)
+                }
                 completion(false)
-                Snackbar.showErrorMessage(errorMessage)
             }
         case .failure(let error):
+            if showAlert {
+                Toast.show(error.customDescription)
+            }
             completion(false)
-            Snackbar.showErrorMessage(error.customDescription)
         }
     }
     
@@ -175,7 +188,7 @@ struct ResponseAPI {
             if let response = aPIResponse, let status = response.status, status {
                 if let responseData = response.data {
                     if showSuccMessage, let msg = response.message as? String {
-                        Snackbar.showSuccessMessage(msg)
+                        Toast.show(msg)
                     }
                     completion(responseData, status, response.token ?? "", response.new_registeration == 1)
                 } else {
@@ -187,18 +200,22 @@ struct ResponseAPI {
                     AuthClient.logout(messageis)
                     completion(nil, false, "", false)
                 } else {
-                    completion(nil, false, "", false)
                     if showAlert {
-                        Snackbar.showErrorMessage(messageis)
+                        Toast.show(messageis)
                     }
+                    completion(nil, false, "", false)
                 }
             } else {
+                if showAlert {
+                    Toast.show(errorMessage)
+                }
                 completion(nil, false, "", false)
-                Snackbar.showErrorMessage(errorMessage)
             }
         case .failure(let error):
+            if showAlert {
+                Toast.show(error.customDescription)
+            }
             completion(nil, false, "", false)
-            Snackbar.showErrorMessage(error.customDescription)
         }
     }
     

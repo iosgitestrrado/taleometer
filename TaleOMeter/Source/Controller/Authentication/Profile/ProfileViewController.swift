@@ -24,6 +24,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.hideKeyboard()
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -107,7 +108,7 @@ class ProfileViewController: UIViewController {
             guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ChangeMobileNumberVC") as? ChangeMobileNumberVC else { break }
             
             myobject.fieldValue = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "")"
-            myobject.countryCodeVal = profileData?.CountryCode ?? "IN"
+            myobject.countryCodeVal = profileData?.Country_code ?? "IN"
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
@@ -148,6 +149,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func uploadProfileImage(_ imageData: Data, image: UIImage) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         var imgData = imageData
         if Double(imgData.count) / 1000.0 > 2048.0 {
             let imageis = UIImage(data: imgData)
@@ -158,13 +163,11 @@ class ProfileViewController: UIViewController {
             imgData = imageis!.jpegData(compressionQuality: 0.5)!
         }
         AuthClient.updateProfilePicture(imgData) { result in
-            if var response = result {
-                response.ImageData = imgData
-                response.CountryCode = self.profileData?.CountryCode ?? "IN"
+            if let response = result {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
-                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
             }
             Core.HideProgress(self)
         }

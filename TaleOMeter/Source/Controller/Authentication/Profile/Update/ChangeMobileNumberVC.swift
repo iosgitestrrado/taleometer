@@ -40,8 +40,7 @@ class ChangeMobileNumberVC: UIViewController {
 //            self.mobileTextField.text = contact[1]
 //        }
         if let pfData = profileData {
-            countryCodeVal = pfData.CountryCode
-            countryCodeVal = "IN"
+            countryCodeVal = pfData.Country_code.isBlank ? "IN" : pfData.Country_code
             self.mobileTextField.text = pfData.Phone
         }
         setDefaultCountry()
@@ -60,11 +59,15 @@ class ChangeMobileNumberVC: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
+            return
+        }
+        if self.mobileTextField.text!.isBlank {
+            Validator.showRequiredError(self.mobileTextField)
             return
         }
         if !self.mobileTextField.text!.isPhoneNumber {
-            Snackbar.showAlertMessage("Please Enter correct Mobile Number!")
+            Validator.showError(self.mobileTextField, message: "Invalid phone number")
             return
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
@@ -72,8 +75,12 @@ class ChangeMobileNumberVC: UIViewController {
     }
     
     private func sendOpt() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
-        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!)) { status in
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!, isd_code: self.countryModel.extensionCode ?? "91", country_code: self.countryModel.countryCode ?? "IN")) { status in
             if status {
                 self.performSegue(withIdentifier: "verification", sender: self)
             }
@@ -158,10 +165,22 @@ extension ChangeMobileNumberVC: CountryCodeDelegate {
 // MARK: - Textfield delegate
 extension ChangeMobileNumberVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !string.isEmpty && textField.text!.utf8.count >= 10 {
-            return "\(self.countryModel.extensionCode!)\(textField.text!)".isPhoneNumber
-        }
         return string.isBlank || string.isNumber
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if !textField.text!.isPhoneNumber {
+            Validator.showError(textField, message: "Invalid phone number")
+            return
+        }
     }
 }
 

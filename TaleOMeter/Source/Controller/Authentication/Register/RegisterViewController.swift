@@ -14,6 +14,10 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var displayNameText: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     
+    // MARK: - Public Properties -
+    var countryCode = ""
+    var iSDCode = 0
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,15 +55,15 @@ class RegisterViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if displayNameText.text!.isBlank {
-            Snackbar.showAlertMessage("Please enter valid display name!")
+            Validator.showRequiredError(displayNameText)
             return
         }
         if !emailTextField.text!.isBlank && !emailTextField.text!.isEmail {
-            Snackbar.showAlertMessage("Please enter valid email!")
+            Validator.showError(emailTextField, message: "Invalid email")
             return
         }
         var profileReq = ProfileRequest()
@@ -75,17 +79,36 @@ class RegisterViewController: UIViewController {
         Core.ShowProgress(self, detailLbl: "")
         AuthClient.updateProfile(profileReq) { [self] result in
             if var response = result {
-                response.Fname = profileReq.display_name
-                response.Email = profileReq.email
-                response.User_code = profileReq.name
-                response.StoryBoardName = Constants.Storyboard.dashboard
-                response.StoryBoardId = "PreferenceViewController"
+                if isOnlyTrivia {
+                    response.StoryBoardName = ""
+                    response.StoryBoardId = ""
+                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                } else {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                }
                 Login.storeProfileData(response)
-                
-//                Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
             }
             Core.HideProgress(self)
+        }
+    }
+}
+
+
+extension RegisterViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == displayNameText && textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if  textField == emailTextField && !textField.text!.isBlank && !textField.text!.isEmail {
+            Validator.showError(textField, message: "Invalid email")
+            return
         }
     }
 }

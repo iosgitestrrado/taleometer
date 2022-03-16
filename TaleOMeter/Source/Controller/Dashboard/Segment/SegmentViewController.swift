@@ -22,7 +22,6 @@ class SegmentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +39,10 @@ class SegmentViewController: UIViewController {
     
     // MARK: - Get Genres from API's -
     private func getGenres() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(parentController!, detailLbl: "")
         GenreClient.get { result in
             if let response = result {
@@ -65,5 +68,14 @@ class SegmentViewController: UIViewController {
         }
         
         self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .red, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? 320)
+        self.containerVC?.delegate = self
+    }
+}
+
+extension SegmentViewController: ContainerVCDelegate {
+    func containerViewItem(_ index: NSInteger, currentController: UIViewController) {
+        if let grid = currentController as? GridViewController {
+            grid.loadAudioList()
+        }
     }
 }

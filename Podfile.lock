@@ -8,7 +8,7 @@ PODS:
   - SoundWave (0.1.4)
   - SwiftGifOrigin (1.7.0)
   - SwiftyJSON (5.0.1)
-  - TTGSnackbar (1.10.5)
+  - UIScrollView-InfiniteScroll (1.1.0)
 
 DEPENDENCIES:
   - LGSideMenuController (~> 3.1.2)
@@ -18,7 +18,7 @@ DEPENDENCIES:
   - SoundWave (~> 0.1.4)
   - SwiftGifOrigin (~> 1.7.0)
   - SwiftyJSON (~> 5.0.1)
-  - TTGSnackbar (~> 1.10.5)
+  - UIScrollView-InfiniteScroll (~> 1.1.0)
 
 SPEC REPOS:
   trunk:
@@ -29,7 +29,7 @@ SPEC REPOS:
     - SoundWave
     - SwiftGifOrigin
     - SwiftyJSON
-    - TTGSnackbar
+    - UIScrollView-InfiniteScroll
 
 SPEC CHECKSUMS:
   LGSideMenuController: 0c7b155b0dbdf14bf8b88d5ac363c5fe1584bb23
@@ -39,8 +39,8 @@ SPEC CHECKSUMS:
   SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
   SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
-  TTGSnackbar: 2bd245d2bbf83639483410273fd936af0b7ba2a9
+  UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
 
-PODFILE CHECKSUM: 21abb2bf7a76a4c3b65b4b2324968ca908c3903d
+PODFILE CHECKSUM: fb51d0ebdc472089b12f9f5ed9a976d01a6fd83d
 
 COCOAPODS: 1.11.2

@@ -7,6 +7,7 @@
 
 import UIKit
 import LGSideMenuController
+import AVFoundation
 
 class DashboardViewController: UIViewController {
 
@@ -14,12 +15,14 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     @IBOutlet weak var surpriseButton: UIButton!
-    
+    @IBOutlet weak var nonStopBtn: UIButton!
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.surpriseButton.isHidden = true
+        NotificationCenter.default.addObserver(self, selector: #selector(closeMiniPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,11 +41,19 @@ class DashboardViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
+    // MARK: Close Audio Mini player
+    @objc private func closeMiniPlayer(_ notification: NSNotification) {
+        UIView.transition(with: self.nonStopBtn as UIView, duration: 0.75, options: .transitionCrossDissolve) {
+            self.nonStopBtn.isSelected = false
+        }
+    }
+    
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
+    // MARK: - tap on non stop button
     @IBAction func tapOnNonStop(_ sender: UIButton) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
@@ -61,6 +72,7 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    // MARK: Click on surprise button
     @IBAction func tapOnSurprise(_ sender: Any) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
@@ -80,5 +92,12 @@ class DashboardViewController: UIViewController {
             self.containerView.frame.size.width = CGFloat((335.0 * UIScreen.main.bounds.width) / 375.0)
             segVC.parentFrame = self.containerView.frame
         }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension DashboardViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

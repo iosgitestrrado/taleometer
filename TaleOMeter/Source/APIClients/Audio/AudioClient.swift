@@ -9,47 +9,23 @@ import Foundation
 
 class AudioClient {
     static func get(_ audioReq: AudioRequest, genreId: Int = -1, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
-        var stories = [Story]()
-        var plots = [Story]()
-        var narrations = [Story]()
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
-            // Get all stories
-            self.getStories { storyList in
-                if let storyArr = storyList {
-                    stories = storyArr
-                }
-                
-                // Get all Plots
-                self.getPlots { plotList in
-                    if let plotArr = plotList {
-                        plots = plotArr
-                    }
-                    
-                    // Get all narrations
-                    self.getNarrations { narrationList in
-                        if let narrationArr = narrationList {
-                            narrations = narrationArr
-                        }
-                        
-                        // Get All audio list and set refrence for Story, Plot and Narration
-                        APIClient.shared.post(audioReq, feed: .AudioStories) { result in
-                            ResponseAPI.getResponseArray(result) { response in
-                                var audios = [Audio]()
-                                if let audio = response {
-                                    audio.forEach({ (object) in
-                                        // Set refrence for Story, Plot and Narration
-                                        let aud = Audio(object, strories: stories, plots: plots, narrations: narrations)
-                                        if isNonStop && aud.Is_nonstop {
-                                            audios.append(aud)
-                                        } else if aud.Genre_id == genreId {
-                                            audios.append(aud)
-                                        }
-                                    })
-                                }
-                                completion(audios)
+            // Get All audio list and set refrence for Story, Plot and Narration
+            APIClient.shared.post(parameters: audioReq, feed: .AudioStories) { result in
+                ResponseAPI.getResponseArray(result, showAlert: false) { response in
+                    var audios = [Audio]()
+                    if let audio = response {
+                        audio.forEach({ (object) in
+                            // Set refrence for Story, Plot and Narration
+                            let aud = Audio(object)
+                            if isNonStop && aud.Is_nonstop {
+                                audios.append(aud)
+                            } else if aud.Genre_id == genreId {
+                                audios.append(aud)
                             }
-                        }
+                        })
                     }
+                    completion(audios)
                 }
             }
         } else {
@@ -58,7 +34,7 @@ class AudioClient {
                     var audios = [Audio]()
                     if let audio = response {
                         audio.forEach({ (object) in
-                            let aud = Audio(object, strories: stories, plots: plots, narrations: narrations)
+                            let aud = Audio(object)
                             if aud.Genre_id == genreId {
                                 audios.append(aud)
                             }
@@ -70,13 +46,13 @@ class AudioClient {
         }
     }
 
-    static func getStories(_ completion: @escaping([Story]?) -> Void) {
+    static func getStories(_ completion: @escaping([StoryModel]?) -> Void) {
         APIClient.shared.get("", feed: .Stories) { result in
             ResponseAPI.getResponseArray(result) { response in
-                var stories = [Story]()
+                var stories = [StoryModel]()
                 if let story = response {
                     story.forEach({ (object) in
-                        stories.append(Story(object))
+                        stories.append(StoryModel(object))
                     })
                 }
                 completion(stories)
@@ -84,13 +60,13 @@ class AudioClient {
         }
     }
     
-    static func getPlots(_ completion: @escaping([Story]?) -> Void) {
-        APIClient.shared.get("", feed: .Stories) { result in
+    static func getPlots(_ completion: @escaping([StoryModel]?) -> Void) {
+        APIClient.shared.get("", feed: .Plots) { result in
             ResponseAPI.getResponseArray(result) { response in
-                var plots = [Story]()
+                var plots = [StoryModel]()
                 if let plot = response {
                     plot.forEach({ (object) in
-                        plots.append(Story(object))
+                        plots.append(StoryModel(object))
                     })
                 }
                 completion(plots)
@@ -98,16 +74,44 @@ class AudioClient {
         }
     }
     
-    static func getNarrations(_ completion: @escaping([Story]?) -> Void) {
-        APIClient.shared.get("", feed: .Stories) { result in
+    static func getNarrations(_ completion: @escaping([StoryModel]?) -> Void) {
+        APIClient.shared.get("", feed: .Narrations) { result in
             ResponseAPI.getResponseArray(result) { response in
-                var narrations = [Story]()
+                var narrations = [StoryModel]()
                 if let narration = response {
                     narration.forEach({ (object) in
-                        narrations.append(Story(object))
+                        narrations.append(StoryModel(object))
                     })
                 }
                 completion(narrations)
+            }
+        }
+    }
+    
+    static func getAudiosByPlot(_ req: PlotRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(parameters: req, feed: .PlotAudioStories) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var audios = [Audio]()
+                if let data = response {
+                    data.forEach { object in
+                        audios.append(Audio(object))
+                    }
+                }
+                completion(audios)
+            }
+        }
+    }
+    
+    static func getAudiosByNarration(_ req: NarrationRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(parameters: req, feed: .NarrationAudioStories) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var audios = [Audio]()
+                if let data = response {
+                    data.forEach { object in
+                        audios.append(Audio(object))
+                    }
+                }
+                completion(audios)
             }
         }
     }

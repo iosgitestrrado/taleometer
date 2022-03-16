@@ -24,26 +24,20 @@ struct Audio {
     var Deleted_at = String()
     var Views_count = Int()
     
-    var Story: Story?
-    var Plot: Story?
-    var Narration: Story?
+    var Story = StoryModel()
+    var Plot = StoryModel()
+    var Narration = StoryModel()
+    var IsFavourite = Bool()
     
-    var Stories: [Story]?
-    var Plots: [Story]?
-    var Narrations: [Story]?
+//    var Stories: [Story]?
+//    var Plots: [Story]?
+//    var Narrations: [Story]?
 
     init() { }
-    init(_ json: JSON, strories: [Story] , plots: [Story], narrations: [Story]) {
+    init(_ json: JSON) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
-        let imageURL = Constants.baseURL.appending("/\(json["image"].stringValue)")
-        Image = defaultImage
-        if let url = URL(string: imageURL) {
-            do {
-                let data = try Data(contentsOf: url)
-                Image = UIImage(data: data) ?? defaultImage
-            } catch { }
-        }
+        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         File = Constants.baseURL.appending("/\(json["file"].stringValue)")
         Genre_id = json["genre_id"].intValue
         Story_id = json["story_id"].intValue
@@ -56,18 +50,32 @@ struct Audio {
         Deleted_at = json["deleted_at"].stringValue
         Views_count = json["views_count"].intValue
         
-        if let story = strories.first(where: { $0.Id == Story_id }) {
-            Story = story
+        if let audio_story = json["story"].dictionaryObject {
+            Story = StoryModel(JSON(audio_story))
         }
-        if let plot = plots.first(where: { $0.Id == Plot_id }) {
-            Plot = plot
+        
+        if let audio_plot = json["plot"].dictionaryObject {
+            Plot = StoryModel(JSON(audio_plot))
         }
-        if let narration = narrations.first(where: { $0.Id == Narration_id }) {
-            Narration = narration
+        
+        if let audio_narration = json["narration"].dictionaryObject {
+            Narration = StoryModel(JSON(audio_narration))
         }
-        Stories = strories
-        Plots = plots
-        Narrations = narrations
+        
+        IsFavourite = favouriteAudio.contains(where: { $0.Id == Id })
+        
+//        if let story = strories.first(where: { $0.Id == Story_id }) {
+//            Story = story
+//        }
+//        if let plot = plots.first(where: { $0.Id == Plot_id }) {
+//            Plot = plot
+//        }
+//        if let narration = narrations.first(where: { $0.Id == Narration_id }) {
+//            Narration = narration
+//        }
+//        Stories = strories
+//        Plots = plots
+//        Narrations = narrations
     }
 }
 
@@ -97,17 +105,4 @@ struct AudioRequest: Codable {
 struct AudioAddRequst: Codable {
     var audio_story_id = Int()
     var time = Int()
-}
-
-struct SearchAudioRequest: Codable {
-    var text = String()
-    var page = Int()
-}
-
-struct SearchDeleteRequest: Codable {
-    var audio_search_id = Int()
-}
-
-struct FavoriteRequest: Codable {
-    var audio_story_id = Int()
 }

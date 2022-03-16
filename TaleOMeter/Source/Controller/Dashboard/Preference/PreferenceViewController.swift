@@ -33,9 +33,11 @@ class PreferenceViewController: UIViewController {
         return magneticView.magnetic
     }
     private var timerg: Timer?
+    private var timerg1: Timer?
     private var timer = Timer()
     private var totalNodes = 0
     private var firstNode: Node?
+    private var lastNode: Node?
     private var bubbles = [Preference]()
     private var selectedBubbles = [Int]()
 
@@ -45,12 +47,23 @@ class PreferenceViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
+        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
     }
     
     @objc func runTimedCode() {
         if let nodd = firstNode, nodd.position.y + nodd.frame.size.height > UIScreen.main.bounds.size.height {
             timerg?.invalidate()
             skipButton.isHidden = false
+        }
+    }
+    
+    @objc func runTimedCodeLast() {
+        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 120) > UIScreen.main.bounds.size.height {
+            timerg1?.invalidate()
+            Core.ShowProgress(self, detailLbl: "Moving To Home Page")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.tapOnSkipButton(self)
+            }
         }
     }
     
@@ -67,6 +80,10 @@ class PreferenceViewController: UIViewController {
     
     // MARK: - Get bubbles from API's -
     private func getBubbles() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         PreferenceClient.getUserBubbles { result in
             if let selected = result {
@@ -88,11 +105,17 @@ class PreferenceViewController: UIViewController {
     }
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
-        Core.ShowProgress(self, detailLbl: "")
-        PreferenceClient.setUserBubbles(PreferenceRequest(preference_bubble_ids: selectedBubbles)) { status in
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
             Core.HideProgress(self)
-            Login.removeStoryBoardData()
             Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "Moving To Home Page")
+        PreferenceClient.setUserBubbles(PreferenceRequest(preference_bubble_ids: selectedBubbles)) { status in
+                Core.HideProgress(self)
+                Login.removeStoryBoardData()
+                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         }
     }
     
@@ -119,6 +142,9 @@ class PreferenceViewController: UIViewController {
         node.speed = 0.1
         if totalNodes == 0 {
             firstNode = node
+        }
+        if totalNodes == bubbles.count - 1 {
+            lastNode = node
         }
         magnetic.addChild(node)
         node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -50)

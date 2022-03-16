@@ -103,3 +103,10 @@ extension SearchHistoryViewController: UITableViewDelegate {
         Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "AuthorViewController")
     }
 }
+
+// MARK: - PromptViewDelegate -
+extension SearchHistoryViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
+    }
+}

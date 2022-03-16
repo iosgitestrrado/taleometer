@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UIScrollView_InfiniteScroll
 
 class GridViewController: UIViewController {
 
@@ -20,53 +21,118 @@ class GridViewController: UIViewController {
     private var gridSize: CGFloat = 100.0
     private var audioList = [Audio]()
     private var currentIndex = -1
+    private var pageNumber = 1
+    private var pageLimit = 12
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //self.collectionView.frame = CGRect(x: 0, y: 0, width: parentFrame!.size.width - 50.0, height: parentFrame!.size.height)
-//        gridSize = 100//(self.collectionView.frame.size.width - 40.0) / 3.0
-//        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-//        layout.itemSize = CGSize(width: gridSize, height: gridSize)
-//        layout.minimumInteritemSpacing = 0
-//        layout.minimumLineSpacing = 0
-//        collectionView!.collectionViewLayout = layout
         
-        collectionView.frame.size.width = parentFrame!.size.width
-        if genreId >= 0 {
-            getAudioList()
-        }
-    }
-    
-    private func getAudioList() {
-        Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
-        AudioClient.get(AudioRequest(page: 1, limit: totalGenres * 12), genreId: genreId, completion: { [self] result in
-            if let response = result {
-                audioList = response
-            }
-            let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-            layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
-
-            if audioList.count > 0 {
-                gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
-                layout.itemSize = CGSize(width: gridSize, height: gridSize)
-            } else {
-                gridSize = parentFrame!.size.width
-                layout.itemSize = CGSize(width: gridSize, height: 30)
-            }
-            layout.minimumInteritemSpacing = 0
-            layout.minimumLineSpacing = 10
-            collectionView.collectionViewLayout = layout
+        // Set collection view frame
+        self.collectionView.frame.size.width = parentFrame!.size.width
+        if genreId < 0 {
             currentIndex = 0
             self.collectionView.reloadData()
-            Core.HideProgress(parentController!)
-        })
+            return
+        }
+        
+        // Set page limit as per Genre
+        pageLimit = pageLimit * totalGenres
+        
+        // Enable vertical scroll always
+        self.collectionView.alwaysBounceVertical = true
+        
+        
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        //collectionViewLayout.invalidateLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Add infinite scroll handler
+    }
+    
+    func loadAudioList() {
+        if audioList.count <= 0 {
+            // Set infinite scroll
+            let indicatorRect: CGRect = CGRect(x: 0, y: 0, width: 24, height: 24)
+            self.collectionView.infiniteScrollIndicatorView = CustomInfiniteIndicator(frame: indicatorRect)
+            
+            // Set custom indicator margin
+            collectionView?.infiniteScrollIndicatorMargin = 40
+            
+            collectionView?.addInfiniteScroll { [weak self] (scrollView) -> Void in
+                self?.getAudioList({
+                    scrollView.finishInfiniteScroll()
+                })
+            }
+            
+            // load initial data
+            collectionView?.beginInfiniteScroll(true)
+        }
+    }
+    
+    private func getAudioList(_ completionHandler: (() -> Void)?) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
+            AudioClient.get(AudioRequest(page: pageNumber, limit: pageLimit), genreId: genreId, completion: { [self] result in
+                if let response = result, response.count > 0 {
+                    if pageNumber == 1 {
+                        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+                        layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+
+                        if audioList.count > 0 {
+                            gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
+                            layout.itemSize = CGSize(width: gridSize, height: gridSize)
+                        } else {
+                            gridSize = parentFrame!.size.width
+                            layout.itemSize = CGSize(width: gridSize, height: 30)
+                        }
+                        layout.minimumInteritemSpacing = 0
+                        layout.minimumLineSpacing = 10
+                        collectionView.collectionViewLayout = layout
+                        currentIndex = 0
+                        pageNumber += 1
+                    }
+                    
+                    let newItems = response
+                    
+                    // create new index paths
+                    let photoCount = self.audioList.count
+                    let (start, end) = (photoCount, newItems.count + photoCount)
+                    let indexPaths = (start..<end).map { return IndexPath(row: $0, section: 0) }
+                    
+                    // update data source
+                    self.audioList.append(contentsOf: newItems)
+                                                
+                    // update collection view
+                    self.collectionView?.performBatchUpdates({ () -> Void in
+                        self.collectionView?.insertItems(at: indexPaths)
+                    }, completion: { (finished) -> Void in
+                        completionHandler?()
+                        Core.HideProgress(parentController!)
+                        return
+                    });
+                }
+                completionHandler?()
+                Core.HideProgress(parentController!)
+            })
+    }
+    
+    // MARK: - Actions
+    @IBAction func handleRefresh() {
+        collectionView?.beginInfiniteScroll(true)
     }
 }
 
@@ -113,19 +179,26 @@ extension GridViewController: UICollectionViewDelegate {
                 if let audioUrl = URL(string: audioList[indexPath.row].File) {
                     let fileName = NSString(string: audioUrl.lastPathComponent)
                     if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                        Snackbar.showErrorMessage("Audio File \"\(fileName.pathExtension)\" is not supported!")
+                        Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
                         return
                     }
                 }
+                if AudioPlayManager.shared.isNonStop {
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                }
                 AudioPlayManager.shared.audioList = audioList
-                AudioPlayManager.shared.currentAudio = indexPath.row
-                AudioPlayManager.shared.nextAudio = audioList.count - 1 > indexPath.row ? indexPath.row + 1 : 0
-                AudioPlayManager.shared.prevAudio = indexPath.row > 0 ? indexPath.row - 1 : audioList.count - 1
+                AudioPlayManager.shared.setAudioIndex(indexPath.row ,isNext: false)
                 parentController!.navigationController?.pushViewController(myobject, animated: true)
             }
         } else {
             Core.push(self.parentController!, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
+//            getAudioList()
+//        }
     }
 }
 
@@ -147,6 +220,19 @@ extension GridViewController: UIScrollViewDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout -
 extension GridViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if audioList.count > 0 {
+            gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
+        } else {
+            gridSize = parentFrame!.size.width
+        }
         return CGSize(width:  currentIndex >= 0 ? gridSize : 0, height: audioList.count > 0 ? gridSize : (currentIndex >= 0 ? 30.0 : 0.0))
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 1
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 1
+//    }
 }

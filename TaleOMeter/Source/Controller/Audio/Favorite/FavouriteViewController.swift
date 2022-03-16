@@ -13,6 +13,10 @@ class FavouriteViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     
+    // MARK: - Public Property -
+    
+    // MARK: - Private Property -
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +47,15 @@ class FavouriteViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "audioList", let audListVC = segue.destination as? AudioListViewController {
             audListVC.isFavourite = true
+            audListVC.parentConroller = self
+            audListVC.containerBottomCons = self.containerBottomCons
         }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension FavouriteViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

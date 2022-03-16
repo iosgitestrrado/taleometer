@@ -19,10 +19,23 @@ class AuthorViewController: UIViewController {
     @IBOutlet weak var lengthLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
+    // MARK: - Public Property -
+    var storyData = StoryModel()
+    var isStroy = false
+    var isPlot = false
+    var isNarration = false
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        //bannerImage.image = storyData.Image
+        profileImage.image = storyData.Image
+        favButton.isSelected = favouriteAudio.contains(where: { $0.Id == storyData.Id })
+        titleLabel.text = storyData.Name
+        storiesLabel.text = "0\nStories"
+        lengthLabel.text = "0\nLength"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +62,16 @@ class AuthorViewController: UIViewController {
     }
     
     @IBAction func tapOnPlay(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        //sender.isSelected = !sender.isSelected
+    }
+    
+    // MARK: - Play Pause current audio -
+    @objc private func playPauseAudio(_ notification: Notification) {
+        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            self.playButton.isSelected = true
+        } else {
+            self.playButton.isSelected = true
+        }
     }
     
     // MARK: - Navigation
@@ -58,9 +80,19 @@ class AuthorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-//        if segue.identifier == "audioList", let segVC = segue.destination as? AudioListViewController {
-//            segVC.parentController = self
-//            segVC.parentFrame = self.containerView.frame
-//        }
+        if segue.identifier == "audioList", let segVC = segue.destination as? AudioListViewController {
+            segVC.parentConroller = self
+            segVC.storyData = self.storyData
+            segVC.isStroy = self.isStroy
+            segVC.isPlot = self.isPlot
+            segVC.isNarration = self.isNarration
+        }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension AuthorViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

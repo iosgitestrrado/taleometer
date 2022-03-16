@@ -46,10 +46,10 @@ class FeedbackViewController: UIViewController {
     // MARK: - Side Menu button action -
     @IBAction func tapOnSubmit(_ sender: Any) {
         if textView.text == messageString || textView.text.isBlank {
-            Snackbar.showAlertMessage(messageString)
+            Toast.show(messageString)
             return
         }
-        PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", imageName: "thank", isUserStory: true)
+        PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", image: UIImage(named: "thank"), ansImage: nil, isUserStory: true)
     }
     
     // MARK: - Click on done button of keyborad toolbar

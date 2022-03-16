@@ -203,3 +203,10 @@ extension SearchViewController: UISearchBarDelegate {
         }
     }
 }
+
+// MARK: - PromptViewDelegate -
+extension SearchViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        AudioPlayManager.shared.didActionOnPromptButton(tag)
+    }
+}

@@ -7,6 +7,7 @@
 
 import UIKit
 import AVKit
+import SwiftyJSON
 
 class TRFeedViewController: UIViewController {
     
@@ -14,31 +15,16 @@ class TRFeedViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tblBottomConstraint: NSLayoutConstraint!
     
+    // MARK: - Public Properties
+    var categoryId = -1
+        
     // MARK: - Private Properties -
     private let viewMoreText = "--------------------  View More  --------------------"
-    private struct CommentModel: Codable {
-        var image = String()
-        var name = String()
-        var comment = String()
-        var time: Date?
-        var isExpanded = false
-        var replies = [CommentModel]()
-    }
-    private struct FeedModel: Codable {
-        var image = String()
-        var videoUrl = String()
-        var question = String()
-        var answer = String()
-        var isExpanded = false
-        var comments = [CommentModel]()
-        var time: Date?
-        var description = String()
-    }
     private struct Data {
-        var image = String()
+        var image = UIImage()
         var title = String()
         var description = String()
-        var time: Date?
+        var time = String()
         var index = Int()
         var commentIndex = Int()
         var replyIndex = Int()
@@ -47,10 +33,15 @@ class TRFeedViewController: UIViewController {
         var cellId = String()
         var data = Data()
     }
-
-    private var feedArray: [FeedModel] = [FeedModel]()
+    private var postData = [TriviaPost]()
     private var cellDataArray: [CellItem] = [CellItem]()
     private let messageString = "Write A Comment..."
+    private let personImage = UIImage(named: "person")!
+    
+    private var footerView = UIView()
+    private var morePage = true
+    private var pageNumber = 1
+    private var showNoData = 0
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -58,8 +49,10 @@ class TRFeedViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = UITableView.automaticDimension
+        self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        self.initFooterView()
         self.hideKeyboard()
-        self.setDummyFeeds()
+        self.getTriviaPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,190 +65,19 @@ class TRFeedViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.storeFeedDummyData()
     }
     
-    // MARK: - Set Dummy data -
-    private func setDummyFeeds() {
-        
-        if let feedData = readFeedDummyData() {
-            feedArray = feedData
-        } else {
-            feedArray = [FeedModel]()
-            
-            // Add into Comments array
-            var commentArr = [CommentModel]()
-            commentArr.append(CommentModel(image: "person", name: "You", comment: "Tenali Raman", time: Date(), replies: [CommentModel]()))
-            
-            // Add into Reply Array
-            var replyArr = [CommentModel]()
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Wrong Answer", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Right Answer is Tenali Raman", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "John Doe", comment: "Thank you!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Welcome!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "John Doe", comment: "Yes! I have checked right answer is Tenali Raman", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Where you have check this answer?", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "I checked this answer online!", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "John Doe", comment: "Birbal", time: Date(), replies: replyArr))
-            
-            // Add into Reply Array
-            replyArr = [CommentModel]()
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Wrong Answer! Please try again", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Right Answer is Tenali Raman", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Joseph", comment: "Thank you!", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Joseph", comment: "Dora", time: Date(), replies: replyArr))
-            
-            // Add into Comment Array
-            commentArr.append(CommentModel(image: "person", name: "Benpham", comment: "Tenali Raman", time: Date(), replies: [CommentModel]()))
-            commentArr.append(CommentModel(image: "person", name: "Steven", comment: "Tenali Raman", time: Date(), replies: [CommentModel]()))
-            commentArr.append(CommentModel(image: "person", name: "Brent French", comment: "Tenali Raman", time: Date(), replies: [CommentModel]()))
-            
-            // Add into feed array
-            feedArray.append(FeedModel(image: "tenali", videoUrl: "", question: "Who is the Character in this Image?", answer: "Tenali Raman", comments: commentArr, time: nil))
-            
-            commentArr = [CommentModel]()
-            // Add into Reply Array
-            replyArr = [CommentModel]()
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "I think it's a cake design", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Yes it is cake design", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "John Doe", comment: "Thank you!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Yes! I seen in the video", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Great observation!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Ya! Great!", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "You", comment: "Dummy Video", time: Date(), replies: replyArr))
-            
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Joseph", comment: "Cake Design", time: Date(), replies: [CommentModel]()))
-            
-            // Add into Reply Array
-            replyArr = [CommentModel]()
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Wrong Answer! Please check again!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Right Answer is Cake Design", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Joseph", comment: "Thank you!", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Joseph", comment: "Cake Recipe", time: Date(), replies: replyArr))
-            
-            commentArr.append(CommentModel(image: "person", name: "Benpham", comment: "Yes! Cake Design", time: Date(), replies: [CommentModel]()))
-            commentArr.append(CommentModel(image: "person", name: "Steven", comment: "Right Answer", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Brent French", comment: "Cake Design", time: Date(), replies: [CommentModel]()))
-            
-            // Add into feed array
-            feedArray.append(FeedModel(image: "acastro_180403_1777_youtube_0001", videoUrl: "https://v.pinimg.com/videos/720p/77/4f/21/774f219598dde62c33389469f5c1b5d1.mp4", question: "Watch video and answer the question in it", answer: "Dummy Video", comments: commentArr, time: nil))
-            
-            
-            commentArr = [CommentModel]()
-            // Add into Reply Array
-            replyArr = [CommentModel]()
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "I want to go Kyoto", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "I Kyoto is very nice place!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "John Doe", comment: "I like entire Japan", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "I like Tokyo and Kyoto both!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Great!", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Ya! Great!", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "You", comment: "Tokyo", time: Date(), replies: replyArr))
-            
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Joseph", comment: "Osaka", time: Date(), replies: [CommentModel]()))
-           
-            // Add into Reply Array
-            replyArr = [CommentModel]()
-            replyArr.append(CommentModel(image: "person", name: "Amblin", comment: "Good choice", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "You", comment: "Also visit Tokyo", time: Date(), replies: [CommentModel]()))
-            replyArr.append(CommentModel(image: "person", name: "Joseph", comment: "Thank you! I'll visit", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Joseph", comment: "Hiroshima", time: Date(), replies: replyArr))
-            
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Benpham", comment: "I also want to go Sapporo", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Steven", comment: "I want to check", time: Date(), replies: [CommentModel]()))
-            // Add into Comments array
-            commentArr.append(CommentModel(image: "person", name: "Brent French", comment: "Sapporo", time: Date(), replies: [CommentModel]()))
-            
-            // Add into feed array
-            feedArray.append(FeedModel(image: "YouTube-thumbnail-maker-1", videoUrl: "", question: "Where to go in Japan?", answer: "Tokyo", comments: commentArr, time: nil))
-            storeFeedDummyData()
-        }
-        self.setTableViewCells()
+    // MARK: - Initialize table footer view
+    func initFooterView() {
+        footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: Double(self.view.frame.size.width), height: 40.0))
+        let actind = UIActivityIndicatorView(style: .medium)
+        actind.tag = 10
+        actind.frame = CGRect(x: (self.view.frame.size.width / 2.0) - 20.0, y: 5.0, width: 40.0, height: 40.0)
+        actind.hidesWhenStopped = true
+        footerView.addSubview(actind)
+        footerView.isHidden = false
     }
-    
-    private func storeFeedDummyData() {
-        do {
-            for i in 0..<feedArray.count {
-                feedArray[i].isExpanded = false
-                for j in 0..<feedArray[i].comments.count {
-                    feedArray[i].comments[j].isExpanded = false
-                }
-            }
-            
-            // Create JSON Encoder
-            let encoder = JSONEncoder()
-            // Encode Note
-            let data = try encoder.encode(feedArray)
-
-            // Write/Set Data
-            UserDefaults.standard.set(data, forKey: "FeedData")
-            UserDefaults.standard.synchronize()
-        } catch {
-            print("Unable to Encode Array of Feed (\(error))")
-        }
-    }
-    
-    private func readFeedDummyData() -> [FeedModel]? {
-        if let data = UserDefaults.standard.data(forKey: "FeedData") {
-            do {
-                // Create JSON Decoder
-                let decoder = JSONDecoder()
-
-                // Decode Note
-                let notes = try decoder.decode([FeedModel].self, from: data)
-                return notes
-            } catch {
-                print("Unable to Decode Notes (\(error))")
-                return nil
-            }
-        }
-        return nil
-    }
-    
-    private func setTableViewCells() {
-        cellDataArray = [CellItem]()
-        for index in 0..<feedArray.count {
-            let feed = feedArray[index]
-            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.image, data: Data(image: feed.image, title: feed.question, description: "", time: nil, index: index)))
-            if feed.comments.count > 0 {
-                for comIndex in 0..<feed.comments.count {
-                    let comment = feed.comments[comIndex]
-                    if !feed.isExpanded && comIndex == 3 {
-                        cellDataArray.append(CellItem(cellId: FeedCellIdentifier.viewMore, data: Data(image: "", title: viewMoreText, description: "", time: nil, index: index, commentIndex: comIndex)))
-                        break
-                    }
-                    cellDataArray.append(CellItem(cellId: FeedCellIdentifier.comment, data: Data(image: comment.image, title: comment.name, description: comment.comment, time: comment.time, index: index, commentIndex: comIndex)))
-                    if comment.replies.count > 0 {
-                        for repIndex in 0..<comment.replies.count {
-                            let reply = comment.replies[repIndex]
-                            if !comment.isExpanded && repIndex == 0 && comment.replies.count > 1 {
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: Data(image: "", title: "View previous \(comment.replies.count - 1) replies", description: "", time: nil, index: index, commentIndex: comIndex)))
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: Data(image: reply.image, title: reply.name, description: reply.comment, time: reply.time, index: index, commentIndex: comIndex, replyIndex: repIndex)))
-                                break
-                            }
-                            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: Data(image: reply.image, title: reply.name, description: reply.comment, time: reply.time, index: index, commentIndex: comIndex, replyIndex: repIndex)))
-                        }
-                    }
-                }
-                
-            }
-            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: Data(image: "person", title: "", description: "", time: nil, index: index)))
-        }
-        self.tableView.reloadData()
-        //self.tableView.reloadSections(IndexSet(integer: 0), with: .bottom)
-    }
-    
+       
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
@@ -275,37 +97,88 @@ class TRFeedViewController: UIViewController {
         self.tblBottomConstraint.constant = 0
     }
     
+    @objc private func tapOnAnswer(_ sender: UIButton) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
+            if cellDataArray[rowIndex].cellId == FeedCellIdentifier.question {
+                if postData[sender.tag].Value.isBlank {
+                    if let textFlield = postData[sender.tag].TextField {
+                        Validator.showRequiredError(textFlield)
+                    }
+                    return
+                }
+                Core.ShowProgress(self, detailLbl: "Submitting Answer...")
+                TriviaClient.submitAnswer(SubmitAnswerRequest(post_id: postData[sender.tag].Post_id, answer: postData[sender.tag].Value)) { [self] status in
+                    Core.HideProgress(self)
+                    if let st = status, st {
+                        self.getComments(postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                    }
+                }
+            } else {
+                Core.ShowProgress(self, detailLbl: "")
+                TriviaClient.getAnswers(PostIdRequest(post_id: postData[sender.tag].Post_id)) { [self] response in
+                    if let data = response {
+                        PromptVManager.present(self, verifyTitle: data.Answer_text, verifyMessage: postData[sender.tag].Question, image: postData[sender.tag].Question_media, ansImage: data.Answer_text.isBlank ? data.Answer_image : nil, isQuestion: true, closeBtnHide: true)
+                    }
+                    Core.HideProgress(self)
+                }
+            }
+        }
+    }
+    
     // MARK: Tap on view more comment
     @objc private func tapOnViewMore(_ sender: UIButton) {
-        if !feedArray[sender.tag].isExpanded {
-            feedArray[sender.tag].isExpanded = true
+        if !postData[sender.tag].IsExpanded {
+            postData[sender.tag].IsExpanded = true
             self.setTableViewCells()
         }
     }
     
     // MARK: Tap on view previous reply
     @objc private func tapOnViewPrevReply(_ sender: UIButton) {
-        if let comIndex = sender.layer.value(forKey: "CommentIndex") as? Int,  !feedArray[sender.tag].comments[comIndex].isExpanded {
-            feedArray[sender.tag].comments[comIndex].isExpanded = true
+        if let comIndex = sender.layer.value(forKey: "CommentIndex") as? Int,  !postData[sender.tag].Comments[comIndex].IsExpanded {
+            postData[sender.tag].Comments[comIndex].IsExpanded = true
             self.setTableViewCells()
         }
     }
     
     // MARK: Tap on post button
     @objc private func tapOnPost(_ sender: UIButton) {
-        if feedArray[sender.tag].description.isBlank {
-            Snackbar.showAlertMessage(messageString)
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
             return
         }
-        
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
             if cellDataArray[rowIndex].cellId == FeedCellIdentifier.post {
-                feedArray[sender.tag].comments.insert(CommentModel(image: "person", name: "You", comment: feedArray[sender.tag].description, time: Date(), isExpanded: false, replies: [CommentModel]()), at: 0)
+                if postData[sender.tag].Value.isBlank {
+                    if let textView = postData[sender.tag].CommTextView {
+                        Validator.showRequiredErrorTextView(textView)
+                    }
+                    return
+                }
+                // Add new comment
+                addComment(postData[sender.tag].Post_id, commentId: nil, comment: postData[sender.tag].Value) { [self] status in
+                    if let st = status, st {
+                        self.getComments(postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                    }
+                }
             } else if cellDataArray[rowIndex].cellId == FeedCellIdentifier.replyPost, let commIndex = sender.layer.value(forKey: "CommentIndex") as? Int {
-                feedArray[sender.tag].comments[commIndex].isExpanded = true
-                feedArray[sender.tag].comments[commIndex].replies.insert(CommentModel(image: "person", name: "You", comment: feedArray[sender.tag].description, time: Date(), isExpanded: false, replies: [CommentModel]()), at: 0)
+                if postData[sender.tag].Value.isBlank {
+                    if let textView = postData[sender.tag].RepTextView {
+                        Validator.showRequiredErrorTextView(textView)
+                    }
+                    return
+                }
+                // Add new reply in comment
+                addComment(postData[sender.tag].Post_id, commentId: postData[sender.tag].Comments[commIndex].Comment_id, comment: postData[sender.tag].Value) { [self] status in
+                    if let st = status, st {
+                        self.getComments(true, postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                    }
+                }
             }
-            self.setTableViewCells()
         }
     }
     
@@ -315,8 +188,23 @@ class TRFeedViewController: UIViewController {
             if cellDataArray.contains(where: { cell in cell.cellId == FeedCellIdentifier.replyPost}) {
                 cellDataArray.removeAll(where: { cell in cell.cellId == FeedCellIdentifier.replyPost })
             }
-            cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: Data(image: "person", title: "", description: "", time: nil, index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
+            cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: Data(image: personImage, title: "", description: "", time: "", index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
             self.tableView.reloadData()
+        }
+    }
+    
+    // MARK: Tap on video Button
+    @objc private func tapOnVideo(_ sender: UIButton) {
+        if let videoURL = URL(string: postData[sender.tag].QuestionVideoURL) {
+            let player = AVPlayer(url: videoURL)
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            playerViewController.showsPlaybackControls = true
+            self.present(playerViewController, animated: true) {
+                playerViewController.player?.play()
+            }
+        } else {
+            Toast.show("No video found!")
         }
     }
     
@@ -327,14 +215,153 @@ class TRFeedViewController: UIViewController {
     
     // MARK: - Play a video in video controller
     private func playVideo(_ row: Int) {
-        guard let videoURL = URL(string: feedArray[row].videoUrl) else { return }
-        let player = AVPlayer(url: videoURL)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        playerViewController.showsPlaybackControls = true
-        self.present(playerViewController, animated: true) {
-            playerViewController.player?.play()
+        
+    }
+}
+
+extension TRFeedViewController {
+    // MARK: - Get trivia posts
+    private func getTriviaPosts(_ replyExpanded: Bool = false, showProgress: Bool = true) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
         }
+        if showProgress {
+            Core.ShowProgress(self, detailLbl: "")
+        }
+        if categoryId >= 0 {
+            // MARK: - Get trivia posts by category
+            TriviaClient.getCategoryPosts(pageNumber, req: TriviaCategoryRequest(category: categoryId)) { [self] response in
+                if let data = response {
+                    postData = postData + data
+                    morePage = data.count > 0
+                }
+                showNoData = 1
+                setTableViewCells(replyExpanded)
+                tableView.tableFooterView = UIView()
+                if showProgress {
+                    Core.HideProgress(self)
+                }
+            }
+        } else {
+            // MARK: - Get trivia daily posts
+            TriviaClient.getTriviaDailyPost(pageNumber) { [self] response in
+                if let data = response {
+                    postData = postData + data
+                    morePage = data.count > 0
+                }
+                showNoData = 1
+                setTableViewCells(replyExpanded)
+                tableView.tableFooterView = UIView()
+                if showProgress {
+                    Core.HideProgress(self)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Get comments using post id
+    private func getComments(_ replyExpanded: Bool = false, postId: Int, postIndex: Int) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        TriviaClient.getComments(PostIdRequest(post_id: postId)) { [self] response in
+            if let data = response {
+                postData[postIndex].User_answer_status = true
+                postData[postIndex].Comments = data
+            }
+            setTableViewCells(replyExpanded)
+            Core.HideProgress(self)
+        }
+    }
+    
+    // MARK: - Add Commnet -
+    private func addComment(_ postId: Int, commentId: Int?, comment: String, completion: @escaping(Bool?) -> Void) {
+        DispatchQueue.global(qos: .background).async {
+            TriviaClient.addComments(AddCommentRequest(post_id: postId, comment_id: commentId, comment: comment)) { status in
+                completion(status)
+            }
+        }
+    }
+    
+    // MARK: - Set cell for tableview
+    private func setTableViewCells(_ replyExpanded: Bool = false) {
+        cellDataArray = [CellItem]()
+        
+        // each for index of post
+        for index in 0..<postData.count {
+            
+            /// get post model
+            let feed = postData[index]
+            
+            if feed.User_answer_status {
+                /// Add Image and question title cell with view answer
+                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.image, data: Data(image: feed.Question_media, title: feed.Question, description: "", time: "", index: index)))
+            } else {
+                /// Add Image and question title cell with submit answer
+                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.question, data: Data(image: feed.Question_media, title: feed.Question, description: "", time: "", index: index)))
+            }
+            
+            /// Check comment
+            if feed.Comments.count > 0 {
+                
+                /// comment for each
+                for comIndex in 0..<feed.Comments.count {
+                    
+                    /// Get comment model
+                    var comment = feed.Comments[comIndex]
+                    
+                    /// Check is explanded or not
+                    if !feed.IsExpanded && comIndex == 3 {
+                        /// Add view more text cell
+                        cellDataArray.append(CellItem(cellId: FeedCellIdentifier.viewMore, data: Data(image: personImage, title: viewMoreText, description: "", time: "", index: index, commentIndex: comIndex)))
+                        break
+                    }
+                    
+                    /// Add comment cell
+                    cellDataArray.append(CellItem(cellId: FeedCellIdentifier.comment, data: Data(image: personImage, title: comment.User_name, description: comment.Comment, time: comment.Time_ago, index: index, commentIndex: comIndex)))
+                    
+                    /// Check reply exists
+                    if comment.Reply.count > 0 {
+                        
+                        /// Reply for each
+                        for repIndex in 0..<comment.Reply.count {
+                            
+                            /// Get reply model
+                            let reply = comment.Reply[repIndex]
+                            
+                            /// If reply by user
+                            if replyExpanded {
+                                comment.IsExpanded = true
+                            }
+                            
+                            /// Check Comment expanded
+                            if !comment.IsExpanded && repIndex == 0 && comment.Reply.count > 1 {
+                                
+                                /// Add view previous reply cell
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: Data(image: personImage, title: "View previous \(comment.Reply_count - 1) replies", description: "", time: "", index: index, commentIndex: comIndex)))
+                                
+                                /// Add reply cell
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: Data(image: personImage, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                                break
+                            }
+                            
+                            /// Add reply cell
+                            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: Data(image: personImage, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                        }
+                    }
+                }
+            }
+            
+            if feed.User_answer_status {
+                /// Add post comment cell
+                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: Data(image: personImage, title: "", description: "", time: "", index: index)))
+            }
+        }
+        self.tableView.reloadData()
+        //self.tableView.reloadSections(IndexSet(integer: 0), with: .bottom)
     }
 }
 
@@ -346,19 +373,34 @@ extension TRFeedViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cellDataArray.count
+        return cellDataArray.count > 0 ? self.cellDataArray.count : showNoData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if self.cellDataArray.count <= 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
+            return cell
+        }
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellDataArray[indexPath.row].cellId, for: indexPath) as? FeedCellView else { return UITableViewCell() }
         let cellData = cellDataArray[indexPath.row].data
         cell.configureCell(cellData.image, title: cellData.title,
                            description: cellData.description, time: cellData.time,
                            cellId: cellDataArray[indexPath.row].cellId,
-                           messageString: messageString, row: indexPath.row,
+                           messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row,
                            cellIndex: cellData.index, commentIndex: cellData.commentIndex,
                            replyIndex: cellData.replyIndex, target: self,
-                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:))])
+                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:))])
+        if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question, let textField = cell.textField {
+            postData[cellData.index].TextField = textField
+        }
+        if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.post, let textView = cell.descText {
+            postData[cellData.index].CommTextView = textView
+        }
+        if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.replyPost, let textView = cell.descText {
+            postData[cellData.index].RepTextView = textView
+        }
         return cell
     }
 }
@@ -367,47 +409,23 @@ extension TRFeedViewController : UITableViewDataSource {
 extension TRFeedViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return self.cellDataArray.count <= 0 ? (showNoData == 1 ? 30 : 0) : UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let index = cellDataArray[indexPath.row].data.index
-        if !feedArray[index].videoUrl.isBlank {
-            playVideo(index)
-        }
-    }
-}
 
-// MARK: - UITextFieldDelegate -
-extension TRFeedViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            let indexPath = IndexPath(row: textField.tag, section: 0)
-            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-        }
     }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //let nextCellData = questionArray[textField.tag + 1]
-        if textField.returnKeyType == .next {
-            let indexPath = IndexPath(row: textField.tag + 1, section: 0)
-            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? QuestionCellView, let textField = cell.answerText {
-                tableView.reloadRows(at: [indexPath], with: .none)
-                textField.becomeFirstResponder()
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if cellDataArray.count > 5 && indexPath.row == cellDataArray.count - 1 && self.morePage {
+            //last cell load more
+            pageNumber += 1
+            tableView.tableFooterView = footerView
+            if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
+                indicator.startAnimating()
             }
-        } else {
-            self.view.endEditing(true)
+            DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTriviaPosts(showProgress: false) } }
         }
-        return true
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return true
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        //self.questionArray[textField.tag].value = textField.text!
     }
 }
 
@@ -423,6 +441,7 @@ extension TRFeedViewController: UITextViewDelegate {
             let indexPath = IndexPath(row: textView.tag, section: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
+        textView.setError()
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -440,6 +459,7 @@ extension TRFeedViewController: UITextViewDelegate {
             textView.textColor = .darkGray
 
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+            
         }
 
         // Else if the text view's placeholder is showing and the
@@ -472,15 +492,53 @@ extension TRFeedViewController: UITextViewDelegate {
     
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         if let index = textView.layer.value(forKey: "IndexVal") as? Int {
-            feedArray[index].description = textView.text
+            postData[index].Value = textView.text
         }
         return true
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
+        if textView.text.isEmpty /*|| textView.text == messageString*/ {
             textView.text = messageString
             textView.textColor = .darkGray
+            //Validator.showRequiredErrorTextView(textView)
         }
+    }
+}
+
+// MARK: - UITextFieldDelegate -
+extension TRFeedViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let indexPath = IndexPath(row: textField.tag, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
+        textField.setError()
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        return true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text!.isBlank {
+            //Validator.showRequiredError(textField)
+            return
+        }
+        if let index = textField.layer.value(forKey: "IndexVal") as? Int {
+            self.postData[index].Value = textField.text!
+        }
+    }
+}
+
+// MARK: - PromptViewDelegate -
+extension TRFeedViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        //Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
 }

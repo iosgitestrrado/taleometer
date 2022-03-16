@@ -1,5 +1,5 @@
 //
-//  Story.swift
+//  StoryModel.swift
 //  TaleOMeter
 //
 //  Created by Durgesh on 08/03/22.
@@ -7,7 +7,7 @@
 
 import SwiftyJSON
 
-struct Story {
+struct StoryModel {
     var Id = Int()
     var Name = String()
     var Image = UIImage()
@@ -19,14 +19,7 @@ struct Story {
     init(_ json: JSON) {
         Id = json["id"].intValue
         Name = json["name"].stringValue
-        let imageURL = Constants.baseURL.appending("/\(json["image"].stringValue)")
-        Image = defaultImage
-        if let url = URL(string: imageURL) {
-            do {
-                let data = try Data(contentsOf: url)
-                Image = UIImage(data: data) ?? defaultImage
-            } catch { }
-        }
+        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
@@ -34,8 +27,19 @@ struct Story {
 }
 
 struct StoryRequest: Codable {
+    var story_id = Int()
+}
+
+struct PlotRequest: Codable {
     var plot_id = Int()
-    var page = Int()
+    var page = String()
+    var limit = String()
+}
+
+struct NarrationRequest: Codable {
+    var narration_id = Int()
+    var page = String()
+    var limit = String()
 }
 /* {
  "id": 8,

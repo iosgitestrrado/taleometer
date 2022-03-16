@@ -55,16 +55,20 @@ class LoginViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
+            return
+        }
+        if self.mobileNumberTxt.text!.isBlank {
+            Validator.showRequiredError(self.mobileNumberTxt)
             return
         }
         if !self.mobileNumberTxt.text!.isPhoneNumber {
-            Snackbar.showAlertMessage("Please Enter correct Mobile Number!")
+            Validator.showError(self.mobileNumberTxt, message: "Invalid phone number")
             return
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
         Core.ShowProgress(self, detailLbl: "Sending OTP...")
-        AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!)) { status in
+        AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!, isd_code: countryModel.extensionCode ?? "91", country_code: countryModel.countryCode ?? "IN")) { status in
             Core.HideProgress(self)
             if status {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
@@ -120,9 +124,10 @@ class LoginViewController: UIViewController {
             if let cCode = self.countryModel.countryCode {
                 veryVC.countryCode = cCode
             }
-            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
-                veryVC.iSDCode = isdCode
-            }
+            veryVC.iSDCode = 91
+//            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
+//                veryVC.iSDCode = isdCode
+//            }
         }
     }
 }
@@ -139,9 +144,21 @@ extension LoginViewController: CountryCodeDelegate {
 // MARK: - Textfield delegate
 extension LoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !string.isEmpty && textField.text!.utf8.count >= 10 {
-            return "\(self.countryModel.extensionCode!)\(textField.text!)".isPhoneNumber
-        }
         return string.isBlank || string.isNumber
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+            return
+        }
+        if !textField.text!.isPhoneNumber {
+            Validator.showError(self.mobileNumberTxt, message: "Invalid phone number")
+            return
+        }
     }
 }

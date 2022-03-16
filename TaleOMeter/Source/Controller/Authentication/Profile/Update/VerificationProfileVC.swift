@@ -39,40 +39,41 @@ class VerificationProfileVC: UIViewController {
     }
     
     @IBAction func tapOnResend(_ sender: Any) {
-        Snackbar.showSuccessMessage("One time password send to your mobile number!")
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "Sending OTP")
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileNumber)) { status in
+            Core.HideProgress(self)
+        }
     }
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if self.otp1Text.text!.isEmpty || self.otp2Text.text!.isEmpty || self.otp3Text.text!.isEmpty ||
             self.otp4Text.text!.isEmpty{
-            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+            Toast.show("Please Enter valid OTP to complete verification!")
             return
         }
         if let otp = Int("\(self.otp1Text.text!)\(self.otp2Text.text!)\(self.otp3Text.text!)\(self.otp4Text.text!)") {
             self.verifyOTP(otp)
         } else {
-            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+            Toast.show("Please Enter valid OTP to complete verification!")
         }
     }
     
     private func verifyOTP(_ otp: Int) {
-        if let prof = profileData {
-            Core.ShowProgress(self, detailLbl: "Verifying OTP")
-            AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp)) { result in
-                if var response = result {
-                    response.CountryCode = prof.CountryCode
-                    response.Isd_code = prof.Isd_code
-                    Login.storeProfileData(response)
-                    PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
-                }
-                Core.HideProgress(self)
+        Core.ShowProgress(self, detailLbl: "Verifying OTP")
+        AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp)) { result in
+            if let response = result {
+                Login.storeProfileData(response)
+                PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
             }
-        } else {
-            Snackbar.showAlertMessage("No Profile data found!")
+            Core.HideProgress(self)
         }
     }
 }

@@ -57,17 +57,24 @@ class VerificationViewController: UIViewController {
     }
     
     @IBAction func tapOnResendOTP(_ sender: Any) {
-        Snackbar.showSuccessMessage("One time password send to your mobile number!")
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "Sending OTP...")
+        AuthClient.login(LoginRequest(mobile: self.mobileNumber)) { status in
+            Core.HideProgress(self)
+        }
     }
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Snackbar.showNoInternetMessage()
+            Toast.show()
             return
         }
         if self.otp1TextField.text!.isEmpty || self.otp2TextField.text!.isEmpty || self.otp3TextField.text!.isEmpty ||
-            self.otp4TextField.text!.isEmpty{
-            Snackbar.showAlertMessage("Please Enter valid OTP to complete verification!")
+            self.otp4TextField.text!.isEmpty {
+            Toast.show("Please Enter valid OTP to complete verification!")
             return
         }
         
@@ -77,25 +84,34 @@ class VerificationViewController: UIViewController {
             if var response = result, !token.isBlank {
                 UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
                 UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
-                
-                response.CountryCode = self.countryCode
-                response.Isd_code = self.iSDCode
                 if isNewRegister {
                     response.StoryBoardName = Constants.Storyboard.auth
                     response.StoryBoardId = "RegisterViewController"
-                    Login.storeProfileData(response)
                     self.performSegue(withIdentifier: "register", sender: sender)
                 } else {
-                    response.StoryBoardName = Constants.Storyboard.dashboard
-                    response.StoryBoardId = "PreferenceViewController"
+                    if isOnlyTrivia {
+                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                    } else {
+                        response.StoryBoardName = Constants.Storyboard.dashboard
+                        response.StoryBoardId = "PreferenceViewController"
 
-                    Login.storeProfileData(response)
-                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
-//                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                    }
                 }
-                
+                Login.storeProfileData(response)
             }
             Core.HideProgress(self)
+        }
+    }
+    
+    // MARK: - Navigation
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "register", let veryVC = segue.destination as? RegisterViewController {
+            veryVC.countryCode = self.countryCode
+            veryVC.iSDCode = self.iSDCode
         }
     }
 }
@@ -147,5 +163,10 @@ extension VerificationViewController: UITextFieldDelegate {
             //self.OTPVerify()
             return false
         }
+    }
+    
+    // Set error
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
     }
 }

@@ -18,6 +18,8 @@ class UserStoryViewController: UIViewController {
     // MARK: - create property for story data
     private struct storyModel {
         var value = String()
+        var textField: UITextField?
+        var textView: UITextView?
         var id = String()
         var celldata = [UserStoryCellItem]()
     }
@@ -86,9 +88,9 @@ class UserStoryViewController: UIViewController {
         let indexPath = IndexPath(row: 0, section: sender.tag + 1)
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
-            if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textView = cell.textView {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textField = cell.textField {
                 tableView.reloadRows(at: [indexPath], with: .none)
-                textView.becomeFirstResponder()
+                textField.becomeFirstResponder()
             }
         }
     }
@@ -103,13 +105,25 @@ class UserStoryViewController: UIViewController {
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "TermsAndConditionVC")
             break
         default:
-            for story in storyDataList {
+            for i in 0..<storyDataList.count {
+                let story = storyDataList[i]
                 if story.value.isBlank && story.id != UserStoryCellItem.submitButton.cellIdentifier && story.id != UserStoryCellItem.terms.cellIdentifier {
-                    Snackbar.showAlertMessage(story.celldata[0].errorMessge)
+                    if let text = story.textView {
+                        Validator.showRequiredErrorTextView(text)
+                        tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
+                        return
+                    }
+                    if let text = story.textField {
+                        Validator.showRequiredError(text)
+                        tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
+                        return
+                    }
+                    Toast.show(story.celldata[0].errorMessge)
+                    tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
                     return
                 }
             }
-            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", imageName: "thank", isUserStory: true)
+            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", image: UIImage(named: "thank")!, ansImage: nil, isUserStory: true)
             //print(storyDataList)
             break
         }
@@ -154,6 +168,12 @@ extension UserStoryViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.configuration(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
+        if let textField = cell.textField {
+            storyDataList[indexPath.section].textField = textField
+        }
+        if let textView = cell.textView {
+            storyDataList[indexPath.section].textView = textView
+        }
         return cell
     }
 }
@@ -172,15 +192,21 @@ extension UserStoryViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate -
 extension UserStoryViewController: UITextFieldDelegate {
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.setError()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            let indexPath = IndexPath(row: 0, section: textField.tag)
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let nextCellData = storyDataList[textField.tag + 2]
         let indexPath = IndexPath(row: 0, section: textField.tag + 2)
-        if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textView = cell.textView {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textField = cell.textField {
             tableView.reloadRows(at: [indexPath], with: .none)
-            textView.becomeFirstResponder()
+            textField.becomeFirstResponder()
         }
         return true
     }
@@ -191,6 +217,9 @@ extension UserStoryViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.storyDataList[textField.tag].value = textField.text!
+        if textField.text!.isBlank {
+            Validator.showRequiredError(textField)
+        }
     }
 }
 
@@ -198,6 +227,7 @@ extension UserStoryViewController: UITextFieldDelegate {
 extension UserStoryViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.setError()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             let indexPath = IndexPath(row: 0, section: textView.tag)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
@@ -210,6 +240,9 @@ extension UserStoryViewController: UITextViewDelegate {
     
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         self.storyDataList[textView.tag].value = textView.text!
+        if textView.text!.isBlank {
+            Validator.showRequiredErrorTextView(textView)
+        }
         return true
     }
 }

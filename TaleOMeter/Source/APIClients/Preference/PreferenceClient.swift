@@ -49,7 +49,7 @@ class PreferenceClient {
     }
     
     static func setUserBubbles(_ prefRequest: PreferenceRequest, completion: @escaping(Bool?) -> Void) {
-        APIClient.shared.postJson(prefRequest, feed: .UserPreferences) { result in
+        APIClient.shared.postJson(parameters: prefRequest, feed: .UserPreferences) { result in
             ResponseAPI.getResponseJsonBool(result, showAlert: false) { status in
                 completion(status)
             }
