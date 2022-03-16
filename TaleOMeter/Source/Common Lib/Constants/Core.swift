@@ -47,7 +47,10 @@ class Core: NSObject {
      * From UIController
      */
     static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white) {
-      
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
         cont.sideMenuController?.isRightViewEnabled = isRightViewEnabled
         cont.navigationController?.setNavigationBarHidden(setNavigationBarHidden, animated: true)
         //cont.navigationController?.navigationBar.barTintColor = .clear

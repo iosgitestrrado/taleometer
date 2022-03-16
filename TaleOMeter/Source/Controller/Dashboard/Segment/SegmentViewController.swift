@@ -39,6 +39,10 @@ class SegmentViewController: UIViewController {
     
     // MARK: - Get Genres from API's -
     private func getGenres() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(parentController!, detailLbl: "")
         GenreClient.get { result in
             if let response = result {

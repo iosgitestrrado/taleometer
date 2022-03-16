@@ -405,7 +405,7 @@ class NowPlayViewController: UIViewController {
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
                     if player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
-                        PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                        PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
                     }
                 }
                 AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
@@ -418,6 +418,10 @@ class NowPlayViewController: UIViewController {
 extension NowPlayViewController {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
             Core.HideProgress(self)
@@ -427,6 +431,10 @@ extension NowPlayViewController {
     
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
             Core.HideProgress(self)

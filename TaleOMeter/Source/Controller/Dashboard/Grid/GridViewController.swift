@@ -81,6 +81,10 @@ class GridViewController: UIViewController {
     }
     
     private func getAudioList(_ completionHandler: (() -> Void)?) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
             AudioClient.get(AudioRequest(page: pageNumber, limit: pageLimit), genreId: genreId, completion: { [self] result in
                 if let response = result, response.count > 0 {

@@ -11,7 +11,7 @@ class AudioClient {
     static func get(_ audioReq: AudioRequest, genreId: Int = -1, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             // Get All audio list and set refrence for Story, Plot and Narration
-            APIClient.shared.post(audioReq, feed: .AudioStories) { result in
+            APIClient.shared.post(parameters: audioReq, feed: .AudioStories) { result in
                 ResponseAPI.getResponseArray(result, showAlert: false) { response in
                     var audios = [Audio]()
                     if let audio = response {
@@ -89,7 +89,7 @@ class AudioClient {
     }
     
     static func getAudiosByPlot(_ req: PlotRequest, completion: @escaping([Audio]?) -> Void) {
-        APIClient.shared.post(req, feed: .PlotAudioStories) { result in
+        APIClient.shared.post(parameters: req, feed: .PlotAudioStories) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var audios = [Audio]()
                 if let data = response {
@@ -103,7 +103,7 @@ class AudioClient {
     }
     
     static func getAudiosByNarration(_ req: NarrationRequest, completion: @escaping([Audio]?) -> Void) {
-        APIClient.shared.post(req, feed: .NarrationAudioStories) { result in
+        APIClient.shared.post(parameters: req, feed: .NarrationAudioStories) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var audios = [Audio]()
                 if let data = response {

@@ -86,9 +86,9 @@ class UserStoryViewController: UIViewController {
         let indexPath = IndexPath(row: 0, section: sender.tag + 1)
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
-            if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textView = cell.textView {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textField = cell.textField {
                 tableView.reloadRows(at: [indexPath], with: .none)
-                textView.becomeFirstResponder()
+                textField.becomeFirstResponder()
             }
         }
     }
@@ -109,7 +109,7 @@ class UserStoryViewController: UIViewController {
                     return
                 }
             }
-            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", image: UIImage(named: "thank")!, isUserStory: true)
+            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", image: UIImage(named: "thank")!, ansImage: nil, isUserStory: true)
             //print(storyDataList)
             break
         }
@@ -175,14 +175,18 @@ extension UserStoryViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.setError()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            let indexPath = IndexPath(row: 0, section: textField.tag)
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let nextCellData = storyDataList[textField.tag + 2]
         let indexPath = IndexPath(row: 0, section: textField.tag + 2)
-        if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textView = cell.textView {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textField = cell.textField {
             tableView.reloadRows(at: [indexPath], with: .none)
-            textView.becomeFirstResponder()
+            textField.becomeFirstResponder()
         }
         return true
     }

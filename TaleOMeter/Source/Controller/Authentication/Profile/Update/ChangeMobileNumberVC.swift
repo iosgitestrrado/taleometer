@@ -40,8 +40,7 @@ class ChangeMobileNumberVC: UIViewController {
 //            self.mobileTextField.text = contact[1]
 //        }
         if let pfData = profileData {
-            countryCodeVal = pfData.CountryCode
-            countryCodeVal = "IN"
+            countryCodeVal = pfData.Country_code.isBlank ? "IN" : pfData.Country_code
             self.mobileTextField.text = pfData.Phone
         }
         setDefaultCountry()
@@ -76,8 +75,12 @@ class ChangeMobileNumberVC: UIViewController {
     }
     
     private func sendOpt() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
-        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!)) { status in
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!, isd_code: self.countryModel.extensionCode ?? "91", country_code: self.countryModel.countryCode ?? "IN")) { status in
             if status {
                 self.performSegue(withIdentifier: "verification", sender: self)
             }

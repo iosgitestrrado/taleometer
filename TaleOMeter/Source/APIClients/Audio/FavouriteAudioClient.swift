@@ -22,7 +22,7 @@ class FavouriteAudioClient {
     }
     
     static func add(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
-        APIClient.shared.postJson(favRequest, feed: .AddFavoriteAudio) { result in
+        APIClient.shared.postJson(parameters: favRequest, feed: .AddFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 self.get("all") { response in
                     if let data = response, data.count > 0 {

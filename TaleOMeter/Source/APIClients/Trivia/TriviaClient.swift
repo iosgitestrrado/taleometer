@@ -12,7 +12,7 @@ import UIKit
 class TriviaClient {
     
     static func getTriviaHome(_ completion: @escaping(TriviaHome?) -> Void) {
-        APIClient.shared.postJson(EmptyRequest(), feed: .TriviaHome) { result in
+        APIClient.shared.postJson(parameters: EmptyRequest(), feed: .TriviaHome) { result in
             ResponseAPI.getResponseJson(result) { response in
                 var home = TriviaHome()
                 if let data = response {
@@ -23,8 +23,8 @@ class TriviaClient {
         }
     }
     
-    static func getTriviaDailyPost(_ completion: @escaping([TriviaPost]?) -> Void) {
-        APIClient.shared.post(EmptyRequest(), feed: .TriviaDaily) { result in
+    static func getTriviaDailyPost(_ pageNumber: Int, completion: @escaping([TriviaPost]?) -> Void) {
+        APIClient.shared.post("?page=\(pageNumber)", parameters: EmptyRequest(), feed: .TriviaDaily) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var daily = [TriviaPost]()
                 if let dly = response {
@@ -37,8 +37,8 @@ class TriviaClient {
         }
     }
     
-    static func getCategoryPosts(_ req: TriviaCategoryRequest, completion: @escaping([TriviaPost]?) -> Void) {
-        APIClient.shared.post(req, feed: .TriviaCategoryPost) { result in
+    static func getCategoryPosts(_ pageNumber: Int, req: TriviaCategoryRequest, completion: @escaping([TriviaPost]?) -> Void) {
+        APIClient.shared.post("?page=\(pageNumber)", parameters:req, feed: .TriviaCategoryPost) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var posts = [TriviaPost]()
                 if let psts = response {
@@ -52,20 +52,24 @@ class TriviaClient {
     }
     
     static func submitAnswer(_ req: SubmitAnswerRequest, completion: @escaping(Bool?) -> Void) {
-        APIClient.shared.postJson(req, feed: .TriviaSubmitAnswer) { result in
+        APIClient.shared.postJson(parameters: req, feed: .TriviaSubmitAnswer) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
         }
     }
     
-    static func getAnswers(_ req: PostIdRequest, completion: @escaping([TriviaAnswer]?) -> Void) {
-        APIClient.shared.post(req, feed: .TriviaViewAnswer) { result in
+    static func getAnswers(_ req: PostIdRequest, completion: @escaping(TriviaAnswer?) -> Void) {
+        APIClient.shared.post(parameters: req, feed: .TriviaViewAnswer) { result in
             ResponseAPI.getResponseArray(result) { response in
-                var answers = [TriviaAnswer]()
+                var answers = TriviaAnswer()
                 if let anss = response {
                     anss.forEach { object in
-                        answers.append(TriviaAnswer(object))
+                        let triAns = TriviaAnswer(object)
+                        if triAns.Post_id == req.post_id {
+                            answers = triAns
+                        }
+                       // answers.append(TriviaAnswer(object))
                     }
                 }
                 completion(answers)
@@ -74,7 +78,7 @@ class TriviaClient {
     }
     
     static func getComments(_ req: PostIdRequest, completion: @escaping([TriviaComment]?) -> Void) {
-        APIClient.shared.post(req, feed: .TriviaViewCommnets) { result in
+        APIClient.shared.post(parameters: req, feed: .TriviaViewCommnets) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var comments = [TriviaComment]()
                 if let coms = response {
@@ -88,7 +92,7 @@ class TriviaClient {
     }
     
     static func addComments(_ req: AddCommentRequest, completion: @escaping(Bool?) -> Void) {
-        APIClient.shared.postJson(req, feed: .TriviaAddCommennt) { result in
+        APIClient.shared.postJson(parameters: req, feed: .TriviaAddCommennt) { result in
             ResponseAPI.getResponseJsonBool(result) { status in
                 completion(status)
             }

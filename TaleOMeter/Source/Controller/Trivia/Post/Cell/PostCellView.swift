@@ -32,6 +32,7 @@ class PostCellView: UITableViewCell {
         self.answerText.delegate = target as? UITextFieldDelegate
         self.answerText.text = value
         self.answerText.returnKeyType = .done//isLastrow ? .done : .next
+        self.answerText.setError()
         
         if let btn = self.submitButton {
             btn.tag = row

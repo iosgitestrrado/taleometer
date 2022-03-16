@@ -14,32 +14,36 @@ struct FeedCellIdentifier {
     static let reply = "replyCell"
     static let viewMore = "viewMoreCell"
     static let post = "postCell"
+    static let question = "questionCell"
     static let replyPost = "replyPostCell"
 }
 
 class FeedCellView: UITableViewCell {
     @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitle: UILabel!
+    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var descText: UITextView!
-    @IBOutlet weak var mainVStackView: UIStackView!
+   // @IBOutlet weak var mainVStackView: UIStackView!
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var videoButton: UIButton!
 
-    @IBOutlet weak var postStackView: UIStackView!
-    @IBOutlet weak var pSProfileImage: UIImageView!
-    @IBOutlet weak var pSNameLabel: UILabel!
-    @IBOutlet weak var pSCommentLabel: UILabel!
-    @IBOutlet weak var pSHourLabel: UILabel!
-    @IBOutlet weak var pSReplyLabel: UILabel!
+//    @IBOutlet weak var postStackView: UIStackView!
+//    @IBOutlet weak var pSProfileImage: UIImageView!
+//    @IBOutlet weak var pSNameLabel: UILabel!
+//    @IBOutlet weak var pSCommentLabel: UILabel!
+//    @IBOutlet weak var pSHourLabel: UILabel!
+//    @IBOutlet weak var pSReplyLabel: UILabel!
 
-    @IBOutlet weak var replyStackView: UIStackView!
-    @IBOutlet weak var repProfileImage: UIImageView!
-    @IBOutlet weak var repNameLabel: UILabel!
-    @IBOutlet weak var repCommentLabel: UILabel!
-    @IBOutlet weak var repHourLabel: UILabel!
-    @IBOutlet weak var repReplyLabel: UILabel!
+//    @IBOutlet weak var replyStackView: UIStackView!
+//    @IBOutlet weak var repProfileImage: UIImageView!
+//    @IBOutlet weak var repNameLabel: UILabel!
+//    @IBOutlet weak var repCommentLabel: UILabel!
+//    @IBOutlet weak var repHourLabel: UILabel!
+//    @IBOutlet weak var repReplyLabel: UILabel!
     
     @IBOutlet weak var viewPrevReply: UIButton!
     @IBOutlet weak var viewMore: UIButton!
@@ -67,6 +71,14 @@ class FeedCellView: UITableViewCell {
             addToolBar(descText, messageString: messageString, target: target, selector: selectors[4])
             descText.tag = row
             descText.layer.setValue(cellIndex, forKey: "IndexVal")
+            descText.setError()
+        }
+        
+        if let textFld = self.textField {
+            textFld.delegate = target as? UITextFieldDelegate
+            textFld.tag = row
+            textFld.layer.setValue(cellIndex, forKey: "IndexVal")
+            textFld.setError()
         }
         if let timeLbl = self.timeLabel/*, let date = time*/ {
             timeLbl.text = time//Core.soMuchTimeAgo(date.timeIntervalSince1970)
@@ -89,6 +101,11 @@ class FeedCellView: UITableViewCell {
         if cellId == FeedCellIdentifier.post {
             self.contentView.layer.cornerRadius = 20
             self.contentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        }
+        
+        if cellId == FeedCellIdentifier.question {
+            self.bottomView.layer.cornerRadius = 20
+            self.bottomView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
        
         if let postBtn = self.postButton {
@@ -115,6 +132,7 @@ class FeedCellView: UITableViewCell {
         }
         if let answerBtn = self.answerButton {
             answerBtn.tag = cellIndex
+            answerBtn.layer.setValue(row, forKey: "RowIndex")
             answerBtn.addTarget(target, action: selectors[5], for: .touchUpInside)
         }
         if let videoBtn = self.videoButton {

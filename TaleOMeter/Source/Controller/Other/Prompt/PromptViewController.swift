@@ -28,10 +28,11 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var messageLabelV: UILabel!
     
     @IBOutlet weak var answerPromptView: UIView!
-    @IBOutlet weak var answerImage: UIImageView!
+    @IBOutlet weak var questionImage: UIImageView!
     @IBOutlet weak var answerTitle: UILabel!
     @IBOutlet weak var answerMessage: UILabel!
-    
+    @IBOutlet weak var answerImage: UIImageView!
+
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var delegate: PromptViewDelegate? = nil
     

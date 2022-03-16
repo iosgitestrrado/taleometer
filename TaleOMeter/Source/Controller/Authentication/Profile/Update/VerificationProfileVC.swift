@@ -39,11 +39,12 @@ class VerificationProfileVC: UIViewController {
     }
     
     @IBAction func tapOnResend(_ sender: Any) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
         AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileNumber)) { status in
-            if status {
-                self.performSegue(withIdentifier: "verification", sender: self)
-            }
             Core.HideProgress(self)
         }
     }
@@ -66,19 +67,13 @@ class VerificationProfileVC: UIViewController {
     }
     
     private func verifyOTP(_ otp: Int) {
-        if let prof = profileData {
-            Core.ShowProgress(self, detailLbl: "Verifying OTP")
-            AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp)) { result in
-                if var response = result {
-                    response.CountryCode = prof.CountryCode
-                    response.Isd_code = prof.Isd_code
-                    Login.storeProfileData(response)
-                    PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", image: nil, isUserStory: true)
-                }
-                Core.HideProgress(self)
+        Core.ShowProgress(self, detailLbl: "Verifying OTP")
+        AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp)) { result in
+            if let response = result {
+                Login.storeProfileData(response)
+                PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
             }
-        } else {
-            Toast.show("No Profile data found!")
+            Core.HideProgress(self)
         }
     }
 }

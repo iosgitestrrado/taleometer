@@ -58,16 +58,24 @@ class TRPostViewController: UIViewController {
     
     // MARK: Tap on submit Button
     @objc private func tapOnSubmit(_ sender: UIButton) {
-        if postArray[sender.tag].Value.isBlank {
-            Toast.show("Please answer the question")
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        if postArray[sender.tag].Value.isBlank, let textFlield = postArray[sender.tag].TextField {
+            Validator.showRequiredError(textFlield)
             return
         }
         Core.ShowProgress(self, detailLbl: "Submitting Answer...")
         TriviaClient.submitAnswer(SubmitAnswerRequest(post_id: postArray[sender.tag].Post_id, answer: postArray[sender.tag].Value)) { [self] status in
             Core.HideProgress(self)
-            if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
-                myobject.postData.append(postArray[sender.tag])
-                self.navigationController?.pushViewController(myobject, animated: true)
+            if let st = status, st {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
+                    postArray[sender.tag].Value = ""
+                    self.tableView.reloadData()
+                    //myobject.postData.append(postArray[sender.tag])
+                    self.navigationController?.pushViewController(myobject, animated: true)
+                }
             }
         }
     }
@@ -107,10 +115,14 @@ class TRPostViewController: UIViewController {
 extension TRPostViewController {
     // MARK: - Get trivia posts
     private func getTriviaPosts() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         if categoryId >= 0 {
             // MARK: - Get trivia posts by category
-            TriviaClient.getCategoryPosts(TriviaCategoryRequest(category: categoryId)) { [self] response in
+            TriviaClient.getCategoryPosts(1, req: TriviaCategoryRequest(category: categoryId)) { [self] response in
                 if let data = response {
                     postArray = data
                 }
@@ -119,7 +131,7 @@ extension TRPostViewController {
             }
         } else {
             // MARK: - Get trivia daily posts
-            TriviaClient.getTriviaDailyPost { [self] response in
+            TriviaClient.getTriviaDailyPost(1) { [self] response in
                 if let data = response {
                     postArray = data
                 }
@@ -145,6 +157,9 @@ extension TRPostViewController : UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? PostCellView else { return UITableViewCell() }
         let cellData = postArray[indexPath.row]
         cell.configureCell(cellData.Question, value: cellData.Value, coverImage: cellData.Question_media, videoUrl: cellData.QuestionVideoURL, row: indexPath.row, target: self, selectors: [#selector(tapOnSubmit(_:)), #selector(tapOnVideo(_:))])
+        if let textField = cell.answerText {
+            postArray[indexPath.row].TextField = textField
+        }
         return cell
     }
 }
@@ -168,21 +183,9 @@ extension TRPostViewController: UITextFieldDelegate {
             let indexPath = IndexPath(row: textField.tag, section: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
-        textField.setError()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //let nextCellData = questionArray[textField.tag + 1]
-        if textField.returnKeyType == .next {
-            let indexPath = IndexPath(row: textField.tag + 1, section: 0)
-            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "feedCell", for: indexPath) as? PostCellView, let textField = cell.answerText {
-                tableView.reloadRows(at: [indexPath], with: .none)
-                textField.becomeFirstResponder()
-            }
-        } else {
-            self.view.endEditing(true)
-        }
         return true
     }
 

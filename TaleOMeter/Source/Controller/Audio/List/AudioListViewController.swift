@@ -28,6 +28,7 @@ class AudioListViewController: UITableViewController {
     private var footerView = UIView()
     private var morePage = true
     private var pageNumber = 1
+    private var showNoData = false
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -199,6 +200,10 @@ extension AudioListViewController {
     
     // Get Favourite audios
     private func getFavourite() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "Getting Favourite Audio...")
         FavouriteAudioClient.get("\(pageNumber)") { [self] result in
             if let response = result {
@@ -222,6 +227,10 @@ extension AudioListViewController {
     
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
             Core.HideProgress(self)
@@ -231,6 +240,10 @@ extension AudioListViewController {
     
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
             Core.HideProgress(self)
@@ -246,6 +259,10 @@ extension AudioListViewController {
     }
     
     private func getPlotAudios() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         AudioClient.getAudiosByPlot(PlotRequest(plot_id: storyData.Id, page: "\(pageNumber)")) { [self] response in
             if let data = response, data.count > 0 {
                 morePage = data.count > 0

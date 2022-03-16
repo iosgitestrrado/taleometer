@@ -56,6 +56,10 @@ class TriviaViewController: UIViewController {
     
     // MARK: - Get trivia home data from server -
     private func getTrivia() {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         TriviaClient.getTriviaHome { response in
             if let data = response {
@@ -100,17 +104,25 @@ extension TriviaViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return triviaHome.Trivia_category.count + 1
+        return triviaHome.Trivia_category.count > 0 ? triviaHome.Trivia_category.count + 1 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? GridCollectionViewCell {
             if indexPath.row == 0 {
-                let celldata1 = triviaHome.Trivia_daily
-                cell.configureCell(celldata1.Title, coverImage: celldata1.Image, count: celldata1.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
+                if triviaHome.Trivia_daily.Post_count > 0 {
+                    let celldata1 = triviaHome.Trivia_daily
+                    cell.configureCell(celldata1.Title, coverImage: celldata1.Image, count: celldata1.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
+                } else {
+                    Toast.show("No post found!")
+                }
             } else {
                 let cellData = triviaHome.Trivia_category[indexPath.row - 1]
-                cell.configureCell(cellData.Category_name, coverImage: cellData.Category_image, count: cellData.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
+                if cellData.Post_count > 0 {
+                    cell.configureCell(cellData.Category_name, coverImage: cellData.Category_image, count: cellData.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
+                } else {
+                    Toast.show("No post found!")
+                }
             }
             return cell
         }
@@ -122,7 +134,7 @@ extension TriviaViewController: UICollectionViewDataSource {
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRPostViewController") as? TRPostViewController {
+        if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
             myobject.categoryId =  indexPath.row != 0 ? triviaHome.Trivia_category[indexPath.row - 1].Category_id : -1
             self.navigationController?.pushViewController(myobject, animated: true)
         }

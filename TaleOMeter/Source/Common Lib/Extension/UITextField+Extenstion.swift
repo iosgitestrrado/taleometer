@@ -12,8 +12,24 @@ private var errorViews = NSMapTable<UITextField, UIView>(keyOptions: NSPointerFu
 
 extension UITextField
 {
+    func addInputAccessoryView(_ title: String, target: Any, selector: Selector, tag: Int = 0) {
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 44.0))
+        toolbar.barStyle = UIBarStyle.default
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let btn = UIBarButtonItem(title: title, style: .done, target: target, action: selector)
+        btn.tag = tag
+        let items: [UIBarButtonItem] = [flexSpace, btn]
+        toolbar.items = items
+        self.inputAccessoryView = toolbar
+    }
+    
     // Add/remove error message
     func setError(_ string: String? = nil, show: Bool = true) {
+        // Get current window
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
         if let rightView = rightView, rightView.tag != 999 {
             rightViews.setObject(rightView, forKey: self)
         }
@@ -38,6 +54,7 @@ extension UITextField
         // Create container
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
+        container.tag = 9998
 
         // Create triangle
         let triagle = TriangleTop()
@@ -85,8 +102,7 @@ extension UITextField
             container.isHidden = true
         }
         // superview!.superview!.addSubview(container)
-        // Get current window
-        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        
         window.addSubview(container)
 
         // Set constraints for container
@@ -169,11 +185,11 @@ class Validator {
         field.setError(message, show: true)
     }
     
-    static func showRequiredErrorTextView(_ field: UITextView) {
-        field.setError("Required", show: true)
+    static func showRequiredErrorTextView(_ textView: UITextView) {
+        textView.setError("Required", show: true)
     }
     
-    static func showErrorTextView(_ field: UITextView, message: String) {
-        field.setError(message, show: true)
+    static func showErrorTextView(_ textView: UITextView, message: String) {
+        textView.setError(message, show: true)
     }
 }

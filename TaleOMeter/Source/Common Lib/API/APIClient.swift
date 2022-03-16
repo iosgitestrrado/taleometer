@@ -56,7 +56,7 @@ class APIClient: GenericAPIClient {
         }, completion: completion)
     }
 
-    func post<T: Encodable>(_ query: String, parameters: T, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
+    func post<T: Encodable>(_ query: String = "", parameters: T, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
             Toast.show()
             return
@@ -68,36 +68,12 @@ class APIClient: GenericAPIClient {
         }, completion: completion)
     }
 
-    func postJson<T: Encodable>(_ query: String, parameters: T, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
+    func postJson<T: Encodable>(_ query: String = "", parameters: T, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
             Toast.show()
             return
         }
         guard let request = feed.postRequest(query, parameters: parameters) else { return }
-        fetch(with: request, decode: { (json) -> ResponseModelJSON? in
-            guard let apiResponse = json as? ResponseModelJSON else { return  nil }
-            return apiResponse
-        }, completion: completion)
-    }
-
-    func post<T: Encodable>(_ parameters: T, feed: Feed, completion: @escaping (Result<ResponseModel?, APIError>) -> Void) {
-        if !Reachability.isConnectedToNetwork() {
-            Toast.show()
-            return
-        }
-        guard let request = feed.postRequest("", parameters: parameters) else { return }
-        fetch(with: request, decode: { (json) -> ResponseModel? in
-            guard let apiResponse = json as? ResponseModel else { return  nil }
-            return apiResponse
-        }, completion: completion)
-    }
-
-    func postJson<T: Encodable>(_ parameters: T, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
-        if !Reachability.isConnectedToNetwork() {
-            Toast.show()
-            return
-        }
-        guard let request = feed.postRequest("", parameters: parameters) else { return }
         fetch(with: request, decode: { (json) -> ResponseModelJSON? in
             guard let apiResponse = json as? ResponseModelJSON else { return  nil }
             return apiResponse

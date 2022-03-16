@@ -79,11 +79,6 @@ class RegisterViewController: UIViewController {
         Core.ShowProgress(self, detailLbl: "")
         AuthClient.updateProfile(profileReq) { [self] result in
             if var response = result {
-                response.Fname = profileReq.display_name
-                response.Email = profileReq.email
-                response.User_code = profileReq.name
-                response.CountryCode = self.countryCode
-                response.Isd_code = self.iSDCode
                 if isOnlyTrivia {
                     response.StoryBoardName = ""
                     response.StoryBoardId = ""

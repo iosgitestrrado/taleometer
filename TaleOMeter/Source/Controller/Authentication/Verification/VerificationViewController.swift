@@ -57,6 +57,10 @@ class VerificationViewController: UIViewController {
     }
     
     @IBAction func tapOnResendOTP(_ sender: Any) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "Sending OTP...")
         AuthClient.login(LoginRequest(mobile: self.mobileNumber)) { status in
             Core.HideProgress(self)
@@ -80,13 +84,9 @@ class VerificationViewController: UIViewController {
             if var response = result, !token.isBlank {
                 UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
                 UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
-                
-                response.CountryCode = self.countryCode
-                response.Isd_code = self.iSDCode
                 if isNewRegister {
                     response.StoryBoardName = Constants.Storyboard.auth
                     response.StoryBoardId = "RegisterViewController"
-                    Login.storeProfileData(response)
                     self.performSegue(withIdentifier: "register", sender: sender)
                 } else {
                     if isOnlyTrivia {
@@ -97,8 +97,8 @@ class VerificationViewController: UIViewController {
 
                         Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
                     }
-                    Login.storeProfileData(response)
                 }
+                Login.storeProfileData(response)
             }
             Core.HideProgress(self)
         }

@@ -82,6 +82,10 @@ class NonStopViewController: UIViewController {
                 self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
             }
         } else {
+            if !Reachability.isConnectedToNetwork() {
+                Toast.show()
+                return
+            }
             Core.ShowProgress(self, detailLbl: "Getting Audio...")
             AudioClient.get(AudioRequest(page: 1, limit: 10), isNonStop: true, completion: { [self] result in
                 if let response = result {
@@ -384,7 +388,7 @@ class NonStopViewController: UIViewController {
                 }
             }
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
             }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
@@ -406,6 +410,10 @@ class NonStopViewController: UIViewController {
 extension NonStopViewController {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
             Core.HideProgress(self)
@@ -415,6 +423,10 @@ extension NonStopViewController {
     
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
             Core.HideProgress(self)

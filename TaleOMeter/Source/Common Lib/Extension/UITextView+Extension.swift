@@ -10,6 +10,7 @@ import UIKit
 private var rightViews = NSMapTable<UITextView, UIView>(keyOptions: NSPointerFunctions.Options.weakMemory, valueOptions: NSPointerFunctions.Options.strongMemory)
 private var errorViews = NSMapTable<UITextView, UIView>(keyOptions: NSPointerFunctions.Options.weakMemory, valueOptions: NSPointerFunctions.Options.strongMemory)
 
+
 extension UITextView
 {
     func addInputAccessoryView(_ title: String, target: Any, selector: Selector, tag: Int = 0) {
@@ -25,18 +26,24 @@ extension UITextView
     
     // Add/remove error message
     func setError(_ string: String? = nil, show: Bool = true) {
-        if let rightView = rightView, rightView.tag != 9999 {
-            rightViews.setObject(rightView, forKey: self)
+        // Get current window
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
         }
+        
+//        if let rightView = rightView, rightView.tag != 999 {
+//            rightViews.setObject(rightView, forKey: self)
+//        }
 
         // Remove message
         guard string != nil else {
-            if let rightView = rightViews.object(forKey: self) {
-                self.rightView = rightView
-                rightViews.removeObject(forKey: self)
-            } else {
-                self.rightView = nil
-            }
+//            if let rightView = rightViews.object(forKey: self) {
+//                self.rightView = rightView
+//                rightViews.removeObject(forKey: self)
+//            } else {
+//                self.rightView = nil
+//            }
 
             if let errorView = errorViews.object(forKey: self) {
                 errorView.isHidden = true
@@ -49,6 +56,7 @@ extension UITextView
         // Create container
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
+        container.tag = 9998
 
         // Create triangle
         let triagle = TriangleTop()
@@ -76,7 +84,7 @@ extension UITextView
         // Set constraints for triangle
         triagle.heightAnchor.constraint(equalToConstant: 10).isActive = true
         triagle.widthAnchor.constraint(equalToConstant: 15).isActive = true
-        triagle.topAnchor.constraint(equalTo: container.topAnchor, constant: -10).isActive = true
+        triagle.topAnchor.constraint(equalTo: container.topAnchor, constant: -40).isActive = true
         triagle.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -15).isActive = true
 
         // Set constraints for line
@@ -96,8 +104,7 @@ extension UITextView
             container.isHidden = true
         }
         // superview!.superview!.addSubview(container)
-        // Get current window
-        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        
         window.addSubview(container)
 
         // Set constraints for container
@@ -111,14 +118,14 @@ extension UITextView
             view.isHidden = true
         }
 
-        // Add right button to textField
+        // Add right button to textView
         let errorButton = UIButton(type: .custom)
-        errorButton.tag = 9999
+        errorButton.tag = 999
         errorButton.setImage(UIImage(named: "ic_error"), for: .normal)
         errorButton.frame = CGRect(x: 0, y: 0, width: frame.size.height, height: frame.size.height)
         errorButton.addTarget(self, action: #selector(errorAction), for: .touchUpInside)
-        rightView = errorButton
-        rightViewMode = .always
+//        rightView = errorButton
+//        rightViewMode = .always
 
         // Save view with error message
         errorViews.setObject(container, forKey: self)
@@ -127,9 +134,9 @@ extension UITextView
     // Show error message
     @IBAction func errorAction(_ sender: Any) {
         let errorButton = sender as! UIButton
-        let textField = errorButton.superview as! UITextField
+        let textView = errorButton.superview as! UITextView
 
-        let errorView = errorViews.object(forKey: textField)
+        let errorView = errorViews.object(forKey: textView)
         if let errorView = errorView {
             errorView.isHidden.toggle()
         }

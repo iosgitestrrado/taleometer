@@ -472,7 +472,7 @@ extension AudioPlayManager {
             }
             
             if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController, verifyTitle: audioList![currentAudio].Title, verifyMessage: audioList![nextAudio].Title, image: nil, isAudioView: true, audioImage: audioList![nextAudio].Image)
+                PromptVManager.present(currVController, verifyTitle: audioList![currentAudio].Title, verifyMessage: audioList![nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: audioList![nextAudio].Image)
             }
             
             miniVController.progressBar.setNeedsDisplay()
@@ -576,6 +576,10 @@ extension AudioPlayManager {
 extension AudioPlayManager {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(currVController, detailLbl: "")
         FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
             Core.HideProgress(currVController)
@@ -585,6 +589,10 @@ extension AudioPlayManager {
     
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
         Core.ShowProgress(currVController, detailLbl: "")
         FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
             Core.HideProgress(currVController)

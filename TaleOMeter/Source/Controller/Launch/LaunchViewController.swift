@@ -34,24 +34,32 @@ class LaunchViewController: UIViewController {
                 }
             }
         } else {
-            if let profileData = Login.getProfileData(), profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let profileData = Login.getProfileData() {
+                if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
                     Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
+                } else if profileData.Is_login {
+                    getFavAudio()
+                } else {
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
                 }
             } else {
-                getFavAudio()
+                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             }
         }
     }
     
     private func getFavAudio() {
-        DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.get("all") { response in
-                if let fav = response {
-                    favouriteAudio = fav
+        if Reachability.isConnectedToNetwork() {
+            DispatchQueue.global(qos: .background).async {
+                FavouriteAudioClient.get("all") { response in
+                    if let fav = response {
+                        favouriteAudio = fav
+                    }
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
                 }
-                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             }
+        } else {
+            Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         }
     }
     

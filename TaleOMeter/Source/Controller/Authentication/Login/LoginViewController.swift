@@ -68,7 +68,7 @@ class LoginViewController: UIViewController {
         }
        // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
         Core.ShowProgress(self, detailLbl: "Sending OTP...")
-        AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!)) { status in
+        AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!, isd_code: countryModel.extensionCode ?? "91", country_code: countryModel.countryCode ?? "IN")) { status in
             Core.HideProgress(self)
             if status {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)

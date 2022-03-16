@@ -16,6 +16,11 @@ struct TriviaDaily {
     init(_ json: JSON) {
         Title = json["title"].stringValue
         Post_count = json["post_count"].intValue
-        Image = UIImage(named: "Book-Covers") ?? defaultImage
+        
+        var imageURL = ""
+        if let urlString = json["image"].string {
+            imageURL = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+        }
+        Core.setImage(imageURL, image: &Image)
     }
 }
