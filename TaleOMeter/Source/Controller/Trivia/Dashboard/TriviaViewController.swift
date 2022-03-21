@@ -37,21 +37,24 @@ class TriviaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
         gridWidth = (UIScreen.main.bounds.width - titleViewHeight) / 2.0
-        gridHeight = gridWidth + titleViewHeight
+        gridHeight = (gridWidth + titleViewHeight) - 10.0
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()//collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         layout.itemSize = CGSize(width: gridWidth, height: gridHeight)
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 10
         collectionView.collectionViewLayout = layout
-        getTrivia()
+        collectionView.alwaysBounceVertical = true
+        
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
+        self.navigationItem.hidesBackButton = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImageColor: .red)
-        self.navigationItem.hidesBackButton = true
+        getTrivia()
     }
     
     // MARK: - Get trivia home data from server -
@@ -64,6 +67,9 @@ class TriviaViewController: UIViewController {
         TriviaClient.getTriviaHome { response in
             if let data = response {
                 self.triviaHome = data
+                if data.Trivia_daily.Post_count_today == 0 {
+                    Toast.show(data.Trivia_daily.Post_msg)
+                }
             }
             self.collectionView.reloadData()
             Core.HideProgress(self)
@@ -110,19 +116,9 @@ extension TriviaViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? GridCollectionViewCell {
             if indexPath.row == 0 {
-                if triviaHome.Trivia_daily.Post_count > 0 {
-                    let celldata1 = triviaHome.Trivia_daily
-                    cell.configureCell(celldata1.Title, coverImage: celldata1.Image, count: celldata1.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
-                } else {
-                    Toast.show("No post found!")
-                }
+                cell.configureCell(triviaHome.Trivia_daily, gridWidth: gridWidth, gridHeight: gridHeight + 60.0, titleViewHeight: titleViewHeight, row: indexPath.row)
             } else {
-                let cellData = triviaHome.Trivia_category[indexPath.row - 1]
-                if cellData.Post_count > 0 {
-                    cell.configureCell(cellData.Category_name, coverImage: cellData.Category_image, count: cellData.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
-                } else {
-                    Toast.show("No post found!")
-                }
+                cell.configureCellCat(triviaHome.Trivia_category[indexPath.row - 1], gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
             }
             return cell
         }
@@ -133,7 +129,6 @@ extension TriviaViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate -
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
             myobject.categoryId =  indexPath.row != 0 ? triviaHome.Trivia_category[indexPath.row - 1].Category_id : -1
             self.navigationController?.pushViewController(myobject, animated: true)
@@ -146,7 +141,7 @@ extension TriviaViewController: UICollectionViewDelegate {
 extension TriviaViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {
-            return CGSize(width: gridWidth*2, height: gridHeight)
+            return CGSize(width: (gridWidth * 2) + 10.0, height: gridHeight + 60.0)
         }
         return CGSize(width: gridWidth, height: gridHeight)
     }

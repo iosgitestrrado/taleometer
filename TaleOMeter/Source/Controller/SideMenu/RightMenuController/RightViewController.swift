@@ -64,7 +64,7 @@ class RightViewController: UIViewController {
             case .history:
                 return Constants.Storyboard.audio
             case .logout:
-                return "Logout"
+                return Constants.Storyboard.auth
             }
         }
         
@@ -87,7 +87,7 @@ class RightViewController: UIViewController {
             case .feedback:
                 return "FeedbackViewController"
             case .logout:
-                return "Logout"
+                return "LoginViewController"
             }
         }
     }
@@ -202,7 +202,11 @@ extension RightViewController: UITableViewDelegate {
                     return
                 }
                 AuthClient.logout()
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
+                return
             default:
                 self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
 //                let domain = Bundle.main.bundleIdentifier!

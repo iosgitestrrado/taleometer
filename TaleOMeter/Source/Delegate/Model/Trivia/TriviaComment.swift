@@ -6,8 +6,11 @@
 //
 
 import SwiftyJSON
+import UIKit
 
 struct TriviaComment {
+    private let personImage = UIImage(named: "person")!
+    
     var Comment_id = Int()
     var Post_id = Int()
     var You = Int()
@@ -16,6 +19,7 @@ struct TriviaComment {
     var Comment = String()
     var Time_ago = String()
     var Reply_count = Int()
+    var Profile_image = UIImage()
     var Reply = [TriviaComment]()
     
     var IsExpanded = false
@@ -30,11 +34,29 @@ struct TriviaComment {
         Comment = json["comment"].stringValue
         Time_ago = json["time_ago"].stringValue
         Reply_count = json["reply_count"].intValue
+        
+        var imageURL = ""
+        if let urlString = json["profile_image"].string {
+            imageURL = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+        }
+        if let url = URL(string: imageURL) {
+            do {
+                let data = try Data(contentsOf: url)
+                Profile_image = UIImage(data: data) ?? personImage
+            } catch {
+                Profile_image = personImage
+            }
+        } else {
+            Profile_image = personImage
+        }
+//        Core.setImage(imageURL, image: &Profile_image)
+        
         if let reply = json["reply"].array {
             reply.forEach { (object) in
                 Reply.append(TriviaComment(object))
             }
         }
+        
     }
 }
 

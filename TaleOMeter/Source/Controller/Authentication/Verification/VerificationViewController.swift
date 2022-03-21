@@ -16,10 +16,11 @@ class VerificationViewController: UIViewController {
     var iSDCode = 0
 
     // MARK: - Weak Properties -
-    @IBOutlet weak var otp1TextField: UITextField!
-    @IBOutlet weak var otp2TextField: UITextField!
-    @IBOutlet weak var otp3TextField: UITextField!
-    @IBOutlet weak var otp4TextField: UITextField!
+    @IBOutlet weak var otp1TextField: CustomTextField!
+    @IBOutlet weak var otp2TextField: CustomTextField!
+    @IBOutlet weak var otp3TextField: CustomTextField!
+    @IBOutlet weak var otp4TextField: CustomTextField!
+    @IBOutlet weak var titleLabel: UILabel!
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -27,6 +28,11 @@ class VerificationViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
         //self.navigationItem.hidesBackButton = true
+        otp1TextField.backSpaceDelegate = self
+        otp2TextField.backSpaceDelegate = self
+        otp3TextField.backSpaceDelegate = self
+        otp4TextField.backSpaceDelegate = self
+        titleLabel.addUnderline()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,7 +128,29 @@ class VerificationViewController: UIViewController {
     }
 }
 
-extension VerificationViewController: UITextFieldDelegate {
+extension VerificationViewController: UITextFieldDelegate, BackSpaceDelegate {
+    
+    func deleteBackWord(textField: CustomTextField) {
+        /// do your stuff here. That means resign or become first responder your expected textfield.
+        switch textField {
+        case otp2TextField:
+            otp2TextField.text = ""
+            otp1TextField.becomeFirstResponder()
+            return
+        case otp3TextField:
+            otp3TextField.text = ""
+            otp2TextField.becomeFirstResponder()
+            return
+        case otp4TextField:
+            otp4TextField.text = ""
+            otp3TextField.becomeFirstResponder()
+            return
+        default:
+            otp1TextField.text = ""
+            return
+        }
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")

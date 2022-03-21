@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     // MARK: - Weak Properties -
     @IBOutlet weak var countryCodeLbl: UILabel!
     @IBOutlet weak var mobileNumberTxt: UITextField!
+    @IBOutlet weak var titleLabel: UILabel!
     
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
@@ -25,12 +26,13 @@ class LoginViewController: UIViewController {
         self.hideKeyboard()
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
+        titleLabel.addUnderline()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
-        
+       // self.mobileNumberTxt.text = ""
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }

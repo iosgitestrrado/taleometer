@@ -8,6 +8,7 @@
 import UIKit
 import AVKit
 import SwiftyJSON
+import NVActivityIndicatorView
 
 class TRFeedViewController: UIViewController {
     
@@ -20,22 +21,14 @@ class TRFeedViewController: UIViewController {
         
     // MARK: - Private Properties -
     private let viewMoreText = "--------------------  View More  --------------------"
-    private struct Data {
-        var image = UIImage()
-        var title = String()
-        var description = String()
-        var time = String()
-        var index = Int()
-        var commentIndex = Int()
-        var replyIndex = Int()
-    }
     private struct CellItem {
         var cellId = String()
-        var data = Data()
+        var data = CellData()
     }
     private var postData = [TriviaPost]()
     private var cellDataArray: [CellItem] = [CellItem]()
     private let messageString = "Write A Comment..."
+    private var profilePic = UIImage(named: "")
     private let personImage = UIImage(named: "person")!
     
     private var footerView = UIView()
@@ -52,6 +45,9 @@ class TRFeedViewController: UIViewController {
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
         self.initFooterView()
         self.hideKeyboard()
+        if let profData = Login.getProfileData() {
+            profilePic = UIImage(data: profData.ImageData)
+        }
         self.getTriviaPosts()
     }
     
@@ -69,14 +65,27 @@ class TRFeedViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+//        return .landscape
+//    }
+//
+//    override var shouldAutorotate: Bool {
+//        return true
+//    }
+    
     // MARK: - Initialize table footer view
     func initFooterView() {
-        footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: Double(self.view.frame.size.width), height: 40.0))
-        let actind = UIActivityIndicatorView(style: .medium)
-        actind.tag = 10
-        actind.frame = CGRect(x: (self.view.frame.size.width / 2.0) - 20.0, y: 5.0, width: 40.0, height: 40.0)
-        actind.hidesWhenStopped = true
-        footerView.addSubview(actind)
+        footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: Double(self.view.frame.size.width), height: 60.0))
+
+        let frame = CGRect(x: (self.view.frame.size.width / 2.0) - 30.0, y: 5.0, width: 60.0, height: 60.0)
+        let activityIndicator = NVActivityIndicatorView(frame: frame)
+        activityIndicator.tag = 10
+        activityIndicator.type = .ballSpinFadeLoader// .ballRotateChase // add your type
+        activityIndicator.color = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0) // add your color
+        activityIndicator.tag = 9566
+        activityIndicator.startAnimating()
+        
+        footerView.addSubview(activityIndicator)
         footerView.isHidden = false
     }
        
@@ -105,7 +114,7 @@ class TRFeedViewController: UIViewController {
             return
         }
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
-            if cellDataArray[rowIndex].cellId == FeedCellIdentifier.question {
+            if cellDataArray[rowIndex].cellId == FeedCellIdentifier.question || cellDataArray[rowIndex].cellId == FeedCellIdentifier.questionVideo {
                 if postData[sender.tag].Value.isBlank {
                     if let textFlield = postData[sender.tag].TextField {
                         Validator.showRequiredError(textFlield)
@@ -190,23 +199,50 @@ class TRFeedViewController: UIViewController {
             if cellDataArray.contains(where: { cell in cell.cellId == FeedCellIdentifier.replyPost}) {
                 cellDataArray.removeAll(where: { cell in cell.cellId == FeedCellIdentifier.replyPost })
             }
-            cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: Data(image: personImage, title: "", description: "", time: "", index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
+            cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: CellData(image: profilePic ?? personImage, title: "", description: "", time: "", index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
             self.tableView.reloadData()
         }
     }
     
+    private var playerViewController = AVPlayerViewController()
+    private var videoPlayIndex = -1
+    private var videoPlayingIndex = -1
+
     // MARK: Tap on video Button
     @objc private func tapOnVideo(_ sender: UIButton) {
-        if let videoURL = URL(string: postData[sender.tag].QuestionVideoURL) {
-            let player = AVPlayer(url: videoURL)
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = player
-            playerViewController.showsPlaybackControls = true
-            self.present(playerViewController, animated: true) {
-                playerViewController.player?.play()
-            }
+        if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
+            videoPlayIndex = rowIndex
+            self.tableView.reloadData()
+            //self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: rowIndex)
+//            self.present(playerViewController, animated: true) {
+//                playerViewController.player?.play()
+//            }
+            //let cell = self.tableView.cellForRow(at: IndexPath(row: rowIndex, section: 0)) as? FeedCellView
         } else {
             Toast.show("No video found!")
+        }
+    }
+    
+    // MARK: - Adding video player into view
+    private func addVideoPlayer(_ videoView: UIButton, videoURL: URL, rowIndex: Int) {
+        if videoPlayingIndex == rowIndex {
+            videoView.addSubview(playerViewController.view)
+        } else {
+            if let playerV = playerViewController.player {
+                playerV.pause()
+                playerViewController.view.removeFromSuperview()
+            }
+            playerViewController = AVPlayerViewController()
+            let player = AVPlayer(url: videoURL)
+            playerViewController.player = player
+            playerViewController.view.frame.size.height = videoView.frame.size.height
+            playerViewController.view.frame.size.width = videoView.frame.size.width
+            videoView.addSubview(playerViewController.view)
+            playerViewController.showsPlaybackControls = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
+                playerViewController.player?.play()
+            }
+            videoPlayingIndex = rowIndex
         }
     }
     
@@ -299,11 +335,11 @@ extension TRFeedViewController {
             let feed = postData[index]
             
             if feed.User_answer_status {
-                /// Add Image and question title cell with view answer
-                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.image, data: Data(image: feed.Question_media, title: feed.Question, description: "", time: "", index: index)))
+                /// Add Image / Video and question title cell with view answer
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(image: feed.Question_media, title: feed.Question, description: "", time: "", index: index)))
             } else {
-                /// Add Image and question title cell with submit answer
-                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.question, data: Data(image: feed.Question_media, title: feed.Question, description: "", time: "", index: index)))
+                /// Add Image / Video and question title cell with submit answer
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(image: feed.Question_media, title: feed.Question, description: feed.Date, time: "", index: index)))
             }
             
             /// Check comment
@@ -318,12 +354,12 @@ extension TRFeedViewController {
                     /// Check is explanded or not
                     if !feed.IsExpanded && comIndex == 3 {
                         /// Add view more text cell
-                        cellDataArray.append(CellItem(cellId: FeedCellIdentifier.viewMore, data: Data(image: personImage, title: viewMoreText, description: "", time: "", index: index, commentIndex: comIndex)))
+                        cellDataArray.append(CellItem(cellId: FeedCellIdentifier.viewMore, data: CellData(image: personImage, title: viewMoreText, description: "", time: "", index: index, commentIndex: comIndex)))
                         break
                     }
                     
                     /// Add comment cell
-                    cellDataArray.append(CellItem(cellId: FeedCellIdentifier.comment, data: Data(image: personImage, title: comment.User_name, description: comment.Comment, time: comment.Time_ago, index: index, commentIndex: comIndex)))
+                    cellDataArray.append(CellItem(cellId: FeedCellIdentifier.comment, data: CellData(image: comment.Profile_image, title: comment.User_name, description: comment.Comment, time: comment.Time_ago, index: index, commentIndex: comIndex)))
                     
                     /// Check reply exists
                     if comment.Reply.count > 0 {
@@ -343,15 +379,15 @@ extension TRFeedViewController {
                             if !comment.IsExpanded && repIndex == 0 && comment.Reply.count > 1 {
                                 
                                 /// Add view previous reply cell
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: Data(image: personImage, title: "View previous \(comment.Reply_count - 1) replies", description: "", time: "", index: index, commentIndex: comIndex)))
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: CellData(image: personImage, title: "View previous \(comment.Reply_count) replies", description: "", time: "", index: index, commentIndex: comIndex)))
                                 
                                 /// Add reply cell
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: Data(image: personImage, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(image: reply.Profile_image, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
                                 break
                             }
                             
                             /// Add reply cell
-                            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: Data(image: personImage, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(image: reply.Profile_image, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
                         }
                     }
                 }
@@ -359,7 +395,7 @@ extension TRFeedViewController {
             
             if feed.User_answer_status {
                 /// Add post comment cell
-                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: Data(image: personImage, title: "", description: "", time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: CellData(image: personImage, title: "", description: "", time: "", index: index)))
             }
         }
         self.tableView.reloadData()
@@ -387,14 +423,11 @@ extension TRFeedViewController : UITableViewDataSource {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellDataArray[indexPath.row].cellId, for: indexPath) as? FeedCellView else { return UITableViewCell() }
         let cellData = cellDataArray[indexPath.row].data
-        cell.configureCell(cellData.image, title: cellData.title,
-                           description: cellData.description, time: cellData.time,
+        cell.configureCell(cellData,
                            cellId: cellDataArray[indexPath.row].cellId,
-                           messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row,
-                           cellIndex: cellData.index, commentIndex: cellData.commentIndex,
-                           replyIndex: cellData.replyIndex, target: self,
+                           messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row, target: self,
                            selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:))])
-        if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question, let textField = cell.textField {
+        if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question || cellDataArray[indexPath.row].cellId == FeedCellIdentifier.questionVideo, let textField = cell.textField {
             postData[cellData.index].TextField = textField
         }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.post, let textView = cell.descText {
@@ -402,6 +435,12 @@ extension TRFeedViewController : UITableViewDataSource {
         }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.replyPost, let textView = cell.descText {
             postData[cellData.index].RepTextView = textView
+        }
+        if videoPlayIndex == indexPath.row, let videoURL = URL(string: postData[cellData.index].QuestionVideoURL) {
+            self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: indexPath.row)
+            if let subTitle = cell.subTitle {
+                subTitle.frame.origin.x += 50.0
+            }
         }
         return cell
     }

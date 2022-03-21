@@ -193,3 +193,19 @@ class Validator {
         textView.setError(message, show: true)
     }
 }
+
+
+protocol BackSpaceDelegate {
+    func deleteBackWord(textField: CustomTextField)
+}
+
+class CustomTextField: UITextField {
+    var backSpaceDelegate: BackSpaceDelegate?
+    override func deleteBackward() {
+        super.deleteBackward()
+        // called when textfield is empty. you can customize yourself.
+        if text?.isEmpty ?? false {
+             backSpaceDelegate?.deleteBackWord(textField: self)
+        }
+    }
+}

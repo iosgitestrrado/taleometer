@@ -11,9 +11,10 @@ import AVFoundation
 import SystemConfiguration
 import UIKit
 import MBProgressHUD
+import NVActivityIndicatorView
 
 class Core: NSObject {
-    
+    static var activityIndicator: NVActivityIndicatorView = NVActivityIndicatorView(frame: CGRect.zero)
     
     // MARK: - Static Functions -
     /*
@@ -60,8 +61,20 @@ class Core: NSObject {
         cont.navigationController?.navigationBar.isTranslucent = true
         cont.navigationController?.view.backgroundColor = .clear
         
+//        for family in UIFont.familyNames.sorted() {
+//            let names = UIFont.fontNames(forFamilyName: family)
+//            print("Family: \(family) Font names: \(names)")
+//        }
+        
         if backImageColor != .white {
-            let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25.0, weight: .bold)]
+            guard let customFont = UIFont(name: "CommutersSans-Bold", size: 25.0) else {
+                fatalError("""
+                    Failed to load the "CommutersSans-Bold" font.
+                    Make sure the font file is included in the project and the font name is spelled correctly.
+                    """
+                )
+            }
+            let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: customFont]
             cont.navigationController?.navigationBar.titleTextAttributes = textAttributes
         } else {
             let textAttributes1 = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -108,19 +121,40 @@ class Core: NSObject {
         parentView.addSubview(label)
     }
     
-    /* Loading progress bar add to view */
+//    /* Loading progress bar add to view */
+//    static func ShowProgress(_ target: UIViewController, detailLbl: String) {
+//        let spinnerActivity = MBProgressHUD.showAdded(to: target.view, animated: true)
+//        spinnerActivity.label.text = ""//"Loading"
+//        spinnerActivity.detailsLabel.text = ""//detailLbl.isBlank ? "Please Wait..." : detailLbl
+//        spinnerActivity.bezelView.backgroundColor = .clear
+//        spinnerActivity.tintColor = .red
+//        spinnerActivity.isUserInteractionEnabled = true
+//    }
+//
+//    /* Loading progress bar remove from view */
+//    static func HideProgress(_ target: UIViewController) {
+//        DispatchQueue.main.async {
+//            MBProgressHUD.hide(for: target.view, animated: true)
+//        }
+//    }
+    
     static func ShowProgress(_ target: UIViewController, detailLbl: String) {
-        let spinnerActivity = MBProgressHUD.showAdded(to: target.view, animated: true)
-        spinnerActivity.label.text = "Loading"
-        spinnerActivity.detailsLabel.text = detailLbl.isBlank ? "Please Wait..." : detailLbl
-        spinnerActivity.isUserInteractionEnabled = true
+        let xAxis = (target.view.frame.size.width / 2.0)
+        let yAxis = (target.view.frame.size.height / 2.0)
+
+        let frame = CGRect(x: (xAxis - 50.0), y: (yAxis - 50.0), width: 100.0, height: 100.0)
+        activityIndicator = NVActivityIndicatorView(frame: frame)
+        activityIndicator.type = .ballRotateChase//.ballSpinFadeLoader // add your type
+        activityIndicator.color = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0) // add your color
+        activityIndicator.tag = 9566
+        //        NVActivityIndicatorPresenter.sharedInstance.setMessage("Fetching Data...")
+        target.view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
     }
 
-    /* Loading progress bar remove from view */
     static func HideProgress(_ target: UIViewController) {
-        DispatchQueue.main.async {
-            MBProgressHUD.hide(for: target.view, animated: true)
-        }
+        activityIndicator.stopAnimating()
+        activityIndicator.removeFromSuperview()
     }
     
     /*

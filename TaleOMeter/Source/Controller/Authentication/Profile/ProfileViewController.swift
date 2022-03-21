@@ -31,10 +31,12 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
         
-        //Add footer view and manager current view frame
-        FooterManager.addFooter(self)
-        if AudioPlayManager.shared.isMiniPlayerActive {
-            AudioPlayManager.shared.addMiniPlayer(self)
+        if !isOnlyTrivia {
+            //Add footer view and manager current view frame
+            FooterManager.addFooter(self)
+            if AudioPlayManager.shared.isMiniPlayerActive {
+                AudioPlayManager.shared.addMiniPlayer(self)
+            }
         }
         Core.ShowProgress(self, detailLbl: "Getting Profile details...")
         setProfileData()

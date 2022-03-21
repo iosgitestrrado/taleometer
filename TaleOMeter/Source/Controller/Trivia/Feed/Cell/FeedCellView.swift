@@ -9,13 +9,25 @@ import UIKit
 
 struct FeedCellIdentifier {
     static let image = "imageCell"
+    static let video = "videoCell"
     static let comment = "commentCell"
     static let moreReply = "moreRpCell"
     static let reply = "replyCell"
     static let viewMore = "viewMoreCell"
     static let post = "postCell"
     static let question = "questionCell"
+    static let questionVideo = "questionVideoCell"
     static let replyPost = "replyPostCell"
+}
+
+struct CellData {
+    var image = UIImage()
+    var title = String()
+    var description = String()
+    var time = String()
+    var index = Int()
+    var commentIndex = Int()
+    var replyIndex = Int()
 }
 
 class FeedCellView: UITableViewCell {
@@ -56,45 +68,56 @@ class FeedCellView: UITableViewCell {
         selectionStyle = .none
     }
     
-    func configureCell(_ image: UIImage, title: String, description: String, time: String, cellId: String, messageString: String, videoUrl: String, row: Int, cellIndex: Int, commentIndex: Int, replyIndex: Int, target: Any, selectors: [Selector]) {
+    func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
         if let cImage = self.coverImage {
-            cImage.image = image
+            cImage.image = cellData.image
         }
-        if !title.isBlank, let titl = self.titleLabel {
-            titl.text = title
+        if !cellData.title.isBlank, let titl = self.titleLabel {
+            titl.text = cellData.title
         }
-        if !description.isBlank, let desc = self.descLabel {
-            desc.text = description
+        if !cellData.description.isBlank, let desc = self.descLabel {
+            desc.text = cellData.description
+        }
+        if !cellData.description.isBlank, cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo, let subTitl = self.subTitle {
+            subTitl.text = cellData.description
         }
         if let descText = self.descText {
             descText.delegate = target as? UITextViewDelegate
             addToolBar(descText, messageString: messageString, target: target, selector: selectors[4])
             descText.tag = row
-            descText.layer.setValue(cellIndex, forKey: "IndexVal")
+            descText.layer.setValue(cellData.index, forKey: "IndexVal")
             descText.setError()
         }
         
         if let textFld = self.textField {
             textFld.delegate = target as? UITextFieldDelegate
             textFld.tag = row
-            textFld.layer.setValue(cellIndex, forKey: "IndexVal")
+            textFld.layer.setValue(cellData.index, forKey: "IndexVal")
             textFld.setError()
         }
         if let timeLbl = self.timeLabel/*, let date = time*/ {
-            timeLbl.text = time//Core.soMuchTimeAgo(date.timeIntervalSince1970)
+            timeLbl.text = cellData.time//Core.soMuchTimeAgo(date.timeIntervalSince1970)
         }
         
-        if !title.isBlank, let viewPR = self.viewPrevReply {
-            viewPR.setTitle(title, for: .normal)
+        if !cellData.title.isBlank, let viewPR = self.viewPrevReply {
+            viewPR.setTitle(cellData.title, for: .normal)
         }
         
-        if cellId == FeedCellIdentifier.image {
-            self.videoButton.layer.cornerRadius = 20
-            self.videoButton.layer.masksToBounds = true
-            self.videoButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        if cellId == FeedCellIdentifier.image || cellId == FeedCellIdentifier.video {
+            if let videoBtn = self.videoButton {
+                videoBtn.layer.cornerRadius = 20
+                videoBtn.layer.masksToBounds = true
+                videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
+            
+            if let cvrImg = self.coverImage {
+                cvrImg.layer.cornerRadius = 20
+                cvrImg.layer.masksToBounds = true
+                cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
             
             self.mainView.layer.cornerRadius = 20
-            self.videoButton.layer.masksToBounds = true
+            self.mainView.layer.masksToBounds = true
             self.mainView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
         
@@ -103,44 +126,57 @@ class FeedCellView: UITableViewCell {
             self.contentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
         
-        if cellId == FeedCellIdentifier.question {
+        if cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo {
+            if let videoBtn = self.videoButton {
+                videoBtn.layer.cornerRadius = 20
+                videoBtn.layer.masksToBounds = true
+                videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
+            
+            if let cvrImg = self.coverImage {
+                cvrImg.layer.cornerRadius = 20
+                cvrImg.layer.masksToBounds = true
+                cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
+            
             self.bottomView.layer.cornerRadius = 20
             self.bottomView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
        
         if let postBtn = self.postButton {
-            postBtn.tag = cellIndex
+            postBtn.tag = cellData.index
             postBtn.layer.setValue(row, forKey: "RowIndex")
-            postBtn.layer.setValue(commentIndex, forKey: "CommentIndex")
+            postBtn.layer.setValue(cellData.commentIndex, forKey: "CommentIndex")
             postBtn.addTarget(target, action: selectors[0], for: .touchUpInside)
         }
         if let viewMoreBtn = self.viewMore {
-            viewMoreBtn.tag = cellIndex
+            viewMoreBtn.tag = cellData.index
             viewMoreBtn.addTarget(target, action: selectors[1], for: .touchUpInside)
         }
         if let viewPrevReplyBtn = self.viewPrevReply {
-            viewPrevReplyBtn.tag = cellIndex
-            viewPrevReplyBtn.layer.setValue(commentIndex, forKey: "CommentIndex")
+            viewPrevReplyBtn.tag = cellData.index
+            viewPrevReplyBtn.layer.setValue(cellData.commentIndex, forKey: "CommentIndex")
             viewPrevReplyBtn.addTarget(target, action: selectors[2], for: .touchUpInside)
         }
         if let replyBtn = self.replyButton {
             replyBtn.tag = row
-            replyBtn.layer.setValue(cellIndex, forKey: "CellIndex")
-            replyBtn.layer.setValue(commentIndex, forKey: "CommentIndex")
-            replyBtn.layer.setValue(replyIndex, forKey: "ReplyIndex")
+            replyBtn.layer.setValue(cellData.index, forKey: "CellIndex")
+            replyBtn.layer.setValue(cellData.commentIndex, forKey: "CommentIndex")
+            replyBtn.layer.setValue(cellData.replyIndex, forKey: "ReplyIndex")
             replyBtn.addTarget(target, action: selectors[3], for: .touchUpInside)
         }
         if let answerBtn = self.answerButton {
-            answerBtn.tag = cellIndex
+            answerBtn.tag = cellData.index
             answerBtn.layer.setValue(row, forKey: "RowIndex")
             answerBtn.addTarget(target, action: selectors[5], for: .touchUpInside)
         }
         if let videoBtn = self.videoButton {
             if !videoUrl.isBlank {
-                videoBtn.tag = cellIndex
+                videoBtn.tag = cellData.index
+                videoBtn.layer.setValue(row, forKey: "RowIndex")
                 videoBtn.addTarget(target, action: selectors[6], for: .touchUpInside)
             }
-            videoBtn.setBackgroundImage(image, for: .normal)
+            videoBtn.setBackgroundImage(cellData.image, for: .normal)
         }
     }
     
