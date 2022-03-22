@@ -28,18 +28,23 @@ struct StoryModel {
 
 struct StoryRequest: Codable {
     var story_id = Int()
+    var shuffle = Int()
+    var page = String()
+    var limit = Int()
 }
 
 struct PlotRequest: Codable {
     var plot_id = Int()
+    var shuffle = Int()
     var page = String()
-    var limit = String()
+    var limit = Int()
 }
 
 struct NarrationRequest: Codable {
     var narration_id = Int()
+    var shuffle = Int()
     var page = String()
-    var limit = String()
+    var limit = Int()
 }
 /* {
  "id": 8,

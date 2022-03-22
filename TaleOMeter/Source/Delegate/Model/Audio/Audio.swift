@@ -24,6 +24,8 @@ struct Audio {
     var Deleted_at = String()
     var Views_count = Int()
     var Is_favorite = Bool()
+    var Duration = String()
+    var Favorites_count = Int()
     
     var Story = StoryModel()
     var Plot = StoryModel()
@@ -50,7 +52,8 @@ struct Audio {
         Deleted_at = json["deleted_at"].stringValue
         Views_count = json["views_count"].intValue
         Is_favorite = json["is_favorite"].boolValue
-        
+        Duration = json["duration"].stringValue
+        Favorites_count = json["favorites_count"].intValue
         if let audio_story = json["story"].dictionaryObject {
             Story = StoryModel(JSON(audio_story))
         }

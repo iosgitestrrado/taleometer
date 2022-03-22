@@ -187,6 +187,7 @@ enum Feed {
     case FavoriteAudio///page=1
     case AddFavoriteAudio
     case RemoveFavoriteAudio
+    case StoryAudioStories
     case PlotAudioStories
     case NarrationAudioStories
     case Stories
@@ -251,6 +252,7 @@ extension Feed: Endpoint {
         case .FavoriteAudio:            return "/api/favorite-audio/get"
         case .AddFavoriteAudio:         return "/api/favorite-audio/add"
         case .RemoveFavoriteAudio:      return "/api/favorite-audio/remove"
+        case .StoryAudioStories:        return "/api/audio-stories/story"
         case .PlotAudioStories:         return "/api/audio-stories/plot"
         case .NarrationAudioStories:    return "/api/audio-stories/narration"
         case .Stories:                  return "/api/stories"

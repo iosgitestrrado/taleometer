@@ -44,6 +44,8 @@ class NonStopViewController: UIViewController {
     private var isPlayingTap = false
     private var currentAudio = Audio()
     private var audioURL = URL(string: "")
+    private var myAudioList = [Audio]()
+    private var currentAudioIndex = -1
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -65,12 +67,12 @@ class NonStopViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setAudioData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
+        visualizationWave.pause()
     }
     
     // Get non stop audio
@@ -102,6 +104,8 @@ class NonStopViewController: UIViewController {
                     
                     if currentIndex >= 0 {
                         AudioPlayManager.shared.audioList = response
+                        myAudioList = response
+                        currentAudioIndex = currentIndex
                         AudioPlayManager.shared.setAudioIndex(currentIndex ,isNext: false)
                         currentAudio = response[AudioPlayManager.shared.currentAudio]
                         setupAudioDataPlay(false)
@@ -228,6 +232,8 @@ class NonStopViewController: UIViewController {
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
         let authorView = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "AuthorViewController") as! AuthorViewController
+        authorView.delegate = self
+        authorView.currentAudio = currentAudio
         switch sender.tag {
         case 0:
             //Story
@@ -475,6 +481,29 @@ extension NonStopViewController: PromptViewDelegate {
             //2 - play next song
             nextPrevPlay()
             break
+        }
+    }
+}
+
+// MARK: - AudioListViewDelegate -
+extension NonStopViewController: AudioListViewDelegate {
+    func changeIntoPlayingAudio(_ currentAudio: Audio) {
+        self.currentAudio = currentAudio
+        self.setAudioData()
+        if AudioPlayManager.shared.audio.Id == currentAudio.Id, let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            self.existingAudio = true
+            self.setupExistingAudio(true)
+        } else if AudioPlayManager.shared.audio.Id != currentAudio.Id {
+            AudioPlayManager.shared.audioList = myAudioList
+            AudioPlayManager.shared.setAudioIndex(currentAudioIndex, isNext: false)
+            if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
+                self.existingAudio = false
+                self.currentAudio = audList[AudioPlayManager.shared.currentAudio]
+                // Configure audio data
+                setupAudioDataPlay(false)
+            } else {
+                Toast.show("Selected Audio not found!")
+            }
         }
     }
 }

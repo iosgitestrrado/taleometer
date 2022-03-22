@@ -189,8 +189,10 @@ extension GridViewController: UICollectionViewDelegate {
                 if AudioPlayManager.shared.isNonStop {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
                 }
+                myobject.myAudioList = audioList
+                myobject.currentAudioIndex = indexPath.row
                 AudioPlayManager.shared.audioList = audioList
-                AudioPlayManager.shared.setAudioIndex(indexPath.row ,isNext: false)
+                AudioPlayManager.shared.setAudioIndex(indexPath.row, isNext: false)
                 parentController!.navigationController?.pushViewController(myobject, animated: true)
             }
         } else {

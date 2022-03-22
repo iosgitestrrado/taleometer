@@ -88,6 +88,20 @@ class AudioClient {
         }
     }
     
+    static func getAudiosByStory(_ req: StoryRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(parameters: req, feed: .StoryAudioStories) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var audios = [Audio]()
+                if let data = response {
+                    data.forEach { object in
+                        audios.append(Audio(object))
+                    }
+                }
+                completion(audios)
+            }
+        }
+    }
+    
     static func getAudiosByPlot(_ req: PlotRequest, completion: @escaping([Audio]?) -> Void) {
         APIClient.shared.post(parameters: req, feed: .PlotAudioStories) { result in
             ResponseAPI.getResponseArray(result) { response in

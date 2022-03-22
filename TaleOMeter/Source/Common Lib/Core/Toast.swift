@@ -8,9 +8,6 @@
 import UIKit
 
 class Toast: NSObject {
-    
-    
-    
     static func show(_ message: String = "") {
         // Get current window
         guard let superview = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
@@ -59,7 +56,7 @@ class Toast: NSObject {
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
             toastContainer.alpha = 1.0
         }, completion: { _ in
-            UIView.animate(withDuration: 0.5, delay: 2.0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 1.0, options: .curveEaseOut, animations: {
                 toastContainer.alpha = 0.0
             }, completion: {_ in
                 toastContainer.removeFromSuperview()
