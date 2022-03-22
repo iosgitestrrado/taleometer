@@ -70,6 +70,10 @@ class DashboardViewController: UIViewController {
                     AudioPlayManager.shared.isNonStop = !sender.isSelected
                     AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
                     AudioPlayManager.shared.removeMiniPlayer()
+                    guard let player = AudioPlayManager.shared.playerAV else { return }
+                    if player.isPlaying {
+                        AudioPlayManager.shared.playPauseAudio(false)
+                    }
                 }
             }
         } else {

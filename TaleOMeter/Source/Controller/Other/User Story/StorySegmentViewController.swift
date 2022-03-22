@@ -37,7 +37,7 @@ class StorySegmentViewController: UIViewController {
         
         storyView = Core.getController(Constants.Storyboard.other, storyboardId: "UserStoryViewController") as! UserStoryViewController
         //gridView.parentController = self.parentController
-        storyView.title = "Tamil"
+        storyView.title = "தமிழ்"
         viewsArray.append(storyView)
         
         self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .red, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? UIScreen.main.bounds.size.width)

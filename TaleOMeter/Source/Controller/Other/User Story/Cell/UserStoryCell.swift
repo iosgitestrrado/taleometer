@@ -143,11 +143,11 @@ class UserStoryCell: UITableViewCell {
     func configuration(_ viewTitle: String, cellData: UserStoryCellItem, tamilTermsString: String, section: Int, row: Int, target: Any, selectors: [Selector], optionButton1: inout UIButton, optionButton2: inout UIButton) {
         if let titleLbl = self.titleLabel {
             titleLbl.text = cellData.title
-            if viewTitle == "Tamil" {
+            if viewTitle != "English" {
                 titleLbl.text = cellData.titleTamil
             }
         }
-        if viewTitle == "Tamil" {
+        if viewTitle != "English" {
             if let opt1Lbl = self.option1Lbl {
                 opt1Lbl.text = "நானே"
             }
@@ -161,7 +161,7 @@ class UserStoryCell: UITableViewCell {
             }
             btn1.tag = section
             btn1.addTarget(target, action: selectors[0], for: .touchUpInside)
-            if viewTitle == "Tamil" && section == 6 {
+            if viewTitle != "English" && section == 6 {
                 //cell.option1Btn.titleLabel?.attributedText = NSAttributedString("எங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளைப் படிக்கவும்")
                 let attString = NSMutableAttributedString(string: tamilTermsString)
                 let fontBlue = [ NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 116.0 / 255.0, green: 117.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0) ]
@@ -194,13 +194,13 @@ class UserStoryCell: UITableViewCell {
             textView.tag = section
             if section == 5 {
                 var doneString = "Done"
-                if viewTitle == "Tamil" {
+                if viewTitle != "English" {
                     doneString = "முடிந்தது"
                 }
                 textView.addInputAccessoryView(doneString, target: target, selector: selectors[2], tag: section)
             } else {
                 var nextString = "Next"
-                if viewTitle == "Tamil" {
+                if viewTitle != "English" {
                     nextString = "அடுத்தது"
                 }
                 textView.addInputAccessoryView(nextString, target: target, selector: selectors[3], tag: section)
@@ -208,5 +208,4 @@ class UserStoryCell: UITableViewCell {
             textView.delegate = target as? UITextViewDelegate
         }
     }
-    
 }

@@ -23,11 +23,11 @@ struct Audio {
     var Updated_at = String()
     var Deleted_at = String()
     var Views_count = Int()
+    var Is_favorite = Bool()
     
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
-    var IsFavourite = Bool()
     
 //    var Stories: [Story]?
 //    var Plots: [Story]?
@@ -49,6 +49,7 @@ struct Audio {
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
         Views_count = json["views_count"].intValue
+        Is_favorite = json["is_favorite"].boolValue
         
         if let audio_story = json["story"].dictionaryObject {
             Story = StoryModel(JSON(audio_story))
@@ -61,9 +62,7 @@ struct Audio {
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
         }
-        
-        IsFavourite = favouriteAudio.contains(where: { $0.Id == Id })
-        
+                
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story
 //        }

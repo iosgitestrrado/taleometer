@@ -149,12 +149,16 @@ class Core: NSObject {
         activityIndicator.tag = 9566
         //        NVActivityIndicatorPresenter.sharedInstance.setMessage("Fetching Data...")
         target.view.addSubview(activityIndicator)
+        target.view.isUserInteractionEnabled = false
         activityIndicator.startAnimating()
     }
 
     static func HideProgress(_ target: UIViewController) {
-        activityIndicator.stopAnimating()
-        activityIndicator.removeFromSuperview()
+        DispatchQueue.main.async {
+            target.view.isUserInteractionEnabled = true
+            activityIndicator.stopAnimating()
+            activityIndicator.removeFromSuperview()
+        }
     }
     
     /*
@@ -262,5 +266,24 @@ class Core: NSObject {
             }
         }
         return false
+    }
+    
+    /*
+     Initialize footer view for table view lazy load
+     */
+    // MARK: - Initialize table footer view
+    static func initFooterView(_ target: UIViewController, footerView: inout UIView) {
+        footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: Double(target.view.frame.size.width), height: 60.0))
+
+        let frame = CGRect(x: (target.view.frame.size.width / 2.0) - 30.0, y: 5.0, width: 60.0, height: 60.0)
+        let activityIndicator = NVActivityIndicatorView(frame: frame)
+        activityIndicator.tag = 10
+        activityIndicator.type = .ballSpinFadeLoader// .ballRotateChase // add your type
+        activityIndicator.color = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0) // add your color
+        activityIndicator.tag = 9566
+        activityIndicator.startAnimating()
+        
+        footerView.addSubview(activityIndicator)
+        footerView.isHidden = false
     }
 }

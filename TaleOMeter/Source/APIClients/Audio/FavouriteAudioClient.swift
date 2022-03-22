@@ -16,9 +16,6 @@ class FavouriteAudioClient {
                         favs.append(favor.Audio_story)
                     })
                 }
-                if pageNumber == "all" {
-                    favouriteAudio = favs
-                }
                 completion(favs)
             }
         }

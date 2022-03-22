@@ -46,7 +46,7 @@ class AudioViewCell: UITableViewCell {
         self.playButton.addTarget(target, action: selectors[0], for: .touchUpInside)
         self.favButton.tag = row
         self.favButton.addTarget(target, action: selectors[1], for: .touchUpInside)
-        self.favButton.isSelected = audioData.IsFavourite
+        self.favButton.isSelected = audioData.Is_favorite
         if isFavourite {
             self.favButton.isSelected = isFavourite
         }

@@ -540,7 +540,7 @@ Cg
             </objects>
             <point key="canvasLocation" x="1421.5384615384614" y="-392.41706161137438"/>
         </scene>
-        <!--User Story-->
+        <!--Share Your Story-->
         <scene sceneID="A5J-0g-EKe">
             <objects>
                 <viewController storyboardIdentifier="MainUserStoryVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="GqP-kX-gPs" customClass="MainUserStoryVC" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -571,7 +571,7 @@ Cg
                             <constraint firstAttribute="bottom" secondItem="3WH-AE-hQF" secondAttribute="bottom" id="h1V-nd-LVs"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="User Story" id="W7V-04-fKW">
+                    <navigationItem key="navigationItem" title="Share Your Story" id="W7V-04-fKW">
                         <barButtonItem key="rightBarButtonItem" id="hrH-RP-COP">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xRQ-nt-x9n">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
@@ -1103,33 +1103,37 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                             <outlet property="titleLabel" destination="ovE-XA-W0p" id="wkX-Oy-ENg"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="termsCell" rowHeight="30" id="eUi-jd-YTm" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="360.66666603088379" width="390" height="30"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="termsCell" rowHeight="40" id="eUi-jd-YTm" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="360.66666603088379" width="390" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eUi-jd-YTm" id="SaX-6b-j3B">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="30"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pvz-9d-NhA">
-                                                    <rect key="frame" x="20" y="5" width="350" height="20"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="characterWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pvz-9d-NhA">
+                                                    <rect key="frame" x="20" y="0.0" width="350" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="XJv-wc-kOO"/>
+                                                        <constraint firstAttribute="height" constant="40" id="XJv-wc-kOO"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" title="Button">
                                                         <attributedString key="attributedTitle">
-                                                            <fragment content="Please read our ">
+                                                            <fragment content="by clicking on the submit button, you agree to the ">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.45582" green="0.46021000000000001" blue="0.71333000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <font key="NSFont" size="13" name="HelveticaNeue"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" lineSpacing="1" defaultTabInterval="28" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops/>
+                                                                    </paragraphStyle>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content="terms and conditions">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.90898999999999996" green="0.2213" blue="0.28895999999999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <font key="NSFont" size="13" name="HelveticaNeue"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" lineSpacing="1" defaultTabInterval="28" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops/>
+                                                                    </paragraphStyle>
                                                                 </attributes>
                                                             </fragment>
                                                         </attributedString>
@@ -1140,8 +1144,8 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                             <constraints>
                                                 <constraint firstItem="Pvz-9d-NhA" firstAttribute="leading" secondItem="SaX-6b-j3B" secondAttribute="leading" constant="20" id="XVO-Gd-lgs"/>
                                                 <constraint firstAttribute="trailing" secondItem="Pvz-9d-NhA" secondAttribute="trailing" constant="20" id="mTr-Dk-qXZ"/>
-                                                <constraint firstAttribute="bottom" secondItem="Pvz-9d-NhA" secondAttribute="bottom" constant="5" id="oiK-1d-xIE"/>
-                                                <constraint firstItem="Pvz-9d-NhA" firstAttribute="top" secondItem="SaX-6b-j3B" secondAttribute="top" constant="5" id="zra-MV-UOG"/>
+                                                <constraint firstAttribute="bottom" secondItem="Pvz-9d-NhA" secondAttribute="bottom" id="oiK-1d-xIE"/>
+                                                <constraint firstItem="Pvz-9d-NhA" firstAttribute="top" secondItem="SaX-6b-j3B" secondAttribute="top" id="zra-MV-UOG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1150,7 +1154,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonCell" rowHeight="50" id="nhr-Qd-YG2" userLabel="buttonCell" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="390.66666603088379" width="390" height="50"/>
+                                        <rect key="frame" x="0.0" y="400.66666603088379" width="390" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nhr-Qd-YG2" id="yT0-Ix-6lF">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>

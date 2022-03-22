@@ -44,8 +44,7 @@ class NowPlayViewController: UIViewController {
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
     private var isPlayingTap = false
-    private var player = AVPlayer()
-    private var audio = Audio()
+    private var currentAudio = Audio()
     private var audioURL = URL(string: "")
 
     // MARK: - Lifecycle -
@@ -55,12 +54,19 @@ class NowPlayViewController: UIViewController {
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         
         if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
-            audio = audList[AudioPlayManager.shared.currentAudio]
+            currentAudio = audList[AudioPlayManager.shared.currentAudio]
             // Configure audio data
             setupAudioDataPlay(isPlaying)
         } else {
             Toast.show("Selected Audio not found!")
         }
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
+        
+        // Pan gesture for scrubbing support.
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        panGestureRecognizer.cancelsTouchesInView = false
+        visualizationWave.addGestureRecognizer(panGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,16 +80,13 @@ class NowPlayViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         setAudioData()
-        // Set notification center for audio playing completed
-        NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
+        self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
-        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - Call funcation when audio controller press in background
@@ -97,21 +100,21 @@ class NowPlayViewController: UIViewController {
     
     // MARK: Set audio data only
     private func setAudioData() {
-        self.imageView.image = audio.Image
-        self.titleLabel.text = audio.Title
-        self.storyButton.setTitle("Story: \(audio.Story.Name)", for: .normal)
-        self.plotButton.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
-        self.narrotionButton.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
+        self.imageView.image = currentAudio.Image
+        self.titleLabel.text = currentAudio.Title
+        self.storyButton.setTitle("Story: \(currentAudio.Story.Name)", for: .normal)
+        self.plotButton.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
+        self.narrotionButton.setTitle("Narration: \(currentAudio.Narration.Name)", for: .normal)
         
-        self.cuncurrentUserLbl.text = "Concurrent Users: \(audio.Views_count.formatPoints())"
-        self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
+        self.cuncurrentUserLbl.text = "Concurrent Users: \(currentAudio.Views_count.formatPoints())"
+        self.favButton.isSelected = currentAudio.Is_favorite
     }
     
     // MARK: Set audio data and play audio
     private func setupAudioDataPlay(_ playNow: Bool) {
-        //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtension: "mp3") else { return }
+        //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtesnsion: "mp3") else { return }
         AudioPlayManager.shared.isNonStop = false
-                
+        setAudioData()
         if existingAudio {
             setupExistingAudio(playNow)
         } else {
@@ -119,7 +122,6 @@ class NowPlayViewController: UIViewController {
                 player.pause()
             }
             Core.ShowProgress(self, detailLbl: "Streaming Audio")
-            
             AudioPlayManager.shared.initPlayerManager { result in
                 self.configureAudio(playNow, result: result)
                 Core.HideProgress(self)
@@ -129,8 +131,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - Playing existing Audio
     private func setupExistingAudio(_ playNow: Bool) {
-        if let playerk = AudioPlayManager.shared.playerAV {
-            player = playerk
+        if let player = AudioPlayManager.shared.playerAV {
             
             // Reset visulization wave
             self.visualizationWave.reset()
@@ -155,6 +156,9 @@ class NowPlayViewController: UIViewController {
                     chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
                 }
             }
+            if !playNow {
+                self.udpateTime()
+            }
             self.playPauseAudio(playNow)
         }
     }
@@ -164,10 +168,7 @@ class NowPlayViewController: UIViewController {
         DispatchQueue.main.async { [self] in
             // Reset visulization wave
             self.visualizationWave.reset()
-            if let playerk = AudioPlayManager.shared.playerAV {
-                // Set player private variable
-                player = playerk
-                
+            if let player = AudioPlayManager.shared.playerAV {
                 // setup waveform count
                 waveFormcount = result.count
                 
@@ -184,68 +185,66 @@ class NowPlayViewController: UIViewController {
                     if playNow {
                         self.visualizationWave.playChronometer = nil
                     } else if self.visualizationWave.playChronometer == nil {
+                        self.udpateTime()
                         visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
                     }
                     self.playPauseAudio(playNow)
                 }
             }
-            // Pan gesture for scrubbing support.
-            let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-            panGestureRecognizer.cancelsTouchesInView = false
-            visualizationWave.addGestureRecognizer(panGestureRecognizer)
         }
     }
     
     // MARK: - Play next or previous audio
     private func nextPrevPlay(_ isNext: Bool = true) {
-        // Setup audio index
-        AudioPlayManager.shared.setAudioIndex(isNext: isNext)
-        
-        // No existing audio play
-        self.existingAudio = false
-        
-        // Setup current audio variable
-        self.audio = AudioPlayManager.shared.audio
-        
-        // Configure audio data
-        setupAudioDataPlay(player.isPlaying)
-        
-        // Current player pause and visualization wave stop
-        if player.isPlaying {
-            playPauseAudio(false)
+        if let player = AudioPlayManager.shared.playerAV {
+            // Current player pause and visualization wave stop
             visualizationWave.stop()
+        
+            // Setup audio index
+            AudioPlayManager.shared.setAudioIndex(isNext: isNext)
+            
+            // No existing audio play
+            self.existingAudio = false
+            
+            // Setup current audio variable
+            self.currentAudio = AudioPlayManager.shared.audio
+        
+            // Configure audio data
+            setupAudioDataPlay(player.isPlaying)
         }
     }
 
     // MARK: - When swipe wave handle here
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
-        switch recognizer.state {
-            case .began:
-                isPlayingTap = player.isPlaying
-                if (isPlayingTap) {
-                    self.playPauseAudio(false)
-                }
-            case .changed:
-                let xLocation = Float(recognizer.location(in: self.visualizationWave).x)
-                updateWaveWith(xLocation)
-            case .ended:
-                let xLocation = Float(recognizer.location(in: self.visualizationWave).x)
-                
-                if let totalAudioDuration = player.currentItem?.asset.duration {
-                    let percentageInSelf = Double(xLocation / Float(self.visualizationWave.bounds.width))
-                    let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
-                    let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
-                    let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
-                    player.seek(to: scrubbedDutationMediaTime)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                        self.udpateTime()
+        if let player = AudioPlayManager.shared.playerAV {
+            switch recognizer.state {
+                case .began:
+                    isPlayingTap = player.isPlaying
+                    if (isPlayingTap) {
+                        self.playPauseAudio(false)
                     }
+                case .changed:
+                    let xLocation = Float(recognizer.location(in: self.visualizationWave).x)
+                    updateWaveWith(xLocation)
+                case .ended:
+                    let xLocation = Float(recognizer.location(in: self.visualizationWave).x)
+                    
+                    if let totalAudioDuration = player.currentItem?.asset.duration {
+                        let percentageInSelf = Double(xLocation / Float(self.visualizationWave.bounds.width))
+                        let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+                        let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
+                        let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
+                        player.seek(to: scrubbedDutationMediaTime)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                            self.udpateTime()
+                        }
+                    }
+                if (isPlayingTap) {
+                    self.playPauseAudio(true)
                 }
-            if (isPlayingTap) {
-                self.playPauseAudio(true)
+                default:
+                    break
             }
-            default:
-                break
         }
     }
     
@@ -269,17 +268,17 @@ class NowPlayViewController: UIViewController {
         case 0:
             //Story
             authorView.isStroy = true
-            authorView.storyData = audio.Story
+            authorView.storyData = currentAudio.Story
             break
         case 1:
             //Plot
             authorView.isPlot = true
-            authorView.storyData = audio.Plot
+            authorView.storyData = currentAudio.Plot
             break
         default:
             //Narrotion
             authorView.isNarration = true
-            authorView.storyData = audio.Narration
+            authorView.storyData = currentAudio.Narration
             break
         }
         self.navigationController?.pushViewController(authorView, animated: true)
@@ -307,19 +306,22 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - Handle play pause audio
     private func playPauseAudio(_ playing: Bool) {
-        DispatchQueue.main.async {
-            self.playButton.isSelected = playing
-        }
-        if !playing {
-            player.pause()
-            audioTimer.invalidate()
-            visualizationWave.pause()
-        } else {
-            player.play()
-            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
-            RunLoop.main.add(self.audioTimer, forMode: .default)
-            audioTimer.fire()
-            visualizationWave.play(for: TimeInterval(totalTimeDuration))
+        if let player = AudioPlayManager.shared.playerAV {
+            //print("Audio is playing: \(playing)")
+            DispatchQueue.main.async {
+                self.playButton.isSelected = playing
+            }
+            if !playing {
+                player.pause()
+                audioTimer.invalidate()
+                visualizationWave.pause()
+            } else {
+                player.play()
+                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+                visualizationWave.play(for: TimeInterval(totalTimeDuration))
+            }
         }
     }
     
@@ -328,7 +330,9 @@ class NowPlayViewController: UIViewController {
         switch sender.tag {
         case 0:
             //Play
-            self.playPauseAudio(!player.isPlaying)
+            if let player = AudioPlayManager.shared.playerAV {
+                self.playPauseAudio(!player.isPlaying)
+            }
             break
         case 1:
             //Previouse song
@@ -337,13 +341,13 @@ class NowPlayViewController: UIViewController {
         case 2:
             //Favourite
             if sender.isSelected {
-                self.removeFromFav(audio.Id) { status in
+                self.removeFromFav(currentAudio.Id) { status in
                     if let st = status, st {
                         sender.isSelected = !sender.isSelected
                     }
                 }
             } else {
-                self.addToFav(audio.Id) { status in
+                self.addToFav(currentAudio.Id) { status in
                     if let st = status, st {
                         sender.isSelected = !sender.isSelected
                     }
@@ -370,31 +374,33 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - Seek audio time
     private func seekAudio(_ forward: Bool) {
-        if forward {
-            guard let duration  = player.currentItem?.duration else {
-                    return
-            }
-            let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
-            let newTime = playerCurrentTime + 10
+        if let player = AudioPlayManager.shared.playerAV {
+            if forward {
+                guard let duration = player.currentItem?.duration else {
+                        return
+                }
+                let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+                let newTime = playerCurrentTime + 10
 
-            if newTime < CMTimeGetSeconds(duration) {
+                if newTime < CMTimeGetSeconds(duration) {
+                    let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                    player.seek(to: time2)
+                    setTime(newTime)
+                } else {
+                    let time2: CMTime = CMTimeMake(value: Int64(CMTimeGetSeconds(duration)) * 1000, timescale: 1000)
+                    player.seek(to: time2)
+                    setTime(newTime)
+                }
+            } else {
+                let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+                var newTime = playerCurrentTime - 10
+                if newTime < 0 {
+                    newTime = 0
+                }
                 let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
                 player.seek(to: time2)
                 setTime(newTime)
-            } else {
-                let time2: CMTime = CMTimeMake(value: Int64(CMTimeGetSeconds(duration)) * 1000, timescale: 1000)
-                player.seek(to: time2)
-                setTime(newTime)
             }
-        } else {
-            let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
-            var newTime = playerCurrentTime - 10
-            if newTime < 0 {
-                newTime = 0
-            }
-            let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
-            player.seek(to: time2)
-            setTime(newTime)
         }
     }
     
@@ -416,7 +422,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - Update time as per playing audio
     @objc func udpateTime() {
-        if let currentItem = player.currentItem {
+        if let player = AudioPlayManager.shared.playerAV, let currentItem = player.currentItem {
             DispatchQueue.main.async { [self] in
                 // Get the current time in seconds
                 let playhead = currentItem.currentTime().seconds
@@ -432,7 +438,7 @@ class NowPlayViewController: UIViewController {
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
                     if player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
-                        PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
                     }
                 }
                 AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
@@ -476,15 +482,21 @@ extension NowPlayViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            self.addToFav(audio.Id) { status in }
+            self.addToFav(currentAudio.Id) { status in }
             break
         case 1, 3:
             //1 - Once more //3 - Close mini player
-            self.player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-            self.visualizationWave.stop()
-            self.player.pause()
-            self.existingAudio = true
-            self.setupAudioDataPlay(tag == 1)
+            DispatchQueue.main.async {
+                if let player = AudioPlayManager.shared.playerAV {
+                    player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+                    player.pause()
+                }
+                self.visualizationWave.stop()
+                self.visualizationWave.playChronometer = nil
+                
+                self.existingAudio = true
+                self.setupAudioDataPlay(tag == 1)
+            }
             break
         default:
             //2 - play next song

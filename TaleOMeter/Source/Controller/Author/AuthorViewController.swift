@@ -32,7 +32,7 @@ class AuthorViewController: UIViewController {
         
         //bannerImage.image = storyData.Image
         profileImage.image = storyData.Image
-        favButton.isSelected = favouriteAudio.contains(where: { $0.Id == storyData.Id })
+        favButton.isHidden = true
         titleLabel.text = storyData.Name
         storiesLabel.text = "0\nStories"
         lengthLabel.text = "0\nLength"

@@ -209,6 +209,10 @@ class AudioListViewController: UITableViewController {
                     audioList.remove(at: sender.tag)
                     if AudioPlayManager.shared.isFavourite, AudioPlayManager.shared.currentAudio == sender.tag {
                         AudioPlayManager.shared.removeMiniPlayer()
+                        guard let player = AudioPlayManager.shared.playerAV else { return }
+                        if player.isPlaying {
+                            AudioPlayManager.shared.playPauseAudio(false)
+                        }
                         selectedIndex = -1
                     }
                     tableView.reloadData()

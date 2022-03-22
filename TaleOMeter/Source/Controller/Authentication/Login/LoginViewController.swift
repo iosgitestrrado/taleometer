@@ -15,7 +15,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var countryCodeLbl: UILabel!
     @IBOutlet weak var mobileNumberTxt: UITextField!
     @IBOutlet weak var titleLabel: UILabel!
-    
+    @IBOutlet weak var titleLabel1: UILabel!
+
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
     
@@ -27,6 +28,18 @@ class LoginViewController: UIViewController {
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
         titleLabel.addUnderline()
+        
+        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\nSign up To Keep Hearing Amazing")
+        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 34) ]
+        let font22 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 20) ]
+        
+        let rangeTitle1 = NSRange(location: 0, length: 23)
+        let rangeTitle2 = NSRange(location: 23, length: 55 - 23)
+        
+        titleString.addAttributes(font36 as [NSAttributedString.Key : Any], range: rangeTitle1)
+        titleString.addAttributes(font22 as [NSAttributedString.Key : Any], range: rangeTitle2)
+        
+        titleLabel1.attributedText = titleString
     }
     
     override func viewWillAppear(_ animated: Bool) {

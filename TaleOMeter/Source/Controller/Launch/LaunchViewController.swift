@@ -38,19 +38,9 @@ class LaunchViewController: UIViewController {
                 if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
                     Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
                     return
-                } else if profileData.Is_login {
-                    getFavAudio()
                 }
             }
             Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
-        }
-    }
-    
-    private func getFavAudio() {
-        if Reachability.isConnectedToNetwork() {
-            DispatchQueue.global(qos: .background).async {
-                FavouriteAudioClient.get("all") { response in }
-            }
         }
     }
     

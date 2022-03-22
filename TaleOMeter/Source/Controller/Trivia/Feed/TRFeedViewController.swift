@@ -43,7 +43,7 @@ class TRFeedViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = UITableView.automaticDimension
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
-        self.initFooterView()
+        Core.initFooterView(self, footerView: &footerView)
         self.hideKeyboard()
         if let profData = Login.getProfileData() {
             profilePic = UIImage(data: profData.ImageData)
@@ -73,21 +73,21 @@ class TRFeedViewController: UIViewController {
 //        return true
 //    }
     
-    // MARK: - Initialize table footer view
-    func initFooterView() {
-        footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: Double(self.view.frame.size.width), height: 60.0))
-
-        let frame = CGRect(x: (self.view.frame.size.width / 2.0) - 30.0, y: 5.0, width: 60.0, height: 60.0)
-        let activityIndicator = NVActivityIndicatorView(frame: frame)
-        activityIndicator.tag = 10
-        activityIndicator.type = .ballSpinFadeLoader// .ballRotateChase // add your type
-        activityIndicator.color = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0) // add your color
-        activityIndicator.tag = 9566
-        activityIndicator.startAnimating()
-        
-        footerView.addSubview(activityIndicator)
-        footerView.isHidden = false
-    }
+//    // MARK: - Initialize table footer view
+//    func initFooterView() {
+//        footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: Double(self.view.frame.size.width), height: 60.0))
+//
+//        let frame = CGRect(x: (self.view.frame.size.width / 2.0) - 30.0, y: 5.0, width: 60.0, height: 60.0)
+//        let activityIndicator = NVActivityIndicatorView(frame: frame)
+//        activityIndicator.tag = 10
+//        activityIndicator.type = .ballSpinFadeLoader// .ballRotateChase // add your type
+//        activityIndicator.color = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0) // add your color
+//        activityIndicator.tag = 9566
+//        activityIndicator.startAnimating()
+//
+//        footerView.addSubview(activityIndicator)
+//        footerView.isHidden = false
+//    }
        
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {

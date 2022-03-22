@@ -135,7 +135,7 @@ class AudioPlayManager: NSObject {
         
         // Add handler for Play Command
         commandCenter.playCommand.addTarget { [unowned self] event in
-            if let playerAV = playerAV, !playerAV.isPlaying {
+            if let player = playerAV, !player.isPlaying {
                 self.playPauseAudio(true)
                 NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": false])
                 return .success
@@ -145,7 +145,7 @@ class AudioPlayManager: NSObject {
 
         // Add handler for Pause Command
         commandCenter.pauseCommand.addTarget { [unowned self] event in
-            if let playerAV = playerAV, playerAV.isPlaying {
+            if let player = playerAV, player.isPlaying {
                 self.playPauseAudio(false)
                 NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": true])
                 return .success
@@ -191,10 +191,10 @@ class AudioPlayManager: NSObject {
             }
         }
         
-        if let playerAV = playerAV {
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playerAV.currentTime().seconds
-            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = Int((playerAV.currentItem?.asset.duration.seconds)!)
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playerAV.rate
+        if let player = playerAV {
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.currentTime().seconds
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = Int((player.currentItem?.asset.duration.seconds)!)
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
         }
         
         // Set the metadata
@@ -226,6 +226,7 @@ class AudioPlayManager: NSObject {
                 if audioTimer.isValid {
                     self.audioTimer.invalidate()
                 }
+                self.udpateMiniPlayerTime()
             }
         }
     }
@@ -536,10 +537,6 @@ extension AudioPlayManager {
                 }
             }
             miniVController.view.removeFromSuperview()
-            guard let player = AudioPlayManager.shared.playerAV else { return }
-            if player.isPlaying {
-                playPauseAudio(false)
-            }
         }
     }
     
@@ -558,6 +555,10 @@ extension AudioPlayManager {
         NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
         isMiniPlayerActive = false
         removeMiniPlayer()
+        guard let player = AudioPlayManager.shared.playerAV else { return }
+        if player.isPlaying {
+            playPauseAudio(false)
+        }
     }
     
     // MARK: - Click on miniplayer
@@ -568,6 +569,9 @@ extension AudioPlayManager {
             nonStopView.isPlayingExisting = playerAV != nil && playerAV!.isPlaying
             currVController.navigationController?.pushViewController(nonStopView, animated: true)
             self.removeMiniPlayer()
+            if audioTimer.isValid {
+                self.audioTimer.invalidate()
+            }
         } else if isFavourite {
             let favView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "FavouriteViewController") as! FavouriteViewController
             currVController.navigationController?.pushViewController(favView, animated: true)
@@ -577,6 +581,9 @@ extension AudioPlayManager {
             nowPlayingView.isPlaying = playerAV != nil && playerAV!.isPlaying
             currVController.navigationController?.pushViewController(nowPlayingView, animated: true)
             self.removeMiniPlayer()
+            if audioTimer.isValid {
+                self.audioTimer.invalidate()
+            }
         }
     }
 }

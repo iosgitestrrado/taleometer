@@ -112,6 +112,19 @@ extension RegisterViewController: UITextFieldDelegate {
         textField.setError()
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.returnKeyType == .next {
+            if textField == nameTextField {
+                displayNameText.becomeFirstResponder()
+            } else if textField == displayNameText {
+                emailTextField.becomeFirstResponder()
+            }
+        } else if textField.returnKeyType == .done {
+            self.view.endEditing(true)
+        }
+        return true
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == displayNameText && textField.text!.isBlank {
             Validator.showRequiredError(textField)

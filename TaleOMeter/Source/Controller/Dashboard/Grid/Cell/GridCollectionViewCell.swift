@@ -58,3 +58,15 @@ class GridCollectionViewCell: UICollectionViewCell {
         countLable.isHidden = cellData.Post_count == 0
     }
 }
+
+class GridCollecViewCell: UICollectionViewCell {
+    // MARK: - Weak Properties -
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        imageView.layer.cornerRadius = imageView.frame.size.height / 2.0
+    }
+    
+}

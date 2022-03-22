@@ -25,13 +25,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RQg-gh-i2c">
-                                        <rect key="frame" x="344" y="762" width="34" height="40"/>
+                                        <rect key="frame" x="343" y="762" width="35" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="S46-2E-Ybm"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Skip"/>
+                                        <state key="normal" title="Next"/>
                                         <connections>
                                             <action selector="tapOnSkipButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Yg-wa-nUA"/>
                                         </connections>
@@ -40,7 +40,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="RQg-gh-i2c" secondAttribute="trailing" constant="12" id="2DN-Cc-6CW"/>
-                                    <constraint firstItem="RQg-gh-i2c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qXQ-Qs-wGh" secondAttribute="leading" symbolic="YES" id="GXh-YV-aZ6"/>
+                                    <constraint firstItem="RQg-gh-i2c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qXQ-Qs-wGh" secondAttribute="leading" constant="20" symbolic="YES" id="GXh-YV-aZ6"/>
                                     <constraint firstAttribute="bottom" secondItem="RQg-gh-i2c" secondAttribute="bottom" constant="42" id="t34-Ar-QiA"/>
                                 </constraints>
                             </view>
@@ -597,7 +597,7 @@ Cg
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="gridCell" id="yFA-SQ-aY3" customClass="GridCollectionViewCell" customModule="TaleOMeter" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="gridCell" id="yFA-SQ-aY3" customClass="GridCollecViewCell" customModule="TaleOMeter" customModuleProvider="target">
                                         <rect key="frame" x="115" y="0.0" width="120" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cLx-hX-CUM">

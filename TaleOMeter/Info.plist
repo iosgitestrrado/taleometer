@@ -10,6 +10,21 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>CommutersSans-Bold.ttf</string>
+		<string>CommutersSans-BoldItalic.ttf</string>
+		<string>CommutersSans-ExtraBold.ttf</string>
+		<string>CommutersSans-ExtraBoldItalic.ttf</string>
+		<string>CommutersSans-ExtraLight.ttf</string>
+		<string>CommutersSans-ExtraLightItalic.ttf</string>
+		<string>CommutersSans-Heavy.ttf</string>
+		<string>CommutersSans-HeavyItalic.ttf</string>
+		<string>CommutersSans-Italic.ttf</string>
+		<string>CommutersSans-Light.ttf</string>
+		<string>CommutersSans-LightItalic.ttf</string>
+		<string>CommutersSans-Regular.ttf</string>
+		<string>CommutersSans-SemiBold.ttf</string>
+		<string>CommutersSans-SemiBoldItalic.ttf</string>
+		<string>CommutersSans-Thin.ttf</string>
+		<string>CommutersSans-ThinItalic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

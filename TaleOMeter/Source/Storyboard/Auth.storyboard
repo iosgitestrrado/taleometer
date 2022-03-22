@@ -8,6 +8,11 @@
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="CommutersSans-Regular.ttf">
+            <string>CommutersSans-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="s0d-6b-0kx">
@@ -51,13 +56,13 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stories." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HY6-PQ-ALO" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="358.33333333333331" width="71.666666666666671" height="26.333333333333314"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="22"/>
+                                <rect key="frame" x="20" y="358.33333333333331" width="83.666666666666671" height="20"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QlC-xM-3n3">
-                                <rect key="frame" x="20" y="414.66666666666669" width="350" height="20"/>
+                                <rect key="frame" x="20" y="408.33333333333331" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="ZDi-0O-BXi"/>
                                 </constraints>
@@ -66,7 +71,7 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mA-hR-n5h">
-                                <rect key="frame" x="20" y="442.66666666666669" width="350" height="50"/>
+                                <rect key="frame" x="20" y="436.33333333333331" width="350" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBl-if-EZK">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="50"/>
@@ -127,7 +132,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-ca-UGv">
-                                <rect key="frame" x="20" y="500.66666666666669" width="350" height="20.000000000000057"/>
+                                <rect key="frame" x="20" y="494.33333333333331" width="350" height="19.999999999999943"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="cf3-6V-mtO"/>
                                 </constraints>
@@ -155,7 +160,7 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bht-zK-LF7">
-                                <rect key="frame" x="320" y="530.66666666666663" width="50" height="50"/>
+                                <rect key="frame" x="320" y="524.33333333333337" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="6N9-QX-Rjg"/>
                                     <constraint firstAttribute="height" constant="50" id="lxx-pD-c6m"/>
@@ -212,6 +217,7 @@ Cg
                         <outlet property="countryCodeLbl" destination="sbu-3H-SZB" id="8gp-5y-5R7"/>
                         <outlet property="mobileNumberTxt" destination="bec-jL-jbl" id="2qd-8Z-dnm"/>
                         <outlet property="titleLabel" destination="HY6-PQ-ALO" id="IqO-on-lDY"/>
+                        <outlet property="titleLabel1" destination="pjK-tQ-k0w" id="JnX-0x-ihn"/>
                         <segue destination="IhJ-EX-XiF" kind="show" identifier="verification" id="IVI-sd-C62"/>
                         <segue destination="ntd-vl-hsb" kind="show" identifier="termsAndCondition" id="wEA-aY-5WS"/>
                     </connections>
@@ -422,33 +428,26 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="oQv-To-eo5">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="790"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="LAm-Se-gjz" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="200" width="350" height="86"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tale'o'meter" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="LAm-Se-gjz" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
+                                <rect key="frame" x="20" y="200" width="350" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="112.33" id="ebU-hU-pWE"/>
                                 </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment content="Welcome To tale'o'meter">
-                                        <attributes>
-                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="36"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="34"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Register" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="VvF-Ah-9FM" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="286" width="78.333333333333329" height="26.333333333333314"/>
+                                <rect key="frame" x="20" y="234" width="92" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="112.33" id="8fR-dk-N95"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="22"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDE-wm-CM5">
-                                <rect key="frame" x="20" y="342.33333333333331" width="350" height="20"/>
+                                <rect key="frame" x="20" y="284" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="rvz-WS-xRS"/>
                                 </constraints>
@@ -457,7 +456,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4g-ze-Yo7">
-                                <rect key="frame" x="20" y="367.33333333333331" width="350" height="50"/>
+                                <rect key="frame" x="20" y="309" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fpj-Gu-FlL">
                                         <rect key="frame" x="10" y="0.0" width="342" height="50"/>
@@ -465,7 +464,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                         <connections>
                                             <outlet property="delegate" destination="bip-MS-FPG" id="NqJ-KJ-2yl"/>
                                         </connections>
@@ -483,7 +482,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfT-gH-q3z">
-                                <rect key="frame" x="20" y="427.33333333333331" width="350" height="20"/>
+                                <rect key="frame" x="20" y="369" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="3vY-f9-lD8"/>
                                 </constraints>
@@ -492,7 +491,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ope-rC-xSb">
-                                <rect key="frame" x="20" y="452.33333333333331" width="350" height="50"/>
+                                <rect key="frame" x="20" y="394" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CUM-Mp-osq">
                                         <rect key="frame" x="10" y="0.0" width="342" height="50"/>
@@ -500,7 +499,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                         <connections>
                                             <outlet property="delegate" destination="bip-MS-FPG" id="ryW-BI-7O1"/>
                                         </connections>
@@ -518,7 +517,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0Y-Vz-yO0">
-                                <rect key="frame" x="20" y="512.33333333333337" width="350" height="20"/>
+                                <rect key="frame" x="20" y="454" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="g4b-Jb-YMZ"/>
                                 </constraints>
@@ -527,7 +526,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WnV-Zt-Bcc">
-                                <rect key="frame" x="20" y="537.33333333333337" width="350" height="50"/>
+                                <rect key="frame" x="20" y="479" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jDO-Ke-Qru">
                                         <rect key="frame" x="8" y="0.0" width="342" height="50"/>
@@ -535,7 +534,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                                         <connections>
                                             <outlet property="delegate" destination="bip-MS-FPG" id="v2l-MY-KwO"/>
                                         </connections>
@@ -553,7 +552,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssX-1W-wX4">
-                                <rect key="frame" x="320" y="597.33333333333337" width="50" height="50"/>
+                                <rect key="frame" x="320" y="539" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="JAO-b5-NiC"/>
                                     <constraint firstAttribute="width" constant="50" id="jVM-RA-ypS"/>
@@ -678,8 +677,8 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PH-ak-sf2" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="19.999999999999996" y="286" width="54.666666666666657" height="26.333333333333314"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="22"/>
+                                <rect key="frame" x="19.999999999999996" y="292.33333333333331" width="63.666666666666657" height="20"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -876,6 +875,7 @@ Cg
                         <outlet property="otp3TextField" destination="Eh5-Oa-azE" id="xft-Yb-vCN"/>
                         <outlet property="otp4TextField" destination="Qhs-oY-Kww" id="z62-0A-Nxs"/>
                         <outlet property="titleLabel" destination="6PH-ak-sf2" id="I04-HS-7yO"/>
+                        <outlet property="titleLabel1" destination="fe9-3O-gho" id="6RF-ca-Yzp"/>
                         <segue destination="bip-MS-FPG" kind="show" identifier="register" id="KYK-Iz-F0R"/>
                     </connections>
                 </viewController>

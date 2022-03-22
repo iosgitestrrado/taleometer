@@ -100,5 +100,85 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4DF2D0F3-D9F4-40B6-A7F4-8528D8ED415D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "setupRemoteTransportControls()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B935D3C5-5399-465A-B32E-9962B1C19D7E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "setupRemoteTransportControls()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F63A140E-D54E-4D14-8C24-71D2C31685D6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "325"
+            endingLineNumber = "325"
+            landmarkName = "didActionOnPromptButton(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F63A140E-D54E-4D14-8C24-71D2C31685D6 - 7b6d87411f61ce80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.AudioPlayManager.didActionOnPromptButton(Swift.Int) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "325"
+                  endingLineNumber = "325"
+                  offsetFromSymbolStart = "748">
+               </Location>
+               <Location
+                  uuid = "F63A140E-D54E-4D14-8C24-71D2C31685D6 - 7b6d87411f61ce80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.AudioPlayManager.didActionOnPromptButton(Swift.Int) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "325"
+                  endingLineNumber = "325"
+                  offsetFromSymbolStart = "790">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

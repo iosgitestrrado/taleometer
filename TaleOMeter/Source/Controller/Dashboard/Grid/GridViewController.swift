@@ -22,7 +22,8 @@ class GridViewController: UIViewController {
     private var audioList = [Audio]()
     private var currentIndex = -1
     private var pageNumber = 1
-    private var pageLimit = 12
+    private var morepage = true
+    private var pageLimit = 9
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -42,8 +43,6 @@ class GridViewController: UIViewController {
         
         // Enable vertical scroll always
         self.collectionView.alwaysBounceVertical = true
-        
-        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -85,8 +84,12 @@ class GridViewController: UIViewController {
             Toast.show()
             return
         }
+        if !morepage {
+            return
+        }
         Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
             AudioClient.get(AudioRequest(page: pageNumber, limit: pageLimit), genreId: genreId, completion: { [self] result in
+                morepage = result != nil && result!.count > 0
                 if let response = result, response.count > 0 {
                     if pageNumber == 1 {
                         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -148,7 +151,7 @@ extension GridViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if audioList.count > 0 {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as? GridCollectionViewCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as? GridCollecViewCell {
                 cell.imageView.image = audioList[indexPath.row].Image
                 cell.imageView.frame = CGRect(x: 25.0, y: 5.0, width: gridSize - 40.0, height: gridSize - 40.0)
                 cell.imageView.cornerRadius = cell.imageView.frame.size.width / 2.0
@@ -159,7 +162,7 @@ extension GridViewController: UICollectionViewDataSource {
                 return cell
             }
         } else {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "noData", for: indexPath) as? GridCollectionViewCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "noData", for: indexPath) as? GridCollecViewCell {
                 
                 cell.titleLabel.text = "No Audio Founds!"
                 cell.titleLabel.frame = CGRect(x: 0, y: 0, width: gridSize, height: 30)

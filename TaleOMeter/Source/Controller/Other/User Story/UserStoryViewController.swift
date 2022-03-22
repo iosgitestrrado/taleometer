@@ -72,7 +72,7 @@ class UserStoryViewController: UIViewController {
         
         var mySelfStr = "MySelf"
         var someoneStr = "Someone Else"
-        if self.title == "Tamil" {
+        if self.title != "English" {
             mySelfStr = "நானே"
             someoneStr = "வேறு யாரோ"
         }

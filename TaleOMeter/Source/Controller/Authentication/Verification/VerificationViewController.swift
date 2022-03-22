@@ -21,6 +21,7 @@ class VerificationViewController: UIViewController {
     @IBOutlet weak var otp3TextField: CustomTextField!
     @IBOutlet weak var otp4TextField: CustomTextField!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel1: UILabel!
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -33,6 +34,18 @@ class VerificationViewController: UIViewController {
         otp3TextField.backSpaceDelegate = self
         otp4TextField.backSpaceDelegate = self
         titleLabel.addUnderline()
+        
+        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\n           Your Phone Number.")
+        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 34) ]
+        let font22 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 20) ]
+        
+        let rangeTitle1 = NSRange(location: 0, length: 23)
+        let rangeTitle2 = NSRange(location: 23, length: 30)
+        
+        titleString.addAttributes(font36 as [NSAttributedString.Key : Any], range: rangeTitle1)
+        titleString.addAttributes(font22 as [NSAttributedString.Key : Any], range: rangeTitle2)
+        
+        titleLabel1.attributedText = titleString
     }
     
     override func viewWillAppear(_ animated: Bool) {
