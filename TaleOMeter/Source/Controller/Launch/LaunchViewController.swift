@@ -18,9 +18,8 @@ class LaunchViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
         if isOnlyTrivia {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if let profileData = Login.getProfileData() {
                     if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
                        Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
@@ -32,7 +31,7 @@ class LaunchViewController: UIViewController {
                 } else {
                     Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
                 }
-            }
+           
         } else {
             if let profileData = Login.getProfileData() {
                 if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
@@ -41,6 +40,7 @@ class LaunchViewController: UIViewController {
                 }
             }
             Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+        }
         }
     }
     

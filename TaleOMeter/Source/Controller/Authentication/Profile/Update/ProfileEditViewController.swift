@@ -57,7 +57,7 @@ class ProfileEditViewController: UIViewController {
     private func updateProfileData() {
         if let prof = profileData {
             if !Reachability.isConnectedToNetwork() {
-                Toast.show()
+                Core.noInternet(self)
                 return
             }
             Core.ShowProgress(self, detailLbl: "Updating Profile")
@@ -80,7 +80,7 @@ class ProfileEditViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if titleString == "Change Name" {

@@ -40,7 +40,7 @@ class SegmentViewController: UIViewController {
     // MARK: - Get Genres from API's -
     private func getGenres() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(parentController!, detailLbl: "")
@@ -72,6 +72,8 @@ class SegmentViewController: UIViewController {
     }
 }
 
+
+// MARK: - ContainerVCDelegate -
 extension SegmentViewController: ContainerVCDelegate {
     func containerViewItem(_ index: NSInteger, currentController: UIViewController) {
         if let grid = currentController as? GridViewController {

@@ -116,7 +116,8 @@ extension CountryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.selectedCountryCode(country: dupList[indexPath.row])
-        dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
+//        dismiss(animated: true)
     }
 }
 

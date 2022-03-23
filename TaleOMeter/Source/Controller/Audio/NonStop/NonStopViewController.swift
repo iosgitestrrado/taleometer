@@ -85,7 +85,7 @@ class NonStopViewController: UIViewController {
             }
         } else {
             if !Reachability.isConnectedToNetwork() {
-                Toast.show()
+                Core.noInternet(self)
                 return
             }
             Core.ShowProgress(self, detailLbl: "Getting Audio...")
@@ -133,9 +133,7 @@ class NonStopViewController: UIViewController {
         if existingAudio {
             setupExistingAudio(playNow)
         } else {
-            if let player = AudioPlayManager.shared.playerAV {
-                player.pause()
-            }
+            AudioPlayManager.shared.playPauseAudioOnly(false)
             //Core.ShowProgress(self, detailLbl: "Streaming Audio")
             AudioPlayManager.shared.initPlayerManager(isNonStop: true) { result in
                 self.configureAudio(playNow, result: result)
@@ -375,26 +373,25 @@ class NonStopViewController: UIViewController {
     
     // MARK: - Handle audio play and pause
     private func playPauseAudio(_ playing: Bool) {
-        if let player = AudioPlayManager.shared.playerAV {
+        //if let player = AudioPlayManager.shared.playerAV {
+        AudioPlayManager.shared.playPauseAudioOnly(isPlaying)
             DispatchQueue.main.async {
                 self.playButton.isSelected = playing
             }
         
         isPlaying = playing
         if !playing {
-            player.pause()
             audioTimer.invalidate()
             visualizationWave.pause()
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "pauseAudio"), object: nil)
         } else {
-            player.play()
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NonStopViewController.udpateTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "playAudio"), object: nil)
             visualizationWave.play(for: TimeInterval(totalTimeDuration))
         }
-        }
+       // }
     }
     
     // MARK: - Set start and end time
@@ -411,7 +408,7 @@ class NonStopViewController: UIViewController {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
                 }
             }
-            if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
                 PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
             }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
@@ -435,7 +432,7 @@ extension NonStopViewController {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -448,7 +445,7 @@ extension NonStopViewController {
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -472,7 +469,7 @@ extension NonStopViewController: PromptViewDelegate {
             //1 - Once more //3 - Close mini player
             if let player = AudioPlayManager.shared.playerAV {
                 player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-                player.pause()
+                AudioPlayManager.shared.playPauseAudioOnly(false)
             }
             self.visualizationWave.stop()
             self.existingAudio = true

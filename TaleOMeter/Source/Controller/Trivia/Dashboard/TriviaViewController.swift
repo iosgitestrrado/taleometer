@@ -47,20 +47,19 @@ class TriviaViewController: UIViewController {
         layout.minimumLineSpacing = 10
         collectionView.collectionViewLayout = layout
         collectionView.alwaysBounceVertical = true
-        
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
         self.navigationItem.hidesBackButton = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
         getTrivia()
     }
     
     // MARK: - Get trivia home data from server -
     private func getTrivia() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -129,6 +128,14 @@ extension TriviaViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate -
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 && triviaHome.Trivia_daily.Post_count == 0 {
+            Toast.show("No post found!")
+            return
+        }
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
         if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
             myobject.categoryId =  indexPath.row != 0 ? triviaHome.Trivia_category[indexPath.row - 1].Category_id : -1
             self.navigationController?.pushViewController(myobject, animated: true)

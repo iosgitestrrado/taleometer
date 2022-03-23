@@ -35,7 +35,7 @@ class GridCollectionViewCell: UICollectionViewCell {
         imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
         titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: (gridWidth * 2) + 10.0, height: titleViewHeight)
         self.titleLabel.text = cellData.Title
-        let countString = NSMutableAttributedString(string: "\(cellData.Post_count)\nNew")
+        let countString = NSMutableAttributedString(string: "\(cellData.Post_count)\nnew")
         let rangeTitle1 = NSRange(location: 0, length: cellData.Post_count.description.utf8.count)
         let rangeTitle2 = NSRange(location: cellData.Post_count.description.utf8.count, length: cellData.Post_count.description.utf8.count + 3)
 

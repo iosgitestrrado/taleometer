@@ -59,7 +59,7 @@ class ChangeMobileNumberVC: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.mobileTextField.text!.isBlank {
@@ -76,7 +76,7 @@ class ChangeMobileNumberVC: UIViewController {
     
     private func sendOpt() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP")

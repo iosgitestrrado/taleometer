@@ -40,7 +40,7 @@ class VerificationProfileVC: UIViewController {
     
     @IBAction func tapOnResend(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
@@ -51,7 +51,7 @@ class VerificationProfileVC: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.otp1Text.text!.isEmpty || self.otp2Text.text!.isEmpty || self.otp3Text.text!.isEmpty ||

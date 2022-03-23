@@ -19,6 +19,7 @@ class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +38,20 @@ class HistoryViewController: UIViewController {
     
     @objc func tapOnFav(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
+    }
+}
+
+// MARK: - Get Data from server -
+extension HistoryViewController {
+    private func get() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        HistoryAudioClient.get("1", limit: 10) { response in
+            
+        }
     }
 }
 

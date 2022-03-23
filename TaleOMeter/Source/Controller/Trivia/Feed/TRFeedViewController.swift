@@ -59,12 +59,6 @@ class TRFeedViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
 //    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
 //        return .landscape
 //    }
@@ -110,7 +104,7 @@ class TRFeedViewController: UIViewController {
     
     @objc private func tapOnAnswer(_ sender: UIButton) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
@@ -159,7 +153,7 @@ class TRFeedViewController: UIViewController {
     // MARK: Tap on post button
     @objc private func tapOnPost(_ sender: UIButton) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
@@ -259,12 +253,12 @@ class TRFeedViewController: UIViewController {
 
 extension TRFeedViewController {
     // MARK: - Get trivia posts
-    private func getTriviaPosts(_ replyExpanded: Bool = false, showProgress: Bool = true) {
+    @objc func getTriviaPosts(_ replyExpanded: Bool = false, showProgress: Bool = false) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self, methodName: "getTriviaPosts:showProgress:")
             return
         }
-        if showProgress {
+        if !showProgress {
             Core.ShowProgress(self, detailLbl: "")
         }
         if categoryId >= 0 {
@@ -277,7 +271,7 @@ extension TRFeedViewController {
                 showNoData = 1
                 setTableViewCells(replyExpanded)
                 tableView.tableFooterView = UIView()
-                if showProgress {
+                if !showProgress {
                     Core.HideProgress(self)
                 }
             }
@@ -291,7 +285,7 @@ extension TRFeedViewController {
                 showNoData = 1
                 setTableViewCells(replyExpanded)
                 tableView.tableFooterView = UIView()
-                if showProgress {
+                if !showProgress {
                     Core.HideProgress(self)
                 }
             }
@@ -301,7 +295,7 @@ extension TRFeedViewController {
     // MARK: - Get comments using post id
     private func getComments(_ replyExpanded: Bool = false, postId: Int, postIndex: Int) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -336,7 +330,7 @@ extension TRFeedViewController {
             
             if feed.User_answer_status {
                 /// Add Image / Video and question title cell with view answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(image: feed.Question_media, title: feed.Question, description: "", time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(image: feed.Question_media, title: feed.Question, description: feed.Date, time: "", index: index)))
             } else {
                 /// Add Image / Video and question title cell with submit answer
                 cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(image: feed.Question_media, title: feed.Question, description: feed.Date, time: "", index: index)))
@@ -465,7 +459,7 @@ extension TRFeedViewController: UITableViewDelegate {
             if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
                 indicator.startAnimating()
             }
-            DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTriviaPosts(showProgress: false) } }
+            DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTriviaPosts(showProgress: true) } }
         }
     }
 }
@@ -581,5 +575,14 @@ extension TRFeedViewController: UITextFieldDelegate {
 extension TRFeedViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
         //Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
+    }
+}
+
+// MARK: - NoInternetDelegate -
+extension TRFeedViewController: NoInternetDelegate {
+    func connectedToNetwork(_ methodName: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.perform(Selector((methodName)))
+        }
     }
 }

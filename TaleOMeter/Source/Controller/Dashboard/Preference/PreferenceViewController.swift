@@ -45,9 +45,6 @@ class PreferenceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
-        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
     }
     
     @objc func runTimedCode() {
@@ -71,6 +68,15 @@ class PreferenceViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.hidesBackButton = true
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+        
+        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
+        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.timerg?.invalidate()
+        self.timerg1?.invalidate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -81,7 +87,7 @@ class PreferenceViewController: UIViewController {
     // MARK: - Get bubbles from API's -
     private func getBubbles() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -106,9 +112,9 @@ class PreferenceViewController: UIViewController {
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             Core.HideProgress(self)
-            Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+            //Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             return
         }
         Core.ShowProgress(self, detailLbl: "Moving To Home Page")

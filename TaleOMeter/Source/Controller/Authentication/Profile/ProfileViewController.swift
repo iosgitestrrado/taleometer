@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ProfileViewController: UIViewController {
 
@@ -128,13 +129,50 @@ class ProfileViewController: UIViewController {
             imagePicker.allowsEditing = true
             let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { result in
-                self.imagePicker.sourceType = .camera
-                self.present(self.imagePicker, animated: true, completion: nil)
+                if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    Toast.show("Camera not supported")
+                    return
+                }
+                
+                if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                    DispatchQueue.main.async {
+                        self.imagePicker.sourceType = .camera
+                        self.present(self.imagePicker, animated: true, completion: nil)
+                    }
+                } else {
+                    AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                        if granted {
+                            DispatchQueue.main.async {
+                                self.imagePicker.sourceType = .camera
+                                self.present(self.imagePicker, animated: true, completion: nil)
+                            }
+                        }
+                    })
+                }
             }))
             
             alert.addAction(UIAlertAction(title: "Photo library", style: .default, handler: { result in
-                self.imagePicker.sourceType = .photoLibrary
-                self.present(self.imagePicker, animated: true, completion: nil)
+                if !UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                    Toast.show("Photo library not supported")
+                    return
+                }
+                
+                if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                    DispatchQueue.main.async {
+                        self.imagePicker.sourceType = .photoLibrary
+                        self.present(self.imagePicker, animated: true, completion: nil)
+                    }
+                } else {
+                    AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                        if granted {
+                            DispatchQueue.main.async {
+                                self.imagePicker.sourceType = .photoLibrary
+                                self.present(self.imagePicker, animated: true, completion: nil)
+                            }
+                        }
+                    })
+                }
+                
             }))
             
             alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
@@ -145,14 +183,16 @@ class ProfileViewController: UIViewController {
                     Core.HideProgress(self)
                 }
             }))
-            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
             break
         }
     }
     
     private func uploadProfileImage(_ imageData: Data, image: UIImage) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         var imgData = imageData

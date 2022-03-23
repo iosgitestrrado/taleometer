@@ -83,7 +83,7 @@ class VerificationViewController: UIViewController {
     
     @IBAction func tapOnResendOTP(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP...")
@@ -94,7 +94,7 @@ class VerificationViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.otp1TextField.text!.isEmpty || self.otp2TextField.text!.isEmpty || self.otp3TextField.text!.isEmpty ||
@@ -171,15 +171,15 @@ extension VerificationViewController: UITextFieldDelegate, BackSpaceDelegate {
                 switch textField {
                 case otp2TextField:
                     otp2TextField.text = ""
-                    otp1TextField.becomeFirstResponder()
+                    //otp1TextField.becomeFirstResponder()
                     return false
                 case otp3TextField:
                     otp3TextField.text = ""
-                    otp2TextField.becomeFirstResponder()
+                    //otp2TextField.becomeFirstResponder()
                     return false
                 case otp4TextField:
                     otp4TextField.text = ""
-                    otp3TextField.becomeFirstResponder()
+                    //otp3TextField.becomeFirstResponder()
                     return false
                 default:
                     otp1TextField.text = ""

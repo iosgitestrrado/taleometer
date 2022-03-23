@@ -201,7 +201,7 @@ class AudioPlayManager: NSObject {
         nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
     }
     
-    // MARK: Play pause audio
+    // MARK: Play pause audio with mini player update
     func playPauseAudio(_ isPlay: Bool) {
         DispatchQueue.main.async { [self] in
             guard let player = playerAV else { return }
@@ -228,6 +228,16 @@ class AudioPlayManager: NSObject {
                 }
                 self.udpateMiniPlayerTime()
             }
+        }
+    }
+    
+    // MARK: Play pause audio only
+    func playPauseAudioOnly(_ isPlay: Bool) {
+        guard let player = playerAV else { return }
+        if isPlay {
+            player.play()
+        } else {
+            player.pause()
         }
     }
     
@@ -479,7 +489,7 @@ extension AudioPlayManager {
                 miniVController.progressBar.progress = Float(playhead / currentItem.duration.seconds)
             }
             
-            if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
                 PromptVManager.present(currVController, verifyTitle: audioList![currentAudio].Title, verifyMessage: audioList![nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: audioList![nextAudio].Image)
             }
             
@@ -593,7 +603,7 @@ extension AudioPlayManager {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(currVController)
             return
         }
         Core.ShowProgress(currVController, detailLbl: "")
@@ -606,7 +616,7 @@ extension AudioPlayManager {
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(currVController)
             return
         }
         Core.ShowProgress(currVController, detailLbl: "")

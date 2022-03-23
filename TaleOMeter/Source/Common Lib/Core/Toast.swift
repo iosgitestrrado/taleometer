@@ -25,7 +25,7 @@ class Toast: NSObject {
         toastLabel.textAlignment = .center
         toastLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
         // Message black to set internet message
-        toastLabel.text = message.isBlank ? "Please check youy internet connection and try again.!!" : message
+        toastLabel.text = message.isBlank ? "Please check your internet connection and try again.!!" : message
         toastLabel.clipsToBounds  =  true
         toastLabel.numberOfLines = 0
         
@@ -56,7 +56,7 @@ class Toast: NSObject {
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
             toastContainer.alpha = 1.0
         }, completion: { _ in
-            UIView.animate(withDuration: 0.5, delay: 1.0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 5.0, options: .curveEaseOut, animations: {
                 toastContainer.alpha = 0.0
             }, completion: {_ in
                 toastContainer.removeFromSuperview()

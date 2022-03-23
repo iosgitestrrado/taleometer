@@ -66,6 +66,26 @@ class FeedCellView: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+//        if cellId == FeedCellIdentifier.image || cellId == FeedCellIdentifier.video || cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo {
+            if let videoBtn = self.videoButton {
+                videoBtn.layer.cornerRadius = 20
+                videoBtn.layer.masksToBounds = true
+                videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
+            
+            if let cvrImg = self.coverImage {
+                cvrImg.layer.cornerRadius = 20
+                cvrImg.layer.masksToBounds = true
+                cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
+            
+        if self.mainView != nil {
+            self.mainView.layer.cornerRadius = 20
+            self.mainView.layer.masksToBounds = true
+            self.mainView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+            
+//        }
     }
     
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
@@ -78,7 +98,7 @@ class FeedCellView: UITableViewCell {
         if !cellData.description.isBlank, let desc = self.descLabel {
             desc.text = cellData.description
         }
-        if !cellData.description.isBlank, cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo, let subTitl = self.subTitle {
+        if !cellData.description.isBlank, let subTitl = self.subTitle {
             subTitl.text = cellData.description
         }
         if let descText = self.descText {
@@ -103,44 +123,10 @@ class FeedCellView: UITableViewCell {
             viewPR.setTitle(cellData.title, for: .normal)
         }
         
-        if cellId == FeedCellIdentifier.image || cellId == FeedCellIdentifier.video {
-            if let videoBtn = self.videoButton {
-                videoBtn.layer.cornerRadius = 20
-                videoBtn.layer.masksToBounds = true
-                videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }
-            
-            if let cvrImg = self.coverImage {
-                cvrImg.layer.cornerRadius = 20
-                cvrImg.layer.masksToBounds = true
-                cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }
-            
-            self.mainView.layer.cornerRadius = 20
-            self.mainView.layer.masksToBounds = true
-            self.mainView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
         
         if cellId == FeedCellIdentifier.post {
             self.contentView.layer.cornerRadius = 20
             self.contentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        }
-        
-        if cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo {
-            if let videoBtn = self.videoButton {
-                videoBtn.layer.cornerRadius = 20
-                videoBtn.layer.masksToBounds = true
-                videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }
-            
-            if let cvrImg = self.coverImage {
-                cvrImg.layer.cornerRadius = 20
-                cvrImg.layer.masksToBounds = true
-                cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }
-            
-            self.bottomView.layer.cornerRadius = 20
-            self.bottomView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
        
         if let postBtn = self.postButton {

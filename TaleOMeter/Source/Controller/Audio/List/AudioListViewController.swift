@@ -312,7 +312,7 @@ extension AudioListViewController {
     // Get Favourite audios
     private func getFavourite() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentConroller)
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "Getting Favourite Audio...")
@@ -340,7 +340,7 @@ extension AudioListViewController {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentConroller)
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "")
@@ -353,7 +353,7 @@ extension AudioListViewController {
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentConroller)
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "")
@@ -368,7 +368,7 @@ extension AudioListViewController {
 extension AudioListViewController {
     private func getStoryAudios() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentConroller)
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "Getting Audios...")
@@ -396,7 +396,7 @@ extension AudioListViewController {
     
     private func getPlotAudios() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentConroller)
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "Getting Audios...")
@@ -424,7 +424,7 @@ extension AudioListViewController {
     
     private func getNarrationAudios() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentConroller)
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "Getting Audios...")

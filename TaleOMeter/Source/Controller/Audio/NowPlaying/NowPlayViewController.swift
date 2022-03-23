@@ -120,9 +120,7 @@ class NowPlayViewController: UIViewController {
         if existingAudio {
             setupExistingAudio(playNow)
         } else {
-            if let player = AudioPlayManager.shared.playerAV {
-                player.pause()
-            }
+            AudioPlayManager.shared.playPauseAudioOnly(false)
             Core.ShowProgress(self, detailLbl: "Streaming Audio")
             AudioPlayManager.shared.initPlayerManager { result in
                 self.configureAudio(playNow, result: result)
@@ -310,23 +308,23 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - Handle play pause audio
     private func playPauseAudio(_ playing: Bool) {
-        if let player = AudioPlayManager.shared.playerAV {
+       // if let player = AudioPlayManager.shared.playerAV {
+            AudioPlayManager.shared.playPauseAudioOnly(playing)
             //print("Audio is playing: \(playing)")
             DispatchQueue.main.async {
                 self.playButton.isSelected = playing
             }
             if !playing {
-                player.pause()
                 audioTimer.invalidate()
                 visualizationWave.pause()
             } else {
-                player.play()
+                //player.play()
                 audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
                 visualizationWave.play(for: TimeInterval(totalTimeDuration))
             }
-        }
+        //}
     }
     
     // MARK: - Play(0) Previouse(1) Favourite(2) Back10Sec(3) Forward10Sec(4) Share(5)
@@ -441,7 +439,7 @@ class NowPlayViewController: UIViewController {
                 }
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-                    if player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
+                    if UserDefaults.standard.bool(forKey: "AutoplayEnable") && player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
                         PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
                     }
                 }
@@ -456,7 +454,7 @@ extension NowPlayViewController {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -469,7 +467,7 @@ extension NowPlayViewController {
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -493,7 +491,7 @@ extension NowPlayViewController: PromptViewDelegate {
             DispatchQueue.main.async {
                 if let player = AudioPlayManager.shared.playerAV {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-                    player.pause()
+                    AudioPlayManager.shared.playPauseAudioOnly(false)
                 }
                 self.visualizationWave.stop()
                 self.visualizationWave.playChronometer = nil

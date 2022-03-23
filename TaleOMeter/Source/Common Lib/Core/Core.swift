@@ -36,6 +36,17 @@ class Core: NSObject {
     }
     
     /*
+     * Push to no internet connection view
+     */
+    static func noInternet(_ controller: UIViewController, methodName: String = "") {
+        if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "NoInternetViewController") as? NoInternetViewController {
+            myobject.delegate = controller as? NoInternetDelegate
+            myobject.methodName = methodName
+            controller.navigationController?.pushViewController(myobject, animated: true)
+        }
+    }
+    
+    /*
      * Get controller using storyboardId
      */
     static func getController(_ storyboard: String, storyboardId: String) -> UIViewController {

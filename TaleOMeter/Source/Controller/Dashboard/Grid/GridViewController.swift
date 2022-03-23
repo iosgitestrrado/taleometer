@@ -81,7 +81,7 @@ class GridViewController: UIViewController {
     
     private func getAudioList(_ completionHandler: (() -> Void)?) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(parentController!)
             return
         }
         if !morepage {

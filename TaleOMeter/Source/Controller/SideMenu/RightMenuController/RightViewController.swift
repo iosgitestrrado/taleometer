@@ -198,7 +198,7 @@ extension RightViewController: UITableViewDelegate {
             switch item {
             case .logout:
                 if !Reachability.isConnectedToNetwork() {
-                    Toast.show()
+                    Core.noInternet(self)
                     return
                 }
                 AuthClient.logout()

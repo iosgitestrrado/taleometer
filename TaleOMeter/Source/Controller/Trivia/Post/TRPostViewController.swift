@@ -65,7 +65,7 @@ class TRPostViewController: UIViewController {
     // MARK: Tap on submit Button
     @objc private func tapOnSubmit(_ sender: UIButton) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if postArray[sender.tag].Value.isBlank, let textFlield = postArray[sender.tag].TextField {
@@ -122,7 +122,7 @@ extension TRPostViewController {
     // MARK: - Get trivia posts
     private func getTriviaPosts() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")

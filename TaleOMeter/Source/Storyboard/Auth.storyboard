@@ -896,6 +896,7 @@ Cg
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="1vh-ns-JC0"/>
                                 </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="trB-TG-HL6" id="93o-re-NlP"/>

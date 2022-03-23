@@ -76,7 +76,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.mobileNumberTxt.text!.isBlank {
@@ -131,7 +131,8 @@ class LoginViewController: UIViewController {
     @IBAction func tapOnCountry(_ sender: Any) {
         let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
         myobject.delegate = self
-        self.navigationController?.present(myobject, animated: true, completion: nil)
+        self.navigationController?.pushViewController(myobject, animated: true)
+        //self.navigationController?.present(myobject, animated: true, completion: nil)
     }
     
     // MARK: - Navigation

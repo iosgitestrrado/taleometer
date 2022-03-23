@@ -11,15 +11,6 @@ import SwiftyJSON
 
 class APIClient: GenericAPIClient {
     static let shared = APIClient()
-    static let basePathSBT = "/api/v1/EducationalVideos"
-    static let basePathWL = "/api/v1/WatchList"
-    static let basePathPort = "/api/v1/Portfolio"
-    static let basePathStock = "/api/v1/Stock"
-    static let basePathGeneral = "/api/v1/General"
-    static let basePathAuth = "/api/v1/Auth"
-    static let basePathProPlan = "/api/v1/Proplan"
-    static let basePathProCode = "/api/v1/PromoCode"
-    static let basePathProfile = "/api/v1/Profile"
 
     var session: URLSession
 

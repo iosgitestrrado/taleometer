@@ -99,6 +99,10 @@ class SearchViewController: UIViewController {
 // MARK: - Get data from server
 extension SearchViewController {
     private func get(_ searchText: String, isLoading: Bool = true) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
         if isLoading {
             Core.ShowProgress(self, detailLbl: "")
         }
@@ -117,6 +121,10 @@ extension SearchViewController {
     }
     
     private func getRecent(_ isLoading: Bool = true) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
         if isLoading {
             Core.ShowProgress(self, detailLbl: "")
         }
@@ -142,6 +150,10 @@ extension SearchViewController {
     }
     
     private func removeRecent(_ search_id: Int, removeAll: Bool = false) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
         Core.ShowProgress(self, detailLbl: "")
         SearchAudioClient.delete(SearchDeleteRequest(audio_search_id: search_id), removeAll: removeAll) { [self] status in
             if let st = status, st {
