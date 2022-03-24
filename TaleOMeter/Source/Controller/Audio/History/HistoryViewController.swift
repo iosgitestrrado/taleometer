@@ -13,18 +13,33 @@ class HistoryViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Private Property -
-    private var sectionList = [ "23/02/2022", "22/02/2022", "21/02/2022", "20/02/2022" ]
+    private var audioList = [Audio]()
+    private var historyList = [History]()
+    private var historyData = Dictionary<String, [History]>()
+    private var selectedIndex = -1
+    private var selectedSection = -1
+    
+    private var footerView = UIView()
+    private var morePage = true
+    private var pageNumber = 1
+    private var showNoData = 0
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        Core.initFooterView(self, footerView: &footerView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getHistory()
     }
 
     // MARK: - Side Menu button action -
@@ -33,24 +48,198 @@ class HistoryViewController: UIViewController {
     }
     
     @objc func tapOnPlay(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        // Get section index from button layer
+        guard let sectionIndex = sender.layer.value(forKey: "Section") as? Int else { return }
+        // Get key from history data
+        let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: sectionIndex)]
+        // Get cell data from history data
+        guard let cellData = historyData[key]?[sender.tag] else { return }
+        // Get current index from audio list
+        guard let currentIndex = audioList.firstIndex(where: { $0.Id == cellData.Audio_story.Id }) else { return }
+                
+        if sender.isSelected {
+            // Pause audio and update row
+            if AudioPlayManager.shared.playerAV != nil {
+                AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
+                selectedIndex = -1
+                selectedSection = -1
+                self.tableView.reloadData()
+                return
+            }
+        } else {
+            // Check already audio is loaded
+            if AudioPlayManager.shared.currentIndex == currentIndex && AudioPlayManager.shared.playerAV != nil {
+                AudioPlayManager.shared.playPauseAudio(true)
+                selectedIndex = sender.tag
+                selectedSection = sectionIndex
+                self.tableView.reloadData()
+                return
+            }
+            
+            // Set audio for audio play manager
+            AudioPlayManager.shared.audioList = audioList
+            
+            // Set current audio index of audio play manager
+            AudioPlayManager.shared.setAudioIndex(currentIndex, isNext: false)
+            
+            // Set audio history id
+            AudioPlayManager.shared.audioHistoryId = cellData.Id
+            
+            // Check favourite audio list and set to audio play manager
+            if !AudioPlayManager.shared.isHistory {
+                // Enable isfavorite of audio player manager
+                AudioPlayManager.shared.isHistory = true
+                AudioPlayManager.shared.isFavourite = false
+                AudioPlayManager.shared.isNonStop = false
+            }
+            
+            // Set curret audio index of audio play manager
+            self.initPlayerManager(sectionIndex, rowIndex: sender.tag)
+        }
+    }
+    
+    // MARK: - Initialize audio play manager
+    private func initPlayerManager(_ section: Int, rowIndex: Int) {
+        if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            // Pause current playing audio
+            AudioPlayManager.shared.playPauseAudio(false)
+        }
+        
+        // Show progress bar
+        Core.ShowProgress(self, detailLbl: "")
+                    
+        // Initialize audio play manager
+        AudioPlayManager.shared.initPlayerManager(false, isNonStop: false, getMeters: false, isHistory: true) { [self] success in
+            Core.HideProgress(self)
+            
+//            // Add mini player view in footer
+//            if AudioPlayManager.shared.isMiniPlayerActive {
+//                AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
+//            }
+            // Play audio now
+            AudioPlayManager.shared.playPauseAudio(true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                // For update row set selected index
+                if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+                    selectedIndex = rowIndex
+                    selectedSection = section
+                }
+                self.tableView.reloadData()
+            }
+        }
     }
     
     @objc func tapOnFav(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        // Get section index from button layer
+        if let sectionIndex = sender.layer.value(forKey: "Section") as? Int {
+            // Get key from history data
+            let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: sectionIndex)]
+            // Get cell data from history data
+            if let cellData = historyData[key]?[sender.tag] {
+                // Check fav audio is added
+                if !sender.isSelected {
+                    // Add to favourite
+                    self.addToFav(cellData.Audio_story.Id) { status in
+                        if let st = status, st {
+                            sender.isSelected = !sender.isSelected
+                        }
+                    }
+                } else {
+                    // Remove to favourite
+                    self.removeFromFav(cellData.Audio_story.Id) { status in
+                        if let st = status, st {
+                            sender.isSelected = !sender.isSelected
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 // MARK: - Get Data from server -
 extension HistoryViewController {
-    private func get() {
+    // Get audio history
+    private func getHistory() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "getHistory")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        HistoryAudioClient.get("1", limit: 10) { [self] response in
+            showNoData = 1
+            if let data = response {
+                morePage = data.count > 0
+                historyList = historyList + data
+                
+                // Set audio list from history data
+                historyList.forEach { hist in
+                    audioList.append(hist.Audio_story)
+                }
+                
+                // Set history data from history list
+                historyData = Dictionary(grouping: historyList, by: { $0.Updated_at })
+                
+                // Check mini player audio is playing or not
+                if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+                    // Create private temp row and section index
+                    var sectioIdx = 0
+                    var rowIdx = -1
+                    for (_, histList) in historyData {
+                        for idx in 0..<histList.count {
+                            if histList[idx].Audio_story.Id == AudioPlayManager.shared.currentAudio.Id {
+                                // Set row index
+                                rowIdx = idx
+                                break
+                            }
+                        }
+                        if rowIdx != -1 {
+                            break
+                        }
+                        sectioIdx += 1
+                    }
+                    // Set row and section index
+                    selectedIndex = rowIdx
+                    selectedSection = sectioIdx
+                }
+            }
+            // Scroll to perticuler row
+            if selectedIndex >= 0 && selectedSection >= 0 {
+                let indexPath = IndexPath(row: selectedIndex, section: selectedSection)
+                self.tableView.reloadData()
+                self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+            } else {
+                tableView.reloadData()
+            }
+            tableView.tableFooterView = UIView()
+            // Hide progress
+            Core.HideProgress(self)
+        }
+    }
+    
+    // Add to favourite
+    private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
-        HistoryAudioClient.get("1", limit: 10) { response in
-            
+        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+            Core.HideProgress(self)
+            completion(status)
+        }
+    }
+    
+    // Remove from favourite
+    private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+            Core.HideProgress(self)
+            completion(status)
         }
     }
 }
@@ -59,21 +248,71 @@ extension HistoryViewController {
 extension HistoryViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionList.count
+        return historyData.keys.count > 0 ? historyData.keys.count : showNoData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        if historyData.keys.count > 0 {
+            let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: section)]
+            return historyData[key]?.count ?? 0
+        }
+        return showNoData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if historyData.keys.count <= 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
+            return cell
+        }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "audioCell", for: indexPath) as? AudioViewCell else { return UITableViewCell() }
-        if let image = cell.imageView {
+        
+        // Get key of current row using section
+        let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: indexPath.section)]
+        
+        // Check audio is paying for current row
+        let playIsSelected = indexPath.section == selectedSection && indexPath.row == selectedIndex
+        
+        // Set cell data
+        if let cellData = historyData[key]?[indexPath.row] {
+            // Set history image
+            cell.profileImage.image = cellData.Audio_story.Image
+            
+            // Set likes and duration
+            cell.subTitleLabel.text = "\(cellData.Audio_story.Favorites_count) Likes | \(AudioPlayManager.getHoursMinutesSecondsFromString(seconds: Double(cellData.Time)))"
+            
+            // Set favourite button
+            cell.favButton.isSelected = cellData.Audio_story.Is_favorite
+            
+            // Set progres bar progress
+            cell.progressBar.progress = Float(Float(cellData.Time) / cellData.Audio_story.AudioDuration)
+            
+            // Set audio title
+            cell.titleLabel.text = cellData.Audio_story.Title
+            cell.titleLabel.textColor = .white
+            if playIsSelected {
+                // Set audio title playing audio
+                let soundWave = Core.getImageString("wave")
+                let titleAttText = NSMutableAttributedString(string: "\(cellData.Audio_story.Title)  ")
+                titleAttText.append(soundWave)
+                cell.titleLabel.attributedText = titleAttText
+                cell.titleLabel.textColor = UIColor(displayP3Red: 213.0 / 255.0, green: 40.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0)
+            }
+        }
+        if let image = cell.profileImage {
             image.cornerRadius = image.frame.size.height / 2.0
         }
+        
+        // Set play button index and function
+        cell.playButton.tag = indexPath.row
+        cell.playButton.layer.setValue(indexPath.section, forKey: "Section")
         cell.playButton.addTarget(self, action: #selector(tapOnPlay(_:)), for: .touchUpInside)
+        cell.playButton.isSelected = playIsSelected
+
+        // Set Favourite button index and function
+        cell.favButton.tag = indexPath.row
+        cell.favButton.layer.setValue(indexPath.section, forKey: "Section")
         cell.favButton.addTarget(self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
-        cell.progressBar.progress = Float.random(in: 0.2..<1.0)
+        
         cell.selectionStyle = .none
         return cell
     }
@@ -83,22 +322,53 @@ extension HistoryViewController : UITableViewDataSource {
 extension HistoryViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return historyData.keys.count <= 0 ? 30 : 70
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
+        //Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return historyData.keys.count <= 0 ? 0 : 20
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if historyData.keys.count <= 0 {
+            return UIView()
+        }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell") as? AudioViewCell else { return UIView() }
         cell.titleLabel.layer.masksToBounds = true
         cell.titleLabel.layer.cornerRadius = cell.titleLabel.frame.size.height / 2.0
-        cell.titleLabel.text = "  \(sectionList[section])  "
+        cell.titleLabel.text = "  \(historyData.keys[historyData.index(historyData.startIndex, offsetBy: section)])  "
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if historyData.keys.count > 0 {
+            // Get key of current row using section
+            let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: indexPath.section)]
+            if indexPath.section > 0, let historyListt = historyData[key], historyListt.count > 5, indexPath.section == historyListt.count - 1 && self.morePage {
+                //last cell load more
+                pageNumber += 1
+                tableView.tableFooterView = footerView
+                if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
+                    indicator.startAnimating()
+                }
+                DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getHistory() } }
+            }
+        }
+        
+    }
+}
+
+
+// MARK: - NoInternetDelegate -
+extension HistoryViewController: NoInternetDelegate {
+    func connectedToNetwork(_ methodName: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.perform(Selector((methodName)))
+        }
     }
 }

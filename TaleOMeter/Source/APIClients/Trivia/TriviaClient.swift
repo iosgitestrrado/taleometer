@@ -53,7 +53,7 @@ class TriviaClient {
     
     static func submitAnswer(_ req: SubmitAnswerRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(parameters: req, feed: .TriviaSubmitAnswer) { result in
-            ResponseAPI.getResponseJsonBool(result) { status in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                 completion(status)
             }
         }

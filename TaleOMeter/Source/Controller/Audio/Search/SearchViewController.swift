@@ -264,13 +264,13 @@ extension SearchViewController: UITableViewDelegate {
             return
         }
         if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
-            if let audioUrl = URL(string: searchArray[indexPath.row].File) {
-                let fileName = NSString(string: audioUrl.lastPathComponent)
-                if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                    Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
-                    return
-                }
-            }
+//            if let audioUrl = URL(string: searchArray[indexPath.row].File) {
+//                let fileName = NSString(string: audioUrl.lastPathComponent)
+//                if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+//                    Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
+//                    return
+//                }
+//            }
             if AudioPlayManager.shared.isNonStop {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
             }

@@ -7,6 +7,8 @@
 
 import UIKit
 import SwiftyJSON
+import AVFoundation
+import AVKit
 
 struct Audio {
     var Id = Int()
@@ -30,6 +32,7 @@ struct Audio {
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
+    var AudioDuration = Float()
     
 //    var Stories: [Story]?
 //    var Plots: [Story]?
@@ -65,6 +68,7 @@ struct Audio {
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
         }
+        AudioDuration = Audio.getAudioDuration(File)
                 
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story
@@ -78,6 +82,14 @@ struct Audio {
 //        Stories = strories
 //        Plots = plots
 //        Narrations = narrations
+    }
+    
+    static func getAudioDuration(_ file: String) -> Float {
+        if let audioUrl = URL(string: file) {
+            let audioAsset = AVURLAsset(url: audioUrl)
+            return Float(CMTimeGetSeconds(audioAsset.duration))
+        }
+        return 0
     }
 }
 
@@ -100,11 +112,6 @@ struct Audio {
 
 
 struct AudioRequest: Codable {
-    var page = Int()
+    var page = String()
     var limit = Int()
-}
-
-struct AudioAddRequst: Codable {
-    var audio_story_id = Int()
-    var time = Int()
 }

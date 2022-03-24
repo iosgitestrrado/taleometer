@@ -67,25 +67,29 @@ class FeedCellView: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
 //        if cellId == FeedCellIdentifier.image || cellId == FeedCellIdentifier.video || cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo {
-            if let videoBtn = self.videoButton {
-                videoBtn.layer.cornerRadius = 20
-                videoBtn.layer.masksToBounds = true
-                videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }
-            
-            if let cvrImg = self.coverImage {
-                cvrImg.layer.cornerRadius = 20
-                cvrImg.layer.masksToBounds = true
-                cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }
-            
-        if self.mainView != nil {
-            self.mainView.layer.cornerRadius = 20
-            self.mainView.layer.masksToBounds = true
-            self.mainView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        if let videoBtn = self.videoButton {
+            videoBtn.layer.cornerRadius = 20
+            videoBtn.layer.masksToBounds = true
+            videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+        
+        if let cvrImg = self.coverImage {
+            cvrImg.layer.cornerRadius = 20
+            cvrImg.layer.masksToBounds = true
+            cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+        
+        if let btmView = self.bottomView {
+            btmView.layer.cornerRadius = 20
+            btmView.layer.masksToBounds = true
+            btmView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
             
-//        }
+        if let mView = self.mainView {
+            mView.layer.cornerRadius = 20
+            mView.layer.masksToBounds = true
+            mView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
     }
     
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
@@ -122,7 +126,6 @@ class FeedCellView: UITableViewCell {
         if !cellData.title.isBlank, let viewPR = self.viewPrevReply {
             viewPR.setTitle(cellData.title, for: .normal)
         }
-        
         
         if cellId == FeedCellIdentifier.post {
             self.contentView.layer.cornerRadius = 20

@@ -156,6 +156,7 @@ enum Feed {
     case GetProfile
     case UpdateProfileImage
     case UpdateProfileDetails
+    case UpdateDeviceToke
 
     //Preference
     case GetPreference
@@ -168,6 +169,7 @@ enum Feed {
     //Audio
     case GuestAudioStories
     case AudioStories
+    case NonStopAudios
     case AddAudioHistory
     case GetAudioHistory///page=1
     case UpdateAudioHistory
@@ -187,6 +189,12 @@ enum Feed {
     
     //Other
     case UserStories
+    case Feedback
+    case AboutUs
+    case TermsAndConditions
+    case AutoplaySetting
+    case NotificationSetting
+    case Notification
     
     //Trivia
     case TriviaHome
@@ -221,6 +229,7 @@ extension Feed: Endpoint {
         case .GetProfile:               return "/api/getProfile"
         case .UpdateProfileImage:       return "/api/update-profile/image"
         case .UpdateProfileDetails:     return "/api/update-profile/details"
+        case .UpdateDeviceToke:         return "/api/notification/token"
 
         //Preference
         case .GetPreference:            return "/api/preference-bubbles"
@@ -233,6 +242,7 @@ extension Feed: Endpoint {
         //Audio
         case .GuestAudioStories:        return "/api/guest-audio-stories"
         case .AudioStories:             return "/api/audio-stories"
+        case .NonStopAudios:            return "/api/audio-stories/non-stop"
         case .AddAudioHistory:          return "/api/add-audio-history"
         case .GetAudioHistory:          return "/api/get-audio-history"
         case .UpdateAudioHistory:       return "/api/update-audio-history"
@@ -252,6 +262,12 @@ extension Feed: Endpoint {
             
         //Other
         case .UserStories:              return "/api/user-stories"
+        case .Feedback:                 return "/api/feedback"
+        case .AboutUs:                  return "/api/about-us"
+        case .TermsAndConditions:       return "/api/terms-and-conditions"
+        case .Notification:             return "/api/notifications"
+        case .NotificationSetting:      return "/api/notification"
+        case .AutoplaySetting:          return "/api/autoplay"
             
         //Trivia
         case .TriviaHome:               return "/api/trivia-home"
@@ -262,6 +278,7 @@ extension Feed: Endpoint {
         case .TriviaViewAnswer:         return "/api/trivia/view-answer"
         case .TriviaViewCommnets:       return "/api/trivia/view-comments"
         case .TriviaAddCommennt:        return "/api/trivia/add-comment"
+       
         }
     }
 }

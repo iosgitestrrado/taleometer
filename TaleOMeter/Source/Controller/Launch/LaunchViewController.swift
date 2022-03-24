@@ -18,7 +18,7 @@ class LaunchViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
         if isOnlyTrivia {
                 if let profileData = Login.getProfileData() {
                     if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {

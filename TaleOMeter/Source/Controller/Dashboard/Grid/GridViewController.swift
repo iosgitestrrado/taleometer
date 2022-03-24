@@ -75,7 +75,7 @@ class GridViewController: UIViewController {
             }
             
             // load initial data
-            collectionView?.beginInfiniteScroll(true)
+            collectionView?.beginInfiniteScroll(false)
         }
     }
     
@@ -88,7 +88,7 @@ class GridViewController: UIViewController {
             return
         }
         Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
-            AudioClient.get(AudioRequest(page: pageNumber, limit: pageLimit), genreId: genreId, completion: { [self] result in
+            AudioClient.get(AudioRequest(page: "\(pageNumber)", limit: pageLimit), genreId: genreId, completion: { [self] result in
                 morepage = result != nil && result!.count > 0
                 if let response = result, response.count > 0 {
                     if pageNumber == 1 {
@@ -179,13 +179,13 @@ extension GridViewController: UICollectionViewDelegate {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             //Core.push(self.parentController!, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
             if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
-                if let audioUrl = URL(string: audioList[indexPath.row].File) {
-                    let fileName = NSString(string: audioUrl.lastPathComponent)
-                    if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                        Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
-                        return
-                    }
-                }
+//                if let audioUrl = URL(string: audioList[indexPath.row].File) {
+//                    let fileName = NSString(string: audioUrl.lastPathComponent)
+//                    if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+//                        Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
+//                        return
+//                    }
+//                }
                 if AudioPlayManager.shared.isNonStop {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
                 }

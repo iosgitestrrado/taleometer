@@ -20,16 +20,14 @@ class HistoryAudioClient {
         }
     }
     
-    static func add(_ req: HistoryAddRequest, completion: @escaping(Bool?) -> Void) {
-        self.get("all", limit: 1000) { result in
-            if let histories = result, histories.contains(where: { $0.Id == req.audio_story_id}) {
-                completion(false)
-            } else {
-                APIClient.shared.postJson(parameters: req, feed: .AddAudioHistory) { result in
-                    ResponseAPI.getResponseJsonBool(result) { status in
-                        completion(status)
-                    }
+    static func add(_ req: HistoryAddRequest, completion: @escaping(History?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .AddAudioHistory) { result in
+            ResponseAPI.getResponseJson(result) { response in
+                var audioHistory = History()
+                if let data = response {
+                    audioHistory = History(data)
                 }
+                completion(audioHistory)
             }
         }
     }

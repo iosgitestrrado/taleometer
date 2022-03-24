@@ -69,11 +69,19 @@ class RegisterViewController: UIViewController {
             Core.noInternet(self)
             return
         }
+        if nameTextField.text!.isBlank {
+            Validator.showRequiredError(nameTextField)
+            return
+        }
         if displayNameText.text!.isBlank {
             Validator.showRequiredError(displayNameText)
             return
         }
-        if !emailTextField.text!.isBlank && !emailTextField.text!.isEmail {
+        if emailTextField.text!.isBlank {
+            Validator.showRequiredError(emailTextField)
+            return
+        }
+        if !emailTextField.text!.isEmail {
             Validator.showError(emailTextField, message: "Invalid email")
             return
         }

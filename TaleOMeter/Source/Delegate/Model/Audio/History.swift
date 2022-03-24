@@ -24,7 +24,7 @@ struct History {
         User_id = json["user_id"].intValue
         Audio_story_id = json["audio_story_id"].intValue
         Created_at = json["created_at"].stringValue
-        Updated_at = History.dateToSQLDate(json["updated_at"].stringValue)
+        Updated_at = History.sqlDatetoAppDate(json["updated_at"].stringValue)
         Time = json["time"].intValue
         
         if let audio_story = json["audio_story"].dictionaryObject {
@@ -32,13 +32,12 @@ struct History {
         }
     }
     
-    static func dateToSQLDate(_ string: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        guard let date = dateFormatter.date(from: string) else { return "" }
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        return dateFormatter.string(from: date)
+    static func sqlDatetoAppDate(_ string: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = Constants.DateFormate.server
+        guard let showDate = inputFormatter.date(from: string) else { return "" }
+        inputFormatter.dateFormat = Constants.DateFormate.app
+        return inputFormatter.string(from: showDate)
     }
 }
 

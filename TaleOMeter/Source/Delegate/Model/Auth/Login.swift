@@ -36,6 +36,9 @@ struct Login {
     
     public static func storeProfileData(_ profileData: ProfileData) {
         do {
+            UserDefaults.standard.set(profileData.Autoplay.lowercased().contains("enable"), forKey: "AutoplayEnable")
+            UserDefaults.standard.synchronize()
+            
             // Create JSON Encoder
             let encoder = JSONEncoder()
             // Encode Note
@@ -76,3 +79,6 @@ struct LoginRequest: Encodable {
     var country_code = String()
 }
 
+struct NotificationRequest: Encodable {
+    var token = String()
+}

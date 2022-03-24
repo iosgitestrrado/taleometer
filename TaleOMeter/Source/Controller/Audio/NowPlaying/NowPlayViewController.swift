@@ -37,7 +37,7 @@ class NowPlayViewController: UIViewController {
 
     // MARK: - Public Properties -
     var existingAudio = false
-    var isPlaying = false
+    var isPlaying = true
     var waveFormcount = 0
     var myAudioList = [Audio]()
     var currentAudioIndex = -1
@@ -55,8 +55,8 @@ class NowPlayViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         
-        if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
-            currentAudio = audList[AudioPlayManager.shared.currentAudio]
+        if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
+            currentAudio = audList[AudioPlayManager.shared.currentIndex]
             // Configure audio data
             setupAudioDataPlay(isPlaying)
         } else {
@@ -207,7 +207,7 @@ class NowPlayViewController: UIViewController {
             self.existingAudio = false
             
             // Setup current audio variable
-            self.currentAudio = AudioPlayManager.shared.audio
+            self.currentAudio = AudioPlayManager.shared.currentAudio
         
             // Configure audio data
             setupAudioDataPlay(player.isPlaying)
@@ -307,9 +307,9 @@ class NowPlayViewController: UIViewController {
     }
     
     // MARK: - Handle play pause audio
-    private func playPauseAudio(_ playing: Bool) {
+    private func playPauseAudio(_ playing: Bool, addToHistory: Bool = false) {
        // if let player = AudioPlayManager.shared.playerAV {
-            AudioPlayManager.shared.playPauseAudioOnly(playing)
+            AudioPlayManager.shared.playPauseAudioOnly(playing, addToHistory: addToHistory)
             //print("Audio is playing: \(playing)")
             DispatchQueue.main.async {
                 self.playButton.isSelected = playing
@@ -333,7 +333,7 @@ class NowPlayViewController: UIViewController {
         case 0:
             //Play
             if let player = AudioPlayManager.shared.playerAV {
-                self.playPauseAudio(!player.isPlaying)
+                self.playPauseAudio(!player.isPlaying, addToHistory: true)
             }
             break
         case 1:
@@ -343,18 +343,11 @@ class NowPlayViewController: UIViewController {
         case 2:
             //Favourite
             if sender.isSelected {
-                self.removeFromFav(currentAudio.Id) { status in
-                    if let st = status, st {
-                        sender.isSelected = !sender.isSelected
-                    }
-                }
+                self.removeFromFav(currentAudio.Id) { status in }
             } else {
-                self.addToFav(currentAudio.Id) { status in
-                    if let st = status, st {
-                        sender.isSelected = !sender.isSelected
-                    }
-                }
+                self.addToFav(currentAudio.Id) { status in }
             }
+            sender.isSelected = !sender.isSelected
             break
         case 3:
             //Back 10 Second
@@ -440,7 +433,7 @@ class NowPlayViewController: UIViewController {
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
                     if UserDefaults.standard.bool(forKey: "AutoplayEnable") && player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
-                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
+                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Image)
                     }
                 }
                 AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
@@ -457,10 +450,10 @@ extension NowPlayViewController {
             Core.noInternet(self)
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
-        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
-            Core.HideProgress(self)
-            completion(status)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+                completion(status)
+            }
         }
     }
     
@@ -470,10 +463,10 @@ extension NowPlayViewController {
             Core.noInternet(self)
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
-        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
-            Core.HideProgress(self)
-            completion(status)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+                completion(status)
+            }
         }
     }
 }
@@ -491,7 +484,7 @@ extension NowPlayViewController: PromptViewDelegate {
             DispatchQueue.main.async {
                 if let player = AudioPlayManager.shared.playerAV {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-                    AudioPlayManager.shared.playPauseAudioOnly(false)
+                    AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag == 1 ? false : true)
                 }
                 self.visualizationWave.stop()
                 self.visualizationWave.playChronometer = nil
@@ -513,15 +506,15 @@ extension NowPlayViewController: AudioListViewDelegate {
     func changeIntoPlayingAudio(_ currentAudio: Audio) {
         self.currentAudio = currentAudio
         self.setAudioData()
-        if AudioPlayManager.shared.audio.Id == currentAudio.Id, let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+        if AudioPlayManager.shared.currentAudio.Id == currentAudio.Id, let player = AudioPlayManager.shared.playerAV, player.isPlaying {
             self.existingAudio = true
             self.setupExistingAudio(true)
-        } else if AudioPlayManager.shared.audio.Id != currentAudio.Id {
+        } else if AudioPlayManager.shared.currentAudio.Id != currentAudio.Id {
             AudioPlayManager.shared.audioList = myAudioList
             AudioPlayManager.shared.setAudioIndex(currentAudioIndex, isNext: false)
-            if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
+            if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
                 self.existingAudio = false
-                self.currentAudio = audList[AudioPlayManager.shared.currentAudio]
+                self.currentAudio = audList[AudioPlayManager.shared.currentIndex]
                 // Configure audio data
                 setupAudioDataPlay(false)
             } else {

@@ -51,11 +51,21 @@ class FeedbackViewController: UIViewController {
     
     // MARK: - Side Menu button action -
     @IBAction func tapOnSubmit(_ sender: Any) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
         if textView.text == messageString || textView.text.isBlank {
             Toast.show(messageString)
             return
         }
-        PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", image: UIImage(named: "thank"), ansImage: nil, isUserStory: true)
+        Core.ShowProgress(self, detailLbl: "")
+        OtherClient.submitFeedback(FeedbackRequest(content: textView.text!)) { status in
+            Core.HideProgress(self)
+            if let st = status, st {
+                PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", image: UIImage(named: "thank"), ansImage: nil, isUserStory: true)
+            }
+        }
     }
     
     // MARK: - Click on done button of keyborad toolbar

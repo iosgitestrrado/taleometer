@@ -1,5 +1,5 @@
 //
-//  Verification.swift
+//  ProfileData.swift
 //  TaleOMeter
 //
 //  Created by Durgesh on 08/03/22.
@@ -32,13 +32,14 @@ struct ProfileData: Codable {
     var Active_link = String()
     var Is_login = Bool()
     var Notify = Bool()
-    var Push_notif = Bool()
     var DeviceToken = String()
     var Os = String()
     var Current_active = Bool()
     var Created_at = String()
     var Updated_at = String()
     var Is_deleted = Bool()
+    var Autoplay = String()
+    var Push_notify = Bool()
     
     var StoryBoardName = String()
     var StoryBoardId = String()
@@ -80,13 +81,14 @@ struct ProfileData: Codable {
         Active_link = json["active_link"].stringValue
         Is_login = json["is_login"].boolValue
         Notify = json["notify"].boolValue
-        Push_notif = json["push_notify"].boolValue
         DeviceToken = json["deviceToken"].stringValue
         Os = json["os"].stringValue
         Current_active = json["current_active"].boolValue
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
         Is_deleted = json["is_deleted"].boolValue
+        Autoplay = json["autoplay"].stringValue
+        Push_notify = json["push_notify"].boolValue
     }
 }
 

@@ -117,6 +117,14 @@ class AuthClient {
         }
     }
     
+    static func updateNotificationToken(_ req: NotificationRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .UpdateDeviceToke) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
+            }
+        }
+    }
+    
     static func sendFile(_ urlPath: String, fileName: String, data: Data, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         let url = URL(string: urlPath)!
         var request1: URLRequest = URLRequest(url: url)
