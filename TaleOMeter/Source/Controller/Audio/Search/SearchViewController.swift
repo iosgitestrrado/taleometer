@@ -40,6 +40,9 @@ class SearchViewController: UIViewController {
         searchBar.searchTextField.leftView?.tintColor = .black
         searchBar.searchTextField.textColor = .black
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,15 +60,10 @@ class SearchViewController: UIViewController {
 //        }
 //        self.tableView.reloadData()
         self.getRecent()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @IBAction func tapOnBack(_ sender: Any) {
@@ -195,7 +193,7 @@ extension SearchViewController: UITableViewDataSource {
         if let image = cell.profileImage {
             if !self.isRecentSearch {
                 image.cornerRadius = image.frame.size.height / 2.0
-                image.image = searchArray[indexPath.row].Image
+                image.sd_setImage(with: URL(string: searchArray[indexPath.row].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
             }
             image.isHidden = self.isRecentSearch
         }

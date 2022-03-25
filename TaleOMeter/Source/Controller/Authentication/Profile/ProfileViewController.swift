@@ -47,6 +47,11 @@ class ProfileViewController: UIViewController {
         Core.HideProgress(self)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.sideMenuController!.toggleRightView(animated: false)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -211,7 +216,7 @@ class ProfileViewController: UIViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
-                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
             }
             Core.HideProgress(self)
         }

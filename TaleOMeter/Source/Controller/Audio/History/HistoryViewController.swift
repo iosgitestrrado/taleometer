@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreMedia
 
 class HistoryViewController: UIViewController {
 
@@ -18,11 +19,13 @@ class HistoryViewController: UIViewController {
     private var historyData = Dictionary<String, [History]>()
     private var selectedIndex = -1
     private var selectedSection = -1
+    private var currentProgressBar = UIProgressView()
     
     private var footerView = UIView()
     private var morePage = true
     private var pageNumber = 1
     private var showNoData = 0
+    private var audioTimer = Timer()
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -30,11 +33,17 @@ class HistoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
         Core.initFooterView(self, footerView: &footerView)
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.sideMenuController!.toggleRightView(animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,6 +54,20 @@ class HistoryViewController: UIViewController {
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touch = touches.first!
+//        if touch.view?.tag == 9995555 {
+//            let location = touch.location(in: touch.view)
+//            progressBar.progress = Float(location.x / progressBar.frame.size.width)
+//            if let player = AudioPlayManager.shared.playerAV, let secondDuration = player.currentItem?.duration.seconds {
+//                let total = Int(secondDuration * Double(location.x / progressBar.frame.size.width))
+//                let targetTime : CMTime = CMTimeMake(value: Int64(total), timescale: 1)
+//                player.seek(to: targetTime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+//                AudioPlayManager.shared.updateMiniPlayerTime()
+//            }
+//        }
     }
     
     @objc func tapOnPlay(_ sender: UIButton) {
@@ -61,6 +84,9 @@ class HistoryViewController: UIViewController {
             // Pause audio and update row
             if AudioPlayManager.shared.playerAV != nil {
                 AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
+                if audioTimer.isValid {
+                    audioTimer.invalidate()
+                }
                 selectedIndex = -1
                 selectedSection = -1
                 self.tableView.reloadData()
@@ -70,6 +96,7 @@ class HistoryViewController: UIViewController {
             // Check already audio is loaded
             if AudioPlayManager.shared.currentIndex == currentIndex && AudioPlayManager.shared.playerAV != nil {
                 AudioPlayManager.shared.playPauseAudio(true)
+                enableTimer()
                 selectedIndex = sender.tag
                 selectedSection = sectionIndex
                 self.tableView.reloadData()
@@ -94,15 +121,27 @@ class HistoryViewController: UIViewController {
             }
             
             // Set curret audio index of audio play manager
-            self.initPlayerManager(sectionIndex, rowIndex: sender.tag)
+            self.initPlayerManager(sectionIndex, rowIndex: sender.tag, currentSecond: cellData.Time)
         }
     }
     
+    private func enableTimer() {
+        if audioTimer.isValid {
+            audioTimer.invalidate()
+        }
+        audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(self.udpateTime), userInfo: nil, repeats: true)
+        RunLoop.main.add(self.audioTimer, forMode: .default)
+        audioTimer.fire()
+    }
+    
     // MARK: - Initialize audio play manager
-    private func initPlayerManager(_ section: Int, rowIndex: Int) {
+    private func initPlayerManager(_ section: Int, rowIndex: Int, currentSecond: Int) {
         if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
             // Pause current playing audio
             AudioPlayManager.shared.playPauseAudio(false)
+            if audioTimer.isValid {
+                audioTimer.invalidate()
+            }
         }
         
         // Show progress bar
@@ -117,7 +156,13 @@ class HistoryViewController: UIViewController {
 //                AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
 //            }
             // Play audio now
+            if let player = AudioPlayManager.shared.playerAV {
+                // Seek current playing audio
+                player.seek(to: CMTimeMake(value: Int64(currentSecond * 1000), timescale: 1000))
+            }
+            enableTimer()
             AudioPlayManager.shared.playPauseAudio(true)
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 // For update row set selected index
                 if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
@@ -155,6 +200,82 @@ class HistoryViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Audio playing completed
+    @objc private func itemDidFinishedPlaying(_ notificaction: Notification) {
+        playingCurrentAudio()
+        // Scroll to perticuler row
+        if selectedIndex >= 0 && selectedSection >= 0 {
+            let indexPath = IndexPath(row: selectedIndex, section: selectedSection)
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+        } else {
+            tableView.reloadData()
+        }
+        tableView.tableFooterView = UIView()
+//        selectedIndex = -1
+//        selectedSection = -1
+//        tableView.reloadData()
+//        if audioTimer.isValid {
+//            audioTimer.invalidate()
+//        }
+//        if selectedIndex >= 0 {
+//            let indexPath = IndexPath(row: selectedIndex, section: 0)
+//            self.tableView.reloadData()
+//            self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+//        } else {
+//            tableView.reloadData()
+//        }
+    }
+    
+    // MARK: - Update time as per playing audio
+    @objc func udpateTime() {
+        if let player = AudioPlayManager.shared.playerAV, let currentItem = player.currentItem {
+            DispatchQueue.main.async { [self] in
+                // Get the current time in seconds
+                let playhead = currentItem.currentTime().seconds
+//                let duration = currentItem.duration.seconds
+                
+//                if !playhead.isNaN && !duration.isNaN  {
+//                    // Set progres bar progress
+//                    currentProgressBar.progress = Float(playhead / duration)
+//                }
+                // Get section index from button layer
+                guard let sectionIndex = currentProgressBar.layer.value(forKey: "Section") as? Int else { return }
+                // Get key from history data
+                let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: sectionIndex)]
+                if !playhead.isNaN {
+                    historyData[key]?[currentProgressBar.tag].Time = Int(roundf(Float(playhead)))
+                }
+                self.tableView.reloadRows(at: [IndexPath(row: currentProgressBar.tag, section: sectionIndex)], with: .none)
+            }
+        }
+    }
+    
+    private func playingCurrentAudio() {
+        // Check mini player audio is playing or not
+        if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            // Create private temp row and section index
+            var sectioIdx = 0
+            var rowIdx = -1
+            for (_, histList) in historyData {
+                for idx in 0..<histList.count {
+                    if histList[idx].Audio_story.Id == AudioPlayManager.shared.currentAudio.Id {
+                        // Set row index
+                        rowIdx = idx
+                        break
+                    }
+                }
+                if rowIdx != -1 {
+                    break
+                }
+                sectioIdx += 1
+            }
+            // Set row and section index
+            selectedIndex = rowIdx
+            selectedSection = sectioIdx
+        }
+    }
 }
 
 // MARK: - Get Data from server -
@@ -179,29 +300,7 @@ extension HistoryViewController {
                 
                 // Set history data from history list
                 historyData = Dictionary(grouping: historyList, by: { $0.Updated_at })
-                
-                // Check mini player audio is playing or not
-                if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
-                    // Create private temp row and section index
-                    var sectioIdx = 0
-                    var rowIdx = -1
-                    for (_, histList) in historyData {
-                        for idx in 0..<histList.count {
-                            if histList[idx].Audio_story.Id == AudioPlayManager.shared.currentAudio.Id {
-                                // Set row index
-                                rowIdx = idx
-                                break
-                            }
-                        }
-                        if rowIdx != -1 {
-                            break
-                        }
-                        sectioIdx += 1
-                    }
-                    // Set row and section index
-                    selectedIndex = rowIdx
-                    selectedSection = sectioIdx
-                }
+                playingCurrentAudio()
             }
             // Scroll to perticuler row
             if selectedIndex >= 0 && selectedSection >= 0 {
@@ -212,6 +311,10 @@ extension HistoryViewController {
                 tableView.reloadData()
             }
             tableView.tableFooterView = UIView()
+            // Check mini player audio is playing or not
+            if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+                enableTimer()
+            }
             // Hide progress
             Core.HideProgress(self)
         }
@@ -275,7 +378,7 @@ extension HistoryViewController : UITableViewDataSource {
         // Set cell data
         if let cellData = historyData[key]?[indexPath.row] {
             // Set history image
-            cell.profileImage.image = cellData.Audio_story.Image
+            cell.profileImage.sd_setImage(with: URL(string: cellData.Audio_story.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
             
             // Set likes and duration
             cell.subTitleLabel.text = "\(cellData.Audio_story.Favorites_count) Likes | \(AudioPlayManager.getHoursMinutesSecondsFromString(seconds: Double(cellData.Time)))"
@@ -290,6 +393,10 @@ extension HistoryViewController : UITableViewDataSource {
             cell.titleLabel.text = cellData.Audio_story.Title
             cell.titleLabel.textColor = .white
             if playIsSelected {
+                cell.progressBar.tag = indexPath.row
+                cell.progressBar.layer.setValue(indexPath.section, forKey: "Section")
+
+                currentProgressBar = cell.progressBar
                 // Set audio title playing audio
                 let soundWave = Core.getImageString("wave")
                 let titleAttText = NSMutableAttributedString(string: "\(cellData.Audio_story.Title)  ")

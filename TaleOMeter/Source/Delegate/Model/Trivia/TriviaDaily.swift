@@ -12,8 +12,9 @@ struct TriviaDaily {
     var Post_count = Int()
     var Post_count_today = Int()
     var Post_msg = String()
-    var Image = UIImage()
-    
+//    var Image = UIImage()
+    var ImageUrl = String()
+
     init() { }
     init(_ json: JSON) {
         Title = json["title"].stringValue
@@ -21,10 +22,9 @@ struct TriviaDaily {
         Post_count_today = json["post_count_today"].intValue
         Post_msg = json["post_msg"].stringValue
 
-        var imageURL = ""
         if let urlString = json["image"].string {
-            imageURL = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+            ImageUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
         }
-        Core.setImage(imageURL, image: &Image)
+        //.Core.setImage(imageURL, image: &Image)
     }
 }

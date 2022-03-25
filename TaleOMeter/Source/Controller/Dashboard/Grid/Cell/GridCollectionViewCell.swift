@@ -31,7 +31,7 @@ class GridCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(_ cellData: TriviaDaily, gridWidth: CGFloat, gridHeight: CGFloat, titleViewHeight: CGFloat, row: Int) {
-        imageView.image = cellData.Image
+        imageView.sd_setImage(with: URL(string: cellData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
         imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
         titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: (gridWidth * 2) + 10.0, height: titleViewHeight)
         self.titleLabel.text = cellData.Title
@@ -46,7 +46,7 @@ class GridCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCellCat(_ cellData: TriviaCategory, gridWidth: CGFloat, gridHeight: CGFloat, titleViewHeight: CGFloat, row: Int) {
-        imageView.image = cellData.Category_image
+        imageView.sd_setImage(with: URL(string: cellData.Category_image_url), placeholderImage: defaultImage, options: [], context: nil)
         imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth, height: gridHeight - titleViewHeight)
         titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth, height: titleViewHeight)
         titleLabel.frame = CGRect(x: 15.0, y: 0.0, width: gridWidth - 15.0, height: titleViewHeight)

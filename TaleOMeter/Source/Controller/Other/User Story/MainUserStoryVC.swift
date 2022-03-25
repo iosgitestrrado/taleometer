@@ -23,6 +23,11 @@ class MainUserStoryVC: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.sideMenuController!.toggleRightView(animated: false)
+    }
+    
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)

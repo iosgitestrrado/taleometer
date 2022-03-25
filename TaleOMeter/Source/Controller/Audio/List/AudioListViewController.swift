@@ -68,11 +68,6 @@ class AudioListViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: AudioPlayManager.favPlayNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: AudioPlayManager.finishNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: remoteCommandName, object: nil)
-        NotificationCenter.default.removeObserver(self, name: remoteCommandName, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "shuffleAudio"), object: nil)
         if (isPlot || isStroy || isNarration), !self.isMovingFromParent, let del = self.delegate {
             del.changeIntoPlayingAudio(currentAudio)
         }

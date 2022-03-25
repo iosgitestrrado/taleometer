@@ -27,21 +27,19 @@ class FeedbackViewController: UIViewController {
         self.textView.textColor = .darkGray
         
         self.textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        self.sideMenuController!.toggleRightView(animated: false)
     }
     
     // MARK: - Side Menu button action -
@@ -63,7 +61,7 @@ class FeedbackViewController: UIViewController {
         OtherClient.submitFeedback(FeedbackRequest(content: textView.text!)) { status in
             Core.HideProgress(self)
             if let st = status, st {
-                PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", image: UIImage(named: "thank"), ansImage: nil, isUserStory: true)
+                PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", verifyImage: UIImage(named: "thank"), isUserStory: true)
             }
         }
     }

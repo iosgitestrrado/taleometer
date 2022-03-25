@@ -14,7 +14,7 @@ class PromptVManager: NSObject {
      *  Dynamic Prompt screen
      *  Set prompt properties as per requirement
      */
-    static func present(_ controller: UIViewController, verifyTitle: String = "Successfull", verifyMessage: String = "", image: UIImage?, ansImage: UIImage?, isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: UIImage = defaultImage, closeBtnHide: Bool = false) {
+    static func present(_ controller: UIViewController, verifyTitle: String = "Successfull", verifyMessage: String = "", verifyImage: UIImage? = nil, queImage: String = "", ansImage: String = "", isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: String = "", closeBtnHide: Bool = false) {
         if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "PromptViewController") as? PromptViewController {
 
             myobject.delegate = controller as? PromptViewDelegate
@@ -29,18 +29,14 @@ class PromptVManager: NSObject {
                 myobject.verifyPromptView.isHidden = !isUserStory
                 myobject.answerPromptView.isHidden = !isQuestion
                 if isAudioView {
-                    myobject.audioImageView.image = audioImage
+                    myobject.audioImageView.sd_setImage(with: URL(string: audioImage), placeholderImage: defaultImage, options: [], context: nil)
                     myobject.audioImageView.cornerRadius = myobject.audioImageView.frame.size.height / 2.0
                 } else if isQuestion {
-                    if let imageIs = image {
-                        myobject.questionImage.image = imageIs
-                    } else {
-                        myobject.questionImage.image = defaultImage
-                    }
+                    myobject.questionImage.sd_setImage(with: URL(string: queImage), placeholderImage: defaultImage, options: [], context: nil)
                     myobject.answerTitle.text = verifyTitle
-                    if let anImage = ansImage {
+                    if !ansImage.isBlank {
                         myobject.answerTitle.text = "Answer:"
-                        myobject.answerImage.image = anImage
+                        myobject.answerImage.sd_setImage(with: URL(string: ansImage), placeholderImage: defaultImage, options: [], context: nil)
                     } else {
                         myobject.answerImage.isHidden = true
                     }
@@ -49,7 +45,7 @@ class PromptVManager: NSObject {
                 } else {
                     myobject.titleLabelV.text = verifyTitle
                     myobject.messageLabelV.text = verifyMessage
-                    if let imageIs = image {
+                    if let imageIs = verifyImage {
                         myobject.verifyImage.image = imageIs
                     } else {
                         myobject.verifyImage.image = UIImage(named: "verified")!

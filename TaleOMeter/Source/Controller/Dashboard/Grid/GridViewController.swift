@@ -152,7 +152,7 @@ extension GridViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if audioList.count > 0 {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as? GridCollecViewCell {
-                cell.imageView.image = audioList[indexPath.row].Image
+                cell.imageView.sd_setImage(with: URL(string: audioList[indexPath.row].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
                 cell.imageView.frame = CGRect(x: 25.0, y: 5.0, width: gridSize - 40.0, height: gridSize - 40.0)
                 cell.imageView.cornerRadius = cell.imageView.frame.size.width / 2.0
                 

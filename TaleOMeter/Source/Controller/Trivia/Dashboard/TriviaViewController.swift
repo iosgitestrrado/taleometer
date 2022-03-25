@@ -12,6 +12,8 @@ class TriviaViewController: UIViewController {
     // MARK: - Weak Properties -
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var fromSideMenu = false
+    
     // MARK: - Private Properties -
     private var gridWidth: CGFloat = 187.0
     private var gridHeight: CGFloat = 225.0
@@ -47,13 +49,20 @@ class TriviaViewController: UIViewController {
         layout.minimumLineSpacing = 10
         collectionView.collectionViewLayout = layout
         collectionView.alwaysBounceVertical = true
-        self.navigationItem.hidesBackButton = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
+        self.navigationItem.hidesBackButton = !fromSideMenu
         getTrivia()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if fromSideMenu {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     // MARK: - Get trivia home data from server -

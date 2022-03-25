@@ -11,7 +11,8 @@ struct NotificationModel {
     var Id = Int()
     var Title = String()
     var Content = String()
-    var Banner = UIImage()
+    //var Banner = UIImage()
+    var BannerUrl = String()
     var Audio_story_id = Int()
     var Is_active = Bool()
     var TypeType = String()
@@ -25,7 +26,8 @@ struct NotificationModel {
         Id = json["id"].intValue
         Title = json["title"].stringValue
         Content = json["content"].stringValue
-        Core.setImage(Constants.baseURL.appending("/\(json["banner"].stringValue)"), image: &Banner)
+        BannerUrl = Constants.baseURL.appending("/\(json["banner"].stringValue)")
+        //Core.setImage(Constants.baseURL.appending("/\(json["banner"].stringValue)"), image: &Banner)
         Audio_story_id = json["audio_story_id"].intValue
         Is_active = json["is_active"].boolValue
         TypeType = json["type"].stringValue

@@ -23,7 +23,7 @@ class AudioViewCell: UITableViewCell {
     func configureCell(_ audioData: Audio, likesCount: Int, duration: Double, isFavourite: Bool, row: Int, selectedIndex: Int, target: Any, selectors: [Selector]) {
         self.isSelected = row == selectedIndex
         if let image = self.profileImage {
-            image.image = audioData.Image
+            image.sd_setImage(with: URL(string: audioData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
             image.cornerRadius = image.frame.size.height / 2.0
         }
         if let subTitle = self.subTitleLabel {

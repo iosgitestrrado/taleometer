@@ -12,7 +12,8 @@ struct Preference {
     var Id = Int()
     var Name = String()
     var Preference_category_id = Int()
-    var Image = UIImage()
+   // var Image = UIImage()
+    var ImageUrl = String()
     var Created_at = String()
     var Updated_at = String()
     var Deleted_at = String()
@@ -22,7 +23,8 @@ struct Preference {
         Id = json["id"].intValue
         Name = json["name"].stringValue
         Preference_category_id = json["preference_category_id"].intValue
-        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
+        //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue

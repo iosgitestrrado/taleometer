@@ -102,7 +102,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: Set audio data only
     private func setAudioData() {
-        self.imageView.image = currentAudio.Image
+        self.imageView.sd_setImage(with: URL(string: currentAudio.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
         self.titleLabel.text = currentAudio.Title
         self.storyButton.setTitle("Story: \(currentAudio.Story.Name)", for: .normal)
         self.plotButton.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
@@ -433,7 +433,7 @@ class NowPlayViewController: UIViewController {
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
                     if UserDefaults.standard.bool(forKey: "AutoplayEnable") && player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
-                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Image)
+                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
                     }
                 }
                 AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead

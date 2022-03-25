@@ -28,7 +28,7 @@ struct History {
         Time = json["time"].intValue
         
         if let audio_story = json["audio_story"].dictionaryObject {
-            Audio_story = Audio(JSON(audio_story))
+            Audio_story = Audio(JSON(audio_story), requiredDuration: true)
         }
     }
     

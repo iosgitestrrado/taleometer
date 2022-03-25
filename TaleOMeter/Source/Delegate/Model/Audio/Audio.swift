@@ -13,7 +13,8 @@ import AVKit
 struct Audio {
     var Id = Int()
     var Title = String()
-    var Image = UIImage()
+    //var Image = UIImage()
+    var ImageUrl = String()
     var File = String()
     var Genre_id = Int()
     var Story_id = Int()
@@ -39,10 +40,11 @@ struct Audio {
 //    var Narrations: [Story]?
 
     init() { }
-    init(_ json: JSON) {
+    init(_ json: JSON, requiredDuration: Bool = false) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
-        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
         File = Constants.baseURL.appending("/\(json["file"].stringValue)")
         Genre_id = json["genre_id"].intValue
         Story_id = json["story_id"].intValue
@@ -68,7 +70,10 @@ struct Audio {
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
         }
-        AudioDuration = Audio.getAudioDuration(File)
+        
+        if requiredDuration {
+            AudioDuration = Audio.getAudioDuration(File)
+        }
                 
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story

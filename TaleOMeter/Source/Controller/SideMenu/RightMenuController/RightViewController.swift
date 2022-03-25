@@ -116,6 +116,8 @@ class RightViewController: UIViewController {
         if isOnlyTrivia {
             sections = triviaSections
         }
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
     
     @objc private func updateUserData(_ notification: Notification) {
@@ -153,8 +155,6 @@ class RightViewController: UIViewController {
         super.viewWillAppear(animated)
         struct Counter { static var count = 0 }
         Counter.count += 1
-        // Set notification center for audio playing completed
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -193,7 +193,7 @@ extension RightViewController: UITableViewDelegate {
         func getNavigationController() -> UINavigationController {
             return sideMenuController.rootViewController as! UINavigationController
         }
-        sideMenuController.hideRightView(animated: true)
+        sideMenuController.hideRightView(animated: false)
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
             case .logout:
@@ -245,6 +245,9 @@ extension RightViewController: UITableViewDelegate {
                 }
             }
             let myobject = UIStoryboard(name: storyBoardName, bundle: nil).instantiateViewController(withIdentifier: storyBoradId)
+            if let trivia = myobject as? TriviaViewController {
+                trivia.fromSideMenu = true
+            }
             cont.pushViewController(myobject, animated: true)
         }
     }

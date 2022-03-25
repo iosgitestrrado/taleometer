@@ -55,19 +55,21 @@ class ProfileEditViewController: UIViewController {
     }
         
     private func updateProfileData() {
+        self.view.endEditing(true)
         if let prof = profileData {
             if !Reachability.isConnectedToNetwork() {
                 Core.noInternet(self)
                 return
             }
             Core.ShowProgress(self, detailLbl: "Updating Profile")
+            
             AuthClient.updateProfile(ProfileRequest(name: prof.User_code, display_name: titleString == "Change Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Name" ? prof.Email : self.textField.text!)) { [self] result in
                 if let response = result {
                     Login.storeProfileData(response)
                     if titleString == "Change Name" {
-                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
+                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
                     } else {
-                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
+                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
                     }
                 }
                 Core.HideProgress(self)
@@ -88,7 +90,6 @@ class ProfileEditViewController: UIViewController {
                 Validator.showRequiredError(textField)
                 return
             }
-            
             self.updateProfileData()
         } else {
             if textField.text!.isBlank {

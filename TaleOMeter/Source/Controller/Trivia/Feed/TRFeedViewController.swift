@@ -132,7 +132,7 @@ class TRFeedViewController: UIViewController {
                 Core.ShowProgress(self, detailLbl: "")
                 TriviaClient.getAnswers(PostIdRequest(post_id: postData[sender.tag].Post_id)) { [self] response in
                     if let data = response {
-                        PromptVManager.present(self, verifyTitle: data.Answer_text, verifyMessage: postData[sender.tag].Question, image: postData[sender.tag].Question_media, ansImage: data.Answer_text.isBlank ? data.Answer_image : nil, isQuestion: true, closeBtnHide: true)
+                        PromptVManager.present(self, verifyTitle: data.Answer_text, verifyMessage: postData[sender.tag].Question, queImage:  postData[sender.tag].Question_media_url, ansImage: data.Answer_text.isBlank ? data.Answer_image_url : "", isQuestion: true, closeBtnHide: true)
                     }
                     Core.HideProgress(self)
                 }

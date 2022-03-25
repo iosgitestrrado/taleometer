@@ -23,6 +23,11 @@ class AboutUsViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.sideMenuController!.toggleRightView(animated: false)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !Reachability.isConnectedToNetwork() {

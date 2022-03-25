@@ -199,9 +199,13 @@ class AudioPlayManager: NSObject {
             nowPlayingInfo[MPMediaItemPropertyTitle] = audio.Title
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audio.Story.Name
             nowPlayingInfo[MPMediaItemPropertyArtist] = "Story"
+            
+            var audioImage = defaultImage
+            Core.setImage(audio.ImageUrl, image: &audioImage)
+            
             nowPlayingInfo[MPMediaItemPropertyArtwork] =
-            MPMediaItemArtwork(boundsSize: audio.Image.size) { size in
-                    return audio.Image
+            MPMediaItemArtwork(boundsSize: CGSize(width: audioImage.size.width / 2.0, height: audioImage.size.height / 2.0)) { size in
+                    return audioImage
             }
         }
         
@@ -246,6 +250,9 @@ class AudioPlayManager: NSObject {
                     audioHistoryId == -1 ? self.addAudioToHistory() : self.updateHistory()
                 }
             }
+            if isHistory {
+                NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
+            }
         }
     }
     
@@ -283,6 +290,9 @@ class AudioPlayManager: NSObject {
             }
             if let player = playerAV {
                 player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+            }
+            if isHistory {
+                playPauseAudioOnly(false, addToHistory: true)
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
         }
@@ -326,7 +336,7 @@ class AudioPlayManager: NSObject {
                 if miniVController.songTitle != nil  {
                     // Update miniplayer
                     miniVController.songTitle.text = audioList[currentIndex].Title
-                    miniVController.songImage.image = audioList[currentIndex].Image
+                    miniVController.songImage.sd_setImage(with: URL(string: audioList[currentIndex].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
                 }
                 NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil, userInfo: ["isNextPrev" : true])
             })
@@ -353,7 +363,7 @@ class AudioPlayManager: NSObject {
             self.playPauseAudio(true)
             break
         case 3:
-            //1 - Once more
+            //3 - Close mini player
             if let player = playerAV {
                 player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
             }
@@ -415,7 +425,7 @@ extension AudioPlayManager {
                 if let audioList = audioList, currentIndex >= 0 {
                     let audio = audioList[currentIndex]
                     miniVController.songTitle.text = audio.Title
-                    miniVController.songImage.image = audio.Image
+                    miniVController.songImage.sd_setImage(with: URL(string: audio.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
                 }
                 // Update audio timer
                 updateMiniPlayerTime()
@@ -451,7 +461,7 @@ extension AudioPlayManager {
             if let audioList = audioList, currentIndex >= 0 {
                 let audio = audioList[currentIndex]
                 miniVController.songTitle.text = audio.Title
-                miniVController.songImage.image = audio.Image
+                miniVController.songImage.sd_setImage(with: URL(string: audio.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
             }
             // Update audio timer
             updateMiniPlayerTime()
@@ -512,7 +522,7 @@ extension AudioPlayManager {
             }
             
             if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: audioList![nextIndex].Image)
+                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl)
             }
             
             miniVController.progressBar.setNeedsDisplay()
@@ -557,7 +567,7 @@ extension AudioPlayManager {
     public func removeMiniPlayer() {
         DispatchQueue.main.async { [self] in
             bottomConstraint.constant = 0
-            if (FooterManager.shared.isActive) {
+            if FooterManager.shared.isActive {
                 if let footerView = miniVController.view.viewWithTag(FooterManager.viewTag) {
                     footerView.removeFromSuperview()
                     footerView.frame.origin.y = currVController.view.frame.size.height - 80.0
