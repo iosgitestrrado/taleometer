@@ -880,12 +880,17 @@ Cg
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="vzO-gc-izT">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="gfj-n2-Ath">
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                            </imageView>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vzO-gc-izT">
                                 <rect key="frame" x="0.0" y="44" width="390" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="1vh-ns-JC0"/>
                                 </constraints>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="trB-TG-HL6" id="93o-re-NlP"/>
@@ -893,7 +898,7 @@ Cg
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="XHs-1c-uPP">
                                 <rect key="frame" x="0.0" y="94" width="390" height="716"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="69y-Bg-r7x">
                                         <rect key="frame" x="0.0" y="44.666666030883789" width="390" height="43.666667938232422"/>
@@ -901,7 +906,9 @@ Cg
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="69y-Bg-r7x" id="KGW-RV-SE4">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -913,13 +920,17 @@ Cg
                         <viewLayoutGuide key="safeArea" id="DD2-0a-LB1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="gfj-n2-Ath" firstAttribute="leading" secondItem="DD2-0a-LB1" secondAttribute="leading" id="3OV-ZR-YOM"/>
                             <constraint firstItem="vzO-gc-izT" firstAttribute="trailing" secondItem="DD2-0a-LB1" secondAttribute="trailing" id="6iy-AM-CL5"/>
                             <constraint firstItem="XHs-1c-uPP" firstAttribute="trailing" secondItem="DD2-0a-LB1" secondAttribute="trailing" id="Ffl-aO-U9r"/>
                             <constraint firstItem="XHs-1c-uPP" firstAttribute="bottom" secondItem="DD2-0a-LB1" secondAttribute="bottom" id="HzC-Jn-kDo"/>
                             <constraint firstItem="XHs-1c-uPP" firstAttribute="top" secondItem="vzO-gc-izT" secondAttribute="bottom" id="IoW-bd-hMD"/>
                             <constraint firstItem="vzO-gc-izT" firstAttribute="top" secondItem="DD2-0a-LB1" secondAttribute="top" id="N85-L9-JVc"/>
+                            <constraint firstAttribute="bottom" secondItem="gfj-n2-Ath" secondAttribute="bottom" id="RzM-Q7-sA3"/>
+                            <constraint firstItem="gfj-n2-Ath" firstAttribute="top" secondItem="MuY-EX-f2C" secondAttribute="top" id="XFd-mS-GT1"/>
                             <constraint firstItem="vzO-gc-izT" firstAttribute="leading" secondItem="DD2-0a-LB1" secondAttribute="leading" id="Ywt-SC-gIm"/>
                             <constraint firstItem="XHs-1c-uPP" firstAttribute="leading" secondItem="DD2-0a-LB1" secondAttribute="leading" id="mOl-KO-FEi"/>
+                            <constraint firstAttribute="trailing" secondItem="gfj-n2-Ath" secondAttribute="trailing" id="uY1-MY-BbV"/>
                         </constraints>
                     </view>
                     <connections>
@@ -929,7 +940,7 @@ Cg
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HR3-wc-UD8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-123" y="-650"/>
+            <point key="canvasLocation" x="-123.07692307692307" y="-650.47393364928905"/>
         </scene>
         <!--Change Mobile Number-->
         <scene sceneID="7X8-Xx-ins">

@@ -9,6 +9,7 @@ import UIKit
 
 class NoDataTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var titleLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

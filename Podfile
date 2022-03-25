@@ -12,7 +12,6 @@ target 'TaleOMeter' do
   pod 'SwiftyJSON', '~>5.0.1'
   pod 'SDWebImage', '~>5.12.3'
   pod 'UIScrollView-InfiniteScroll', '~>1.1.0'
-
   # Pods for TaleOMeter
 
   target 'TaleOMeterTests' do

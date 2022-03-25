@@ -28,8 +28,8 @@ class TRFeedViewController: UIViewController {
     private var postData = [TriviaPost]()
     private var cellDataArray: [CellItem] = [CellItem]()
     private let messageString = "Write A Comment..."
-    private var profilePic = UIImage(named: "")
-    private let personImage = UIImage(named: "person")!
+    private var profilePic: UIImage?
+    private var keyboardHeight: CGFloat = 0
     
     private var footerView = UIView()
     private var morePage = true
@@ -49,14 +49,14 @@ class TRFeedViewController: UIViewController {
             profilePic = UIImage(data: profData.ImageData)
         }
         self.getTriviaPosts()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
 //    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -90,9 +90,13 @@ class TRFeedViewController: UIViewController {
     
     // MARK: Keyboard will show
     @objc private func keyboardWillShowNotification(notification: Notification) {
+//        if keyboardHeight != 0 {
+//            self.tblBottomConstraint.constant = keyboardHeight
+//            return
+//        }
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  {
             let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
+            keyboardHeight = keyboardRectangle.height
             self.tblBottomConstraint.constant = keyboardHeight
         }
     }
@@ -117,9 +121,11 @@ class TRFeedViewController: UIViewController {
                 }
                 Core.ShowProgress(self, detailLbl: "Submitting Answer...")
                 TriviaClient.submitAnswer(SubmitAnswerRequest(post_id: postData[sender.tag].Post_id, answer: postData[sender.tag].Value)) { [self] status in
-                    Core.HideProgress(self)
+                    
                     if let st = status, st {
                         self.getComments(postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                    } else {
+                        Core.HideProgress(self)
                     }
                 }
             } else {
@@ -193,7 +199,7 @@ class TRFeedViewController: UIViewController {
             if cellDataArray.contains(where: { cell in cell.cellId == FeedCellIdentifier.replyPost}) {
                 cellDataArray.removeAll(where: { cell in cell.cellId == FeedCellIdentifier.replyPost })
             }
-            cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: CellData(image: profilePic ?? personImage, title: "", description: "", time: "", index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
+            cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: CellData(imageUrl: "", profilePic: profilePic, title: "", description: "", time: "", index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
             self.tableView.reloadData()
         }
     }
@@ -298,7 +304,7 @@ extension TRFeedViewController {
             Core.noInternet(self)
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
+        //Core.ShowProgress(self, detailLbl: "")
         TriviaClient.getComments(PostIdRequest(post_id: postId)) { [self] response in
             if let data = response {
                 postData[postIndex].User_answer_status = true
@@ -330,10 +336,10 @@ extension TRFeedViewController {
             
             if feed.User_answer_status {
                 /// Add Image / Video and question title cell with view answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(image: feed.Question_media, title: feed.Question, description: feed.Date, time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(imageUrl: feed.Question_media_url, title: feed.Question, description: feed.Date, time: "", index: index)))
             } else {
                 /// Add Image / Video and question title cell with submit answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(image: feed.Question_media, title: feed.Question, description: feed.Date, time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(imageUrl: feed.Question_media_url, title: feed.Question, description: feed.Date, time: "", index: index)))
             }
             
             /// Check comment
@@ -348,12 +354,12 @@ extension TRFeedViewController {
                     /// Check is explanded or not
                     if !feed.IsExpanded && comIndex == 3 {
                         /// Add view more text cell
-                        cellDataArray.append(CellItem(cellId: FeedCellIdentifier.viewMore, data: CellData(image: personImage, title: viewMoreText, description: "", time: "", index: index, commentIndex: comIndex)))
+                        cellDataArray.append(CellItem(cellId: FeedCellIdentifier.viewMore, data: CellData(imageUrl: "", title: viewMoreText, description: "", time: "", index: index, commentIndex: comIndex)))
                         break
                     }
                     
                     /// Add comment cell
-                    cellDataArray.append(CellItem(cellId: FeedCellIdentifier.comment, data: CellData(image: comment.Profile_image, title: comment.User_name, description: comment.Comment, time: comment.Time_ago, index: index, commentIndex: comIndex)))
+                    cellDataArray.append(CellItem(cellId: FeedCellIdentifier.comment, data: CellData(imageUrl: comment.Profile_image_url, title: comment.User_name, description: comment.Comment, time: comment.Time_ago, index: index, commentIndex: comIndex)))
                     
                     /// Check reply exists
                     if comment.Reply.count > 0 {
@@ -373,15 +379,15 @@ extension TRFeedViewController {
                             if !comment.IsExpanded && repIndex == 0 && comment.Reply.count > 1 {
                                 
                                 /// Add view previous reply cell
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: CellData(image: personImage, title: "View previous \(comment.Reply_count) replies", description: "", time: "", index: index, commentIndex: comIndex)))
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: CellData(imageUrl: "", title: "View previous \(comment.Reply_count) replies", description: "", time: "", index: index, commentIndex: comIndex)))
                                 
                                 /// Add reply cell
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(image: reply.Profile_image, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(imageUrl: reply.Profile_image_url, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
                                 break
                             }
                             
                             /// Add reply cell
-                            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(image: reply.Profile_image, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                            cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(imageUrl: reply.Profile_image_url, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
                         }
                     }
                 }
@@ -389,7 +395,7 @@ extension TRFeedViewController {
             
             if feed.User_answer_status {
                 /// Add post comment cell
-                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: CellData(image: personImage, title: "", description: "", time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: CellData(imageUrl: "", profilePic: profilePic, title: "", description: "", time: "", index: index)))
             }
         }
         self.tableView.reloadData()
@@ -472,7 +478,7 @@ extension TRFeedViewController: UITextViewDelegate {
             textView.text = nil
             textView.textColor = UIColor.white
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             let indexPath = IndexPath(row: textView.tag, section: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
@@ -544,7 +550,7 @@ extension TRFeedViewController: UITextViewDelegate {
 // MARK: - UITextFieldDelegate -
 extension TRFeedViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             let indexPath = IndexPath(row: textField.tag, section: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }

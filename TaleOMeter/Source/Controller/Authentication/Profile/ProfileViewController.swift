@@ -172,10 +172,9 @@ class ProfileViewController: UIViewController {
                         }
                     })
                 }
-                
             }))
             
-            alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
+            alert.addAction(UIAlertAction(title: "Remove Profile Picture", style: .destructive, handler: { result in
                 Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
                 if let imgData = defaultImage.pngData() {
                     self.uploadProfileImage(imgData, image: defaultImage)
@@ -183,6 +182,9 @@ class ProfileViewController: UIViewController {
                     Core.HideProgress(self)
                 }
             }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }

@@ -162,7 +162,7 @@ extension TRPostViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? PostCellView else { return UITableViewCell() }
         let cellData = postArray[indexPath.row]
-        cell.configureCell(cellData.Question, value: cellData.Value, coverImage: cellData.Question_media, videoUrl: cellData.QuestionVideoURL, row: indexPath.row, target: self, selectors: [#selector(tapOnSubmit(_:)), #selector(tapOnVideo(_:))])
+        cell.configureCell(cellData.Question, value: cellData.Value, coverImage: defaultImage, videoUrl: cellData.QuestionVideoURL, row: indexPath.row, target: self, selectors: [#selector(tapOnSubmit(_:)), #selector(tapOnVideo(_:))])
         if let textField = cell.answerText {
             postArray[indexPath.row].TextField = textField
         }

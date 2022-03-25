@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Foundation
+import AVFoundation
 
 class TermsAndConditionVC: UIViewController {
     
@@ -37,5 +39,15 @@ class TermsAndConditionVC: UIViewController {
             }
             Core.HideProgress(self)
         }
+    }
+}
+
+extension TermsAndConditionVC: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.indicatorStyle = .black
+        let verticalIndicator = (scrollView.subviews[2])
+        verticalIndicator.backgroundColor = UIColor(displayP3Red: 255.0 / 255.0, green: 30.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
+        scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 10.0, right: 0.0)
+    
     }
 }

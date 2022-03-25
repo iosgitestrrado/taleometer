@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 struct FeedCellIdentifier {
     static let image = "imageCell"
@@ -21,7 +22,8 @@ struct FeedCellIdentifier {
 }
 
 struct CellData {
-    var image = UIImage()
+    var imageUrl = String()
+    var profilePic: UIImage?
     var title = String()
     var description = String()
     var time = String()
@@ -73,12 +75,6 @@ class FeedCellView: UITableViewCell {
             videoBtn.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
         
-        if let cvrImg = self.coverImage {
-            cvrImg.layer.cornerRadius = 20
-            cvrImg.layer.masksToBounds = true
-            cvrImg.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
-        
         if let btmView = self.bottomView {
             btmView.layer.cornerRadius = 20
             btmView.layer.masksToBounds = true
@@ -94,7 +90,16 @@ class FeedCellView: UITableViewCell {
     
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
         if let cImage = self.coverImage {
-            cImage.image = cellData.image
+            if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
+                cImage.image = cellData.profilePic ?? defaultImage
+            } else {
+                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: defaultImage, options: [], context: nil)
+            }
+            if cellId == FeedCellIdentifier.question {
+                cImage.layer.cornerRadius = 20
+                cImage.layer.masksToBounds = true
+                cImage.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
         }
         if !cellData.title.isBlank, let titl = self.titleLabel {
             titl.text = cellData.title
@@ -165,7 +170,7 @@ class FeedCellView: UITableViewCell {
                 videoBtn.layer.setValue(row, forKey: "RowIndex")
                 videoBtn.addTarget(target, action: selectors[6], for: .touchUpInside)
             }
-            videoBtn.setBackgroundImage(cellData.image, for: .normal)
+            videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
         }
     }
     

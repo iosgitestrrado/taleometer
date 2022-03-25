@@ -19,6 +19,7 @@ struct TriviaPost {
     var RepTextView: UITextView?
     var Question_type = String()
     var Question_media = UIImage()
+    var Question_media_url = String()
     var QuestionVideoURL = String()
     var User_opened = Bool()
     var User_opened_status = Int()
@@ -49,10 +50,9 @@ struct TriviaPost {
             }
         }
         
-        var imageURL = ""
         if let urlString = json["question_media"].string, Question_type.lowercased() == "image" {
-            imageURL = Core.verifyUrl(urlString) ? urlString :  Constants.baseURL.appending("/\(urlString)")
-            Core.setImage(imageURL, image: &Question_media)
+            Question_media_url = Core.verifyUrl(urlString) ? urlString :  Constants.baseURL.appending("/\(urlString)")
+            Core.setImage(Question_media_url, image: &Question_media)
         } else {
             QuestionVideoURL = json["question_media"].stringValue
             Question_media = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage

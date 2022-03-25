@@ -66,9 +66,7 @@ class TriviaViewController: UIViewController {
         TriviaClient.getTriviaHome { response in
             if let data = response {
                 self.triviaHome = data
-                if data.Trivia_daily.Post_count_today == 0 {
-                    Toast.show(data.Trivia_daily.Post_msg)
-                }
+                
             }
             self.collectionView.reloadData()
             Core.HideProgress(self)
@@ -129,7 +127,7 @@ extension TriviaViewController: UICollectionViewDataSource {
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 && triviaHome.Trivia_daily.Post_count == 0 {
-            Toast.show("No post found!")
+            Toast.show(triviaHome.Trivia_daily.Post_msg)
             return
         }
         if !Reachability.isConnectedToNetwork() {

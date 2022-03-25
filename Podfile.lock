@@ -1,7 +1,6 @@
 PODS:
   - LGSideMenuController (3.1.2)
   - Magnetic (3.2.1)
-  - MBProgressHUD (1.2.0)
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
@@ -16,7 +15,6 @@ PODS:
 DEPENDENCIES:
   - LGSideMenuController (~> 3.1.2)
   - Magnetic (~> 3.2.1)
-  - MBProgressHUD (~> 1.2.0)
   - NVActivityIndicatorView (~> 5.1.1)
   - SDWebImage (~> 5.12.3)
   - SoundWave (~> 0.1.4)
@@ -28,7 +26,6 @@ SPEC REPOS:
   trunk:
     - LGSideMenuController
     - Magnetic
-    - MBProgressHUD
     - NVActivityIndicatorView
     - SDWebImage
     - SoundWave
@@ -39,7 +36,6 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   LGSideMenuController: 0c7b155b0dbdf14bf8b88d5ac363c5fe1584bb23
   Magnetic: 02b9d6686160421cc4285140387419ec9ccab033
-  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
   SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
@@ -47,6 +43,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
 
-PODFILE CHECKSUM: a1ac53cc513685a65e999f08a85cd4226446baa7
+PODFILE CHECKSUM: 360be3471c6cb3a72447f2e269c8fbf51ba7c5c4
 
 COCOAPODS: 1.11.2

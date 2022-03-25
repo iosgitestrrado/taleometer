@@ -29,6 +29,9 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="PTk-Ep-58n"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="titleLabel" destination="XM1-eA-Ejd" id="PcU-Fc-63P"/>
+            </connections>
             <point key="canvasLocation" x="131.8840579710145" y="72.991071428571431"/>
         </tableViewCell>
     </objects>

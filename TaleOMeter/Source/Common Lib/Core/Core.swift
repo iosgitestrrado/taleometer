@@ -10,7 +10,6 @@ import Foundation
 import AVFoundation
 import SystemConfiguration
 import UIKit
-import MBProgressHUD
 import NVActivityIndicatorView
 
 class Core: NSObject {
