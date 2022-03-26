@@ -376,10 +376,10 @@ extension TRFeedViewController {
                             }
                             
                             /// Check Comment expanded
-                            if !comment.IsExpanded && repIndex == 0 && comment.Reply.count > 1 {
+                            if !comment.IsExpanded && repIndex == 0 && comment.Reply_count > 1 {
                                 
                                 /// Add view previous reply cell
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: CellData(imageUrl: "", title: "View previous \(comment.Reply_count) replies", description: "", time: "", index: index, commentIndex: comIndex)))
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: CellData(imageUrl: "", title: "View previous \(comment.Reply_count - 1) replies", description: "", time: "", index: index, commentIndex: comIndex)))
                                 
                                 /// Add reply cell
                                 cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(imageUrl: reply.Profile_image_url, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))

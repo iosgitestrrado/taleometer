@@ -73,6 +73,12 @@ class AudioPlayManager: NSObject {
         // lets create your destination file url
         var destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
        
+        // if audio file is not supported change to mp3
+        let fileName = NSString(string: destinationUrl.lastPathComponent)
+        if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+            destinationUrl = destinationUrl.deletingPathExtension().appendingPathExtension("mp3")
+        }
+        
         // to check if it exists before downloading it
         if FileManager.default.fileExists(atPath: destinationUrl.path) {
             audioURL = destinationUrl
@@ -85,12 +91,6 @@ class AudioPlayManager: NSObject {
                 guard let location = location, error == nil else { return }
                 do {
                     // after downloading your file you need to move it to your destination url
-                    
-                    let fileName = NSString(string: destinationUrl.lastPathComponent)
-                    if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                        destinationUrl = destinationUrl.deletingPathExtension().appendingPathExtension("mp3")
-                    }
-                    
                     try FileManager.default.moveItem(at: location, to: destinationUrl)
                     audioURL = destinationUrl
                     configureAudio(getMeters) { result in

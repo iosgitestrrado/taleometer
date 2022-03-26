@@ -60,9 +60,10 @@ class TriviaViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if fromSideMenu {
+        if fromSideMenu && isMovingFromParent {
             self.sideMenuController!.toggleRightView(animated: false)
         }
+        
     }
     
     // MARK: - Get trivia home data from server -

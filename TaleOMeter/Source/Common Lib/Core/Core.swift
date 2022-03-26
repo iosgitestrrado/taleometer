@@ -149,6 +149,10 @@ class Core: NSObject {
 //    }
     
     static func ShowProgress(_ target: UIViewController, detailLbl: String) {
+        if let indc = target.view.viewWithTag(9566) {
+            indc.removeFromSuperview()
+        }
+        activityIndicator.removeFromSuperview()
         let xAxis = (target.view.frame.size.width / 2.0)
         let yAxis = (target.view.frame.size.height / 2.0)
 
@@ -166,6 +170,9 @@ class Core: NSObject {
     static func HideProgress(_ target: UIViewController) {
         DispatchQueue.main.async {
             target.view.isUserInteractionEnabled = true
+            if let indc = target.view.viewWithTag(9566) {
+                indc.removeFromSuperview()
+            }
             activityIndicator.stopAnimating()
             activityIndicator.removeFromSuperview()
         }

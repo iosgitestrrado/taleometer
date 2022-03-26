@@ -49,7 +49,9 @@ class ProfileViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.sideMenuController!.toggleRightView(animated: false)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,7 +108,7 @@ class ProfileViewController: UIViewController {
         case 1:
             //Name
             guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
-            myobject.titleString = "Change Name"
+            myobject.titleString = "Change Display Name"
             myobject.fieldValue = profileData?.Fname ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)

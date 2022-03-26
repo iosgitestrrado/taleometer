@@ -52,7 +52,9 @@ class LoginViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.sideMenuController!.toggleRightView(animated: false)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {

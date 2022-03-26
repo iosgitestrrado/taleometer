@@ -23,7 +23,7 @@ class GridViewController: UIViewController {
     private var currentIndex = -1
     private var pageNumber = 1
     private var morepage = true
-    private var pageLimit = 9
+    private var pageLimit = 10
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -69,7 +69,8 @@ class GridViewController: UIViewController {
             collectionView?.infiniteScrollIndicatorMargin = 40
             
             collectionView?.addInfiniteScroll { [weak self] (scrollView) -> Void in
-                self?.getAudioList({
+                self?.getAudioList({ [self] in
+                    self?.collectionView.removeInfiniteScroll()
                     scrollView.finishInfiniteScroll()
                 })
             }
@@ -82,55 +83,58 @@ class GridViewController: UIViewController {
     private func getAudioList(_ completionHandler: (() -> Void)?) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(parentController!)
+            //completionHandler?()
             return
         }
         if !morepage {
+            completionHandler?()
             return
         }
         Core.ShowProgress(parentController!, detailLbl: "Getting Audio...")
-            AudioClient.get(AudioRequest(page: "\(pageNumber)", limit: pageLimit), genreId: genreId, completion: { [self] result in
-                morepage = result != nil && result!.count > 0
-                if let response = result, response.count > 0 {
-                    if pageNumber == 1 {
-                        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-                        layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        AudioClient.get(AudioRequest(page: "\(pageNumber)", limit: pageLimit), genreId: genreId, completion: { [self] result in
+            morepage = result != nil && result!.count > 0
+            if let response = result, response.count > 0 {
+                if pageNumber == 1 {
+                    let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+                    layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
 
-                        if audioList.count > 0 {
-                            gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
-                            layout.itemSize = CGSize(width: gridSize, height: gridSize)
-                        } else {
-                            gridSize = parentFrame!.size.width
-                            layout.itemSize = CGSize(width: gridSize, height: 30)
-                        }
-                        layout.minimumInteritemSpacing = 0
-                        layout.minimumLineSpacing = 10
-                        collectionView.collectionViewLayout = layout
-                        currentIndex = 0
-                        pageNumber += 1
+                    if audioList.count > 0 {
+                        gridSize = (UIScreen.main.bounds.width - (60.0 * UIScreen.main.bounds.width) / 390.0) / 3.0
+                        layout.itemSize = CGSize(width: gridSize, height: gridSize)
+                    } else {
+                        gridSize = parentFrame!.size.width
+                        layout.itemSize = CGSize(width: gridSize, height: 30)
                     }
-                    
-                    let newItems = response
-                    
-                    // create new index paths
-                    let photoCount = self.audioList.count
-                    let (start, end) = (photoCount, newItems.count + photoCount)
-                    let indexPaths = (start..<end).map { return IndexPath(row: $0, section: 0) }
-                    
-                    // update data source
-                    self.audioList.append(contentsOf: newItems)
-                                                
-                    // update collection view
-                    self.collectionView?.performBatchUpdates({ () -> Void in
-                        self.collectionView?.insertItems(at: indexPaths)
-                    }, completion: { (finished) -> Void in
-                        completionHandler?()
-                        Core.HideProgress(parentController!)
-                        return
-                    });
+                    layout.minimumInteritemSpacing = 0
+                    layout.minimumLineSpacing = 10
+                    collectionView.collectionViewLayout = layout
+                    currentIndex = 0
                 }
-                completionHandler?()
-                Core.HideProgress(parentController!)
-            })
+                pageNumber += 1
+                morepage = UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin)
+                
+                let newItems = response
+                
+                // create new index paths
+                let photoCount = self.audioList.count
+                let (start, end) = (photoCount, newItems.count + photoCount)
+                let indexPaths = (start..<end).map { return IndexPath(row: $0, section: 0) }
+                
+                // update data source
+                self.audioList.append(contentsOf: newItems)
+                                            
+                // update collection view
+                self.collectionView?.performBatchUpdates({ () -> Void in
+                    self.collectionView?.insertItems(at: indexPaths)
+                }, completion: { (finished) -> Void in
+                    completionHandler?()
+                    Core.HideProgress(parentController!)
+                    return
+                });
+            }
+            completionHandler?()
+            Core.HideProgress(parentController!)
+        })
     }
     
     // MARK: - Actions

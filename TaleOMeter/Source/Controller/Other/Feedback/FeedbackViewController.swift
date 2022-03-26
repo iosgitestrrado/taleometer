@@ -39,7 +39,9 @@ class FeedbackViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.sideMenuController!.toggleRightView(animated: false)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     // MARK: - Side Menu button action -

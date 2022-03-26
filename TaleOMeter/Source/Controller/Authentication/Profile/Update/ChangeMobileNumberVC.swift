@@ -51,6 +51,13 @@ class ChangeMobileNumberVC: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mobileTextField.setError()
+        }
+    }
+    
     @IBAction func tapOnCountry(_ sender: Any) {
         let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
         myobject.delegate = self

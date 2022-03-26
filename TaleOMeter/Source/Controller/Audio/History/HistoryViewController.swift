@@ -33,7 +33,7 @@ class HistoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
         Core.initFooterView(self, footerView: &footerView)
-        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
+       // NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,7 +43,9 @@ class HistoryViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.sideMenuController!.toggleRightView(animated: false)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,6 +81,27 @@ class HistoryViewController: UIViewController {
         guard let cellData = historyData[key]?[sender.tag] else { return }
         // Get current index from audio list
         guard let currentIndex = audioList.firstIndex(where: { $0.Id == cellData.Audio_story.Id }) else { return }
+        if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+//                if let audioUrl = URL(string: audioList[indexPath.row].File) {
+//                    let fileName = NSString(string: audioUrl.lastPathComponent)
+//                    if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+//                        Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
+//                        return
+//                    }
+//                }
+            if AudioPlayManager.shared.isNonStop {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+            }
+            myobject.myAudioList = audioList
+            myobject.currentAudioIndex = currentIndex
+            AudioPlayManager.shared.audioList = audioList
+            AudioPlayManager.shared.setAudioIndex(currentIndex, isNext: false)
+            self.navigationController?.pushViewController(myobject, animated: true)
+        }
+        /*
+        
+        
+        
                 
         if sender.isSelected {
             // Pause audio and update row
@@ -122,7 +145,7 @@ class HistoryViewController: UIViewController {
             
             // Set curret audio index of audio play manager
             self.initPlayerManager(sectionIndex, rowIndex: sender.tag, currentSecond: cellData.Time)
-        }
+        }*/
     }
     
     private func enableTimer() {
@@ -452,7 +475,6 @@ extension HistoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
         if historyData.keys.count > 0 {
             // Get key of current row using section
             let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: indexPath.section)]
@@ -466,7 +488,32 @@ extension HistoryViewController: UITableViewDelegate {
                 DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getHistory() } }
             }
         }
-        
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        // Get key from history data
+        let key = historyData.keys[historyData.index(historyData.startIndex, offsetBy: indexPath.section)]
+        // Get cell data from history data
+        guard let cellData = historyData[key]?[indexPath.row] else { return }
+        // Get current index from audio list
+        guard let currentIndex = audioList.firstIndex(where: { $0.Id == cellData.Audio_story.Id }) else { return }
+        if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+//                if let audioUrl = URL(string: audioList[indexPath.row].File) {
+//                    let fileName = NSString(string: audioUrl.lastPathComponent)
+//                    if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+//                        Toast.show("Audio File \"\(fileName.pathExtension)\" is not supported!")
+//                        return
+//                    }
+//                }
+            if AudioPlayManager.shared.isNonStop {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+            }
+            myobject.myAudioList = audioList
+            myobject.currentAudioIndex = currentIndex
+            AudioPlayManager.shared.audioList = audioList
+            AudioPlayManager.shared.setAudioIndex(currentIndex, isNext: false)
+            self.navigationController?.pushViewController(myobject, animated: true)
+        }
     }
 }
 

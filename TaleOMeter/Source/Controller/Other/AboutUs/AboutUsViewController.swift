@@ -25,7 +25,9 @@ class AboutUsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.sideMenuController!.toggleRightView(animated: false)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

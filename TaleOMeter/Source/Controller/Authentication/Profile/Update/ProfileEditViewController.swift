@@ -22,7 +22,7 @@ class ProfileEditViewController: UIViewController {
     weak var profileDelegate: ProfileEditDelegate? = nil
     
     // MARK: - Public Property -
-    var titleString = "Change Name"
+    var titleString = "Change Display Name"
     var fieldValue = ""
     
     // MARK: - Private Property -
@@ -32,14 +32,14 @@ class ProfileEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        self.hideKeyboard()
         if let pfData = Login.getProfileData() {
             profileData = pfData
         }
         self.textField.text = fieldValue
-        if titleString == "Change Name" {
-            self.titleLabelL.text = "Enter your name"
-            self.textField.placeholder = "Enter your name"
+        if titleString == "Change Display Name" {
+            self.titleLabelL.text = "Enter Your Display Name"
+            self.textField.placeholder = "Enter Your Display Name"
             if let pfData = profileData {
                 self.textField.text = pfData.Fname
             }
@@ -53,6 +53,13 @@ class ProfileEditViewController: UIViewController {
         self.navigationItem.title = titleString
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.textField.setError()
+        }
+    }
         
     private func updateProfileData() {
         self.view.endEditing(true)
@@ -63,10 +70,10 @@ class ProfileEditViewController: UIViewController {
             }
             Core.ShowProgress(self, detailLbl: "Updating Profile")
             
-            AuthClient.updateProfile(ProfileRequest(name: prof.User_code, display_name: titleString == "Change Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Name" ? prof.Email : self.textField.text!)) { [self] result in
+            AuthClient.updateProfile(ProfileRequest(name: prof.User_code, display_name: titleString == "Change Display Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Display Name" ? prof.Email : self.textField.text!)) { [self] result in
                 if let response = result {
                     Login.storeProfileData(response)
-                    if titleString == "Change Name" {
+                    if titleString == "Change Display Name" {
                         PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", isUserStory: true)
                     } else {
                         PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", isUserStory: true)
@@ -85,7 +92,7 @@ class ProfileEditViewController: UIViewController {
             Core.noInternet(self)
             return
         }
-        if titleString == "Change Name" {
+        if titleString == "Change Display Name" {
             if textField.text!.isBlank {
                 Validator.showRequiredError(textField)
                 return
@@ -133,7 +140,7 @@ extension ProfileEditViewController: UITextFieldDelegate {
             Validator.showRequiredError(textField)
             return
         }
-        if titleString != "Change Name" && !textField.text!.isEmail {
+        if titleString != "Change Display Name" && !textField.text!.isEmail {
             Validator.showError(textField, message: "Invalid email")
             return
         }
