@@ -172,6 +172,7 @@ enum Feed {
     case NonStopAudios
     case AddAudioHistory
     case GetAudioHistory///page=1
+    case SurpriseAudio
     case UpdateAudioHistory
     case SearchAudio
     case RecentSearchAudio
@@ -245,6 +246,7 @@ extension Feed: Endpoint {
         case .NonStopAudios:            return "/api/audio-stories/non-stop"
         case .AddAudioHistory:          return "/api/add-audio-history"
         case .GetAudioHistory:          return "/api/get-audio-history"
+        case .SurpriseAudio:            return "/api/audio-stories/surprise"
         case .UpdateAudioHistory:       return "/api/update-audio-history"
         case .SearchAudio:              return "/api/search-audio"
         case .RecentSearchAudio:        return "/api/search-audio/recent"

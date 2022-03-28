@@ -19,7 +19,7 @@ struct NonStopAudio {
     var Updated_at = String()
     var Deleted_at = String()
     var Audio_story = Audio()
-    var Link_audio = LinkAudio()
+    var Link_audio = Audio()
     
     init() { }
     init(_ json: JSON) {
@@ -34,9 +34,9 @@ struct NonStopAudio {
         
         if let audio_story = json["audio_story"].dictionaryObject {
             Audio_story = Audio(JSON(audio_story))
-        }
-        if let link_audio = json["link_audio"].dictionaryObject {
-            Link_audio = LinkAudio(JSON(link_audio))
+        } else if let link_audio = json["link_audio"].dictionaryObject {
+            Audio_story = Audio(JSON(link_audio))
+            Audio_story.IsLinkedAudio = true
         }
     }
 }

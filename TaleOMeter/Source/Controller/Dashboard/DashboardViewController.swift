@@ -83,7 +83,22 @@ class DashboardViewController: UIViewController {
     // MARK: Click on surprise button
     @IBAction func tapOnSurprise(_ sender: Any) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
-            Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
+            Core.ShowProgress(self, detailLbl: "")
+            AudioClient.getSurpriseAudio(AudioRequest(page: "all", limit: 10)) { response in
+                if let data = response, data.count > 0 {
+                    if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+                        if AudioPlayManager.shared.isNonStop {
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                        }
+                        myobject.myAudioList = data
+                        myobject.currentAudioIndex = 0
+                        AudioPlayManager.shared.audioList = data
+                        AudioPlayManager.shared.setAudioIndex(0, isNext: false)
+                        self.navigationController?.pushViewController(myobject, animated: true)
+                    }
+                }
+                Core.HideProgress(self)
+            }
         } else {
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
@@ -97,7 +112,8 @@ class DashboardViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "segmentview", let segVC = segue.destination as? SegmentViewController {
             segVC.parentController = self
-            self.containerView.frame.size.width = CGFloat((335.0 * UIScreen.main.bounds.width) / 375.0)
+            self.containerView.frame.size.width = CGFloat((350.0 * UIScreen.main.bounds.width) / 390.0)
+            self.containerView.frame.size.height = CGFloat((503.0 * UIScreen.main.bounds.height) / 844.0)
             segVC.parentFrame = self.containerView.frame
         }
     }

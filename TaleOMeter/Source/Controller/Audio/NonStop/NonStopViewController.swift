@@ -88,8 +88,8 @@ class NonStopViewController: UIViewController {
                 Core.noInternet(self)
                 return
             }
-            Core.ShowProgress(self, detailLbl: "Getting Audio...")
-            AudioClient.get(AudioRequest(page: "all", limit: 10), isNonStop: true, completion: { [self] result in
+            Core.ShowProgress(self, detailLbl: "")
+            AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 10)) { [self] result in
                 if let response = result {
                     AudioPlayManager.shared.audioList = response
                     myAudioList = response
@@ -99,13 +99,27 @@ class NonStopViewController: UIViewController {
                     setupAudioDataPlay(true)
                 }
                 Core.HideProgress(self)
-            })
+            }
+//            AudioClient.get(AudioRequest(page: "all", limit: 10), isNonStop: true, completion: { [self] result in
+//                if let response = result {
+//                    AudioPlayManager.shared.audioList = response
+//                    myAudioList = response
+//                    currentAudioIndex = 0
+//                    AudioPlayManager.shared.setAudioIndex(0 ,isNext: false)
+//                    currentAudio = response[AudioPlayManager.shared.currentIndex]
+//                    setupAudioDataPlay(true)
+//                }
+//                Core.HideProgress(self)
+//            })
         }
     }
     
     // MARK: Set audio data only
     private func setAudioData() {
         self.audioTitle.text = currentAudio.Title
+        self.storyLabel.isHidden = currentAudio.IsLinkedAudio
+        self.plotLabel.isHidden = currentAudio.IsLinkedAudio
+        self.narrotionLabel.isHidden = currentAudio.IsLinkedAudio
         self.storyLabel.setTitle("Story: \(currentAudio.Story.Name)", for: .normal)
         self.plotLabel.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
         self.narrotionLabel.setTitle("Narration: \(currentAudio.Narration.Name)", for: .normal)
@@ -247,7 +261,7 @@ class NonStopViewController: UIViewController {
                 break
             case 1:
                 //Next
-                self.nextPrevPlay(true)
+                self.nextPrevPlay(true, isPlayNow: player.isPlaying)
                 break
             default:
                 //Favourite
@@ -270,23 +284,21 @@ class NonStopViewController: UIViewController {
     }
     
     // MARK: - Play next or previous audio
-    private func nextPrevPlay(_ isNext: Bool = true) {
-        if let player = AudioPlayManager.shared.playerAV {
-            // Current player pause and visualization wave stop
-            visualizationWave.pause()
-            
-            // Setup audio index
-            AudioPlayManager.shared.setAudioIndex(isNext: isNext)
-            
-            // No existing audio play
-            self.existingAudio = false
-            
-            // Setup current audio variable
-            self.currentAudio = AudioPlayManager.shared.currentAudio
-            Core.ShowProgress(self, detailLbl: "")
-            // Configure audio data
-            setupAudioDataPlay(player.isPlaying)
-        }
+    private func nextPrevPlay(_ isNext: Bool = true, isPlayNow: Bool) {
+        // Current player pause and visualization wave stop
+        visualizationWave.pause()
+        
+        // Setup audio index
+        AudioPlayManager.shared.setAudioIndex(isNext: isNext)
+        
+        // No existing audio play
+        self.existingAudio = false
+        
+        // Setup current audio variable
+        self.currentAudio = AudioPlayManager.shared.currentAudio
+        Core.ShowProgress(self, detailLbl: "")
+        // Configure audio data
+        setupAudioDataPlay(isPlayNow)
     }
     
     // MARK: - When swipe wave handle here
@@ -462,7 +474,7 @@ extension NonStopViewController: PromptViewDelegate {
             self.setupAudioDataPlay(tag == 1)
         default:
             //2 - play next song
-            nextPrevPlay()
+            nextPrevPlay(isPlayNow: true)
             break
         }
     }

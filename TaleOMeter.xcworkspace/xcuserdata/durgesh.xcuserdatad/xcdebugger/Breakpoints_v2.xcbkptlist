@@ -18,38 +18,6 @@
             endingLineNumber = "1879"
             landmarkName = "rightViewStatusBarBackgroundBlurEffect"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "F0EC46C2-4178-4A61-A9A4-ABB91A263000 - e35ea8a585bd7524"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LGSideMenuController.LGSideMenuController.rightViewStatusBarBackgroundBlurEffect.getter : Swift.Optional&lt;__C.UIBlurEffect&gt;"
-                  moduleName = "LGSideMenuController"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/Pods/LGSideMenuController/LGSideMenuController/LGSideMenuController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1879"
-                  endingLineNumber = "1879"
-                  offsetFromSymbolStart = "235">
-               </Location>
-               <Location
-                  uuid = "F0EC46C2-4178-4A61-A9A4-ABB91A263000 - e35ea8a585bd7524"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LGSideMenuController.LGSideMenuController.rightViewStatusBarBackgroundBlurEffect.getter : Swift.Optional&lt;__C.UIBlurEffect&gt;"
-                  moduleName = "LGSideMenuController"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/Pods/LGSideMenuController/LGSideMenuController/LGSideMenuController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1879"
-                  endingLineNumber = "1879"
-                  offsetFromSymbolStart = "224">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

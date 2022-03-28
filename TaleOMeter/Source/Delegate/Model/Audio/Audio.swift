@@ -29,6 +29,7 @@ struct Audio {
     var Is_favorite = Bool()
     var Duration = String()
     var Favorites_count = Int()
+    var IsLinkedAudio = Bool()
     
     var Story = StoryModel()
     var Plot = StoryModel()

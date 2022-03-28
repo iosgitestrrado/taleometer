@@ -11,7 +11,10 @@ import SpriteKit
 import SDWebImage
 
 class PreferenceViewController: UIViewController {
-
+    
+    // MARK: - Weak Properties -
+    @IBOutlet weak var prefrenceView: UIView!
+    
     // MARK: - Storyboard outlet -
     @IBOutlet weak var magneticView: MagneticView! {
         didSet {
@@ -68,9 +71,6 @@ class PreferenceViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.hidesBackButton = true
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
-        
-        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
-        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -81,6 +81,12 @@ class PreferenceViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    @IBAction func tapOnClosePrePrompt(_ sender: Any) {
+        self.prefrenceView.isHidden = true
+        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
+        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
         getBubbles()
     }
     

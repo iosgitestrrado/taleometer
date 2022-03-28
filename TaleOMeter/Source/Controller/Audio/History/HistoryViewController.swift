@@ -58,20 +58,7 @@ class HistoryViewController: UIViewController {
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch = touches.first!
-//        if touch.view?.tag == 9995555 {
-//            let location = touch.location(in: touch.view)
-//            progressBar.progress = Float(location.x / progressBar.frame.size.width)
-//            if let player = AudioPlayManager.shared.playerAV, let secondDuration = player.currentItem?.duration.seconds {
-//                let total = Int(secondDuration * Double(location.x / progressBar.frame.size.width))
-//                let targetTime : CMTime = CMTimeMake(value: Int64(total), timescale: 1)
-//                player.seek(to: targetTime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
-//                AudioPlayManager.shared.updateMiniPlayerTime()
-//            }
-//        }
-    }
-    
+    // MARK: - Play pause video -
     @objc func tapOnPlay(_ sender: UIButton) {
         // Get section index from button layer
         guard let sectionIndex = sender.layer.value(forKey: "Section") as? Int else { return }

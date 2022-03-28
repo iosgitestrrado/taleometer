@@ -18,11 +18,11 @@ class AudioClient {
                         audio.forEach({ (object) in
                             // Set refrence for Story, Plot and Narration
                             let aud = Audio(object)
-                            if isNonStop && aud.Is_nonstop {
+//                            if isNonStop && aud.Is_nonstop {
+//                                audios.append(aud)
+//                            } else if aud.Genre_id == genreId {
                                 audios.append(aud)
-                            } else if aud.Genre_id == genreId {
-                                audios.append(aud)
-                            }
+//                            }
                         })
                     }
                     completion(audios)
@@ -43,6 +43,35 @@ class AudioClient {
                     completion(audios)
                 }
             })
+        }
+    }
+    
+    static func getNonstopAudio(_ audioReq: AudioRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(parameters: audioReq, feed: .NonStopAudios) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var nonStopAudios = [Audio]()
+                if let audios = response {
+                    audios.forEach { object in
+                        let nonStopAud = NonStopAudio(object)
+                        nonStopAudios.append(nonStopAud.Audio_story)
+                    }
+                }
+                completion(nonStopAudios)
+            }
+        }
+    }
+    
+    static func getSurpriseAudio(_ audioReq: AudioRequest, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.post(parameters: audioReq, feed: .SurpriseAudio) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var surAudios = [Audio]()
+                if let audios = response {
+                    audios.forEach { object in
+                        surAudios.append(Audio(object))
+                    }
+                }
+                completion(surAudios)
+            }
         }
     }
 
