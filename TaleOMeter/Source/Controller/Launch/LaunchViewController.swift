@@ -31,16 +31,15 @@ class LaunchViewController: UIViewController {
                 } else {
                     Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
                 }
-           
         } else {
-            if let profileData = Login.getProfileData() {
-                if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
-                    Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
-                    return
+                if let profileData = Login.getProfileData() {
+                    if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
+                        Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
+                        return
+                    }
                 }
+                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             }
-            Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
-        }
         }
     }
     

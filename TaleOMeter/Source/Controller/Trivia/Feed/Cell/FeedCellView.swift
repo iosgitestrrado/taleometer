@@ -152,7 +152,9 @@ class FeedCellView: UITableViewCell {
             viewPrevReplyBtn.layer.setValue(cellData.commentIndex, forKey: "CommentIndex")
             viewPrevReplyBtn.addTarget(target, action: selectors[2], for: .touchUpInside)
         }
+        
         if let replyBtn = self.replyButton {
+            replyBtn.isHidden = cellId == FeedCellIdentifier.reply
             replyBtn.tag = row
             replyBtn.layer.setValue(cellData.index, forKey: "CellIndex")
             replyBtn.layer.setValue(cellData.commentIndex, forKey: "CommentIndex")
