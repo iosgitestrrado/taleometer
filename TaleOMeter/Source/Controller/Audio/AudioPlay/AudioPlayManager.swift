@@ -354,25 +354,18 @@ class AudioPlayManager: NSObject {
             //0 - Add to fav
             self.addToFav(currentAudio.Id)
             break
-        case 1:
-            //1 - Once more
-            if let player = playerAV {
-                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+        case 1, 3, 4:
+            //1 - Once more //3 - Close mini player //4 - Share audio
+            DispatchQueue.main.async { [self] in
+                if let player = playerAV {
+                    player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+                }
+                miniVController.progressBar.progress = 0
+                self.playPauseAudio(tag == 1, addToHistory: tag != 1)
+                if tag == 4 {
+                    AudioPlayManager.shareAudio(currVController)
+                }
             }
-            miniVController.progressBar.progress = 0
-            self.playPauseAudio(true)
-            break
-        case 3:
-            //3 - Close mini player
-            if let player = playerAV {
-                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-            }
-            miniVController.progressBar.progress = 0
-            self.playPauseAudio(false, addToHistory: true)
-            break
-        case 4:
-            //4 - Share audio
-            AudioPlayManager.shareAudio(currVController)
             break
         default:
             //2 - play next song
@@ -568,11 +561,17 @@ extension AudioPlayManager {
     }
     
     // MARK: - Share current audio -
-    static func shareAudio(_ target: UIViewController) {
+    static func shareAudio(_ target: UIViewController/*, completion: @escaping(Bool?) -> Void*/) {
         let content = "Introducing tele'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
         let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
         controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
-        target.present(controller, animated: true, completion: nil)
+//        controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+//            completion(completed)
+//         }
+        target.present(controller, animated: true) {
+            
+        }
+       // target.present(controller, animated: true, completion: nil)
     }
     
     // MARK: - Remove mini player from view controller

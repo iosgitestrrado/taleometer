@@ -22,6 +22,7 @@ class PromptVManager: NSObject {
                 myobject.songTitle = verifyTitle
                 myobject.nextSongTitle = verifyMessage
             }
+            myobject.currentController = controller
             myobject.isAudioPrompt = isAudioView
             myobject.isCloseBtnHide = closeBtnHide
             controller.navigationController?.present(myobject, animated: true, completion: {

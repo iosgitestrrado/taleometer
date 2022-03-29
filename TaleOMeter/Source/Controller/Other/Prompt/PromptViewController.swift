@@ -41,6 +41,7 @@ class PromptViewController: UIViewController {
     var nextSongTitle = ""
     var isAudioPrompt: Bool = false
     var isCloseBtnHide: Bool = false
+    var currentController = UIViewController()
 
     // MARK: - Private Properties -
     private var timer = Timer()
@@ -117,7 +118,9 @@ class PromptViewController: UIViewController {
             self.delegate?.didActionOnPromptButton(1)
             self.dismiss(animated: true, completion: nil)
         } else if sender.tag == 1 {
-            self.delegate?.didActionOnPromptButton(4)
+            self.dismiss(animated: true) {
+                self.delegate?.didActionOnPromptButton(4)
+            }
         }
     }
     

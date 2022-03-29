@@ -463,18 +463,21 @@ extension NonStopViewController: PromptViewDelegate {
             //0 - Add to fav
             self.addToFav(currentAudio.Id) { status in }
             break
-        case 1, 3:
-            //1 - Once more //3 - Close mini player
-            if let player = AudioPlayManager.shared.playerAV {
-                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-                AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag == 1 ? false : true)
+        case 1, 3, 4:
+            //1 - Once more //3 - Close mini player //4 - Share audio
+            DispatchQueue.main.async {
+                if let player = AudioPlayManager.shared.playerAV {
+                    player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+                    AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag == 1 ? false : true)
+                }
+                self.visualizationWave.stop()
+                self.existingAudio = true
+                self.setupAudioDataPlay(tag == 1)
+                if tag == 4 {
+                    AudioPlayManager.shareAudio(self)
+                }
             }
-            self.visualizationWave.stop()
-            self.existingAudio = true
-            self.setupAudioDataPlay(tag == 1)
-        case 4:
-            //4 - Share audio
-            AudioPlayManager.shareAudio(self)
+            break
         default:
             //2 - play next song
             nextPrevPlay(isPlayNow: true)
