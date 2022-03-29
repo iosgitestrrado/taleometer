@@ -57,7 +57,7 @@ class Core: NSObject {
      * Swap menu option enable/disable.
      * From UIController
      */
-    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white) {
+    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white, bigfont: Bool = false) {
         guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
         if let textContainer = window.viewWithTag(9998) {
             textContainer.removeFromSuperview()
@@ -76,7 +76,7 @@ class Core: NSObject {
 //            print("Family: \(family) Font names: \(names)")
 //        }
         
-        if backImageColor != .white {
+        if bigfont {
             guard let customFont = UIFont(name: "CommutersSans-Bold", size: 25.0) else {
                 fatalError("""
                     Failed to load the "CommutersSans-Bold" font.
@@ -97,13 +97,13 @@ class Core: NSObject {
                 cont.navigationController?.setNavigationBarHidden(true, animated: true)
             }
         }
-        cont.navigationController?.navigationBar.tintColor = backImageColor
-        var backImageI = UIImage(systemName: "chevron.backward")
-        if backImage {
-            backImageI =  UIImage(named: "back_red")
-        }
-        cont.navigationController?.navigationBar.backIndicatorImage = backImageI
-        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImageI
+        cont.navigationController?.navigationBar.tintColor = .red
+//        var backImageI = UIImage(systemName: "chevron.backward")
+//        if backImage {
+//            backImageI =  UIImage(named: "back_red")
+//        }
+        cont.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back_red")
+        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back_red")
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
         

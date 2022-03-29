@@ -33,8 +33,8 @@ class SegmentViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //self.view.frame.size.height = (parentFrame?.size.height)!
-        //self.view.frame.size.width = (parentFrame?.size.width)!
+        self.containerVC?.view.frame.size.width = self.parentFrame!.size.width
+        self.containerVC?.view.frame.size.height = self.parentFrame!.size.height
     }
     
     // MARK: - Get Genres from API's -

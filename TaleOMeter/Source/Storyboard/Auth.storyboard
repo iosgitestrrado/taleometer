@@ -1184,10 +1184,28 @@ Cg
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bga-XY-fbk">
-                                                                <rect key="frame" x="60.333333333333336" y="60.666666666666657" width="19.666666666666664" height="19"/>
+                                                                <rect key="frame" x="60" y="60.999999999999993" width="20" height="18.666666666666664"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="20" id="44Q-0p-8hJ"/>
+                                                                    <constraint firstAttribute="height" constant="20" id="qYO-qQ-iOK"/>
+                                                                </constraints>
                                                                 <color key="tintColor" red="0.92941176470588238" green="0.17254901960784313" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                <state key="normal" backgroundImage="camera.circle.fill" catalog="system"/>
+                                                                <state key="normal" backgroundImage="camera.circle.fill" catalog="system">
+                                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="10"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                        <color key="value" red="0.80458933119999998" green="0.1152796224" blue="0.17872706059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                        <real key="value" value="2"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="tapOnEdit:" destination="Ijb-wd-5Jh" eventType="touchUpInside" id="qAz-ed-3G9"/>
                                                                 </connections>
@@ -1324,7 +1342,7 @@ Cg
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.10000000000000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="fRW-SK-5io" firstAttribute="centerX" secondItem="nmo-V1-C6A" secondAttribute="centerX" id="L9h-Xz-H90"/>
                                     <constraint firstAttribute="height" constant="218" id="U2h-Ft-sll"/>

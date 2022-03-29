@@ -370,6 +370,10 @@ class AudioPlayManager: NSObject {
             miniVController.progressBar.progress = 0
             self.playPauseAudio(false, addToHistory: true)
             break
+        case 4:
+            //4 - Share audio
+            AudioPlayManager.shareAudio(currVController)
+            break
         default:
             //2 - play next song
             nextPrevPlay()
@@ -561,6 +565,14 @@ extension AudioPlayManager {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             self.updateMiniPlayerTime()
         }
+    }
+    
+    // MARK: - Share current audio -
+    static func shareAudio(_ target: UIViewController) {
+        let content = "Introducing tele'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
+        let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
+        controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
+        target.present(controller, animated: true, completion: nil)
     }
     
     // MARK: - Remove mini player from view controller

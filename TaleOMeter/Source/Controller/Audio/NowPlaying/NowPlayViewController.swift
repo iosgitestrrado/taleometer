@@ -359,10 +359,7 @@ class NowPlayViewController: UIViewController {
             break
         default:
             //Share
-            let content = "Introducing tele'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio http://google.co.in/"
-            let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
-            controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
-            self.present(controller, animated: true, completion: nil)
+            AudioPlayManager.shareAudio(self)
             break
         }
     }
@@ -492,6 +489,10 @@ extension NowPlayViewController: PromptViewDelegate {
                 self.existingAudio = true
                 self.setupAudioDataPlay(tag == 1)
             }
+            break
+        case 4:
+            //4 - Share audio
+            AudioPlayManager.shareAudio(self)
             break
         default:
             //2 - play next song

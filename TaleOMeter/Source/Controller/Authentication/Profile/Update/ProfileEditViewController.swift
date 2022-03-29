@@ -51,7 +51,7 @@ class ProfileEditViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = titleString
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false, titleInLeft: true, backImage: true, backImageColor: .red)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

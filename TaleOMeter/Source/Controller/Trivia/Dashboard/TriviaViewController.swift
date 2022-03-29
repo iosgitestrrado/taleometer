@@ -53,7 +53,7 @@ class TriviaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
         self.navigationItem.hidesBackButton = !fromSideMenu
         getTrivia()
     }
@@ -76,7 +76,6 @@ class TriviaViewController: UIViewController {
         TriviaClient.getTriviaHome { response in
             if let data = response {
                 self.triviaHome = data
-                
             }
             self.collectionView.reloadData()
             Core.HideProgress(self)
@@ -136,7 +135,7 @@ extension TriviaViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate -
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 && triviaHome.Trivia_daily.Post_count == 0 {
+        if indexPath.row == 0 && triviaHome.Trivia_daily.Post_count_today == 0 {
             Toast.show(triviaHome.Trivia_daily.Post_msg)
             return
         }

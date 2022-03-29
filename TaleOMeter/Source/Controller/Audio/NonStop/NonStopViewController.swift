@@ -472,6 +472,9 @@ extension NonStopViewController: PromptViewDelegate {
             self.visualizationWave.stop()
             self.existingAudio = true
             self.setupAudioDataPlay(tag == 1)
+        case 4:
+            //4 - Share audio
+            AudioPlayManager.shareAudio(self)
         default:
             //2 - play next song
             nextPrevPlay(isPlayNow: true)

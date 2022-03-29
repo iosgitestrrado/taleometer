@@ -110,11 +110,15 @@ class PromptViewController: UIViewController {
         self.delegate?.didActionOnPromptButton(0)
     }
     
-    // 1 - tag
-    @IBAction func tapOnOnceMore(_ sender: Any) {
-        timer.invalidate()
-        self.delegate?.didActionOnPromptButton(1)
-        self.dismiss(animated: true, completion: nil)
+    // 0 - Once more, 1 - Share (Delegate - 1 To once more, 4 to share)
+    @IBAction func tapOnOnceMore(_ sender: UIButton) {
+        if sender.tag == 0 {
+            timer.invalidate()
+            self.delegate?.didActionOnPromptButton(1)
+            self.dismiss(animated: true, completion: nil)
+        } else if sender.tag == 1 {
+            self.delegate?.didActionOnPromptButton(4)
+        }
     }
     
     // 2 - tag

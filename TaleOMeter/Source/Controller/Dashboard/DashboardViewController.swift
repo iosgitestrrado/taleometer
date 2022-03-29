@@ -16,6 +16,9 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     @IBOutlet weak var surpriseButton: UIButton!
     @IBOutlet weak var nonStopBtn: UIButton!
+    
+    // MARK: - Private Property -
+    var segmentController = SegmentViewController()
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -43,6 +46,7 @@ class DashboardViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        segmentController.parentFrame = self.containerView.frame
     }
     
     // MARK: Close Audio Mini player
@@ -115,6 +119,7 @@ class DashboardViewController: UIViewController {
             self.containerView.frame.size.width = CGFloat((350.0 * UIScreen.main.bounds.width) / 390.0)
             self.containerView.frame.size.height = CGFloat((503.0 * UIScreen.main.bounds.height) / 844.0)
             segVC.parentFrame = self.containerView.frame
+            segmentController = segVC
         }
     }
 }
