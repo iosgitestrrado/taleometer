@@ -71,16 +71,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B9622164-8239-42E0-83E0-A63CC3A3B36A"
-            shouldBeEnabled = "Yes"
+            uuid = "34AC0700-3C39-446A-9CA8-FC7071630DA1"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Audio/NonStop/NonStopViewController.swift"
+            filePath = "TaleOMeter/Source/Controller/Other/Prompt/PromptViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "461"
-            endingLineNumber = "461"
-            landmarkName = "didActionOnPromptButton(_:)"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "addToFav()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

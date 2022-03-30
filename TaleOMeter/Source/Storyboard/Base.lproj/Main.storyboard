@@ -58,7 +58,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n8s-0R-ytE">
-                                        <rect key="frame" x="362" y="81" width="20" height="22"/>
+                                        <rect key="frame" x="362" y="45" width="20" height="22"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" image="close"/>
                                         <connections>
@@ -69,7 +69,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="xO3-ZK-bm2" firstAttribute="top" secondItem="zi8-FU-fP5" secondAttribute="top" id="RNM-WO-9V9"/>
-                                    <constraint firstItem="n8s-0R-ytE" firstAttribute="top" secondItem="zi8-FU-fP5" secondAttribute="top" constant="81" id="dZ5-Gw-jmo"/>
+                                    <constraint firstItem="n8s-0R-ytE" firstAttribute="top" secondItem="zi8-FU-fP5" secondAttribute="top" constant="45" id="dZ5-Gw-jmo"/>
                                     <constraint firstAttribute="trailing" secondItem="n8s-0R-ytE" secondAttribute="trailing" constant="8" id="jxm-8C-x9A"/>
                                     <constraint firstItem="xO3-ZK-bm2" firstAttribute="leading" secondItem="zi8-FU-fP5" secondAttribute="leading" id="kr6-VG-a7T"/>
                                     <constraint firstAttribute="trailing" secondItem="xO3-ZK-bm2" secondAttribute="trailing" id="v6d-vJ-wHd"/>

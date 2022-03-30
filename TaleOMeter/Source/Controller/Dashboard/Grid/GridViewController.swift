@@ -171,7 +171,7 @@ extension GridViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if totalRowCount >= 2 && indexPath.row == totalRowCount - 1 && self.morePage {
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin), totalRowCount >= 2 && indexPath.row == totalRowCount - 1 && self.morePage {
             //last cell load more
             pageNumber += 1
             tableView.tableFooterView = footerView

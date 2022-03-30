@@ -58,13 +58,13 @@ class PreferenceViewController: UIViewController {
     }
     
     @objc func runTimedCodeLast() {
-        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 120) > UIScreen.main.bounds.size.height {
-            timerg1?.invalidate()
-            Core.ShowProgress(self, detailLbl: "Moving To Home Page")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.tapOnSkipButton(self)
-            }
-        }
+//        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 120) > UIScreen.main.bounds.size.height {
+//            timerg1?.invalidate()
+//            Core.ShowProgress(self, detailLbl: "Moving To Home Page")
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                self.tapOnSkipButton(self)
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

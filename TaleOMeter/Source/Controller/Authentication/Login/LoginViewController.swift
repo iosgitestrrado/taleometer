@@ -29,17 +29,17 @@ class LoginViewController: UIViewController {
         setDefaultCountry()
         titleLabel.addUnderline()
         
-        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\nSign up To Keep Hearing Amazing")
-        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 34) ]
-        let font22 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 20) ]
-        
-        let rangeTitle1 = NSRange(location: 0, length: 23)
-        let rangeTitle2 = NSRange(location: 23, length: 55 - 23)
-        
-        titleString.addAttributes(font36 as [NSAttributedString.Key : Any], range: rangeTitle1)
-        titleString.addAttributes(font22 as [NSAttributedString.Key : Any], range: rangeTitle2)
-        
-        titleLabel1.attributedText = titleString
+//        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\nSign up To Keep Hearing Amazing")
+//        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Bold", size: 25) ]
+//        let font22 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Bold", size: 16) ]
+//        
+//        let rangeTitle1 = NSRange(location: 0, length: 23)
+//        let rangeTitle2 = NSRange(location: 23, length: 55 - 23)
+//        
+//        titleString.addAttributes(font36 as [NSAttributedString.Key : Any], range: rangeTitle1)
+//        titleString.addAttributes(font22 as [NSAttributedString.Key : Any], range: rangeTitle2)
+//        
+//        titleLabel1.attributedText = titleString
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)

@@ -24,21 +24,21 @@ class LaunchViewController: UIViewController {
                     if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
                        Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
                     } else if profileData.Is_login {
-                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController", animated: false)
                     } else {
-                        Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
+                        Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController", animated: false)
                     }
                 } else {
-                    Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
+                    Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController", animated: false)
                 }
         } else {
                 if let profileData = Login.getProfileData() {
                     if profileData.Is_login, !profileData.StoryBoardName.isBlank, !profileData.StoryBoardId.isBlank {
-                        Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId)
+                        Core.push(self, storyboard: profileData.StoryBoardName, storyboardId: profileData.StoryBoardId, animated: false)
                         return
                     }
                 }
-                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController", animated: false)
             }
         }
     }

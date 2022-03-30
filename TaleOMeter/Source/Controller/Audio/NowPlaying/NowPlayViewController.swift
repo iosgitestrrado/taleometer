@@ -64,6 +64,7 @@ class NowPlayViewController: UIViewController {
         }
         // Set notification center for audio playing completed
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
         
         // Pan gesture for scrubbing support.
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -91,12 +92,19 @@ class NowPlayViewController: UIViewController {
         visualizationWave.pause()
     }
     
-    //MARK: - Call funcation when audio controller press in background
+    // MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
         if (notification.userInfo?["isPlaying"] as? Bool) != nil {
             self.playPauseWave()
         } else if let isNext = notification.userInfo?["isNext"] as? Bool {
             seekAudio(isNext)
+        }
+    }
+    
+    // MARK: - When audio playing is finished -
+    @objc private func itemDidFinishedPlaying(_ notification: Notification) {
+        if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
+            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }
     
@@ -210,7 +218,7 @@ class NowPlayViewController: UIViewController {
             self.currentAudio = AudioPlayManager.shared.currentAudio
         
             // Configure audio data
-            setupAudioDataPlay(player.isPlaying)
+            setupAudioDataPlay(isNext ? true : player.isPlaying)
         }
     }
 
@@ -347,7 +355,6 @@ class NowPlayViewController: UIViewController {
             } else {
                 self.addToFav(currentAudio.Id) { status in }
             }
-            sender.isSelected = !sender.isSelected
             break
         case 3:
             //Back 10 Second
@@ -359,7 +366,7 @@ class NowPlayViewController: UIViewController {
             break
         default:
             //Share
-            AudioPlayManager.shareAudio(self)
+            AudioPlayManager.shareAudio(self) { status in  }
             break
         }
     }
@@ -429,9 +436,9 @@ class NowPlayViewController: UIViewController {
                 }
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-                    if UserDefaults.standard.bool(forKey: "AutoplayEnable") && player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
-                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
-                    }
+//                    if UserDefaults.standard.bool(forKey: "AutoplayEnable") && player.isPlaying && (duration >= 5.0 && duration <= 6.0) {
+//                        PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+//                    }
                 }
                 AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
@@ -448,7 +455,15 @@ extension NowPlayViewController {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    favButton.isSelected = !favButton.isSelected
+                    AudioPlayManager.shared.currentAudio.Is_favorite = true
+                    currentAudio.Is_favorite = true
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = true
+                    }
+                }
                 completion(status)
             }
         }
@@ -461,7 +476,15 @@ extension NowPlayViewController {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    favButton.isSelected = !favButton.isSelected
+                    AudioPlayManager.shared.currentAudio.Is_favorite = false
+                    currentAudio.Is_favorite = false
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
+                    }
+                }
                 completion(status)
             }
         }
@@ -474,9 +497,13 @@ extension NowPlayViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            self.addToFav(currentAudio.Id) { status in }
+            if self.favButton.isSelected {
+                self.removeFromFav(currentAudio.Id) { status in }
+            } else {
+                self.addToFav(currentAudio.Id) { status in }
+            }
             break
-        case 1, 3, 4:
+        case 1, 3:
             //1 - Once more //3 - Close mini player //4 - Share audio
             DispatchQueue.main.async {
                 if let player = AudioPlayManager.shared.playerAV {
@@ -488,9 +515,9 @@ extension NowPlayViewController: PromptViewDelegate {
                 
                 self.existingAudio = true
                 self.setupAudioDataPlay(tag == 1)
-                if tag == 4 {
-                    AudioPlayManager.shareAudio(self)
-                }
+//                if tag == 4 {
+//                    AudioPlayManager.shareAudio(self)
+//                }
             }
             break
         default:

@@ -201,7 +201,7 @@ extension RightViewController: UITableViewDelegate {
                     Core.noInternet(self)
                     return
                 }
-                AuthClient.logout()
+                AuthClient.logout("", moveToLogin: false)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }

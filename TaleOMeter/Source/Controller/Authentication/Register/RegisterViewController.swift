@@ -25,7 +25,7 @@ class RegisterViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
         //self.navigationItem.hidesBackButton = true
-        titleLabel.addUnderline()
+        //titleLabel.addUnderline()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -115,6 +115,22 @@ class RegisterViewController: UIViewController {
 extension RegisterViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.setError()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.nameTextField {
+            do {
+               let regex = try NSRegularExpression(pattern: ".*[^A-Za-z ].*", options: [])
+               if regex.firstMatch(in: string, options: [], range: NSMakeRange(0, string.count)) != nil {
+                   return false
+               }
+           }
+           catch {
+               print("ERROR")
+           }
+        }
+        
+       return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

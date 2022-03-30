@@ -9,8 +9,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="CommutersSans-Bold.ttf">
+            <string>CommutersSans-Bold</string>
+        </array>
         <array key="CommutersSans-Regular.ttf">
             <string>CommutersSans-Regular</string>
+        </array>
+        <array key="CommutersSans-SemiBold.ttf">
+            <string>CommutersSans-SemiBold</string>
         </array>
     </customFonts>
     <scenes>
@@ -26,12 +32,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pjK-tQ-k0w" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="244.00000000000003" width="350" height="112.33333333333334"/>
+                                <rect key="frame" x="20" y="244" width="350" height="41"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Welcome To tale'o'meter">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="36"/>
+                                            <font key="NSFont" size="25" name="CommutersSans-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -48,7 +54,7 @@ Cg
                                     <fragment content="Sign up To Keep Hearing Amazing">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="22"/>
+                                            <font key="NSFont" size="16" name="CommutersSans-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -56,22 +62,22 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stories." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HY6-PQ-ALO" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="358.33333333333331" width="83.666666666666671" height="20"/>
-                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="20"/>
+                                <rect key="frame" x="20" y="287" width="68.666666666666671" height="16"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Bold" family="Commuters Sans" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QlC-xM-3n3">
-                                <rect key="frame" x="20" y="408.33333333333331" width="350" height="20"/>
+                                <rect key="frame" x="20" y="333" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="ZDi-0O-BXi"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mA-hR-n5h">
-                                <rect key="frame" x="20" y="436.33333333333331" width="350" height="50"/>
+                                <rect key="frame" x="20" y="361" width="350" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBl-if-EZK">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="50"/>
@@ -79,7 +85,7 @@ Cg
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+91" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="sbu-3H-SZB">
                                                 <rect key="frame" x="7" y="8" width="45" height="34"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="CommutersSans-SemiBold" family="Commuters Sans" pointSize="14"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -103,25 +109,35 @@ Cg
                                             <constraint firstAttribute="width" constant="70" id="LN2-OY-oyS"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aea-ZC-opL">
+                                        <rect key="frame" x="73" y="17.666666666666686" width="1" height="15"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="oFb-Ga-pVS"/>
+                                        </constraints>
+                                    </view>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bec-jL-jbl">
-                                        <rect key="frame" x="78" y="8" width="262" height="34"/>
+                                        <rect key="frame" x="77" y="8" width="263" height="34"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                         <connections>
                                             <outlet property="delegate" destination="Y6W-OH-hqX" id="G1k-Oj-1ZS"/>
                                         </connections>
                                     </textField>
                                 </subviews>
-                                <color key="backgroundColor" white="0.10000000000000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5hN-2S-0Id"/>
+                                    <constraint firstItem="aea-ZC-opL" firstAttribute="leading" secondItem="rBl-if-EZK" secondAttribute="trailing" constant="3" id="8RF-2v-IIN"/>
                                     <constraint firstItem="bec-jL-jbl" firstAttribute="top" secondItem="9mA-hR-n5h" secondAttribute="top" constant="8" id="9fP-rY-pTe"/>
                                     <constraint firstAttribute="trailing" secondItem="bec-jL-jbl" secondAttribute="trailing" constant="10" id="I0e-c2-pYP"/>
+                                    <constraint firstItem="bec-jL-jbl" firstAttribute="leading" secondItem="aea-ZC-opL" secondAttribute="trailing" constant="3" id="J7C-B0-jvf"/>
                                     <constraint firstAttribute="bottom" secondItem="bec-jL-jbl" secondAttribute="bottom" constant="8" id="P9b-Pa-oWm"/>
+                                    <constraint firstAttribute="bottom" secondItem="aea-ZC-opL" secondAttribute="bottom" constant="17.329999999999998" id="VAY-78-ktS"/>
                                     <constraint firstItem="rBl-if-EZK" firstAttribute="leading" secondItem="9mA-hR-n5h" secondAttribute="leading" id="XG9-XP-tdj"/>
-                                    <constraint firstItem="bec-jL-jbl" firstAttribute="leading" secondItem="rBl-if-EZK" secondAttribute="trailing" constant="8" symbolic="YES" id="f5D-ab-DGK"/>
                                     <constraint firstAttribute="bottom" secondItem="rBl-if-EZK" secondAttribute="bottom" id="gjt-bz-j6J"/>
+                                    <constraint firstItem="aea-ZC-opL" firstAttribute="top" secondItem="9mA-hR-n5h" secondAttribute="top" constant="17.670000000000002" id="n1E-VD-fAo"/>
                                     <constraint firstItem="rBl-if-EZK" firstAttribute="top" secondItem="9mA-hR-n5h" secondAttribute="top" id="svN-6f-er7"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -132,7 +148,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-ca-UGv">
-                                <rect key="frame" x="20" y="494.33333333333331" width="350" height="19.999999999999943"/>
+                                <rect key="frame" x="20" y="419" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="cf3-6V-mtO"/>
                                 </constraints>
@@ -142,14 +158,14 @@ Cg
                                         <fragment content="Please read our ">
                                             <attributes>
                                                 <color key="NSColor" red="0.45582" green="0.46021000000000001" blue="0.71333000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                                <font key="NSFont" size="12" name="CommutersSans-Regular"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                             </attributes>
                                         </fragment>
                                         <fragment content="terms and conditions">
                                             <attributes>
                                                 <color key="NSColor" red="0.90898999999999996" green="0.2213" blue="0.28895999999999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                                <font key="NSFont" size="12" name="CommutersSans-Regular"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                             </attributes>
                                         </fragment>
@@ -160,7 +176,7 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bht-zK-LF7">
-                                <rect key="frame" x="320" y="524.33333333333337" width="50" height="50"/>
+                                <rect key="frame" x="320" y="449" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="6N9-QX-Rjg"/>
                                     <constraint firstAttribute="height" constant="50" id="lxx-pD-c6m"/>
@@ -418,41 +434,38 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="790"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tale'o'meter" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="LAm-Se-gjz" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="200" width="350" height="34"/>
+                                <rect key="frame" x="20" y="200" width="350" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="112.33" id="ebU-hU-pWE"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="34"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Bold" family="Commuters Sans" pointSize="25"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Register" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="VvF-Ah-9FM" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="234" width="92" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="112.33" id="8fR-dk-N95"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up to enter the world of stories" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="VvF-Ah-9FM" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
+                                <rect key="frame" x="20" y="225" width="350" height="16"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Bold" family="Commuters Sans" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDE-wm-CM5">
-                                <rect key="frame" x="20" y="284" width="350" height="20"/>
+                                <rect key="frame" x="20" y="271" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="rvz-WS-xRS"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4g-ze-Yo7">
-                                <rect key="frame" x="20" y="309" width="350" height="50"/>
+                                <rect key="frame" x="20" y="296" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fpj-Gu-FlL">
                                         <rect key="frame" x="10" y="0.0" width="342" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                         <connections>
                                             <outlet property="delegate" destination="bip-MS-FPG" id="NqJ-KJ-2yl"/>
@@ -471,23 +484,23 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfT-gH-q3z">
-                                <rect key="frame" x="20" y="369" width="350" height="20"/>
+                                <rect key="frame" x="20" y="356" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="3vY-f9-lD8"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ope-rC-xSb">
-                                <rect key="frame" x="20" y="394" width="350" height="50"/>
+                                <rect key="frame" x="20" y="381" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CUM-Mp-osq">
                                         <rect key="frame" x="10" y="0.0" width="342" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                         <connections>
                                             <outlet property="delegate" destination="bip-MS-FPG" id="ryW-BI-7O1"/>
@@ -506,23 +519,23 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0Y-Vz-yO0">
-                                <rect key="frame" x="20" y="454" width="350" height="20"/>
+                                <rect key="frame" x="20" y="441" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="g4b-Jb-YMZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WnV-Zt-Bcc">
-                                <rect key="frame" x="20" y="479" width="350" height="50"/>
+                                <rect key="frame" x="20" y="466" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jDO-Ke-Qru">
                                         <rect key="frame" x="8" y="0.0" width="342" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                                         <connections>
                                             <outlet property="delegate" destination="bip-MS-FPG" id="v2l-MY-KwO"/>
@@ -541,7 +554,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssX-1W-wX4">
-                                <rect key="frame" x="320" y="539" width="50" height="50"/>
+                                <rect key="frame" x="320" y="526" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="JAO-b5-NiC"/>
                                     <constraint firstAttribute="width" constant="50" id="jVM-RA-ypS"/>
@@ -597,6 +610,7 @@ Cg
                             <constraint firstItem="c4g-ze-Yo7" firstAttribute="leading" secondItem="0Lh-w0-3Q6" secondAttribute="leading" constant="20" id="fra-wc-xep"/>
                             <constraint firstItem="c4g-ze-Yo7" firstAttribute="top" secondItem="zDE-wm-CM5" secondAttribute="bottom" constant="5" id="g2q-ra-hAJ"/>
                             <constraint firstItem="0Lh-w0-3Q6" firstAttribute="trailing" secondItem="c4g-ze-Yo7" secondAttribute="trailing" constant="20" id="hRT-zg-HTY"/>
+                            <constraint firstAttribute="trailing" secondItem="VvF-Ah-9FM" secondAttribute="trailing" constant="20" id="hqy-nG-1dI"/>
                             <constraint firstItem="0Lh-w0-3Q6" firstAttribute="trailing" secondItem="M0Y-Vz-yO0" secondAttribute="trailing" constant="20" id="jyl-kZ-Zao"/>
                             <constraint firstItem="zDE-wm-CM5" firstAttribute="top" secondItem="VvF-Ah-9FM" secondAttribute="bottom" constant="30" id="mwx-B6-Aoa"/>
                             <constraint firstItem="vfT-gH-q3z" firstAttribute="leading" secondItem="0Lh-w0-3Q6" secondAttribute="leading" constant="20" id="ndW-SJ-teR"/>
@@ -628,12 +642,12 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="790"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fe9-3O-gho" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="200.00000000000003" width="350" height="112.33333333333334"/>
+                                <rect key="frame" x="20" y="200" width="350" height="41"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Welcome To tale'o'meter">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="36"/>
+                                            <font key="NSFont" size="25" name="CommutersSans-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -643,14 +657,14 @@ Cg
 </string>
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" usesAppearanceFont="YES"/>
+                                            <font key="NSFont" size="11" name="CommutersSans-ExtraBold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="           ">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="22"/>
+                                            <font key="NSFont" size="16" name="CommutersSans-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                             <integer key="NSUnderline" value="1"/>
                                         </attributes>
@@ -658,7 +672,7 @@ Cg
                                     <fragment content=" Your Phone Number.">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system" size="22"/>
+                                            <font key="NSFont" size="16" name="CommutersSans-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -666,22 +680,22 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PH-ak-sf2" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="19.999999999999996" y="292.33333333333331" width="63.666666666666657" height="20"/>
-                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="20"/>
+                                <rect key="frame" x="20.000000000000004" y="225" width="52.333333333333343" height="16"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Bold" family="Commuters Sans" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your OTP code here" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVb-iT-hFz">
-                                <rect key="frame" x="20" y="342.33333333333331" width="350" height="20"/>
+                                <rect key="frame" x="20" y="271" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="OYK-PM-M2L"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGv-H1-T29">
-                                <rect key="frame" x="20" y="370.33333333333331" width="350" height="50"/>
+                                <rect key="frame" x="20" y="299" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pio-Sb-T1R" customClass="CustomTextField" customModule="TaleOMeter" customModuleProvider="target">
                                         <rect key="frame" x="8" y="0.0" width="50" height="50"/>
@@ -689,7 +703,7 @@ Cg
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="32"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -707,7 +721,7 @@ Cg
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="32"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -725,7 +739,7 @@ Cg
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="32"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -743,7 +757,7 @@ Cg
                                         <color key="backgroundColor" red="0.1168537065" green="0.1169926599" blue="0.18757548930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="32"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -768,7 +782,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOc-SA-7f4">
-                                <rect key="frame" x="20" y="488.33333333333331" width="350" height="20"/>
+                                <rect key="frame" x="20" y="417" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="aP8-W1-hc9"/>
                                 </constraints>
@@ -778,21 +792,21 @@ Cg
                                         <fragment content="Don't you receive any code ?">
                                             <attributes>
                                                 <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <font key="NSFont" size="12" name="CommutersSans-Regular"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                             </attributes>
                                         </fragment>
                                         <fragment content=" ">
                                             <attributes>
                                                 <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <font key="NSFont" size="12" name="CommutersSans-Regular"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                             </attributes>
                                         </fragment>
                                         <fragment content="RESEND NEW CODE">
                                             <attributes>
                                                 <color key="NSColor" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <font key="NSFont" size="12" name="CommutersSans-Regular"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                             </attributes>
                                         </fragment>
@@ -803,7 +817,7 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TQe-Rv-azO">
-                                <rect key="frame" x="320" y="430.33333333333331" width="50" height="50"/>
+                                <rect key="frame" x="320" y="359" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="mYG-9S-dR9"/>
                                     <constraint firstAttribute="height" constant="50" id="xJD-JP-L02"/>
@@ -1148,10 +1162,10 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nmo-V1-C6A">
-                                <rect key="frame" x="16" y="88" width="358" height="218"/>
+                                <rect key="frame" x="16" y="88" width="358" height="250"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fRW-SK-5io">
-                                        <rect key="frame" x="39" y="30" width="280" height="158"/>
+                                        <rect key="frame" x="39" y="36" width="280" height="178"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GAQ-dZ-X8j">
                                                 <rect key="frame" x="0.0" y="0.0" width="280" height="80"/>
@@ -1235,8 +1249,8 @@ Cg
                                                     <constraint firstItem="veY-dX-bo3" firstAttribute="width" secondItem="5zT-42-1sl" secondAttribute="width" id="mFi-D2-GF4"/>
                                                 </constraints>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="y9C-Si-NWM">
-                                                <rect key="frame" x="0.0" y="90" width="280" height="68"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="y9C-Si-NWM">
+                                                <rect key="frame" x="0.0" y="90" width="280" height="88"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f4n-8P-lPp">
                                                         <rect key="frame" x="0.0" y="0.0" width="280" height="28"/>
@@ -1272,7 +1286,7 @@ Cg
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZf-0G-8aR">
-                                                        <rect key="frame" x="0.0" y="28" width="280" height="20"/>
+                                                        <rect key="frame" x="0.0" y="38" width="280" height="20"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="ifb-W2-hgO">
                                                                 <rect key="frame" x="0.0" y="0.0" width="280" height="20"/>
@@ -1305,7 +1319,7 @@ Cg
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wny-es-qWg">
-                                                        <rect key="frame" x="0.0" y="48" width="280" height="20"/>
+                                                        <rect key="frame" x="0.0" y="68" width="280" height="20"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="C90-W2-Uxk">
                                                                 <rect key="frame" x="0.0" y="0.0" width="280" height="20"/>
@@ -1345,12 +1359,12 @@ Cg
                                 <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="fRW-SK-5io" firstAttribute="centerX" secondItem="nmo-V1-C6A" secondAttribute="centerX" id="L9h-Xz-H90"/>
-                                    <constraint firstAttribute="height" constant="218" id="U2h-Ft-sll"/>
+                                    <constraint firstAttribute="height" constant="250" id="U2h-Ft-sll"/>
                                     <constraint firstItem="fRW-SK-5io" firstAttribute="centerY" secondItem="nmo-V1-C6A" secondAttribute="centerY" id="oeA-jL-2YH"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="20"/>
+                                        <real key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>

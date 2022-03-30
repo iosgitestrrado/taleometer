@@ -340,6 +340,12 @@ extension AudioListViewController {
         }
         Core.ShowProgress(parentConroller, detailLbl: "")
         FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+            if let st = status, st {
+                AudioPlayManager.shared.currentAudio.Is_favorite = true
+                if AudioPlayManager.shared.audioList != nil {
+                    AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = true
+                }
+            }
             Core.HideProgress(parentConroller)
             completion(status)
         }
@@ -353,6 +359,12 @@ extension AudioListViewController {
         }
         Core.ShowProgress(parentConroller, detailLbl: "")
         FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+            if let st = status, st {
+                AudioPlayManager.shared.currentAudio.Is_favorite = false
+                if AudioPlayManager.shared.audioList != nil {
+                    AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
+                }
+            }
             Core.HideProgress(parentConroller)
             completion(status)
         }

@@ -80,9 +80,9 @@ class SearchViewController: UIViewController {
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
-        if self.containerBottomCons.constant == originalConBotCons,let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+        if self.containerBottomCons.constant == originalConBotCons, let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
+            let keyboardHeight = keyboardRectangle.height - self.view.safeAreaInsets.bottom
             self.containerBottomCons.constant = keyboardHeight
         }
     }
@@ -310,6 +310,15 @@ extension SearchViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+//        listArray.removeAll(keepingCapacity: false)
+//        let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchBar.text!)
+//        let array = (allListArray as NSArray).filtered(using: searchPredicate)
+//        listArray = array as! [String]
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //self.view.endEditing(true)
         self.isRecentSearch = false
         if (searchBar.text?.utf8.count)! > 0 {
             throttler.throttle {
@@ -322,15 +331,7 @@ extension SearchViewController: UISearchBarDelegate {
                 }
             }
         }
-//        listArray.removeAll(keepingCapacity: false)
-//        let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchBar.text!)
-//        let array = (allListArray as NSArray).filtered(using: searchPredicate)
-//        listArray = array as! [String]
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.view.endEditing(true)
-        searchBar.resignFirstResponder()
+       // searchBar.resignFirstResponder()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

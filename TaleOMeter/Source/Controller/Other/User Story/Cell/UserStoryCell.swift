@@ -134,31 +134,42 @@ class UserStoryCell: UITableViewCell {
     @IBOutlet weak var option2Btn: UIButton!
     @IBOutlet weak var option1Lbl: UILabel!
     @IBOutlet weak var option2Lbl: UILabel!
+    @IBOutlet weak var radioStackView: UIStackView!
+    @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var radioButton: UIButton!
+    @IBOutlet weak var radioLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
     
-    func configuration(_ viewTitle: String, cellData: UserStoryCellItem, tamilTermsString: String, section: Int, row: Int, target: Any, selectors: [Selector], optionButton1: inout UIButton, optionButton2: inout UIButton) {
+    func configuration(_ viewTitle: String, cellData: UserStoryModel, tamilTermsString: String, section: Int, row: Int, target: Any, selectors: [Selector], optionButton1: inout UIButton, optionButton2: inout UIButton) {
         if let titleLbl = self.titleLabel {
-            titleLbl.text = cellData.title
-            if viewTitle != "English" {
-                titleLbl.text = cellData.titleTamil
-            }
+            titleLbl.text = cellData.Title
+//            if viewTitle != "English" {
+//                titleLbl.text = cellData.titleTamil
+//            }
         }
-        if viewTitle != "English" {
-            if let opt1Lbl = self.option1Lbl {
-                opt1Lbl.text = "நானே"
-            }
-            if let opt2Lbl = self.option2Lbl {
-                opt2Lbl.text = "வேறு யாரோ"
-            }
+        
+        if cellData.TypeT.lowercased() == "choice" {
+//            mainStackView.addArrangedSubview(stackView)
+//            mainStackView.addArrangedSubview(stackView)
+//            mainStackView.addArrangedSubview(stackView)
         }
+        
+//        if viewTitle != "English" {
+//            if let opt1Lbl = self.option1Lbl {
+//                opt1Lbl.text = "நானே"
+//            }
+//            if let opt2Lbl = self.option2Lbl {
+//                opt2Lbl.text = "வேறு யாரோ"
+//            }
+//        }
         if let btn1 = self.option1Btn {
-            if cellData == .storyAbout {
-                optionButton1 = btn1
-            }
+//            if cellData == .storyAbout {
+//                optionButton1 = btn1
+//            }
             btn1.tag = section
             btn1.addTarget(target, action: selectors[0], for: .touchUpInside)
             if viewTitle != "English" && section == 6 {
@@ -179,9 +190,9 @@ class UserStoryCell: UITableViewCell {
             }
         }
         if let btn2 = self.option2Btn {
-            if cellData == .storyAbout {
-                optionButton2 = btn2
-            }
+//            if cellData == .storyAbout {
+//                optionButton2 = btn2
+//            }
             btn2.tag = section
             btn2.addTarget(target, action: selectors[1], for: .touchUpInside)
         }

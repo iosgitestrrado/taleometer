@@ -24,30 +24,18 @@ class FavouriteAudioClient {
     }
     
     static func add(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
-        DispatchQueue.global(qos: .background).async {
         APIClient.shared.postJson(parameters: favRequest, feed: .AddFavoriteAudio) { result in
-            DispatchQueue.global(qos: .background).async {
-            ResponseAPI.getResponseJsonBool(result) { status in
-                self.get("all") { response in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                     completion(status)
-                }
             }
-            }
-        }
         }
     }
     
     static func remove(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
-        DispatchQueue.global(qos: .background).async {
         APIClient.shared.deleteJson(favRequest, query: "", feed: .RemoveFavoriteAudio) { result in
-            DispatchQueue.global(qos: .background).async {
-            ResponseAPI.getResponseJsonBool(result) { status in
-                self.get("all") { response in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
                     completion(status)
-                }
             }
-            }
-        }
         }
     }
 }

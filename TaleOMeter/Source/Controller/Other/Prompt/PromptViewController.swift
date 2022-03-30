@@ -21,6 +21,7 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var audioImageView: UIImageView!
     @IBOutlet weak var remainSecondLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var favButton: UIButton!
 
     @IBOutlet weak var verifyPromptView: UIView!
     @IBOutlet weak var verifyImage: UIImageView!
@@ -45,13 +46,14 @@ class PromptViewController: UIViewController {
 
     // MARK: - Private Properties -
     private var timer = Timer()
-    private var remainingSecond = 5
+    private var remainingSecond = 25
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         closeButton.isHidden = isCloseBtnHide
+        self.favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
         if isAudioPrompt {
             //You Just listened to "Track To Relax"
             let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
@@ -107,8 +109,13 @@ class PromptViewController: UIViewController {
     }
     
     // 0 - tag
-    @IBAction func tapOnAddToFav(_ sender: Any) {
-        self.delegate?.didActionOnPromptButton(0)
+    @IBAction func tapOnAddToFav(_ sender: UIButton) {
+        if sender.isSelected {
+            self.removeFromFav()
+        } else {
+            self.addToFav()
+        }
+        //self.delegate?.didActionOnPromptButton(0)
     }
     
     // 0 - Once more, 1 - Share (Delegate - 1 To once more, 4 to share)
@@ -118,8 +125,11 @@ class PromptViewController: UIViewController {
             self.delegate?.didActionOnPromptButton(1)
             self.dismiss(animated: true, completion: nil)
         } else if sender.tag == 1 {
-            self.dismiss(animated: true) {
-                self.delegate?.didActionOnPromptButton(4)
+            timer.invalidate()
+            AudioPlayManager.shareAudio(self) { [self] status in
+                timer = Timer(timeInterval: 1.0, target: self, selector: #selector(PromptViewController.updateTimer), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.timer, forMode: .default)
+                timer.fire()
             }
         }
     }
@@ -143,5 +153,45 @@ class PromptViewController: UIViewController {
             delegate.didActionOnPromptButton(3)
         }
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension PromptViewController {
+    // Add to favourite
+    private func addToFav() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: AudioPlayManager.shared.currentAudio.Id)) { status in
+                if let st = status, st {
+                    AudioPlayManager.shared.currentAudio.Is_favorite = true
+                    self.favButton.isSelected = true
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = true
+                    }
+                }
+            }
+        }
+    }
+    
+    // Remove from favourite
+    private func removeFromFav() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: AudioPlayManager.shared.currentAudio.Id)) { status in
+                if let st = status, st {
+                    AudioPlayManager.shared.currentAudio.Is_favorite = false
+                    self.favButton.isSelected = false
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
+                    }
+                }
+            }
+        }
     }
 }

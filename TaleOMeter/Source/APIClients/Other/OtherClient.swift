@@ -5,6 +5,8 @@
 //  Created by Durgesh on 08/03/22.
 //
 
+import Darwin
+
 class OtherClient {
     static func getNotifications(_ completion: @escaping([NotificationModel]?) -> Void) {
         APIClient.shared.get("?page=all&limit=2", feed: .Notification) { result in
@@ -52,6 +54,28 @@ class OtherClient {
                     staticContent = StaticContent(data)
                 }
                 completion(staticContent)
+            }
+        }
+    }
+    
+    static func getUserStory(_ completion: @escaping([UserStoryModel]?) -> Void) {
+        APIClient.shared.get("", feed: .UserStories) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var stories = [UserStoryModel]()
+                if let strs = response {
+                    strs.forEach { object in
+                        stories.append(UserStoryModel(object))
+                    }
+                }
+                completion(stories)
+            }
+        }
+    }
+    
+    static func postUserStory(_ req: UserStoryRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .PostUserStories) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
             }
         }
     }

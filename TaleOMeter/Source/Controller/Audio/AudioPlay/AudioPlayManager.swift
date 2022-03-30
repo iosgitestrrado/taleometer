@@ -295,6 +295,10 @@ class AudioPlayManager: NSObject {
                 playPauseAudioOnly(false, addToHistory: true)
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
+            
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
+                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl)
+            }
         }
     }
     
@@ -333,12 +337,14 @@ class AudioPlayManager: NSObject {
             }
             self.initPlayerManager(isFavourite, isNonStop: isNonStop, getMeters: false, isHistory: isHistory, completionHandler: { [self] success in
                 self.playPauseAudio(true)
-                if miniVController.songTitle != nil  {
-                    // Update miniplayer
-                    miniVController.songTitle.text = audioList[currentIndex].Title
-                    miniVController.songImage.sd_setImage(with: URL(string: audioList[currentIndex].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+                DispatchQueue.main.async { [self] in
+                    if miniVController.songTitle != nil  {
+                        // Update miniplayer
+                        miniVController.songTitle.text = audioList[currentIndex].Title
+                        miniVController.songImage.sd_setImage(with: URL(string: audioList[currentIndex].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+                    }
+                    NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil, userInfo: ["isNextPrev" : true])
                 }
-                NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil, userInfo: ["isNextPrev" : true])
             })
 //        } else {
 //            // Check next or previous audio
@@ -354,7 +360,7 @@ class AudioPlayManager: NSObject {
             //0 - Add to fav
             self.addToFav(currentAudio.Id)
             break
-        case 1, 3, 4:
+        case 1, 3:
             //1 - Once more //3 - Close mini player //4 - Share audio
             DispatchQueue.main.async { [self] in
                 if let player = playerAV {
@@ -362,9 +368,6 @@ class AudioPlayManager: NSObject {
                 }
                 miniVController.progressBar.progress = 0
                 self.playPauseAudio(tag == 1, addToHistory: tag != 1)
-                if tag == 4 {
-                    AudioPlayManager.shareAudio(currVController)
-                }
             }
             break
         default:
@@ -518,9 +521,9 @@ extension AudioPlayManager {
                 miniVController.progressBar.progress = Float(playhead / currentItem.duration.seconds)
             }
             
-            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl)
-            }
+//            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+//                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl)
+//            }
             
             miniVController.progressBar.setNeedsDisplay()
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
@@ -561,13 +564,13 @@ extension AudioPlayManager {
     }
     
     // MARK: - Share current audio -
-    static func shareAudio(_ target: UIViewController/*, completion: @escaping(Bool?) -> Void*/) {
+    static func shareAudio(_ target: UIViewController, completion: @escaping(Bool?) -> Void) {
         let content = "Introducing tele'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
         let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
         controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
-//        controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
-//            completion(completed)
-//         }
+        controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+            completion(completed)
+         }
         target.present(controller, animated: true) {
             
         }
@@ -652,9 +655,15 @@ extension AudioPlayManager {
             Core.noInternet(currVController)
             return
         }
-        Core.ShowProgress(currVController, detailLbl: "")
-        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
-            Core.HideProgress(currVController)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    currentAudio.Is_favorite = true
+                    if audioList != nil {
+                        audioList![currentIndex].Is_favorite = true
+                    }
+                }
+            }
         }
     }
     
@@ -664,9 +673,15 @@ extension AudioPlayManager {
             Core.noInternet(currVController)
             return
         }
-        Core.ShowProgress(currVController, detailLbl: "")
-        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
-            Core.HideProgress(currVController)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    currentAudio.Is_favorite = false
+                    if audioList != nil {
+                        audioList![currentIndex].Is_favorite = false
+                    }
+                }
+            }
         }
     }
     

@@ -53,6 +53,7 @@ class NonStopViewController: UIViewController {
         // Do any additional setup after loading the view
         getAudioList()
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
         
         // Pan gesture for scrubbing support.
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -73,6 +74,13 @@ class NonStopViewController: UIViewController {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
         visualizationWave.pause()
+    }
+    
+    // MARK: - When audio playing is finished -
+    @objc private func itemDidFinishedPlaying(_ notification: Notification) {
+        if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
+            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+        }
     }
     
     // Get non stop audio
@@ -266,17 +274,9 @@ class NonStopViewController: UIViewController {
             default:
                 //Favourite
                 if sender.isSelected {
-                    self.removeFromFav(currentAudio.Id) { status in
-                        if let st = status, st {
-                            sender.isSelected = !sender.isSelected
-                        }
-                    }
+                    self.removeFromFav(currentAudio.Id) { status in }
                 } else {
-                    self.addToFav(currentAudio.Id) { status in
-                        if let st = status, st {
-                            sender.isSelected = !sender.isSelected
-                        }
-                    }
+                    self.addToFav(currentAudio.Id) { status in }
                 }
                 break
             }
@@ -405,9 +405,9 @@ class NonStopViewController: UIViewController {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
                 }
             }
-            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
-            }
+//            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+//                PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+//            }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
         }
@@ -433,7 +433,15 @@ extension NonStopViewController {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    favButton.isSelected = !favButton.isSelected
+                    AudioPlayManager.shared.currentAudio.Is_favorite = true
+                    currentAudio.Is_favorite = true
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = true
+                    }
+                }
                 completion(status)
             }
         }
@@ -447,7 +455,15 @@ extension NonStopViewController {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    favButton.isSelected = !favButton.isSelected
+                    AudioPlayManager.shared.currentAudio.Is_favorite = false
+                    currentAudio.Is_favorite = false
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
+                    }
+                }
                 completion(status)
             }
         }
@@ -461,9 +477,14 @@ extension NonStopViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            self.addToFav(currentAudio.Id) { status in }
+            //0 - Add to fav
+            if self.favButton.isSelected {
+                self.removeFromFav(currentAudio.Id) { status in }
+            } else {
+                self.addToFav(currentAudio.Id) { status in }
+            }
             break
-        case 1, 3, 4:
+        case 1, 3:
             //1 - Once more //3 - Close mini player //4 - Share audio
             DispatchQueue.main.async {
                 if let player = AudioPlayManager.shared.playerAV {
@@ -473,9 +494,6 @@ extension NonStopViewController: PromptViewDelegate {
                 self.visualizationWave.stop()
                 self.existingAudio = true
                 self.setupAudioDataPlay(tag == 1)
-                if tag == 4 {
-                    AudioPlayManager.shareAudio(self)
-                }
             }
             break
         default:

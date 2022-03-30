@@ -171,7 +171,7 @@ extension UserStoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellData.cellIdentifier, for: indexPath) as? UserStoryCell else {
             return UITableViewCell()
         }
-        cell.configuration(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
+//        cell.configuration(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
         if let textField = cell.textField {
             storyDataList[indexPath.section].textField = textField
         }
@@ -199,7 +199,7 @@ extension UserStoryViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.setError()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             let indexPath = IndexPath(row: 0, section: textField.tag)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
@@ -232,7 +232,7 @@ extension UserStoryViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.setError()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             let indexPath = IndexPath(row: 0, section: textView.tag)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }

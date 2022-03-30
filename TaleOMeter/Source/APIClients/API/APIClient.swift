@@ -190,6 +190,7 @@ enum Feed {
     
     //Other
     case UserStories
+    case PostUserStories
     case Feedback
     case AboutUs
     case TermsAndConditions
@@ -264,6 +265,7 @@ extension Feed: Endpoint {
             
         //Other
         case .UserStories:              return "/api/user-stories"
+        case .PostUserStories:          return "/api/user-stories/response"
         case .Feedback:                 return "/api/feedback"
         case .AboutUs:                  return "/api/about-us"
         case .TermsAndConditions:       return "/api/terms-and-conditions"
