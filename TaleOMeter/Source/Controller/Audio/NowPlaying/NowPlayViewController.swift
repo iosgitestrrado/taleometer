@@ -10,6 +10,7 @@ import SoundWave
 import CoreMedia
 import AVFoundation
 import MediaPlayer
+import CallKit
 
 class NowPlayViewController: UIViewController {
 
@@ -103,8 +104,8 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
-            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+        if UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList {
+            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: aList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: aList[AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }
     
@@ -356,6 +357,15 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    func checkForActiveCall() -> Bool {
+        for call in CXCallObserver().calls {
+            if call.hasEnded == false {
+                return true
+            }
+        }
+        return false
+    }
+    
     // MARK: - Handle play pause audio
     private func playPauseAudio(_ playing: Bool, addToHistory: Bool = false) {
        // if let player = AudioPlayManager.shared.playerAV {
@@ -462,8 +472,22 @@ class NowPlayViewController: UIViewController {
         }
     }
     
+    @objc private func checkActiveCall() {
+        if !self.checkForActiveCall() {
+            audioTimer.invalidate()
+            self.playPauseAudio(true)
+        }
+    }
+    
     // MARK: - Update time as per playing audio
     @objc func udpateTime() {
+        if self.checkForActiveCall() {
+            self.playPauseAudio(false)
+            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.checkActiveCall), userInfo: nil, repeats: true)
+            RunLoop.main.add(self.audioTimer, forMode: .default)
+            audioTimer.fire()
+            return
+        }
         if let player = AudioPlayManager.shared.playerAV, let currentItem = player.currentItem {
             DispatchQueue.main.async { [self] in
                 // Get the current time in seconds

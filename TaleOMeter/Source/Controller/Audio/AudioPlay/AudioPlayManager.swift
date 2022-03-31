@@ -205,7 +205,7 @@ class AudioPlayManager: NSObject {
             Core.setImage(audio.ImageUrl, image: &audioImage)
             
             nowPlayingInfo[MPMediaItemPropertyArtwork] =
-            MPMediaItemArtwork(boundsSize: CGSize(width: audioImage.size.width / 2.0, height: audioImage.size.height / 2.0)) { size in
+            MPMediaItemArtwork(boundsSize: CGSize(width: 140.0, height: 140.0)) { size in
                     return audioImage
             }
         }
