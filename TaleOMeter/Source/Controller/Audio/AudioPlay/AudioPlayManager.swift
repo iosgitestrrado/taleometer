@@ -26,6 +26,7 @@ class AudioPlayManager: NSObject {
     var isMiniPlayerActive = false
     var isNonStop = false
     var isFavourite = false
+    var isFromFavourite = false
     var isHistory = false
     var waveFormcount = 0
     var audioMetering = [Float]()
@@ -280,7 +281,7 @@ class AudioPlayManager: NSObject {
                 let duration = currentItem.duration.seconds
                 miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
                 miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-                miniVController.progressBar.progress = 0.0
+                //miniVController.progressBar.progress = 0.0
                 miniVController.progressBar.setNeedsDisplay()
                 if let player = playerAV {
                     miniVController.playButton.isSelected = !player.isPlaying
@@ -296,8 +297,8 @@ class AudioPlayManager: NSObject {
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             
-            if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
-                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl)
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && isMiniPlayerActive {
+                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl, isFavourite: isFromFavourite)
             }
         }
     }
@@ -608,11 +609,15 @@ extension AudioPlayManager {
         if isNonStop {
             NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
         }
-        NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
         isMiniPlayerActive = false
+        audioList = [Audio]()
+        currentIndex = -1
         removeMiniPlayer()
+        NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
+
         guard let player = AudioPlayManager.shared.playerAV else { return }
         if player.isPlaying {
+            player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
             playPauseAudio(false, addToHistory: true)
         }
     }

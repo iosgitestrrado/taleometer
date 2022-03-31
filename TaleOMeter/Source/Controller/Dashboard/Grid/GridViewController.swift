@@ -84,11 +84,11 @@ class GridViewController: UIViewController {
             if let data = response {
                 morePage = data.count > 0
                 audioList = audioList + data
-                let tempRowCount = audioList.count / 3
-                if tempRowCount * 3 == audioList.count {
-                    totalRowCount = audioList.count / 3
+                let tempRowCount = (audioList.count - 1) / 3
+                if tempRowCount * 3 == (audioList.count - 1) {
+                    totalRowCount = (audioList.count - 1) / 3
                 } else {
-                    totalRowCount = tempRowCount + (audioList.count - (tempRowCount * 3))
+                    totalRowCount = tempRowCount + ((audioList.count - 1) - (tempRowCount * 3))
                 }
             }
             showNoData = 1
@@ -167,7 +167,7 @@ extension GridViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate -
 extension GridViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.audioList.count <= 0 && showNoData == 1 ? 30.0 : 107.0
+        return self.audioList.count <= 0 && showNoData == 1 ? 30.0 : 130.0
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

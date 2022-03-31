@@ -56,9 +56,9 @@ class NonStopViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
         
         // Pan gesture for scrubbing support.
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-        panGestureRecognizer.cancelsTouchesInView = false
-        visualizationWave.addGestureRecognizer(panGestureRecognizer)
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+//        panGestureRecognizer.cancelsTouchesInView = false
+//        visualizationWave.addGestureRecognizer(panGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,8 +105,9 @@ class NonStopViewController: UIViewController {
                     AudioPlayManager.shared.setAudioIndex(0 ,isNext: false)
                     currentAudio = response[AudioPlayManager.shared.currentIndex]
                     setupAudioDataPlay(true)
+                } else {
+                    Core.HideProgress(self)
                 }
-                Core.HideProgress(self)
             }
 //            AudioClient.get(AudioRequest(page: "all", limit: 10), isNonStop: true, completion: { [self] result in
 //                if let response = result {
@@ -301,6 +302,48 @@ class NonStopViewController: UIViewController {
         setupAudioDataPlay(isPlayNow)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            if let player = AudioPlayManager.shared.playerAV {
+                isPlayingTap = player.isPlaying
+                if (isPlayingTap) {
+                    player.pause()
+                }
+            }
+        }
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            let xLocation = Float(touch.location(in: self.visualizationWave).x)
+            updateWaveWith(xLocation)
+            // do something with your currentPoint
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            let xLocation = Float(touch.location(in: self.visualizationWave).x)
+            updateWaveWith(xLocation)
+            if let player = AudioPlayManager.shared.playerAV {
+                if let totalAudioDuration = player.currentItem?.asset.duration {
+                    let percentageInSelf = Double(xLocation / Float(self.visualizationWave.bounds.width))
+                    let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+                    let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
+                    let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
+                    player.seek(to: scrubbedDutationMediaTime)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        self.udpateTime()
+                    }
+                }
+                if (isPlayingTap) {
+                    player.play()
+                }
+            }
+            // do something with your currentPoint
+        }
+    }
+    
     // MARK: - When swipe wave handle here
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
         if let player = AudioPlayManager.shared.playerAV {
@@ -477,16 +520,18 @@ extension NonStopViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            //0 - Add to fav
-            if self.favButton.isSelected {
-                self.removeFromFav(currentAudio.Id) { status in }
-            } else {
-                self.addToFav(currentAudio.Id) { status in }
-            }
+//            if self.favButton.isSelected {
+//                self.removeFromFav(currentAudio.Id) { status in }
+//            } else {
+//                self.addToFav(currentAudio.Id) { status in }
+//            }
             break
         case 1, 3:
             //1 - Once more //3 - Close mini player //4 - Share audio
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
+                currentAudio = AudioPlayManager.shared.currentAudio
+                favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
+                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
                 if let player = AudioPlayManager.shared.playerAV {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
                     AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag == 1 ? false : true)
@@ -498,7 +543,12 @@ extension NonStopViewController: PromptViewDelegate {
             break
         default:
             //2 - play next song
-            nextPrevPlay(isPlayNow: true)
+            DispatchQueue.main.async { [self] in
+                currentAudio = AudioPlayManager.shared.currentAudio
+                favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
+                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                nextPrevPlay(isPlayNow: true)
+            }
             break
         }
     }

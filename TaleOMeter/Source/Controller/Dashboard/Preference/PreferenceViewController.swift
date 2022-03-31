@@ -51,20 +51,20 @@ class PreferenceViewController: UIViewController {
     }
     
     @objc func runTimedCode() {
-        if let nodd = firstNode, nodd.position.y + nodd.frame.size.height > UIScreen.main.bounds.size.height {
+        if let nodd = firstNode, (nodd.position.y + nodd.frame.size.height - 180) > UIScreen.main.bounds.size.height {
             timerg?.invalidate()
             skipButton.isHidden = false
         }
     }
     
     @objc func runTimedCodeLast() {
-//        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 120) > UIScreen.main.bounds.size.height {
-//            timerg1?.invalidate()
-//            Core.ShowProgress(self, detailLbl: "Moving To Home Page")
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                self.tapOnSkipButton(self)
-//            }
-//        }
+        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 200) > UIScreen.main.bounds.size.height {
+            timerg1?.invalidate()
+            Core.ShowProgress(self, detailLbl: "Moving To Home Page")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.tapOnSkipButton(self)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -80,4 +80,16 @@ extension String {
     var htmlToString: String {
         return htmlToAttributedString?.string ?? ""
     }
+    
+    
+    static let shortDateUS: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateStyle = .short
+        return formatter
+    }()
+    var shortDateUS: Date? {
+        return String.shortDateUS.date(from: self)
+    }
 }

@@ -46,6 +46,9 @@ class DashboardViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let heightt = self.view.safeAreaInsets.bottom == 0 ? -34.0 : self.view.safeAreaInsets.bottom
+        self.containerView.frame.size.width = CGFloat((350.0 * UIScreen.main.bounds.width) / 390.0)
+        self.containerView.frame.size.height = CGFloat(((469.0 + heightt) * UIScreen.main.bounds.height) / 844.0)
         segmentController.parentFrame = self.containerView.frame
     }
     

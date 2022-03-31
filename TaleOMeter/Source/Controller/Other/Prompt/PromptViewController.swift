@@ -43,10 +43,13 @@ class PromptViewController: UIViewController {
     var isAudioPrompt: Bool = false
     var isCloseBtnHide: Bool = false
     var currentController = UIViewController()
+    var isFromFavourite: Bool = false
 
     // MARK: - Private Properties -
     private var timer = Timer()
-    private var remainingSecond = 25
+    private var remainingSecond = 5
+    
+    private var font16 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0) ]
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -57,9 +60,18 @@ class PromptViewController: UIViewController {
         if isAudioPrompt {
             //You Just listened to "Track To Relax"
             let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
-
-            let font16 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0) ]
-            let font22 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22.0) ]
+            
+            
+            var font22 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22.0) ]
+            
+            if let regular16 = UIFont(name: "CommutersSans-Regular", size: 16.0) {
+                font16 = [ NSAttributedString.Key.font: regular16 ]
+            }
+            
+            if let regular22 = UIFont(name: "CommutersSans-Regular", size: 22.0) {
+                font22 = [ NSAttributedString.Key.font: regular22 ]
+            }
+            
             let rangeTitle1 = NSRange(location: 0, length: 21)
             let rangeTitle2 = NSRange(location: 21, length: songTitle.utf8.count + 2) // 10 is title character length
             
@@ -87,8 +99,16 @@ class PromptViewController: UIViewController {
         //Learn Brightly Up Next In 5s
         let remainString = NSMutableAttributedString(string: "\(nextSongTitle) \n Up Next In \n \(remainingSecond)s")
 
-        let font16 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0) ]
-        let font48 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 48.0) ]
+        var font48 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 48.0) ]
+        
+        if let regular16 = UIFont(name: "CommutersSans-Regular", size: 16.0) {
+            font16 = [ NSAttributedString.Key.font: regular16 ]
+        }
+        
+        if let regular48 = UIFont(name: "CommutersSans-Regular", size: 48.0) {
+            font48 = [ NSAttributedString.Key.font: regular48 ]
+        }
+        
         let rangeRemain1 = NSRange(location: 0, length: nextSongTitle.utf8.count + 14)// 10 is title character length
         let rangeRemain2 = NSRange(location: remainString.length - 2, length: 2) // 9 is total of title character length + 10
         
@@ -111,6 +131,7 @@ class PromptViewController: UIViewController {
     // 0 - tag
     @IBAction func tapOnAddToFav(_ sender: UIButton) {
         if sender.isSelected {
+            self.favButton.isSelected = false
             self.removeFromFav()
         } else {
             self.addToFav()
@@ -164,8 +185,11 @@ extension PromptViewController {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: AudioPlayManager.shared.currentAudio.Id)) { status in
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: AudioPlayManager.shared.currentAudio.Id)) { [self] status in
                 if let st = status, st {
+                    if isFromFavourite {
+                        NotificationCenter.default.post(name: NSNotification.Name("ChangeFavAudio"), object: nil, userInfo: ["isAdded" : true])
+                    }
                     AudioPlayManager.shared.currentAudio.Is_favorite = true
                     self.favButton.isSelected = true
                     if AudioPlayManager.shared.audioList != nil {
@@ -183,13 +207,18 @@ extension PromptViewController {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: AudioPlayManager.shared.currentAudio.Id)) { status in
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: AudioPlayManager.shared.currentAudio.Id)) { [self] status in
                 if let st = status, st {
+                    if isFromFavourite {
+                        NotificationCenter.default.post(name: NSNotification.Name("ChangeFavAudio"), object: nil, userInfo: ["isRemoved" : true])
+                    }
                     AudioPlayManager.shared.currentAudio.Is_favorite = false
                     self.favButton.isSelected = false
                     if AudioPlayManager.shared.audioList != nil {
                         AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
                     }
+                } else {
+                    self.favButton.isSelected = true
                 }
             }
         }

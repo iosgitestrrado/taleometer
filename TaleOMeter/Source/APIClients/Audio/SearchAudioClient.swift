@@ -12,7 +12,10 @@ class SearchAudioClient {
                 var searches = [Audio]()
                 if let seas = response {
                     seas.forEach({ (object) in
-                        searches.append(Audio(object))
+                        let aud = Audio(object)
+                        if aud.Is_active {
+                            searches.append(aud)
+                        }
                     })
                 }
                 completion(searches)

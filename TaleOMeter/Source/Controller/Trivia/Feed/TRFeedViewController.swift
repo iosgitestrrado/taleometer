@@ -35,6 +35,7 @@ class TRFeedViewController: UIViewController {
     private var morePage = true
     private var pageNumber = 1
     private var showNoData = 0
+    private let darkBlueT = UIColor(displayP3Red: 84.0 / 255.0, green: 85.0 / 255.0, blue: 135.0 / 255.0, alpha: 1.0)
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -474,7 +475,7 @@ extension TRFeedViewController: UITableViewDelegate {
 extension TRFeedViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .darkGray {
+        if textView.textColor == darkBlueT {
             textView.text = nil
             textView.textColor = UIColor.white
         }
@@ -497,7 +498,7 @@ extension TRFeedViewController: UITextViewDelegate {
         if updatedText.isEmpty {
 
             textView.text = messageString
-            textView.textColor = .darkGray
+            textView.textColor = darkBlueT
 
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
             
@@ -507,7 +508,7 @@ extension TRFeedViewController: UITextViewDelegate {
         // length of the replacement string is greater than 0, set
         // the text color to white then set its text to the
         // replacement string
-         else if textView.textColor == .darkGray && !text.isEmpty {
+         else if textView.textColor == darkBlueT && !text.isEmpty {
             textView.textColor = UIColor.white
             textView.text = text
         }
@@ -525,7 +526,7 @@ extension TRFeedViewController: UITextViewDelegate {
     
     func textViewDidChangeSelection(_ textView: UITextView) {
         if self.view.window != nil {
-            if textView.textColor == .darkGray {
+            if textView.textColor == darkBlueT {
                 textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
             }
         }
@@ -541,7 +542,7 @@ extension TRFeedViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty /*|| textView.text == messageString*/ {
             textView.text = messageString
-            textView.textColor = .darkGray
+            textView.textColor = darkBlueT
             //Validator.showRequiredErrorTextView(textView)
         }
     }

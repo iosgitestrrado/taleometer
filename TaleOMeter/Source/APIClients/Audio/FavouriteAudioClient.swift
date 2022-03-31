@@ -14,7 +14,8 @@ class FavouriteAudioClient {
                 var favs = [Audio]()
                 if let fav = response {
                     fav.forEach({ (object) in
-                        let favor = Favourite(object)
+                        var favor = Favourite(object)
+                        favor.Audio_story.Is_favorite = true
                         favs.append(favor.Audio_story)
                     })
                 }

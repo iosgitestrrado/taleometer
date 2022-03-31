@@ -10,8 +10,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="CommutersSans-SemiBold.ttf">
-            <string>CommutersSans-SemiBold</string>
+        <array key="CommutersSans-Regular.ttf">
+            <string>CommutersSans-Regular</string>
         </array>
     </customFonts>
     <scenes>
@@ -69,7 +69,7 @@ Cg
                                                             <constraint firstAttribute="width" constant="150" id="9Ws-wp-fqK"/>
                                                             <constraint firstAttribute="height" constant="40" id="Cf6-rI-jFM"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" name="CommutersSans-SemiBold" family="Commuters Sans" pointSize="13"/>
+                                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="  Add To Fav" image="heart" catalog="system"/>
@@ -86,6 +86,7 @@ Cg
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wOE-jp-jbI">
                                                         <rect key="frame" x="160" y="0.0" width="150" height="40"/>
                                                         <color key="backgroundColor" red="0.92950266599999998" green="0.1708542109" blue="0.23323071000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="  Once More" image="refresh"/>
                                                         <userDefinedRuntimeAttributes>
@@ -182,6 +183,7 @@ Cg
                                                             <constraint firstAttribute="height" constant="40" id="GTw-Cq-Wi9"/>
                                                             <constraint firstAttribute="width" constant="150" id="f3b-C8-7ak"/>
                                                         </constraints>
+                                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="   Play Now" image="play" catalog="system"/>
@@ -767,10 +769,10 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLm-ch-xwB">
-                                <rect key="frame" x="20" y="98" width="350" height="652"/>
+                                <rect key="frame" x="20" y="98" width="350" height="642"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yVc-CE-8b0">
-                                        <rect key="frame" x="8" y="8" width="334" height="636"/>
+                                        <rect key="frame" x="8" y="8" width="334" height="626"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -794,7 +796,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-8V-BRJ">
-                                <rect key="frame" x="330" y="770" width="40" height="40"/>
+                                <rect key="frame" x="330" y="760" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="UyO-DB-4Z8"/>
                                     <constraint firstAttribute="height" constant="40" id="cDI-jf-bB2"/>
@@ -816,7 +818,7 @@ Cg
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="3OI-NC-gfL" firstAttribute="trailing" secondItem="m2W-8V-BRJ" secondAttribute="trailing" constant="20" id="A1J-pj-QJN"/>
-                            <constraint firstItem="3OI-NC-gfL" firstAttribute="bottom" secondItem="m2W-8V-BRJ" secondAttribute="bottom" id="C9g-on-XRC"/>
+                            <constraint firstItem="3OI-NC-gfL" firstAttribute="bottom" secondItem="m2W-8V-BRJ" secondAttribute="bottom" constant="10" id="C9g-on-XRC"/>
                             <constraint firstItem="SLm-ch-xwB" firstAttribute="leading" secondItem="3OI-NC-gfL" secondAttribute="leading" constant="20" id="Fw9-KB-Adi"/>
                             <constraint firstItem="3OI-NC-gfL" firstAttribute="trailing" secondItem="SLm-ch-xwB" secondAttribute="trailing" constant="20" id="FyG-eb-1Gi"/>
                             <constraint firstItem="SLm-ch-xwB" firstAttribute="top" secondItem="3OI-NC-gfL" secondAttribute="top" constant="10" id="NHz-Fp-c0h"/>

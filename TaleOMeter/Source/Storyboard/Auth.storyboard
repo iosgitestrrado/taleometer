@@ -117,7 +117,7 @@ Cg
                                         </constraints>
                                     </view>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bec-jL-jbl">
-                                        <rect key="frame" x="77" y="8" width="263" height="34"/>
+                                        <rect key="frame" x="84" y="8" width="256" height="34"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
@@ -132,7 +132,7 @@ Cg
                                     <constraint firstItem="aea-ZC-opL" firstAttribute="leading" secondItem="rBl-if-EZK" secondAttribute="trailing" constant="3" id="8RF-2v-IIN"/>
                                     <constraint firstItem="bec-jL-jbl" firstAttribute="top" secondItem="9mA-hR-n5h" secondAttribute="top" constant="8" id="9fP-rY-pTe"/>
                                     <constraint firstAttribute="trailing" secondItem="bec-jL-jbl" secondAttribute="trailing" constant="10" id="I0e-c2-pYP"/>
-                                    <constraint firstItem="bec-jL-jbl" firstAttribute="leading" secondItem="aea-ZC-opL" secondAttribute="trailing" constant="3" id="J7C-B0-jvf"/>
+                                    <constraint firstItem="bec-jL-jbl" firstAttribute="leading" secondItem="aea-ZC-opL" secondAttribute="trailing" constant="10" id="J7C-B0-jvf"/>
                                     <constraint firstAttribute="bottom" secondItem="bec-jL-jbl" secondAttribute="bottom" constant="8" id="P9b-Pa-oWm"/>
                                     <constraint firstAttribute="bottom" secondItem="aea-ZC-opL" secondAttribute="bottom" constant="17.329999999999998" id="VAY-78-ktS"/>
                                     <constraint firstItem="rBl-if-EZK" firstAttribute="leading" secondItem="9mA-hR-n5h" secondAttribute="leading" id="XG9-XP-tdj"/>

@@ -219,4 +219,74 @@ class UserStoryCell: UITableViewCell {
             textView.delegate = target as? UITextViewDelegate
         }
     }
+    
+    func configuration1(_ viewTitle: String, cellData: UserStoryCellItem, tamilTermsString: String, section: Int, row: Int, target: Any, selectors: [Selector], optionButton1: inout UIButton, optionButton2: inout UIButton) {
+        if let titleLbl = self.titleLabel {
+            titleLbl.text = cellData.title
+            if viewTitle != "English" {
+                titleLbl.text = cellData.titleTamil
+            }
+        }
+
+        if viewTitle != "English" {
+            if let opt1Lbl = self.option1Lbl {
+                opt1Lbl.text = "நானே"
+            }
+            if let opt2Lbl = self.option2Lbl {
+                opt2Lbl.text = "வேறு யாரோ"
+            }
+        }
+        if let btn1 = self.option1Btn {
+            if cellData == .storyAbout {
+                optionButton1 = btn1
+            }
+            btn1.tag = section
+            btn1.addTarget(target, action: selectors[0], for: .touchUpInside)
+            if viewTitle != "English" && section == 6 {
+                //cell.option1Btn.titleLabel?.attributedText = NSAttributedString("எங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளைப் படிக்கவும்")
+                let attString = NSMutableAttributedString(string: tamilTermsString)
+                let fontBlue = [ NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 116.0 / 255.0, green: 117.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0) ]
+                let fontRed = [ NSAttributedString.Key.foregroundColor:  UIColor(displayP3Red: 232.0 / 255.0, green: 56.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0) ]
+                let rangeTitle1 = NSRange(location: 0, length: 65)
+                let rangeTitle2 = NSRange(location: 33, length: 32)
+                attString.addAttributes(fontBlue, range: rangeTitle1)
+                attString.addAttributes(fontRed, range: rangeTitle2)
+                if #available(iOS 15, *) {
+                    btn1.setAttributedTitle(attString, for: .normal)
+                } else {
+                    // Fallback on earlier versions
+                    btn1.setAttributedTitle(attString, for: .normal)
+                }
+            }
+        }
+        if let btn2 = self.option2Btn {
+            if cellData == .storyAbout {
+                optionButton2 = btn2
+            }
+            btn2.tag = section
+            btn2.addTarget(target, action: selectors[1], for: .touchUpInside)
+        }
+        if let textField = self.textField {
+            textField.tag = section
+            textField.returnKeyType = .next
+            textField.delegate = target as? UITextFieldDelegate
+        }
+        if let textView = self.textView {
+            textView.tag = section
+            if section == 5 {
+                var doneString = "Done"
+                if viewTitle != "English" {
+                    doneString = "முடிந்தது"
+                }
+                textView.addInputAccessoryView(doneString, target: target, selector: selectors[2], tag: section)
+            } else {
+                var nextString = "Next"
+                if viewTitle != "English" {
+                    nextString = "அடுத்தது"
+                }
+                textView.addInputAccessoryView(nextString, target: target, selector: selectors[3], tag: section)
+            }
+            textView.delegate = target as? UITextViewDelegate
+        }
+    }
 }

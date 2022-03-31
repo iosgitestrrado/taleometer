@@ -180,7 +180,7 @@ class FeedCellView: UITableViewCell {
     private func addToolBar(_ textView: UITextView, messageString: String, target: Any, selector: Selector) {
         textView.addInputAccessoryView("Done", target: target, selector: selector)
         textView.text = messageString
-        textView.textColor = .darkGray
+        textView.textColor = UIColor(displayP3Red: 84.0 / 255.0, green: 85.0 / 255.0, blue: 135.0 / 255.0, alpha: 1.0)
         
         textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
     }

@@ -67,9 +67,9 @@ class NowPlayViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
         
         // Pan gesture for scrubbing support.
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-        panGestureRecognizer.cancelsTouchesInView = false
-        visualizationWave.addGestureRecognizer(panGestureRecognizer)
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+//        panGestureRecognizer.cancelsTouchesInView = false
+//        visualizationWave.addGestureRecognizer(panGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -221,6 +221,48 @@ class NowPlayViewController: UIViewController {
             setupAudioDataPlay(isNext ? true : player.isPlaying)
         }
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            if let player = AudioPlayManager.shared.playerAV {
+                isPlayingTap = player.isPlaying
+                if (isPlayingTap) {
+                    player.pause()
+                }
+            }
+        }
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            let xLocation = Float(touch.location(in: self.visualizationWave).x)
+            updateWaveWith(xLocation)
+            // do something with your currentPoint
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            let xLocation = Float(touch.location(in: self.visualizationWave).x)
+            updateWaveWith(xLocation)
+            if let player = AudioPlayManager.shared.playerAV {
+                if let totalAudioDuration = player.currentItem?.asset.duration {
+                    let percentageInSelf = Double(xLocation / Float(self.visualizationWave.bounds.width))
+                    let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+                    let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
+                    let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
+                    player.seek(to: scrubbedDutationMediaTime)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        self.udpateTime()
+                    }
+                }
+                if (isPlayingTap) {
+                    player.play()
+                }
+            }
+            // do something with your currentPoint
+        }
+    }
 
     // MARK: - When swipe wave handle here
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
@@ -247,9 +289,9 @@ class NowPlayViewController: UIViewController {
                             self.udpateTime()
                         }
                     }
-                if (isPlayingTap) {
-                    self.playPauseAudio(true)
-                }
+                    if (isPlayingTap) {
+                        self.playPauseAudio(true)
+                    }
                 default:
                     break
             }
@@ -351,6 +393,7 @@ class NowPlayViewController: UIViewController {
         case 2:
             //Favourite
             if sender.isSelected {
+                sender.isSelected = false
                 self.removeFromFav(currentAudio.Id) { status in }
             } else {
                 self.addToFav(currentAudio.Id) { status in }
@@ -457,7 +500,7 @@ extension NowPlayViewController {
         DispatchQueue.global(qos: .background).async {
             FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
                 if let st = status, st {
-                    favButton.isSelected = !favButton.isSelected
+                    favButton.isSelected = true
                     AudioPlayManager.shared.currentAudio.Is_favorite = true
                     currentAudio.Is_favorite = true
                     if AudioPlayManager.shared.audioList != nil {
@@ -478,12 +521,14 @@ extension NowPlayViewController {
         DispatchQueue.global(qos: .background).async {
             FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
                 if let st = status, st {
-                    favButton.isSelected = !favButton.isSelected
+                    favButton.isSelected = false
                     AudioPlayManager.shared.currentAudio.Is_favorite = false
                     currentAudio.Is_favorite = false
                     if AudioPlayManager.shared.audioList != nil {
                         AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
                     }
+                } else {
+                    favButton.isSelected = true
                 }
                 completion(status)
             }
@@ -497,15 +542,18 @@ extension NowPlayViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            if self.favButton.isSelected {
-                self.removeFromFav(currentAudio.Id) { status in }
-            } else {
-                self.addToFav(currentAudio.Id) { status in }
-            }
+//            if self.favButton.isSelected {
+//                self.removeFromFav(currentAudio.Id) { status in }
+//            } else {
+//                self.addToFav(currentAudio.Id) { status in }
+//            }
             break
         case 1, 3:
             //1 - Once more //3 - Close mini player //4 - Share audio
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
+                currentAudio = AudioPlayManager.shared.currentAudio
+                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
                 if let player = AudioPlayManager.shared.playerAV {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
                     AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag == 1 ? false : true)
@@ -522,7 +570,12 @@ extension NowPlayViewController: PromptViewDelegate {
             break
         default:
             //2 - play next song
-            nextPrevPlay()
+            DispatchQueue.main.async { [self] in
+                currentAudio = AudioPlayManager.shared.currentAudio
+                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
+                nextPrevPlay()
+            }
             break
         }
     }

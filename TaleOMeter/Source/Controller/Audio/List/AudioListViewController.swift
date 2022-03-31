@@ -45,6 +45,7 @@ class AudioListViewController: UITableViewController {
         // Do any additional setup after loading the view.
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
         Core.initFooterView(self, footerView: &footerView)
+        AudioPlayManager.shared.isFromFavourite = isFavourite
         if isFavourite {
             self.getFavourite()
         } else if isStroy {
@@ -60,6 +61,7 @@ class AudioListViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: remoteCommandName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tapOnShuffled(_:)), name: Notification.Name(rawValue: "shuffleAudio"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tapOnPlayStoryAudio(_:)), name: Notification.Name(rawValue: "playStoryAudio"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(changeFavAudio(_:)), name: NSNotification.Name("ChangeFavAudio"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,6 +159,7 @@ class AudioListViewController: UITableViewController {
                 AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
                 selectedIndex = -1
                 self.tableView.reloadData()
+                AudioPlayManager.shared.addMiniPlayer(parentConroller, bottomConstraint: self.containerBottomCons)
                 return
             }
         } else {
@@ -196,6 +199,7 @@ class AudioListViewController: UITableViewController {
             AudioPlayManager.shared.playPauseAudio(true)
             selectedIndex = currentIndex
             self.tableView.reloadData()
+            AudioPlayManager.shared.addMiniPlayer(parentConroller, bottomConstraint: self.containerBottomCons)
             return
         }
         // Set audio for audio play manager
@@ -240,14 +244,14 @@ class AudioListViewController: UITableViewController {
     }
     
     // MARK: - Audio playing completed
-    @objc private func itemDidFinishedPlaying(_ notificaction: Notification) {
+    @objc private func itemDidFinishedPlaying(_ notification: Notification) {
         selectedIndex = -1
-        if let isNextPrev = notificaction.userInfo?["isNextPrev"] as? Bool, isNextPrev {
+        if let isNextPrev = notification.userInfo?["isNextPrev"] as? Bool, isNextPrev {
             if let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio
             }
         } else {
-            if let audioList2 = AudioPlayManager.shared.audioList, let selectedAudio = audioList.firstIndex(where: { $0.Id == audioList2[AudioPlayManager.shared.nextIndex].Id }) {
+            if let audioList2 = AudioPlayManager.shared.audioList, audioList2.count > 0, let selectedAudio = audioList.firstIndex(where: { $0.Id == audioList2[AudioPlayManager.shared.nextIndex].Id }) {
                     selectedIndex = selectedAudio
             }
         }
@@ -257,6 +261,23 @@ class AudioListViewController: UITableViewController {
             self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
         } else {
             tableView.reloadData()
+        }
+    }
+    
+    @objc private func changeFavAudio(_ notification: Notification) {
+        if let isRemoved = notification.userInfo?["isRemoved"] as? Bool, isRemoved, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
+            audioList.remove(at: selectedAudio)
+            if AudioPlayManager.shared.isFavourite, AudioPlayManager.shared.currentIndex == selectedAudio {
+                AudioPlayManager.shared.removeMiniPlayer()
+                guard let player = AudioPlayManager.shared.playerAV else { return }
+                if player.isPlaying {
+                    AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
+                }
+                selectedIndex = -1
+            }
+            tableView.reloadData()
+        } else if let isAdded = notification.userInfo?["isAdded"] as? Bool, isAdded {
+            getFavourite()
         }
     }
     
@@ -274,9 +295,6 @@ class AudioListViewController: UITableViewController {
                             AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
                         }
                         selectedIndex = -1
-                        if currentAudio.Id == audioList[sender.tag].Id {
-                            currentAudio.Is_favorite = false
-                        }
                     }
                     tableView.reloadData()
                 }
@@ -315,7 +333,7 @@ extension AudioListViewController {
             showNoData = 1
             if let response = result {
                 morePage = response.count > 0
-                audioList = audioList + response
+                audioList = pageNumber == 1 ? response : audioList + response
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio
                 }
@@ -383,7 +401,7 @@ extension AudioListViewController {
             showNoData = 1
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
-                audioList = audioList + data
+                audioList = pageNumber == 1 ? data : audioList + data
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio
                 }
@@ -411,7 +429,7 @@ extension AudioListViewController {
             showNoData = 1
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
-                audioList = audioList + data
+                audioList = pageNumber == 1 ? data : audioList + data
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio
                 }
@@ -439,7 +457,7 @@ extension AudioListViewController {
             showNoData = 1
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
-                audioList = audioList + data
+                audioList = pageNumber == 1 ? data : audioList + data
                 
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio

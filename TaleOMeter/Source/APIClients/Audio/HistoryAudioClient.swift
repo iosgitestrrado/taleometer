@@ -8,7 +8,7 @@
 class HistoryAudioClient {
     static func get(_ page: String, limit: Int, completion: @escaping([History]?) -> Void) {
         APIClient.shared.get("?page=\(page)&limit=\(limit)", feed: .GetAudioHistory) { result in
-            ResponseAPI.getResponseArray(result) { response in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
                 var histories = [History]()
                 if let hiss = response {
                     hiss.forEach { object in

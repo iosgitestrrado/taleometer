@@ -15,6 +15,7 @@ class FeedbackViewController: UIViewController {
     
     // MARK: - Private Property -
     private let messageString = "Describe your feedback"
+    private var isRightViewEnable = false
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -22,10 +23,7 @@ class FeedbackViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
         self.textView.addInputAccessoryView("Done", target: self, selector: #selector(self.doneToolbar(_:)))
-        
-        self.textView.text = messageString
-        self.textView.textColor = .darkGray
-        
+                
         self.textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -35,11 +33,13 @@ class FeedbackViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
+        self.textView.text = messageString
+        self.textView.textColor = .darkGray
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if isMovingFromParent {
+        if isMovingFromParent || isRightViewEnable {
             self.sideMenuController!.toggleRightView(animated: false)
         }
     }
@@ -84,7 +84,7 @@ class FeedbackViewController: UIViewController {
     
     // MARK: Keyboard will Hide
     @objc private func keyboardWillHideNotification (notification: Notification) {
-        self.bottomConstraint.constant = 0
+        self.bottomConstraint.constant = 15
     }
 }
 
@@ -154,6 +154,7 @@ extension FeedbackViewController: UITextViewDelegate {
 extension FeedbackViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
         //back to profile screen
+        self.isRightViewEnable = true
         self.navigationController?.popViewController(animated: true)
     }
 }

@@ -855,7 +855,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fhn-lw-Hw3">
-                                <rect key="frame" x="0.0" y="84" width="390" height="726"/>
+                                <rect key="frame" x="0.0" y="89" width="390" height="721"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -992,7 +992,7 @@
                                 </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YCh-NU-ddO">
-                                <rect key="frame" x="8" y="44" width="374" height="40"/>
+                                <rect key="frame" x="8" y="49" width="374" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ptX-tB-6BF">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -1010,7 +1010,7 @@
                                     <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for stories" translatesAutoresizingMaskIntoConstraints="NO" id="wW5-og-7VZ">
                                         <rect key="frame" x="40" y="0.0" width="334" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                         <connections>
@@ -1025,7 +1025,7 @@
                         <constraints>
                             <constraint firstItem="Jyt-JX-asF" firstAttribute="bottom" secondItem="fhn-lw-Hw3" secondAttribute="bottom" id="1Lr-9m-Su4"/>
                             <constraint firstItem="fhn-lw-Hw3" firstAttribute="top" secondItem="YCh-NU-ddO" secondAttribute="bottom" id="Cp3-BK-9yc"/>
-                            <constraint firstItem="YCh-NU-ddO" firstAttribute="top" secondItem="Jyt-JX-asF" secondAttribute="top" id="Foz-qU-loY"/>
+                            <constraint firstItem="YCh-NU-ddO" firstAttribute="top" secondItem="Jyt-JX-asF" secondAttribute="top" constant="5" id="Foz-qU-loY"/>
                             <constraint firstItem="Jyt-JX-asF" firstAttribute="trailing" secondItem="YCh-NU-ddO" secondAttribute="trailing" constant="8" id="Jkh-a6-wNG"/>
                             <constraint firstAttribute="bottom" secondItem="1Ce-PI-rIe" secondAttribute="bottom" id="L1b-em-I7c"/>
                             <constraint firstItem="fhn-lw-Hw3" firstAttribute="leading" secondItem="Jyt-JX-asF" secondAttribute="leading" id="M80-bx-pNd"/>

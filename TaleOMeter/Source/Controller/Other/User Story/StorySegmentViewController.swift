@@ -30,12 +30,13 @@ class StorySegmentViewController: UIViewController {
     
     // MARK: - Add views into container -
     private func addContainerViews() {
-        var storyView = Core.getController(Constants.Storyboard.other, storyboardId: "StoryViewController") as! StoryViewController
+        var storyView = Core.getController(Constants.Storyboard.other, storyboardId: "UserStoryViewController") as! UserStoryViewController
         storyView.title = "English"
         //gridView.parentController = self.parentController
         viewsArray.append(storyView)
         
-        storyView = Core.getController(Constants.Storyboard.other, storyboardId: "StoryViewController") as! StoryViewController
+//        storyView = Core.getController(Constants.Storyboard.other, storyboardId: "StoryViewController") as! StoryViewController
+        storyView = Core.getController(Constants.Storyboard.other, storyboardId: "UserStoryViewController") as! UserStoryViewController
         //gridView.parentController = self.parentController
         storyView.title = "தமிழ்"
         viewsArray.append(storyView)

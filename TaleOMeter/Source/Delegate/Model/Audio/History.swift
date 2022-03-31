@@ -16,6 +16,7 @@ struct History {
     var Time = Int()
     var Created_at = String()
     var Updated_at = String()
+    var Updated_at_full = String()
     var Audio_story = Audio()
     
     init() { }
@@ -24,7 +25,8 @@ struct History {
         User_id = json["user_id"].intValue
         Audio_story_id = json["audio_story_id"].intValue
         Created_at = json["created_at"].stringValue
-        Updated_at = History.sqlDatetoAppDate(json["updated_at"].stringValue)
+        Updated_at = History.sqlDatetoAppDate(json["updated_at"].stringValue, toFormat: Constants.DateFormate.app)
+        Updated_at_full = History.sqlDatetoAppDate(json["updated_at"].stringValue, toFormat: Constants.DateFormate.appWithTime)
         Time = json["time"].intValue
         
         if let audio_story = json["audio_story"].dictionaryObject {
@@ -32,11 +34,11 @@ struct History {
         }
     }
     
-    static func sqlDatetoAppDate(_ string: String) -> String {
+    static func sqlDatetoAppDate(_ string: String, toFormat: String) -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = Constants.DateFormate.server
         guard let showDate = inputFormatter.date(from: string) else { return "" }
-        inputFormatter.dateFormat = Constants.DateFormate.app
+        inputFormatter.dateFormat = toFormat
         return inputFormatter.string(from: showDate)
     }
 }

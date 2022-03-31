@@ -18,10 +18,13 @@ class AudioClient {
                         audio.forEach({ (object) in
                             // Set refrence for Story, Plot and Narration
                             let aud = Audio(object)
+                            if aud.Is_active {
+                                audios.append(aud)
+                            }
 //                            if isNonStop && aud.Is_nonstop {
 //                                audios.append(aud)
 //                            } else if aud.Genre_id == genreId {
-                                audios.append(aud)
+                                
 //                            }
                         })
                     }
@@ -53,7 +56,9 @@ class AudioClient {
                 if let audios = response {
                     audios.forEach { object in
                         let nonStopAud = NonStopAudio(object)
-                        nonStopAudios.append(nonStopAud.Audio_story)
+                        if nonStopAud.Audio_story.Is_active {
+                            nonStopAudios.append(nonStopAud.Audio_story)
+                        }
                     }
                 }
                 completion(nonStopAudios)
@@ -67,7 +72,10 @@ class AudioClient {
                 var surAudios = [Audio]()
                 if let audios = response {
                     audios.forEach { object in
-                        surAudios.append(Audio(object))
+                        let aud = Audio(object)
+                        if aud.Is_active {
+                            surAudios.append(aud)
+                        }
                     }
                 }
                 completion(surAudios)
@@ -123,7 +131,10 @@ class AudioClient {
                 var audios = [Audio]()
                 if let data = response {
                     data.forEach { object in
-                        audios.append(Audio(object))
+                        let aud = Audio(object)
+                        if aud.Is_active {
+                            audios.append(aud)
+                        }
                     }
                 }
                 completion(audios)
@@ -137,7 +148,10 @@ class AudioClient {
                 var audios = [Audio]()
                 if let data = response {
                     data.forEach { object in
-                        audios.append(Audio(object))
+                        let aud = Audio(object)
+                        if aud.Is_active {
+                            audios.append(aud)
+                        }
                     }
                 }
                 completion(audios)
@@ -151,7 +165,10 @@ class AudioClient {
                 var audios = [Audio]()
                 if let data = response {
                     data.forEach { object in
-                        audios.append(Audio(object))
+                        let aud = Audio(object)
+                        if aud.Is_active {
+                            audios.append(aud)
+                        }
                     }
                 }
                 completion(audios)

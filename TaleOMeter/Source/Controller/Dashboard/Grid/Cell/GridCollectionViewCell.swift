@@ -66,7 +66,7 @@ class GridCollectionViewCell: UICollectionViewCell {
         self.titleLabel.text = cellData.Title
         let countString = NSMutableAttributedString(string: "\(cellData.Post_count)\nnew")
         let rangeTitle1 = NSRange(location: 0, length: cellData.Post_count.description.utf8.count)
-        let rangeTitle2 = NSRange(location: cellData.Post_count.description.utf8.count, length: cellData.Post_count.description.utf8.count + 3)
+        let rangeTitle2 = NSRange(location: cellData.Post_count.description.utf8.count, length: 4)
 
         countString.addAttributes(font15, range: rangeTitle1)
         countString.addAttributes(font8, range: rangeTitle2)

@@ -171,7 +171,7 @@ extension UserStoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellData.cellIdentifier, for: indexPath) as? UserStoryCell else {
             return UITableViewCell()
         }
-//        cell.configuration(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
+        cell.configuration1(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
         if let textField = cell.textField {
             storyDataList[indexPath.section].textField = textField
         }
