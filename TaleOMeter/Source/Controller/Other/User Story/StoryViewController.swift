@@ -6,30 +6,37 @@
 //
 
 import UIKit
+import Popover
 
 class StoryViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tblBottomConstraint: NSLayoutConstraint!
+    
+    // MARK: - Public Properties -
+    var parentController: UIViewController?
 
     // MARK: - Privare Property -
-    
     // MARK: - create property for story data
-    private struct storyModel {
-        var value = String()
-        var textField: UITextField?
-        var textView: UITextView?
-        var id = String()
-        var celldata = [UserStoryCellItem]()
-    }
     private var storyDataList = [UserStoryModel]()
-    
-    // MARK: - Radio button
-    private var optionButton1 = UIButton()
-    private var optionButton2 = UIButton()
-        
+    var userStoryIds = [Int]()
+    var userStoryValues = [String]()
     private let tamilTermsString = "தயவுசெய்து எங்களுடையது படியுங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகள்"
+    private var isRightViewEnable = false
+    
+    /* Popover properties */
+    private var popupArray = [String]()
+    private var tableViewPO = UITableView()
+    private var popover: Popover!
+    private var popoverOptionsDown: [PopoverOption] = [
+        .type(.down),
+        .blackOverlayColor(UIColor(white: 0.0, alpha: 0.6))
+    ]
+    private var popoverOptionsUp: [PopoverOption] = [
+        .type(.up),
+        .blackOverlayColor(UIColor(white: 0.0, alpha: 0.6))
+    ]
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -40,49 +47,29 @@ class StoryViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        /* Popover tableview */
+        tableViewPO = UITableView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width - 50.0, height: 320.0))
+        tableViewPO.delegate = self
+        tableViewPO.dataSource = self
+        
+        self.tableView.panGestureRecognizer.cancelsTouchesInView = false
+        getUserStory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       // Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        if isRightViewEnable {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        get()
-    }
-        
-    // MARK: - Add total cells in property
-//    private func setStoryData() {
-////        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.name.cellIdentifier, celldata: [.name]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.storyAbout.cellIdentifier, celldata: [.storyAbout]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.lifeMoment.cellIdentifier, celldata: [.lifeMoment]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.sharePeople.cellIdentifier, celldata: [.sharePeople]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.incident.cellIdentifier, celldata: [.incident]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.anythingElse.cellIdentifier, celldata: [.anythingElse]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.terms.cellIdentifier, celldata: [.terms]))
-//        storyDataList.append(storyModel(value: "", id: UserStoryCellItem.submitButton.cellIdentifier, celldata: [.submitButton]))
-//    }
-    
-    // MARK: - Logic for click on radio button
-    private func setOptionSelection(_ isOption1Selected: Bool){
-        self.optionButton1.isSelected = isOption1Selected
-        self.optionButton2.isSelected = !isOption1Selected
-        
-        var mySelfStr = "MySelf"
-        var someoneStr = "Someone Else"
-        if self.title != "English" {
-            mySelfStr = "நானே"
-            someoneStr = "வேறு யாரோ"
-        }
-//        if isOption1Selected {
-//            self.storyDataList[1].value = mySelfStr
-//        } else {
-//            self.storyDataList[1].value = someoneStr
-//        }
+        super.viewDidAppear(animated)
     }
     
     // MARK: - Click on done button of keyborad toolbar
@@ -90,58 +77,79 @@ class StoryViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    @objc private func tapOnOptionBtn(_ sender: UIButton) {
+        let rectInTableView = self.tableView.rectForRow(at: IndexPath(row: sender.tag, section: 0))
+        self.popover = Popover(options: (rectInTableView.origin.y - tableView.contentOffset.y) > (self.tableView.frame.size.height / 2.5) ?  self.popoverOptionsUp : self.popoverOptionsDown)
+        self.popover.arrowSize = .zero
+        self.popover.tag = sender.tag
+        if self.popover == nil {
+            self.popover.dismiss()
+        }
+        self.tableViewPO.frame.size.height = 320.0
+        self.popupArray = storyDataList[sender.tag].Options
+        if popupArray.count > 0 && popupArray.count < 8 {
+            self.tableViewPO.frame.size.height = CGFloat(40.0 * Double(popupArray.count))
+        }
+        if popupArray.count > 0 {
+            tableViewPO.reloadData()
+            self.popover.show(tableViewPO, fromView: sender, inView: self.view)
+        }
+    }
+    
     // MARK: - Click on next button of keyboard toolbar
     @objc private func nextToolbar(_ sender: UIBarButtonItem) {
-        let nextCellData = storyDataList[sender.tag + 1]
-        let indexPath = IndexPath(row: 0, section: sender.tag + 1)
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
-//            if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textField = cell.textField {
-//                tableView.reloadRows(at: [indexPath], with: .none)
-//                textField.becomeFirstResponder()
-//            }
-        }
-    }
-    
-    // MARK: Table view all button included submit terms and condition additional radio button
-    @objc private func tapOnButton1(_ sender: UIButton) {
-        switch sender.tag {
-        case 1:
-            setOptionSelection(true)
-            break
-        case 6:
-            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "TermsAndConditionVC")
-            break
-        default:
-            for i in 0..<storyDataList.count {
-                let story = storyDataList[i]
-//                if story.value.isBlank && story.id != UserStoryCellItem.submitButton.cellIdentifier && story.id != UserStoryCellItem.terms.cellIdentifier {
-//                    if let text = story.textView {
-//                        Validator.showRequiredErrorTextView(text)
-//                        tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
-//                        return
-//                    }
-//                    if let text = story.textField {
-//                        Validator.showRequiredError(text)
-//                        tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
-//                        return
-//                    }
-//                    Toast.show(story.celldata[0].errorMessge)
-//                    tableView.scrollToRow(at: IndexPath(row: 0, section: i), at: .top, animated: true)
-//                    return
-//                }
+        
+        //var nextCellId = ""
+        var nextIntIdx = 0
+        for idx in (sender.tag + 1)..<storyDataList.count {
+            if storyDataList[idx].TypeT.lowercased() == "text" {
+               // nextCellId = "textViewCell"
+                nextIntIdx = idx
+                break
             }
-            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", verifyImage: UIImage(named: "thank")!, isUserStory: true)
-            //print(storyDataList)
-            break
+        }
+        
+        let indexPath = IndexPath(row: nextIntIdx, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
+            if let cell = tableView.cellForRow(at: indexPath) as? UserStoryCell, let textView = cell.textView {
+                //tableView.reloadRows(at: [indexPath], with: .none)
+                textView.becomeFirstResponder()
+            }
         }
     }
     
-    // MARK: Table view radio button
-    @objc private func tapOnButton2(_ sender: UIButton) {
-        if sender.tag == 1 {
-            setOptionSelection(false)
+    // MARK: Click on submit button
+    @objc private func tapOnSubmit(_ sender: UIButton) {
+        userStoryIds = [Int]()
+        userStoryValues = [String]()
+        for i in 0..<storyDataList.count {
+            let story = storyDataList[i]
+            if story.Value.isBlank && story.CellId != UserStoryCellItem.submitButton.cellIdentifier && story.CellId != UserStoryCellItem.terms.cellIdentifier {
+                if let text = story.TextView {
+                    Validator.showRequiredErrorTextView(text)
+                    tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                    userStoryIds = [Int]()
+                    userStoryValues = [String]()
+                    return
+                }
+                Toast.show(story.TypeT.lowercased() == "text" ? "Please enter \(story.Title)" : "Please select \(story.Title)")
+                tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                userStoryIds = [Int]()
+                userStoryValues = [String]()
+                return
+            }
+            if story.CellId != UserStoryCellItem.terms.cellIdentifier && story.CellId != UserStoryCellItem.submitButton.cellIdentifier {
+                userStoryIds.append(story.Id)
+                userStoryValues.append(story.Value)
+            }
         }
+        self.postUserStory()
+    }
+    
+    // MARK: Click on terms and condition
+    @objc private func tapOnTerms(_ sender: UIButton) {
+        Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "TermsAndConditionVC")
     }
     
     // MARK: Keyboard will show
@@ -161,17 +169,52 @@ class StoryViewController: UIViewController {
 
 // MARK: - Get data from server -
 extension StoryViewController {
-    private func get() {
-        if !Reachability.isConnectedToNetwork() {
-            Core.noInternet(self)
+    func getUserStory() {
+        if storyDataList.count > 0 {
+            self.tableView.reloadData()
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "getUserStory")
+            return
+        }
+        Core.ShowProgress(parentController!, detailLbl: "")
         OtherClient.getUserStory { [self] response in
             if let data = response {
                 storyDataList = data.sorted(by: { $0.Order < $1.Order })
+                var idx = storyDataList.count - 1
+                for _ in storyDataList {
+                    if storyDataList[idx].TypeT.lowercased() == "text" {
+                        storyDataList[idx].IsLast = true
+                        break
+                    }
+                    idx = idx - 1
+                }
+                
+                var storyM = UserStoryModel()
+                storyM.Title = self.title == "English" ? "" : tamilTermsString
+                storyM.CellId = UserStoryCellItem.terms.cellIdentifier
+                storyDataList.append(storyM)
+                
+                storyM = UserStoryModel()
+                storyM.CellId = UserStoryCellItem.submitButton.cellIdentifier
+                storyDataList.append(storyM)
             }
             self.tableView.reloadData()
+            Core.HideProgress(parentController!)
+        }
+    }
+    
+    private func postUserStory() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "postUserStory")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        OtherClient.postUserStory(UserStoryRequest(user_story_ids: userStoryIds, values: userStoryValues)) { status in
+            if let st = status, st {
+                PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", verifyImage: UIImage(named: "thank")!, isUserStory: true)
+            }
             Core.HideProgress(self)
         }
     }
@@ -185,21 +228,30 @@ extension StoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.tableViewPO == tableView {
+            return self.popupArray.count
+        }
         return storyDataList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: storyDataList[indexPath.row].TypeT.lowercased() == "text" ? "textViewCell" : "radioCell", for: indexPath) as? UserStoryCell else {
+        if self.tableViewPO == tableView {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "cellIdentifier")
+            cell.textLabel?.text = "\(self.popupArray[indexPath.row])"
+            cell.textLabel?.textColor = .black
+            cell.contentView.backgroundColor = .white
+            return cell
+        }
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: storyDataList[indexPath.row].CellId, for: indexPath) as? UserStoryCell else {
             return UITableViewCell()
         }
-        cell.configuration(self.title ?? "", cellData: storyDataList[indexPath.row], tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
-//        if let textField = cell.textField {
-//            storyDataList[indexPath.section].textField = textField
-//        }
-//        if let textView = cell.textView {
-//            storyDataList[indexPath.section].textView = textView
-//        }
+        cell.configuration(self.title ?? "", cellData: storyDataList[indexPath.row], tamilTermsString: tamilTermsString, row: indexPath.row, target: self, selectors: [#selector(tapOnTerms(_:)), #selector(self.tapOnSubmit(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:)), #selector(self.tapOnOptionBtn(_:))])
+        if let textView = cell.textView {
+            textView.text = storyDataList[indexPath.row].Value
+            storyDataList[indexPath.row].TextView = textView
+        }
         return cell
     }
 }
@@ -207,44 +259,20 @@ extension StoryViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate -
 extension StoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if self.tableViewPO == tableView {
+            let indexPathStory = IndexPath(row: self.popover.tag, section: 0)
+            storyDataList[indexPathStory.row].Value = popupArray[indexPath.row]
+            self.tableView.reloadRows(at: [indexPathStory], with: .none)
+            self.popover.dismiss()
+            return
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if self.tableViewPO == tableView {
+            return 40.0
+        }
         return UITableView.automaticDimension
-    }
-}
-
-// MARK: - UITextFieldDelegate -
-extension StoryViewController: UITextFieldDelegate {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.setError()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
-            let indexPath = IndexPath(row: 0, section: textField.tag)
-            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-        }
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        let nextCellData = storyDataList[textField.tag + 2]
-        let indexPath = IndexPath(row: 0, section: textField.tag + 2)
-//        if let cell = tableView.dequeueReusableCell(withIdentifier: nextCellData.id, for: indexPath) as? UserStoryCell, let textField = cell.textField {
-//            tableView.reloadRows(at: [indexPath], with: .none)
-//            textField.becomeFirstResponder()
-//        }
-        return true
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return true
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-//        self.storyDataList[textField.tag].value = textField.text!
-        if textField.text!.isBlank {
-            Validator.showRequiredError(textField)
-        }
     }
 }
 
@@ -254,7 +282,7 @@ extension StoryViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.setError()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
-            let indexPath = IndexPath(row: 0, section: textView.tag)
+            let indexPath = IndexPath(row: textView.tag, section: 0)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
@@ -264,7 +292,7 @@ extension StoryViewController: UITextViewDelegate {
     }
     
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-//        self.storyDataList[textView.tag].value = textView.text!
+        self.storyDataList[textView.tag].Value = textView.text!
         if textView.text!.isBlank {
             Validator.showRequiredErrorTextView(textView)
         }
@@ -276,6 +304,16 @@ extension StoryViewController: UITextViewDelegate {
 extension StoryViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
         //back to profile screen
+        self.isRightViewEnable = true
         self.navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - NoInternetDelegate -
+extension StoryViewController: NoInternetDelegate {
+    func connectedToNetwork(_ methodName: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.perform(Selector((methodName)))
+        }
     }
 }

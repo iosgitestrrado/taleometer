@@ -56,9 +56,7 @@ class AudioPlayManager: NSObject {
         self.isFavourite = isFavourite
         self.isHistory = isHistory
         currentAudio = audList[currentIndex]
-        if !isHistory {
-            audioHistoryId = -1
-        }
+        audioHistoryId = -1
         
         guard let url = URL(string: currentAudio.File) else { return }
         stramingAudio(url, getMeters: getMeters) { result in
@@ -161,7 +159,7 @@ class AudioPlayManager: NSObject {
         // Add handler for Pause Command
         commandCenter.pauseCommand.addTarget { [unowned self] event in
             if let player = playerAV, player.isPlaying {
-                self.playPauseAudio(false, addToHistory: true)
+                self.playPauseAudio(false)
                 NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": true])
                 return .success
             }
@@ -221,9 +219,13 @@ class AudioPlayManager: NSObject {
     }
     
     // MARK: Play pause audio with mini player update
-    func playPauseAudio(_ isPlay: Bool, addToHistory: Bool = false) {
+    func playPauseAudio(_ isPlay: Bool, addToHistory: Bool = true) {
         DispatchQueue.main.async { [self] in
             guard let player = playerAV else { return }
+            //Add update history
+            if addToHistory {
+                addUpdateAudioActionHistory(isPlay)
+            }
             if let miniPlayBtn = miniVController.playButton {
                 miniPlayBtn.isSelected = !isPlay
             }
@@ -246,10 +248,6 @@ class AudioPlayManager: NSObject {
                     self.audioTimer.invalidate()
                 }
                 self.updateMiniPlayerTime()
-                if addToHistory {
-                    //Add update history
-                    audioHistoryId == -1 ? self.addAudioToHistory() : self.updateHistory()
-                }
             }
             if isHistory {
                 NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
@@ -258,22 +256,22 @@ class AudioPlayManager: NSObject {
     }
     
     // MARK: Play pause audio only
-    func playPauseAudioOnly(_ isPlay: Bool, addToHistory: Bool = false) {
+    func playPauseAudioOnly(_ isPlay: Bool, addToHistory: Bool = true) {
         guard let player = playerAV else { return }
+        if addToHistory {
+            addUpdateAudioActionHistory(isPlay)
+        }
         if isPlay {
             player.play()
         } else {
             player.pause()
-            if addToHistory {
-                //Add update history
-                audioHistoryId == -1 ? self.addAudioToHistory() : self.updateHistory()
-            }
         }
     }
     
     // MARK: - When audio completed call function -
     @objc private func itemDidFinishPlaying(notification: NSNotification) {
         //if let player = playerAV, player.isPlaying {
+        endAudioPlaying()
         DispatchQueue.main.async { [self] in
             audioTimer.invalidate()
             if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
@@ -293,7 +291,7 @@ class AudioPlayManager: NSObject {
                 player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
             }
             if isHistory {
-                playPauseAudioOnly(false, addToHistory: true)
+                playPauseAudioOnly(false)
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             
@@ -368,7 +366,10 @@ class AudioPlayManager: NSObject {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
                 }
                 miniVController.progressBar.progress = 0
-                self.playPauseAudio(tag == 1, addToHistory: tag != 1)
+                if tag == 1 {
+                    audioHistoryId = -1
+                }
+                self.playPauseAudio(tag == 1)
             }
             break
         default:
@@ -468,7 +469,7 @@ extension AudioPlayManager {
             updateMiniPlayerTime()
             // Play audio
             if let player = playerAV, player.isPlaying {
-                self.playPauseAudio(true)
+                self.playPauseAudio(true, addToHistory: false)
             } else {
                 miniVController.playButton.isSelected = true
             }
@@ -601,7 +602,7 @@ extension AudioPlayManager {
     @objc private func tapOnPlayMini(_ sender: UIButton) {
         guard let player = AudioPlayManager.shared.playerAV else { return }
         NotificationCenter.default.post(name: AudioPlayManager.favPlayNotification, object: nil, userInfo: ["isPlaying": player.isPlaying])
-        self.playPauseAudio(!player.isPlaying, addToHistory: true)
+        self.playPauseAudio(!player.isPlaying)
     }
     
     // MARK: - Close miniplayer
@@ -618,7 +619,7 @@ extension AudioPlayManager {
         guard let player = AudioPlayManager.shared.playerAV else { return }
         if player.isPlaying {
             player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-            playPauseAudio(false, addToHistory: true)
+            playPauseAudio(false)
         }
     }
     
@@ -649,6 +650,17 @@ extension AudioPlayManager {
                 self.audioTimer.invalidate()
             }
         }
+    }
+    
+    private func getCurrentSecond(_ currentItem: AVPlayerItem) -> Int {
+        var playhead = currentItem.currentTime().seconds
+        if Int(playhead) <= 1 {
+            playhead = currentItem.duration.seconds
+        }
+        if playhead.isNaN {
+            playhead = 0
+        }
+        return Int(playhead)
     }
 }
 
@@ -692,9 +704,6 @@ extension AudioPlayManager {
     
     // Add to history
     private func addAudioToHistory() {
-        if audioHistoryId != -1 {
-            return
-        }
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(currVController)
             return
@@ -703,24 +712,18 @@ extension AudioPlayManager {
         // Add history in background
         DispatchQueue.global(qos: .background).async { [self] in
             if let currentItem = playerAV?.currentItem {
-                var playhead = currentItem.currentTime().seconds
-                if Int(playhead) <= 1 {
-                    playhead = currentItem.duration.seconds
-                }
-                HistoryAudioClient.add(HistoryAddRequest(audio_story_id: currentAudio.Id, time: Int(playhead))) { [self] result in
+                HistoryAudioClient.add(HistoryAddRequest(audio_story_id: currentAudio.Id, time: getCurrentSecond(currentItem))) { [self] result in
                     if let data = result {
                         audioHistoryId = data.Id
+//                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: data.Id, action: AudioAction.resume.description)) { status in }
                     }
                 }
             }
         }
     }
-    
+        
     // Update History
     private func updateHistory() {
-        if audioHistoryId == -1 {
-            return
-        }
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(currVController)
             return
@@ -728,13 +731,47 @@ extension AudioPlayManager {
         // Update history in background
         DispatchQueue.global(qos: .background).async { [self] in
             if let currentItem = playerAV?.currentItem {
-                var playhead = currentItem.currentTime().seconds
-                if Int(playhead) <= 1 {
-                    playhead = currentItem.duration.seconds
-                }
-                HistoryAudioClient.update(HistoryUpdateRequest(audio_history_id: audioHistoryId, time: Int(playhead))) { status in
+                HistoryAudioClient.update(HistoryUpdateRequest(audio_history_id: audioHistoryId, time: getCurrentSecond(currentItem))) { status in
+                    if let st = status, st {
+                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: audioHistoryId, action: AudioAction.pause.description)) { status in }
+                    }
                 }
             }
+        }
+    }
+    
+    // Add audio story action and update history
+    private func updateHistoryAction(_ isPlay: Bool) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        // Update history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            if let currentItem = playerAV?.currentItem {
+                AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: audioHistoryId, action: isPlay ? AudioAction.resume.description : AudioAction.pause.description, time: getCurrentSecond(currentItem))) { status in }
+            }
+        }
+    }
+    
+    // Add update audio history with audio action
+    private func addUpdateAudioActionHistory(_ isPlay: Bool) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        audioHistoryId == -1 ? self.addAudioToHistory() : self.updateHistoryAction(isPlay)
+    }
+    
+    // End Audio Playing
+    private func endAudioPlaying() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        // Update history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            AudioClient.endAudioPlaying(EndAudioRequest(audio_history_id: audioHistoryId)) { status in }
         }
     }
 }

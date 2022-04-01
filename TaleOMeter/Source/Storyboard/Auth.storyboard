@@ -32,9 +32,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pjK-tQ-k0w" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="244" width="350" height="41"/>
+                                <rect key="frame" x="20" y="244" width="350" height="66"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Welcome To tale'o'meter">
+                                    <fragment>
+                                        <string key="content">Welcome To
+tale'o'meter</string>
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="25" name="CommutersSans-Bold"/>
@@ -62,13 +64,13 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stories." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HY6-PQ-ALO" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="287" width="68.666666666666671" height="16"/>
+                                <rect key="frame" x="20" y="312" width="68.666666666666671" height="16"/>
                                 <fontDescription key="fontDescription" name="CommutersSans-Bold" family="Commuters Sans" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QlC-xM-3n3">
-                                <rect key="frame" x="20" y="333" width="350" height="20"/>
+                                <rect key="frame" x="20" y="358" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="ZDi-0O-BXi"/>
                                 </constraints>
@@ -77,7 +79,7 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mA-hR-n5h">
-                                <rect key="frame" x="20" y="361" width="350" height="50"/>
+                                <rect key="frame" x="20" y="386" width="350" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBl-if-EZK">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="50"/>
@@ -111,7 +113,7 @@ Cg
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aea-ZC-opL">
                                         <rect key="frame" x="73" y="17.666666666666686" width="1" height="15"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="1" id="oFb-Ga-pVS"/>
                                         </constraints>
@@ -148,7 +150,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-ca-UGv">
-                                <rect key="frame" x="20" y="419" width="350" height="20"/>
+                                <rect key="frame" x="20" y="444" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="cf3-6V-mtO"/>
                                 </constraints>
@@ -176,7 +178,7 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bht-zK-LF7">
-                                <rect key="frame" x="320" y="449" width="50" height="50"/>
+                                <rect key="frame" x="320" y="474" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="6N9-QX-Rjg"/>
                                     <constraint firstAttribute="height" constant="50" id="lxx-pD-c6m"/>
@@ -642,9 +644,11 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="790"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fe9-3O-gho" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20" y="200" width="350" height="41"/>
+                                <rect key="frame" x="20" y="200" width="350" height="66"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Welcome To tale'o'meter">
+                                    <fragment>
+                                        <string key="content">Welcome To 
+tale'o'meter</string>
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="25" name="CommutersSans-Bold"/>
@@ -680,13 +684,13 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PH-ak-sf2" userLabel="Welcome To tele'o'meter Sign up To Keep Hearing Amazing Stories.">
-                                <rect key="frame" x="20.000000000000004" y="225" width="52.333333333333343" height="16"/>
+                                <rect key="frame" x="20.000000000000004" y="250" width="52.333333333333343" height="16"/>
                                 <fontDescription key="fontDescription" name="CommutersSans-Bold" family="Commuters Sans" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your OTP code here" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVb-iT-hFz">
-                                <rect key="frame" x="20" y="271" width="350" height="20"/>
+                                <rect key="frame" x="20" y="296" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="OYK-PM-M2L"/>
                                 </constraints>
@@ -695,7 +699,7 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGv-H1-T29">
-                                <rect key="frame" x="20" y="299" width="350" height="50"/>
+                                <rect key="frame" x="20" y="324" width="350" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pio-Sb-T1R" customClass="CustomTextField" customModule="TaleOMeter" customModuleProvider="target">
                                         <rect key="frame" x="8" y="0.0" width="50" height="50"/>
@@ -782,7 +786,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOc-SA-7f4">
-                                <rect key="frame" x="20" y="417" width="350" height="20"/>
+                                <rect key="frame" x="20" y="442" width="350" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="aP8-W1-hc9"/>
                                 </constraints>
@@ -817,7 +821,7 @@ Cg
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TQe-Rv-azO">
-                                <rect key="frame" x="320" y="359" width="50" height="50"/>
+                                <rect key="frame" x="320" y="384" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="mYG-9S-dR9"/>
                                     <constraint firstAttribute="height" constant="50" id="xJD-JP-L02"/>

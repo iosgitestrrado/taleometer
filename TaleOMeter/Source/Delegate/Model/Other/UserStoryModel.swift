@@ -17,17 +17,26 @@ struct UserStoryModel {
     var Updated_at = String()
     var Deleted_at = String()
     
+    var Value = String()
+    var CellId = String()
+//    var TextField: UITextField?
+    var TextView: UITextView?
+    var IsLast = Bool()
+    
     init() { }
     init(_ json: JSON) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
         TypeT = json["type"].stringValue
-        
+        CellId = TypeT.lowercased() == "text" ? "textViewCell" : "optionCell"
         if let opt =  json["options"].string {
             let data = Data(opt.utf8)
             do {
                 let arr = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String]
                 Options = arr
+                if Options.count > 0 {
+                    Value = Options[0]
+                }
                 //print(array) // ["one", "two", "three"]
             } catch {
                 //print(error)

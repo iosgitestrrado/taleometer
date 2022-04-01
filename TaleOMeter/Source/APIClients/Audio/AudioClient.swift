@@ -175,5 +175,21 @@ class AudioClient {
             }
         }
     }
+    
+    static func addAudioAction(_ req: AddAudioActionRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .AddAudioStoryAction) { result in
+            ResponseAPI.getResponseJsonBool(result, showAlert: false) { status in
+                completion(status)
+            }
+        }
+    }
+    
+    static func endAudioPlaying(_ req: EndAudioRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .EndAudioStoryPlaying) { result in
+            ResponseAPI.getResponseJsonBool(result, showAlert: false) { status in
+                completion(status)
+            }
+        }
+    }
 }
 

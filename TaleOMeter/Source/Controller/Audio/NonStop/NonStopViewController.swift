@@ -51,6 +51,7 @@ class NonStopViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view
+        AudioPlayManager.shared.audioHistoryId = -1
         getAudioList()
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
@@ -141,7 +142,7 @@ class NonStopViewController: UIViewController {
         if existingAudio {
             setupExistingAudio(playNow)
         } else {
-            AudioPlayManager.shared.playPauseAudioOnly(false)
+            AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: false)
             //Core.ShowProgress(self, detailLbl: "Streaming Audio")
             AudioPlayManager.shared.initPlayerManager(isNonStop: true) { result in
                 self.configureAudio(playNow, result: result)
@@ -228,7 +229,7 @@ class NonStopViewController: UIViewController {
             sender.isSelected = !sender.isSelected
         } completion: { [self] isDone in
             if isPlaying {
-                playPauseAudio(!sender.isSelected, addToHistory: true)
+                playPauseAudio(!sender.isSelected)
             }
             AudioPlayManager.shared.isNonStop = !sender.isSelected
             AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
@@ -266,7 +267,7 @@ class NonStopViewController: UIViewController {
             switch sender.tag {
             case 0:
                 //Play
-                self.playPauseAudio(!player.isPlaying, addToHistory: true)
+                self.playPauseAudio(!player.isPlaying)
                 break
             case 1:
                 //Next
@@ -412,9 +413,9 @@ class NonStopViewController: UIViewController {
     }
     
     // MARK: - Handle audio play and pause
-    private func playPauseAudio(_ playing: Bool, addToHistory: Bool = true) {
+    private func playPauseAudio(_ playing: Bool) {
         //if let player = AudioPlayManager.shared.playerAV {
-        AudioPlayManager.shared.playPauseAudioOnly(playing, addToHistory: addToHistory)
+        AudioPlayManager.shared.playPauseAudioOnly(playing)
         DispatchQueue.main.async {
             self.playButton.isSelected = playing
         }
@@ -534,10 +535,13 @@ extension NonStopViewController: PromptViewDelegate {
                 myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
                 if let player = AudioPlayManager.shared.playerAV {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-                    AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag == 1 ? false : true)
+                    AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag != 1)
                 }
                 self.visualizationWave.stop()
                 self.existingAudio = true
+                if tag == 1 {
+                    AudioPlayManager.shared.audioHistoryId = -1
+                }
                 self.setupAudioDataPlay(tag == 1)
             }
             break

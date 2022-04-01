@@ -43,6 +43,9 @@ class LoginViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            player.pause()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

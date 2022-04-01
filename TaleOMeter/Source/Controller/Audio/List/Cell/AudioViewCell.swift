@@ -27,7 +27,7 @@ class AudioViewCell: UITableViewCell {
             image.cornerRadius = image.frame.size.height / 2.0
         }
         if let subTitle = self.subTitleLabel {
-            subTitle.text = "\(audioData.Favorites_count) Likes | \(audioData.Duration)"
+            subTitle.text = "\(audioData.Favorites_count) Likes | \(AudioPlayManager.getHoursMinutesSecondsFromString(seconds: Double(audioData.Duration)))"
         }
         if let titleLbl = self.titleLabel {
             if self.isSelected {

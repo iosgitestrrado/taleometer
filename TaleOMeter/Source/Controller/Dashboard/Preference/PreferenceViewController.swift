@@ -87,6 +87,8 @@ class PreferenceViewController: UIViewController {
         self.prefrenceView.isHidden = true
         self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
         self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
+//        Login.removeStoryBoardData()
+//        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         getBubbles()
     }
     
@@ -141,39 +143,33 @@ class PreferenceViewController: UIViewController {
         //let color = UIColor.colors.randomItem()
         
         let bubblePref = bubbles[totalNodes]
-                
-        
-        let node = Node(text: "", image: defaultImage, color: .white, radius: 10.0)
-        node.originalTexture = SKTexture(image: defaultImage)
-        //node.selectedTexture = SKTexture(image: Core.combineImages(defaultImage, topImage: UIImage(named: "Default_sel_img")!))
-        
         SDWebImageManager.shared.loadImage(with: URL(string: bubblePref.ImageUrl), options: [], progress: nil) { image, data, error, typp, status, url in
             DispatchQueue.main.async { [self] in
                 if let downImage = image {
-                    node.setImage(image: downImage, selectedImage: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
-//                    //node.image = downImage
-//                    node.originalTexture = SKTexture(image: downImage)
-                    //node.selectedTexture = SKTexture(image: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
+                    let node = Node(text: "", image: downImage, color: .white, radius: 10.0)
+                    node.originalTexture = SKTexture(image: downImage)
+                    node.selectedTexture = SKTexture(image: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
                     node.isSelected = selectedBubbles.contains(node.tag)
+                    node.scaleToFitContent = true
+                    node.selectedColor = .clear
+                    node.selectedStrokeColor = .red
+                    node.tag = bubblePref.Id
+                    //node.isSelected = selectedBubbles.contains(node.tag)
+                    node.speed = 0.1
+                    if totalNodes == 0 {
+                        firstNode = node
+                    }
+                    if totalNodes == bubbles.count - 1 {
+                        lastNode = node
+                    }
+                    magnetic.addChild(node)
+                    node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -50)
+                    totalNodes += 1
                 }
             }
         }
         
-        node.scaleToFitContent = true
-        node.selectedColor = .clear
-        node.selectedStrokeColor = .red
-        node.tag = bubblePref.Id
-        //node.isSelected = selectedBubbles.contains(node.tag)
-        node.speed = 0.1
-        if totalNodes == 0 {
-            firstNode = node
-        }
-        if totalNodes == bubbles.count - 1 {
-            lastNode = node
-        }
-        magnetic.addChild(node)
-        node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -50)
-        totalNodes += 1
+        
     }
 }
 

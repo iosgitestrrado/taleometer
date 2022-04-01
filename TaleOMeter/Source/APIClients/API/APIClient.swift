@@ -155,6 +155,7 @@ enum Feed {
     case VerifyOtpProfile
     case GetProfile
     case UpdateProfileImage
+    case RemoveProfileImage
     case UpdateProfileDetails
     case UpdateDeviceToke
 
@@ -170,6 +171,8 @@ enum Feed {
     case GuestAudioStories
     case AudioStories
     case NonStopAudios
+    case AddAudioStoryAction
+    case EndAudioStoryPlaying
     case AddAudioHistory
     case GetAudioHistory///page=1
     case SurpriseAudio
@@ -230,6 +233,7 @@ extension Feed: Endpoint {
         case .VerifyOtpProfile:         return "/api/update-profile/verifyOtp"
         case .GetProfile:               return "/api/getProfile"
         case .UpdateProfileImage:       return "/api/update-profile/image"
+        case .RemoveProfileImage:       return "/api/update-profile/image"
         case .UpdateProfileDetails:     return "/api/update-profile/details"
         case .UpdateDeviceToke:         return "/api/notification/token"
 
@@ -245,6 +249,8 @@ extension Feed: Endpoint {
         case .GuestAudioStories:        return "/api/guest-audio-stories"
         case .AudioStories:             return "/api/audio-stories"
         case .NonStopAudios:            return "/api/audio-stories/non-stop"
+        case .AddAudioStoryAction:      return "/api/audio-story/action"
+        case .EndAudioStoryPlaying:     return "/api/audio-story/end-playing"
         case .AddAudioHistory:          return "/api/add-audio-history"
         case .GetAudioHistory:          return "/api/get-audio-history"
         case .SurpriseAudio:            return "/api/audio-stories/surprise"

@@ -78,7 +78,7 @@ class DashboardViewController: UIViewController {
                     AudioPlayManager.shared.removeMiniPlayer()
                     guard let player = AudioPlayManager.shared.playerAV else { return }
                     if player.isPlaying {
-                        AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
+                        AudioPlayManager.shared.playPauseAudio(false)
                     }
                 }
             }

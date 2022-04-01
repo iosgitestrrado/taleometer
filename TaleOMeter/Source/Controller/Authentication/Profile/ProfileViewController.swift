@@ -182,12 +182,7 @@ class ProfileViewController: UIViewController {
             }))
             
             alert.addAction(UIAlertAction(title: "Remove Profile Picture", style: .destructive, handler: { result in
-                Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
-                if let imgData = defaultImage.pngData() {
-                    self.uploadProfileImage(imgData, image: defaultImage)
-                } else {
-                    Core.HideProgress(self)
-                }
+                self.removeProfileImage()
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -198,7 +193,10 @@ class ProfileViewController: UIViewController {
             break
         }
     }
-    
+}
+
+// MARK: Call API's
+extension ProfileViewController {
     private func uploadProfileImage(_ imageData: Data, image: UIImage) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)
@@ -218,6 +216,23 @@ class ProfileViewController: UIViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
+                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
+    private func removeProfileImage() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "removeProfileImage")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AuthClient.removeProfileImage { result in
+            if let response = result {
+                self.profileData = response
+                Login.storeProfileData(response)
+                self.profileImage.image = defaultImage
                 PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
             }
             Core.HideProgress(self)
@@ -265,6 +280,15 @@ extension ProfileViewController: ProfileEditDelegate  {
             //Email Id
 //            self.setProfileData()
             break
+        }
+    }
+}
+
+// MARK: - NoInternetDelegate -
+extension ProfileViewController: NoInternetDelegate {
+    func connectedToNetwork(_ methodName: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.perform(Selector((methodName)))
         }
     }
 }

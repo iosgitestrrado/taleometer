@@ -27,21 +27,20 @@ struct Audio {
     var Deleted_at = String()
     var Views_count = Int()
     var Is_favorite = Bool()
-    var Duration = String()
+    var Duration = Int()
     var Favorites_count = Int()
     var IsLinkedAudio = Bool()
     
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
-    var AudioDuration = Float()
     
 //    var Stories: [Story]?
 //    var Plots: [Story]?
 //    var Narrations: [Story]?
 
     init() { }
-    init(_ json: JSON, requiredDuration: Bool = false) {
+    init(_ json: JSON) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
         //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
@@ -58,7 +57,7 @@ struct Audio {
         Deleted_at = json["deleted_at"].stringValue
         Views_count = json["views_count"].intValue
         Is_favorite = json["is_favorite"].boolValue
-        Duration = json["duration"].stringValue
+        Duration = json["duration"].intValue
         Favorites_count = json["favorites_count"].intValue
         if let audio_story = json["story"].dictionaryObject {
             Story = StoryModel(JSON(audio_story))
@@ -70,10 +69,6 @@ struct Audio {
         
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
-        }
-        
-        if requiredDuration {
-            AudioDuration = Audio.getAudioDuration(File)
         }
                 
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
@@ -120,4 +115,28 @@ struct Audio {
 struct AudioRequest: Codable {
     var page = String()
     var limit = Int()
+}
+
+struct EndAudioRequest: Codable {
+    var audio_history_id = Int()
+}
+
+struct AddAudioActionRequest: Codable {
+    var audio_history_id = Int()
+    var action = String()
+    var time = Int()
+}
+
+public enum AudioAction: Equatable {
+    case pause
+    case resume
+
+    var description: String {
+        switch self {
+        case .pause:
+            return "pause"
+        case .resume:
+            return "resume"
+        }
+    }
 }

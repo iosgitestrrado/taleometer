@@ -286,7 +286,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      
      - SeeAlso: SpeedLimit
      */
-    open var speed: SpeedLimit = .duration(7.0) {
+    open var speed: SpeedLimit = .duration(12.0) {
         didSet {
             switch (speed, oldValue) {
             case (.rate(let a), .rate(let b)) where a == b:

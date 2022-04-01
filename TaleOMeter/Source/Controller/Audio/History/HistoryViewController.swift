@@ -55,6 +55,10 @@ class HistoryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        morePage = true
+        pageNumber = 1
+        showNoData = 0
+        historyList = [History]()
         getHistory()
     }
 
@@ -83,10 +87,16 @@ class HistoryViewController: UIViewController {
             if AudioPlayManager.shared.isNonStop {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
             }
-            myobject.myAudioList = audioList
-            myobject.currentAudioIndex = currentIndex
-            AudioPlayManager.shared.audioList = audioList
-            AudioPlayManager.shared.setAudioIndex(currentIndex, isNext: false)
+            if AudioPlayManager.shared.currentIndex == currentIndex {
+                myobject.existingAudio = true
+                myobject.isPlaying = !sender.isSelected
+            } else {
+                myobject.myAudioList = audioList
+                myobject.currentAudioIndex = currentIndex
+                myobject.currentPlayDuration = cellData.Time
+                AudioPlayManager.shared.audioList = audioList
+                AudioPlayManager.shared.setAudioIndex(currentIndex, isNext: false)
+            }
             self.navigationController?.pushViewController(myobject, animated: true)
         }
         /*
@@ -253,7 +263,7 @@ class HistoryViewController: UIViewController {
                 // Get section index from button layer
                 guard let sectionIndex = currentProgressBar.layer.value(forKey: "Section") as? Int else { return }
                 // Get key from history data
-                if !playhead.isNaN {
+                if !playhead.isNaN && currentProgressBar.tag > historyData[sectionIndex].sectionObjects.count {
                     historyData[sectionIndex].sectionObjects[currentProgressBar.tag].Time = Int(roundf(Float(playhead)))
                 }
                 self.tableView.reloadRows(at: [IndexPath(row: currentProgressBar.tag, section: sectionIndex)], with: .none)
@@ -403,7 +413,7 @@ extension HistoryViewController {
 extension HistoryViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return historyData.count
+        return historyData.count > 0 ? historyData.count : showNoData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -432,7 +442,7 @@ extension HistoryViewController : UITableViewDataSource {
         cell.favButton.isSelected = cellData.Audio_story.Is_favorite
         
         // Set progres bar progress
-        cell.progressBar.progress = Float(Float(cellData.Time) / cellData.Audio_story.AudioDuration)
+        cell.progressBar.progress = Float(cellData.Time / cellData.Audio_story.Duration)
         
         // Set audio title
         cell.titleLabel.text = cellData.Audio_story.Title
@@ -532,7 +542,6 @@ extension HistoryViewController: UITableViewDelegate {
         }
     }
 }
-
 
 // MARK: - NoInternetDelegate -
 extension HistoryViewController: NoInternetDelegate {

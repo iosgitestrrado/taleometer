@@ -142,6 +142,18 @@ class AuthClient {
         }
     }
     
+    static func removeProfileImage(_ completion: @escaping(ProfileData?) -> Void) {
+        APIClient.shared.deleteJson(EmptyRequest(), query: "", feed: .RemoveProfileImage) { result in
+            ResponseAPI.getResponseJson(result) { responseJson in
+                var verification: ProfileData?
+                if let response = responseJson {
+                    verification = ProfileData(response)
+                }
+                completion(verification)
+            }
+        }
+    }
+    
     static func sendFile(_ urlPath: String, fileName: String, data: Data, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         let url = URL(string: urlPath)!
         var request1: URLRequest = URLRequest(url: url)
