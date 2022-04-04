@@ -200,7 +200,9 @@ enum Feed {
     case AutoplaySetting
     case NotificationSetting
     case Notification
-    
+    case StartUsage
+    case EndUsage
+
     //Trivia
     case TriviaHome
     case TriviaDaily
@@ -278,6 +280,8 @@ extension Feed: Endpoint {
         case .Notification:             return "/api/notifications"
         case .NotificationSetting:      return "/api/notification"
         case .AutoplaySetting:          return "/api/autoplay"
+        case .StartUsage:               return "/api/usage/start"
+        case .EndUsage:                 return "/api/usage/end"
             
         //Trivia
         case .TriviaHome:               return "/api/trivia-home"
@@ -288,7 +292,6 @@ extension Feed: Endpoint {
         case .TriviaViewAnswer:         return "/api/trivia/view-answer"
         case .TriviaViewCommnets:       return "/api/trivia/view-comments"
         case .TriviaAddCommennt:        return "/api/trivia/add-comment"
-       
         }
     }
 }

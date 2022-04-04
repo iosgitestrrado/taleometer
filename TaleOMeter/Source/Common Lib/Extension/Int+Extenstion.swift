@@ -8,7 +8,7 @@
 
 extension Int {
     func formatPoints() -> String {
-        let newNum = String(self / 1000)
+        let newNum = Double(self) / 1000.0
         var newNumString = "\(self)"
         if self > 1000 && self < 1000000 {
             newNumString = "\(newNum)k"

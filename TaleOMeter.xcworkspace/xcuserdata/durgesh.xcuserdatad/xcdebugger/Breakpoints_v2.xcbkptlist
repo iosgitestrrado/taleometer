@@ -110,8 +110,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "nextPrevPlay(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -126,8 +126,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
+            startingLineNumber = "375"
+            endingLineNumber = "375"
             landmarkName = "didActionOnPromptButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "setupRemoteTransportControls()"
             landmarkType = "7">
          </BreakpointContent>
@@ -158,8 +158,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "setupRemoteTransportControls()"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,8 +174,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "472"
-            endingLineNumber = "472"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
             landmarkName = "addMiniPlayer(_:bottomConstraint:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -272,6 +272,8 @@ class HistoryViewController: UIViewController {
     }
     
     private func playingCurrentAudio() {
+        selectedIndex = -1
+        selectedSection = -1
         // Check mini player audio is playing or not
         if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
             // Create private temp row and section index
@@ -330,12 +332,12 @@ extension HistoryViewController {
                 playingCurrentAudio()
             }
             // Scroll to perticuler row
-            if selectedIndex >= 0 && selectedSection >= 0 {
-                let indexPath = IndexPath(row: selectedIndex, section: selectedSection)
+            DispatchQueue.main.async {
+                if pageNumber == 1 && selectedIndex >= 0 && selectedSection >= 0 {
+                    let indexPath = IndexPath(row: selectedIndex, section: selectedSection)
+                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                }
                 self.tableView.reloadData()
-                self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
-            } else {
-                tableView.reloadData()
             }
             tableView.tableFooterView = UIView()
             // Check mini player audio is playing or not
@@ -502,7 +504,7 @@ extension HistoryViewController: UITableViewDelegate {
         cell.titleLabel.layer.masksToBounds = true
         cell.titleLabel.layer.cornerRadius = cell.titleLabel.frame.size.height / 2.0
         cell.titleLabel.text = "  \(historyData[section].sectionName)  "
-        return cell
+        return cell.contentView
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

@@ -83,6 +83,25 @@ struct StaticContent {
  "updated_at": "2022-03-23T11:18:02.000000Z"
 }*/
 
+struct UsageModel {
+    var Id = Int()
+    var User_id = Int()
+    var Start_time = String()
+    
+    init() { }
+    init(_ json: JSON) {
+        User_id = json["user_id"].intValue
+        Start_time = json["start_time"].stringValue
+        Id = json["id"].intValue
+    }
+}
+/*
+ "data": {
+ "user_id": 67,
+ "start_time": "2022-03-23 15:54:00",
+ "id": 5
+}*/
+
 struct FeedbackRequest: Encodable {
     var content = String()
 }
@@ -93,4 +112,13 @@ struct NotificationSetRequest: Encodable {
 
 struct AutoplaySetRequest: Encodable {
     var value = String()
+}
+
+struct StartUsageRequest: Encodable {
+    var time = String()
+}
+
+struct EndUsageRequest: Encodable {
+    var usage_id = Int()
+    var time = String()
 }

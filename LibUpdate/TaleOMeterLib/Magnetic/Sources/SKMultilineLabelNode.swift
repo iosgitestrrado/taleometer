@@ -25,6 +25,38 @@ import SpriteKit
     
     open var width: CGFloat! { didSet { update() } }
     
+    //    override init() {
+    //        super.init()
+    //
+    //        let bgTexture1 = SKTexture(imageNamed: "b1.jpg")
+    //        let bgTexture2 = SKTexture(imageNamed: "b2.png")
+    //
+    //
+    //        let totalBG = bgTexture1.size().width + bgTexture2.size().width
+    //
+    //        for index in 0..<2
+    //        {
+    //            let bg1 = SKSpriteNode(texture: bgTexture1)
+    //            let bg2 = SKSpriteNode(texture: bgTexture2)
+    //            bg1.anchorPoint = CGPoint.zero
+    //            bg2.anchorPoint = CGPoint.zero
+    //
+    //            let i = CGFloat(index)
+    //
+    //            bg1.position = CGPoint(x: i * bgTexture1.size().width + i * bgTexture2.size().width, y: 0)
+    //            bg2.position = CGPoint(x: (i+1) * bgTexture1.size().width + i * bgTexture2.size().width, y: 0)
+    //
+    //            self.addChild(bg1)
+    //            self.addChild(bg2)
+    //            lastNode = bg2
+    //        }
+    //    }
+    //
+    //    required public init?(coder aDecoder: NSCoder) {
+    //        super.init(coder: aDecoder)
+    //    }
+        
+    
     func update() {
         self.removeAllChildren()
         

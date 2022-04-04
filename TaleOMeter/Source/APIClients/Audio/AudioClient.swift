@@ -18,14 +18,11 @@ class AudioClient {
                         audio.forEach({ (object) in
                             // Set refrence for Story, Plot and Narration
                             let aud = Audio(object)
-                            if aud.Is_active {
-                                audios.append(aud)
+                            if aud.Genre_id == genreId {
+                                if aud.Is_active {
+                                    audios.append(aud)
+                                }
                             }
-//                            if isNonStop && aud.Is_nonstop {
-//                                audios.append(aud)
-//                            } else if aud.Genre_id == genreId {
-                                
-//                            }
                         })
                     }
                     completion(audios)

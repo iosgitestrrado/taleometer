@@ -25,6 +25,7 @@ class AudioPlayManager: NSObject {
     var playerAV: AVPlayer?
     var isMiniPlayerActive = false
     var isNonStop = false
+    var isAudioPlaying = false
     var isFavourite = false
     var isFromFavourite = false
     var isHistory = false
@@ -229,6 +230,7 @@ class AudioPlayManager: NSObject {
             if let miniPlayBtn = miniVController.playButton {
                 miniPlayBtn.isSelected = !isPlay
             }
+            isAudioPlaying = isPlay
             if isPlay {
                 if !player.isPlaying {
                     player.play()
@@ -261,6 +263,7 @@ class AudioPlayManager: NSObject {
         if addToHistory {
             addUpdateAudioActionHistory(isPlay)
         }
+        isAudioPlaying = isPlay
         if isPlay {
             player.play()
         } else {
@@ -840,6 +843,8 @@ extension AudioPlayManager {
     static func getAudioMeters(_ audioFileURL: URL, forChannel channelNumber: Int, completionHandler: @escaping(_ success: [Float]) -> ()) {
         
         guard let audioFile = try? AVAudioFile(forReading: audioFileURL) else {
+            AudioPlayManager.shared.isMiniPlayerActive = false
+            Toast.show("No audio file found")
             Core.HideProgress(AudioPlayManager.shared.currVController)
             return
         }

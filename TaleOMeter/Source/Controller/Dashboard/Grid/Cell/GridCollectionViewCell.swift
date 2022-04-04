@@ -10,14 +10,20 @@ import UIKit
 
 class GridViewTableCell: UITableViewCell {
     @IBOutlet weak var imageView1: UIImageView!
+    @IBOutlet weak var imgBackView1: UIView!
+    @IBOutlet weak var numberOfCountLbl1: UILabel!
     @IBOutlet weak var titleLabe1: UILabel!
     @IBOutlet weak var rowButton1: UIButton!
     
     @IBOutlet weak var imageView2: UIImageView!
+    @IBOutlet weak var imgBackView2: UIView!
+    @IBOutlet weak var numberOfCountLbl2: UILabel!
     @IBOutlet weak var titleLabe2: UILabel!
     @IBOutlet weak var rowButton2: UIButton!
     
     @IBOutlet weak var imageView3: UIImageView!
+    @IBOutlet weak var imgBackView3: UIView!
+    @IBOutlet weak var numberOfCountLbl3: UILabel!
     @IBOutlet weak var titleLabe3: UILabel!
     @IBOutlet weak var rowButton3: UIButton!
     
@@ -32,8 +38,16 @@ class GridViewTableCell: UITableViewCell {
         if imageView3 != nil {
             imageView3.layer.cornerRadius = imageView1.frame.size.height / 2.0
         }
+        if imgBackView1 != nil {
+            imgBackView1.layer.cornerRadius = imgBackView1.frame.size.height / 2.0
+        }
+        if imgBackView2 != nil {
+            imgBackView2.layer.cornerRadius = imgBackView2.frame.size.height / 2.0
+        }
+        if imgBackView3 != nil {
+            imgBackView3.layer.cornerRadius = imgBackView3.frame.size.height / 2.0
+        }
     }
-
 }
 
 class GridCollectionViewCell: UICollectionViewCell {

@@ -83,6 +83,11 @@ import SpriteKit
     /**
      Additional padding to be applied on resize
      */
+    open var tag: Int = -1
+    
+    /**
+     Additional padding to be applied on resize
+     */
     open var padding: CGFloat = Defaults.padding {
         didSet {
             resize()
@@ -246,6 +251,13 @@ import SpriteKit
         self.fillTexture = SKTexture(image: image!)
     }
     
+    open func setImage(image: UIImage, selectedImage: UIImage) {
+        self.image = image
+        self.originalTexture = SKTexture(image: image)
+        self.selectedTexture = SKTexture(image: selectedImage)
+        self.fillTexture = SKTexture(image: image)
+    }
+    
     override open func removeFromParent() {
         removedAnimation() {
             super.removeFromParent()
@@ -259,7 +271,7 @@ import SpriteKit
         guard scaleToFitContent, let text = text, let font = UIFont(name: fontName, size: fontSize) else { return }
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (text as NSString).size(withAttributes: fontAttributes)
-        let radius = CGFloat.random(in: 30..<55)//size.width / 2 + CGFloat(padding)
+        let radius = CGFloat.random(in: 60..<70)//size.width / 2 + CGFloat(padding)
         
         update(radius: radius, withLabelWidth: size.width)
     }

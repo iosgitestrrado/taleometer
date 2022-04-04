@@ -8,8 +8,8 @@
 
 struct Constants {
     
-//    static let baseURL = "https://dev-taleometer.estrradoweb.com"
-    static let baseURL = "https://app.taleometer.com"
+    static let baseURL = "https://dev-taleometer.estrradoweb.com"
+//    static let baseURL = "https://app.taleometer.com"
 
     struct Storyboard {
         static let dashboard = "Main"
@@ -25,6 +25,7 @@ struct Constants {
         static let AuthTokenStr = "authenticateToken"
         static let IsLogin = "isLogin"
         static let ProfileData = "ProfileData"
+        static let StartUsageId = "StartUsageId"
     }
     
     public struct DateFormate {
@@ -33,5 +34,6 @@ struct Constants {
         static let server = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         static let serverDate = "yyyy-MM-dd"
         static let serverWithTime = "yyyy-MM-dd'T'HH:mm:ss"
+        static let aPIWithTime = "yyyy-MM-dd HH:mm:ss"
     }
 }

@@ -84,12 +84,7 @@ class GridViewController: UIViewController {
             if let data = response {
                 morePage = data.count > 0
                 audioList = audioList + data
-                let tempRowCount = (audioList.count - 1) / 3
-                if tempRowCount * 3 == (audioList.count - 1) {
-                    totalRowCount = (audioList.count - 1) / 3
-                } else {
-                    totalRowCount = tempRowCount + ((audioList.count - 1) - (tempRowCount * 3))
-                }
+                totalRowCount = audioList.count % 3 == 0 ? audioList.count / 3 : (audioList.count / 3) + 1
             }
             showNoData = 1
             tableView.reloadData()
@@ -124,24 +119,24 @@ extension GridViewController: UITableViewDataSource {
             let row = indexPath.row * 3
             
             if row <= audioList.count - 1 {
-                if let img = cell.imageView1, let lbl = cell.titleLabe1, let btn = cell.rowButton1 {
-                    self.setGrid(img, label: lbl, button: btn, indexRow: row)
+                if let img = cell.imageView1, let imgBack = cell.imgBackView2, let lbl = cell.titleLabe1, let btn = cell.rowButton1, let cntLbl = cell.numberOfCountLbl1 {
+                    self.setGrid(img, imageBack: imgBack, label: lbl, button: btn, countLbl: cntLbl, indexRow: row)
                 }
             }
-            if let img = cell.imageView2, let lbl = cell.titleLabe2, let btn = cell.rowButton2 {
-                img.isHidden = true
+            if let img = cell.imageView2, let imgBack = cell.imgBackView2, let lbl = cell.titleLabe2, let btn = cell.rowButton2, let cntLbl = cell.numberOfCountLbl2 {
+                imgBack.isHidden = true
                 lbl.isHidden = true
                 btn.isHidden = true
                 if row + 1 <= audioList.count - 1 {
-                    self.setGrid(img, label: lbl, button: btn, indexRow: row + 1)
+                    self.setGrid(img, imageBack: imgBack, label: lbl, button: btn, countLbl: cntLbl, indexRow: row + 1)
                 }
             }
-            if let img = cell.imageView3, let lbl = cell.titleLabe3, let btn = cell.rowButton3 {
-                img.isHidden = true
+            if let img = cell.imageView3, let imgBack = cell.imgBackView3, let lbl = cell.titleLabe3, let btn = cell.rowButton3, let cntLbl = cell.numberOfCountLbl3 {
+                imgBack.isHidden = true
                 lbl.isHidden = true
                 btn.isHidden = true
                 if row + 2 <= audioList.count - 1 {
-                    self.setGrid(img, label: lbl, button: btn, indexRow: row + 2)
+                    self.setGrid(img, imageBack: imgBack, label: lbl, button: btn, countLbl: cntLbl, indexRow: row + 2)
                 }
             }
             return cell
@@ -151,16 +146,18 @@ extension GridViewController: UITableViewDataSource {
     }
     
     // MARK: - Set image label and button index for grid
-    private func setGrid(_ image: UIImageView, label: UILabel, button: UIButton, indexRow: Int) {
+    private func setGrid(_ image: UIImageView, imageBack: UIView, label: UILabel, button: UIButton, countLbl: UILabel, indexRow: Int) {
         image.sd_setImage(with: URL(string: audioList[indexRow].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+        imageBack.isHidden = false
         image.isHidden = false
-        
+
         label.text = audioList[indexRow].Title
         label.isHidden = false
         
         button.tag = indexRow
         button.addTarget(self, action: #selector(tapOnGrid(_:)), for: .touchUpInside)
         button.isHidden = false
+        countLbl.text = audioList[indexRow].Views_count.formatPoints()
     }
 }
 

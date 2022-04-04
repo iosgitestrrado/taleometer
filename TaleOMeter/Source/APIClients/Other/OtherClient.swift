@@ -79,4 +79,24 @@ class OtherClient {
             }
         }
     }
+    
+    static func startUsage(_ req: StartUsageRequest, completion: @escaping(UsageModel?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .StartUsage) { result in
+            ResponseAPI.getResponseJson(result) { response in
+                var startUsage = UsageModel()
+                if let data = response {
+                    startUsage = UsageModel(data)
+                }
+                completion(startUsage)
+            }
+        }
+    }
+    
+    static func endUsage(_ req: EndUsageRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .EndUsage) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
+            }
+        }
+    }
 }
