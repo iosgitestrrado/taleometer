@@ -74,7 +74,7 @@ class NonStopViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
-        visualizationWave.pause()
+//        visualizationWave.pause()
     }
     
     // MARK: - When audio playing is finished -
@@ -222,9 +222,9 @@ class NonStopViewController: UIViewController {
                     } else if self.visualizationWave.playChronometer == nil {
                         // Set audio start end label
                         self.udpateTime()
-                        // Set up visulation wave as per audio duration
-                        visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
                     }
+                    // Set up visulation wave as per audio duration
+                    visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
                     
                     // Play or pause current audio
                     self.playPauseAudio(playNow)
@@ -310,7 +310,7 @@ class NonStopViewController: UIViewController {
     // MARK: - Play next or previous audio
     private func nextPrevPlay(_ isNext: Bool = true, isPlayNow: Bool) {
         // Current player pause and visualization wave stop
-        visualizationWave.pause()
+//        visualizationWave.pause()
         
         // Setup audio index
         AudioPlayManager.shared.setAudioIndex(isNext: isNext)
@@ -420,15 +420,15 @@ class NonStopViewController: UIViewController {
                 if audioTimer.isValid {
                     audioTimer.invalidate()
                 }
-                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
-                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
-                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
-                }
+//                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
+//                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//                }
             } else {
                 audioTimer.invalidate()
-                visualizationWave.pause()
+//                visualizationWave.pause()
             }
             self.playButton.isSelected = !player.isPlaying
         }
@@ -445,14 +445,14 @@ class NonStopViewController: UIViewController {
         isPlaying = playing
         if !playing {
             audioTimer.invalidate()
-            visualizationWave.pause()
+//            visualizationWave.pause()
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "pauseAudio"), object: nil)
         } else {
-            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NonStopViewController.udpateTime), userInfo: nil, repeats: true)
+            audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NonStopViewController.udpateTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "playAudio"), object: nil)
-            visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//            visualizationWave.play(for: TimeInterval(totalTimeDuration))
         }
        // }
     }
@@ -469,6 +469,10 @@ class NonStopViewController: UIViewController {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead + 1)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
                 } else {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
+                }
+                if let chronometer = self.visualizationWave.playChronometer {
+                    chronometer.timerCurrentValue = TimeInterval(playhead)
+                    chronometer.timerDidUpdate?(TimeInterval(playhead))
                 }
             }
 //            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {

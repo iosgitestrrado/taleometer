@@ -94,7 +94,7 @@ class NowPlayViewController: UIViewController {
         // When moved to other screen stop audio player time
         audioTimer.invalidate()
         // Pause wave
-        visualizationWave.pause()
+//        visualizationWave.pause()
     }
     
     // MARK: - Call funcation when audio controller press in background
@@ -376,15 +376,15 @@ class NowPlayViewController: UIViewController {
                 if audioTimer.isValid {
                     audioTimer.invalidate()
                 }
-                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
-                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
-                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
-                }
+//                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
+//                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//                }
             } else {
                 audioTimer.invalidate()
-                visualizationWave.pause()
+//                visualizationWave.pause()
             }
             self.playButton.isSelected = !player.isPlaying
         }
@@ -409,13 +409,13 @@ class NowPlayViewController: UIViewController {
             }
             if !playing {
                 audioTimer.invalidate()
-                visualizationWave.pause()
+//                visualizationWave.pause()
             } else {
                 //player.play()
-                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
-                visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//                visualizationWave.play(for: TimeInterval(totalTimeDuration))
             }
         //}
     }
@@ -533,10 +533,10 @@ class NowPlayViewController: UIViewController {
                     } else {
                         self.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead)
                     }
-//                    if let chronometer = self.visualizationWave.playChronometer {
-//                        chronometer.timerCurrentValue = TimeInterval(playhead)
-//                        chronometer.timerDidUpdate?(TimeInterval(playhead))
-//                    }
+                    if let chronometer = self.visualizationWave.playChronometer {
+                        chronometer.timerCurrentValue = TimeInterval(playhead)
+                        chronometer.timerDidUpdate?(TimeInterval(playhead))
+                    }
                 }
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)

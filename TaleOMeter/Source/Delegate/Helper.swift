@@ -41,7 +41,6 @@ let menuIconImage: UIImage = {
     }
 }()
 
-
 func isLightTheme() -> Bool {
     if #available(iOS 13.0, *) {
         let currentStyle = UITraitCollection.current.userInterfaceStyle
