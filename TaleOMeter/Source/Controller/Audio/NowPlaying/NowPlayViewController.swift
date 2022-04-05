@@ -91,15 +91,20 @@ class NowPlayViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // When moved to other screen stop audio player time
         audioTimer.invalidate()
+        // Pause wave
         visualizationWave.pause()
     }
     
     // MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
+        // Check audio is playing
         if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            // Play pause audio wave
             self.playPauseWave()
         } else if let isNext = notification.userInfo?["isNext"] as? Bool {
+            // Seek audio
             seekAudio(isNext)
         }
     }
@@ -126,15 +131,29 @@ class NowPlayViewController: UIViewController {
     // MARK: Set audio data and play audio
     private func setupAudioDataPlay(_ playNow: Bool) {
         //guard let url = Bundle.main.url(forResource: "file_example_MP3_5MG", withExtesnsion: "mp3") else { return }
+        // Set non stop false for mini player
         AudioPlayManager.shared.isNonStop = false
+        
+        // Set audio data like image, title, story etc..
         setAudioData()
+        
+        // Check if existing audio want to play
         if existingAudio {
+            // Setup existing audio
             setupExistingAudio(playNow)
         } else {
+            // Pause audio
             AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: false)
+            
+            // Start progress
             Core.ShowProgress(self, detailLbl: "Streaming Audio")
+            
+            // Initialize audio play in audio player manager
             AudioPlayManager.shared.initPlayerManager { result in
+                // Config audio in current view
                 self.configureAudio(playNow, result: result)
+                
+                // Hide progress
                 Core.HideProgress(self)
             }
         }
@@ -209,8 +228,8 @@ class NowPlayViewController: UIViewController {
                         self.visualizationWave.playChronometer = nil
                     } else if self.visualizationWave.playChronometer == nil {
                         self.udpateTime()
-                        visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
                     }
+                    visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
                     self.playPauseAudio(playNow)
                 }
             }
@@ -514,6 +533,10 @@ class NowPlayViewController: UIViewController {
                     } else {
                         self.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: playhead)
                     }
+//                    if let chronometer = self.visualizationWave.playChronometer {
+//                        chronometer.timerCurrentValue = TimeInterval(playhead)
+//                        chronometer.timerDidUpdate?(TimeInterval(playhead))
+//                    }
                 }
                 if !duration.isNaN {
                     self.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)

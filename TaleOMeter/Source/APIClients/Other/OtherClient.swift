@@ -82,7 +82,7 @@ class OtherClient {
     
     static func startUsage(_ req: StartUsageRequest, completion: @escaping(UsageModel?) -> Void) {
         APIClient.shared.postJson(parameters: req, feed: .StartUsage) { result in
-            ResponseAPI.getResponseJson(result) { response in
+            ResponseAPI.getResponseJson(result, showAlert: false) { response in
                 var startUsage = UsageModel()
                 if let data = response {
                     startUsage = UsageModel(data)
@@ -94,7 +94,7 @@ class OtherClient {
     
     static func endUsage(_ req: EndUsageRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(parameters: req, feed: .EndUsage) { result in
-            ResponseAPI.getResponseJsonBool(result) { status in
+            ResponseAPI.getResponseJsonBool(result, showAlert: false) { status in
                 completion(status)
             }
         }

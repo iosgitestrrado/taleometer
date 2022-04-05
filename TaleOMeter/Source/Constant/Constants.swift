@@ -8,8 +8,8 @@
 
 struct Constants {
     
-    static let baseURL = "https://dev-taleometer.estrradoweb.com"
-//    static let baseURL = "https://app.taleometer.com"
+//    static let baseURL = "https://dev-taleometer.estrradoweb.com"
+    static let baseURL = "https://app.taleometer.com"
 
     struct Storyboard {
         static let dashboard = "Main"

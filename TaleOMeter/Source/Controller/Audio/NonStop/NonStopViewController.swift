@@ -138,14 +138,26 @@ class NonStopViewController: UIViewController {
     
     // MARK: Set audio data and play
     private func setupAudioDataPlay(_ playNow: Bool) {
+        // Set audio data like image, title, story etc..
         setAudioData()
+        
+        // Check if existing audio want to play
         if existingAudio {
+            // Setup existing audio
             setupExistingAudio(playNow)
         } else {
+            // Pause audio
             AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: false)
+            
+            // Start progress
             //Core.ShowProgress(self, detailLbl: "Streaming Audio")
+            
+            // Initialize audio play in audio player manager
             AudioPlayManager.shared.initPlayerManager(isNonStop: true) { result in
+                // Config audio in current view
                 self.configureAudio(playNow, result: result)
+                
+                // Hide progress
                 Core.HideProgress(self)
             }
         }
@@ -205,11 +217,16 @@ class NonStopViewController: UIViewController {
                     
                     // Setup chrono meter befor playing video
                     if playNow {
+                        // Visulization chrono set to null
                         self.visualizationWave.playChronometer = nil
                     } else if self.visualizationWave.playChronometer == nil {
+                        // Set audio start end label
                         self.udpateTime()
+                        // Set up visulation wave as per audio duration
                         visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
                     }
+                    
+                    // Play or pause current audio
                     self.playPauseAudio(playNow)
                 }
             }
@@ -218,8 +235,13 @@ class NonStopViewController: UIViewController {
     
     //MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
+        // Check audio is playing
         if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            // Play pause audio wave
             self.playPauseWave()
+        } else if let isNext = notification.userInfo?["isNext"] as? Bool {
+            // Play next or previouse audio
+            nextPrevPlay(isNext ,isPlayNow: true)
         }
     }
     
