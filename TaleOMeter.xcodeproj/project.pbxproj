@@ -11,22 +11,6 @@
 		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
 		630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */; };
 		63006BD027E9A04A00E2F26D /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63006BCF27E9A04A00E2F26D /* Throttler.swift */; };
-		6308ADC027E87105004D91BF /* CommutersSans-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB027E87103004D91BF /* CommutersSans-Heavy.ttf */; };
-		6308ADC127E87105004D91BF /* CommutersSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB127E87103004D91BF /* CommutersSans-Light.ttf */; };
-		6308ADC227E87105004D91BF /* CommutersSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB227E87104004D91BF /* CommutersSans-Regular.ttf */; };
-		6308ADC327E87105004D91BF /* CommutersSans-HeavyItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB327E87104004D91BF /* CommutersSans-HeavyItalic.ttf */; };
-		6308ADC427E87105004D91BF /* CommutersSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB427E87104004D91BF /* CommutersSans-SemiBold.ttf */; };
-		6308ADC527E87105004D91BF /* CommutersSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB527E87104004D91BF /* CommutersSans-ExtraLightItalic.ttf */; };
-		6308ADC627E87105004D91BF /* CommutersSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB627E87104004D91BF /* CommutersSans-SemiBoldItalic.ttf */; };
-		6308ADC727E87105004D91BF /* CommutersSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB727E87104004D91BF /* CommutersSans-ExtraBold.ttf */; };
-		6308ADC827E87105004D91BF /* CommutersSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB827E87104004D91BF /* CommutersSans-ExtraLight.ttf */; };
-		6308ADC927E87105004D91BF /* CommutersSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB927E87104004D91BF /* CommutersSans-Bold.ttf */; };
-		6308ADCA27E87105004D91BF /* CommutersSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBA27E87104004D91BF /* CommutersSans-Italic.ttf */; };
-		6308ADCB27E87105004D91BF /* CommutersSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBB27E87105004D91BF /* CommutersSans-Thin.ttf */; };
-		6308ADCC27E87105004D91BF /* CommutersSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBC27E87105004D91BF /* CommutersSans-LightItalic.ttf */; };
-		6308ADCD27E87105004D91BF /* CommutersSans-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBD27E87105004D91BF /* CommutersSans-ThinItalic.ttf */; };
-		6308ADCE27E87105004D91BF /* CommutersSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBE27E87105004D91BF /* CommutersSans-BoldItalic.ttf */; };
-		6308ADCF27E87105004D91BF /* CommutersSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBF27E87105004D91BF /* CommutersSans-ExtraBoldItalic.ttf */; };
 		630CEFDE27C4DCA60042DBBA /* AudioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630CEFDD27C4DCA60042DBBA /* AudioListViewController.swift */; };
 		630CEFE127C4DD610042DBBA /* AudioViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630CEFE027C4DD610042DBBA /* AudioViewCell.swift */; };
 		6310939927EACF7000A9C08A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6310939827EACF7000A9C08A /* History.swift */; };
@@ -48,6 +32,22 @@
 		6337E6AB27DF57B90039C370 /* NoDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6337E6A927DF57B90039C370 /* NoDataTableViewCell.swift */; };
 		633B82C927D9E1E400236CA2 /* Int+Extenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633B82C827D9E1E400236CA2 /* Int+Extenstion.swift */; };
 		633B82CB27D9E2F300236CA2 /* AVPlayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633B82CA27D9E2F300236CA2 /* AVPlayer+Extension.swift */; };
+		633DF8A727FDB17300F3E177 /* CommutersSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB427E87104004D91BF /* CommutersSans-SemiBold.ttf */; };
+		633DF8A827FDB17300F3E177 /* CommutersSans-HeavyItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB327E87104004D91BF /* CommutersSans-HeavyItalic.ttf */; };
+		633DF8A927FDB17300F3E177 /* CommutersSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBB27E87105004D91BF /* CommutersSans-Thin.ttf */; };
+		633DF8AA27FDB17300F3E177 /* CommutersSans-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBD27E87105004D91BF /* CommutersSans-ThinItalic.ttf */; };
+		633DF8AB27FDB17300F3E177 /* CommutersSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB527E87104004D91BF /* CommutersSans-ExtraLightItalic.ttf */; };
+		633DF8AC27FDB17400F3E177 /* CommutersSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBE27E87105004D91BF /* CommutersSans-BoldItalic.ttf */; };
+		633DF8AD27FDB17400F3E177 /* CommutersSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBC27E87105004D91BF /* CommutersSans-LightItalic.ttf */; };
+		633DF8AE27FDB17400F3E177 /* CommutersSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB927E87104004D91BF /* CommutersSans-Bold.ttf */; };
+		633DF8AF27FDB17400F3E177 /* CommutersSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB727E87104004D91BF /* CommutersSans-ExtraBold.ttf */; };
+		633DF8B027FDB17400F3E177 /* CommutersSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB127E87103004D91BF /* CommutersSans-Light.ttf */; };
+		633DF8B127FDB17400F3E177 /* CommutersSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBF27E87105004D91BF /* CommutersSans-ExtraBoldItalic.ttf */; };
+		633DF8B227FDB17400F3E177 /* CommutersSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB627E87104004D91BF /* CommutersSans-SemiBoldItalic.ttf */; };
+		633DF8B327FDB17400F3E177 /* CommutersSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB227E87104004D91BF /* CommutersSans-Regular.ttf */; };
+		633DF8B427FDB17400F3E177 /* CommutersSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB827E87104004D91BF /* CommutersSans-ExtraLight.ttf */; };
+		633DF8B527FDB17400F3E177 /* CommutersSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADBA27E87104004D91BF /* CommutersSans-Italic.ttf */; };
+		633DF8B627FDB17400F3E177 /* CommutersSans-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6308ADB027E87103004D91BF /* CommutersSans-Heavy.ttf */; };
 		63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63420B6427DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift */; };
 		63420B6727DB8F9500C4CAF9 /* FavouriteAudioClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63420B6627DB8F9500C4CAF9 /* FavouriteAudioClient.swift */; };
 		63420B6927DB8FD300C4CAF9 /* Favourite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63420B6827DB8FD300C4CAF9 /* Favourite.swift */; };
@@ -1366,35 +1366,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				633DF8AC27FDB17400F3E177 /* CommutersSans-BoldItalic.ttf in Resources */,
+				633DF8B627FDB17400F3E177 /* CommutersSans-Heavy.ttf in Resources */,
 				6358436027B7CFC60055DE7E /* Media.xcassets in Resources */,
 				6358433F27B7B7C80055DE7E /* SideMenu.storyboard in Resources */,
-				6308ADC727E87105004D91BF /* CommutersSans-ExtraBold.ttf in Resources */,
+				633DF8B027FDB17400F3E177 /* CommutersSans-Light.ttf in Resources */,
+				633DF8A827FDB17300F3E177 /* CommutersSans-HeavyItalic.ttf in Resources */,
+				633DF8AD27FDB17400F3E177 /* CommutersSans-LightItalic.ttf in Resources */,
+				633DF8AB27FDB17300F3E177 /* CommutersSans-ExtraLightItalic.ttf in Resources */,
+				633DF8B427FDB17400F3E177 /* CommutersSans-ExtraLight.ttf in Resources */,
+				633DF8A727FDB17300F3E177 /* CommutersSans-SemiBold.ttf in Resources */,
 				638480BD27BE71D200035630 /* testAudio.mp3 in Resources */,
-				6308ADCE27E87105004D91BF /* CommutersSans-BoldItalic.ttf in Resources */,
-				6308ADCC27E87105004D91BF /* CommutersSans-LightItalic.ttf in Resources */,
+				633DF8B227FDB17400F3E177 /* CommutersSans-SemiBoldItalic.ttf in Resources */,
+				633DF8AA27FDB17300F3E177 /* CommutersSans-ThinItalic.ttf in Resources */,
 				6378779F27C632930006BEA1 /* Other.storyboard in Resources */,
-				6308ADC627E87105004D91BF /* CommutersSans-SemiBoldItalic.ttf in Resources */,
+				633DF8B127FDB17400F3E177 /* CommutersSans-ExtraBoldItalic.ttf in Resources */,
+				633DF8A927FDB17300F3E177 /* CommutersSans-Thin.ttf in Resources */,
 				630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */,
-				6308ADC327E87105004D91BF /* CommutersSans-HeavyItalic.ttf in Resources */,
-				6308ADCD27E87105004D91BF /* CommutersSans-ThinItalic.ttf in Resources */,
 				6358431927B7AEDB0055DE7E /* LaunchScreen.storyboard in Resources */,
-				6308ADC827E87105004D91BF /* CommutersSans-ExtraLight.ttf in Resources */,
+				633DF8B327FDB17400F3E177 /* CommutersSans-Regular.ttf in Resources */,
+				633DF8AF27FDB17400F3E177 /* CommutersSans-ExtraBold.ttf in Resources */,
+				633DF8B527FDB17400F3E177 /* CommutersSans-Italic.ttf in Resources */,
 				63D27C6227BD07FA0074EA7F /* Audio.storyboard in Resources */,
-				6308ADCA27E87105004D91BF /* CommutersSans-Italic.ttf in Resources */,
-				6308ADC527E87105004D91BF /* CommutersSans-ExtraLightItalic.ttf in Resources */,
 				6337E6AA27DF57B90039C370 /* NoDataTableViewCell.xib in Resources */,
-				6308ADC227E87105004D91BF /* CommutersSans-Regular.ttf in Resources */,
-				6308ADCB27E87105004D91BF /* CommutersSans-Thin.ttf in Resources */,
-				6308ADC427E87105004D91BF /* CommutersSans-SemiBold.ttf in Resources */,
 				638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */,
 				6358431627B7AEDB0055DE7E /* Assets.xcassets in Resources */,
-				6308ADCF27E87105004D91BF /* CommutersSans-ExtraBoldItalic.ttf in Resources */,
-				6308ADC127E87105004D91BF /* CommutersSans-Light.ttf in Resources */,
-				6308ADC927E87105004D91BF /* CommutersSans-Bold.ttf in Resources */,
 				6358431427B7AED90055DE7E /* Main.storyboard in Resources */,
 				6353708827BA271F000A144E /* Auth.storyboard in Resources */,
 				63C4F63627D0FAE000CEC0B9 /* Trivia.storyboard in Resources */,
-				6308ADC027E87105004D91BF /* CommutersSans-Heavy.ttf in Resources */,
+				633DF8AE27FDB17400F3E177 /* CommutersSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1841,8 +1841,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
+				MARKETING_VERSION = 1.3.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1878,10 +1878,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
+				MARKETING_VERSION = 1.3.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = TaleOMeterV1_appstore;
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

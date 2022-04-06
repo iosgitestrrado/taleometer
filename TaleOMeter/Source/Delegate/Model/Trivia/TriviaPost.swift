@@ -40,7 +40,7 @@ struct TriviaPost {
         Question_type = json["question_type"].stringValue
         User_opened = json["user_opened"].boolValue
         User_opened_status = json["user_opened_status"].intValue
-        Date = json["date"].stringValue
+        Date = "  \(json["date"].stringValue)  "
         User_answered = json["user_answered"].boolValue
         User_answer_status = json["user_answer_status"].boolValue
         

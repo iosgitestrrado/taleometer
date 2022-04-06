@@ -129,7 +129,6 @@ extension RegisterViewController: UITextFieldDelegate {
                print("ERROR")
            }
         }
-        
        return true
     }
     

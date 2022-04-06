@@ -27,7 +27,7 @@ class LoginViewController: UIViewController {
         self.hideKeyboard()
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
-        titleLabel.addUnderline()
+//        titleLabel.addUnderline()
         
 //        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\nSign up To Keep Hearing Amazing")
 //        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Bold", size: 25) ]

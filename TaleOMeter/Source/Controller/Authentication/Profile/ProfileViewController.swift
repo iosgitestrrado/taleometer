@@ -12,6 +12,8 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var nameLabelView: UIView!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var mobileLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
@@ -41,6 +43,7 @@ class ProfileViewController: UIViewController {
         }
         Core.ShowProgress(self, detailLbl: "Getting Profile details...")
         setProfileData()
+        
         if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
             self.profileImage.image = img
         }
@@ -64,7 +67,8 @@ class ProfileViewController: UIViewController {
             profileData = pfData
         }
         
-        let name = profileData?.Fname ?? ""
+        let name = profileData?.User_code ?? ""
+        let displayName = profileData?.Fname ?? ""
         let mobile = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "")"
         let email = profileData?.Email ?? ""
         
@@ -72,23 +76,30 @@ class ProfileViewController: UIViewController {
         let phoneAtt = Core.getImageString("phone")
         let emailAtt = Core.getImageString("email")
 
-        let titleAttText = NSMutableAttributedString(string: "\(name)  ")
+        let nameAttText = NSMutableAttributedString(string: "\(name)  ")
+        let titleAttText = NSMutableAttributedString(string: "\(displayName)  ")
         let mobileText = NSMutableAttributedString(string: " \(mobile)  ")
         let emailText = NSMutableAttributedString(string: " \(email)  ")
         
-        if !name.isEmpty {
+        if !displayName.isBlank {
             titleAttText.append(pencilAtt)
             self.titleLabel.attributedText = titleAttText
         }
         
-        if !mobile.isEmpty {
+        self.nameLabelView.isHidden = name.isBlank
+        if !name.isBlank {
+            nameAttText.append(pencilAtt)
+            self.nameLabel.attributedText = nameAttText
+        }
+        
+        if !mobile.isBlank {
             let mobileAttText = phoneAtt
             mobileAttText.append(mobileText)
             mobileAttText.append(pencilAtt)
             self.mobileLabel.attributedText = mobileAttText
         }
         
-        if !email.isEmpty {
+        if !email.isBlank {
             let emailAttText = emailAtt
             emailAttText.append(emailText)
             emailAttText.append(pencilAtt)
@@ -106,7 +117,7 @@ class ProfileViewController: UIViewController {
         editIndex = sender.tag
         switch sender.tag {
         case 1:
-            //Name
+            //Display Name
             guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
             myobject.titleString = "Change Display Name"
             myobject.fieldValue = profileData?.Fname ?? ""
@@ -127,6 +138,14 @@ class ProfileViewController: UIViewController {
             guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
             myobject.titleString = "Change Email ID"
             myobject.fieldValue = profileData?.Email ?? ""
+            myobject.profileDelegate = self
+            self.navigationController?.pushViewController(myobject, animated: true)
+            break
+        case 4:
+            //Name
+            guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
+            myobject.titleString = "Change Name"
+            myobject.fieldValue = profileData?.User_code ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
@@ -216,7 +235,7 @@ extension ProfileViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
-                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
         }
@@ -233,7 +252,7 @@ extension ProfileViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = defaultImage
-                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
         }
