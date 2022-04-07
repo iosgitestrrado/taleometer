@@ -40,13 +40,13 @@ class TriviaViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        gridWidth = (UIScreen.main.bounds.width - titleViewHeight) / 2.0
-        gridHeight = (gridWidth + titleViewHeight) - 10.0
+        gridWidth = self.collectionView.frame.size.width / 2.0
+        gridHeight = (gridWidth + titleViewHeight)
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()//collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+       // layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: gridWidth, height: gridHeight)
-        layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         collectionView.collectionViewLayout = layout
         collectionView.alwaysBounceVertical = true
     }
@@ -155,8 +155,8 @@ extension TriviaViewController: UICollectionViewDelegate {
 extension TriviaViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {
-            return CGSize(width: (gridWidth * 2) + 10.0, height: gridHeight + 60.0)
+            return CGSize(width: collectionView.frame.size.width, height: gridHeight + 60.0)
         }
-        return CGSize(width: gridWidth, height: gridHeight)
+        return CGSize(width: (collectionView.frame.size.width) / 2.0, height: gridHeight)
     }
 }

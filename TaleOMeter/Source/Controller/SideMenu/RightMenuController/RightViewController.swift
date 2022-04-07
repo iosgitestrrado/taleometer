@@ -294,6 +294,8 @@ extension RightViewController: UITableViewDataSource {
             cell.subTitleLabel.text = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "00000 00000")"
             if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
                 cell.profileImage.image = img
+            } else {
+                cell.profileImage.image = Login.defaultProfileImage
             }
             cell.closeButton.addTarget(self, action: #selector(self.clickOnClose(_:)), for: .touchUpInside)
             cell.isFirst = (indexPath.row == 0)

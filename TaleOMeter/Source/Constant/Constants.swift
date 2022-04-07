@@ -6,11 +6,15 @@
 //  Copyright © 2022 Durgesh. All rights reserved.
 //
 
+import UIKit
+
 struct Constants {
     
 //    static let baseURL = "https://dev-taleometer.estrradoweb.com"
     static let baseURL = "https://app.taleometer.com"
 
+    static let loaderImage = UIImage.gif(name: "spinner1")
+    
     struct Storyboard {
         static let dashboard = "Main"
         static let sideMenu = "SideMenu"

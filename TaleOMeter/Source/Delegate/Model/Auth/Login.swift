@@ -10,11 +10,13 @@ import UIKit
 
 struct Login {
     
+    static let defaultProfileImage = UIImage(named: "profile_default")!
+    
     public static func setGusetData() {
         if self.getProfileData() == nil {
             var profileData = ProfileData()
             
-            if let data = defaultImage.pngData() {
+            if let data = defaultProfileImage.pngData() {
                 profileData.ImageData = data
             }
             profileData.Phone = "00000 00000"

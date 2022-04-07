@@ -44,6 +44,11 @@ class VerificationProfileVC: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false, titleInLeft: true, backImage: true, backImageColor: .red)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        otp1Text.becomeFirstResponder()
+    }
+    
     @IBAction func tapOnResend(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)

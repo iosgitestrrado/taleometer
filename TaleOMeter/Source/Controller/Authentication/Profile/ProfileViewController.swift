@@ -17,7 +17,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var mobileLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
-    
+    @IBOutlet weak var imageOptionPopup: UIView!
+
     // MARK: - Private Property -
     private let imagePicker = UIImagePickerController()
     private var editIndex = -1
@@ -43,7 +44,7 @@ class ProfileViewController: UIViewController {
         }
         Core.ShowProgress(self, detailLbl: "Getting Profile details...")
         setProfileData()
-        
+        self.profileImage.image = Login.defaultProfileImage
         if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
             self.profileImage.image = img
         }
@@ -153,7 +154,12 @@ class ProfileViewController: UIViewController {
             //Image
             imagePicker.delegate = self
             imagePicker.allowsEditing = true
-            let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
+            UIView.transition(with: self.imageOptionPopup, duration: 0.4, options: .transitionCrossDissolve) {
+                self.imageOptionPopup.isHidden = false
+            } completion: { isDone in
+                
+            }
+            /*let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { result in
                 if !UIImagePickerController.isSourceTypeAvailable(.camera) {
                     Toast.show("Camera not supported")
@@ -208,7 +214,63 @@ class ProfileViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
+            }*/
+            break
+        }
+    }
+    
+    // MARK: Change profile image options // Camera - 1, Photo - 2, Cancel - 3
+    @IBAction func tapOnImageOptions(_ sender: UIButton) {
+        switch sender.tag {
+        case 1:
+            // Open Camera
+            if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Toast.show("Camera not supported")
+                return
             }
+            
+            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                DispatchQueue.main.async {
+                    self.imagePicker.sourceType = .camera
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            } else {
+                AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                    if granted {
+                        DispatchQueue.main.async {
+                            self.imagePicker.sourceType = .camera
+                            self.present(self.imagePicker, animated: true, completion: nil)
+                        }
+                    }
+                })
+            }
+            break
+        case 2:
+            // Open Gallary
+            if !UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                Toast.show("Photo library not supported")
+                return
+            }
+            
+            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                DispatchQueue.main.async {
+                    self.imagePicker.sourceType = .photoLibrary
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            } else {
+                AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                    if granted {
+                        DispatchQueue.main.async {
+                            self.imagePicker.sourceType = .photoLibrary
+                            self.present(self.imagePicker, animated: true, completion: nil)
+                        }
+                    }
+                })
+            }
+            break
+        default:
+            // Cancel
+            self.imageOptionPopup.isHidden = true
             break
         }
     }
@@ -251,7 +313,7 @@ extension ProfileViewController {
             if let response = result {
                 self.profileData = response
                 Login.storeProfileData(response)
-                self.profileImage.image = defaultImage
+                self.profileImage.image = Login.defaultProfileImage
                 PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
@@ -266,6 +328,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
         self.imagePicker.dismiss(animated: true) { [self] in
             Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
             if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                self.imageOptionPopup.isHidden = true
                 if let imgData = image.pngData() {
                     uploadProfileImage(imgData, image: image)
                 } else {

@@ -71,7 +71,7 @@ struct ProfileData: Codable {
                 let data = try Data(contentsOf: url)
                 self.ImageData = data
             } catch {
-                if let iData = defaultImage.pngData() {
+                if let iData = Login.defaultProfileImage.pngData() {
                     self.ImageData = iData
                 }
             }

@@ -93,7 +93,7 @@ class RegisterViewController: UIViewController {
             profileReq.email = email
         }
         Core.ShowProgress(self, detailLbl: "")
-        AuthClient.updateProfile(profileReq) { [self] result in
+        AuthClient.updateProfile(profileReq, showSuccMessage: true) { [self] result in
             if var response = result {
                 if isOnlyTrivia {
                     response.StoryBoardName = ""

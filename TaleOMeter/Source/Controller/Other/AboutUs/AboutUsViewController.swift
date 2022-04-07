@@ -40,7 +40,7 @@ class AboutUsViewController: UIViewController {
         OtherClient.getStaticContent(true) { response in
             if let data = response, !data.Value.isBlank {
                 self.textView.attributedText = data.Value.htmlToAttributedString
-                self.textView.textColor = .white
+//                self.textView.textColor = .white
             }
             Core.HideProgress(self)
         }

@@ -93,7 +93,11 @@ class FeedCellView: UITableViewCell {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
                 cImage.image = cellData.profilePic ?? defaultImage
             } else {
-                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: defaultImage, options: [], context: nil)
+                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImage, options: []) { imgg, error, typrr, url in
+                    if error != nil {
+                        cImage.image = defaultImage
+                    }
+                }
             }
             if cellId == FeedCellIdentifier.question {
                 cImage.layer.cornerRadius = 20

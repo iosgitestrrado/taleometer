@@ -95,8 +95,6 @@
 		637AD84427BF7381001D964A /* FooterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637AD84327BF7381001D964A /* FooterManager.swift */; };
 		637E620727C4FF4100B31760 /* ChangeMobileNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E620627C4FF4100B31760 /* ChangeMobileNumberVC.swift */; };
 		638150B627C64E0E003E6DE4 /* UserStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638150B527C64E0E003E6DE4 /* UserStoryCell.swift */; };
-		638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */; };
-		638480BD27BE71D200035630 /* testAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 638480BC27BE71D200035630 /* testAudio.mp3 */; };
 		63863DAE27D7258C00EFF6E2 /* UITextView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DAD27D7258C00EFF6E2 /* UITextView+Extension.swift */; };
 		63863DBA27D7735C00EFF6E2 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DB427D7735A00EFF6E2 /* APIError.swift */; };
 		63863DBB27D7735C00EFF6E2 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DB527D7735B00EFF6E2 /* Endpoint.swift */; };
@@ -123,6 +121,7 @@
 		63863DFB27D784AF00EFF6E2 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63863DFA27D784AF00EFF6E2 /* Audio.swift */; };
 		638FD58F27E20B810053CD79 /* SearchAudioClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638FD58E27E20B810053CD79 /* SearchAudioClient.swift */; };
 		638FD59127E20BD30053CD79 /* SearchAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638FD59027E20BD30053CD79 /* SearchAudio.swift */; };
+		639103D827FEEC8500DA214E /* spinner1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 639103D727FEEC8500DA214E /* spinner1.gif */; };
 		63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */; };
 		63AE25AA27F450CB0029E367 /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE25A927F450CA0029E367 /* StoryViewController.swift */; };
 		63AE25AC27F4604D0029E367 /* UserStoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE25AB27F4604C0029E367 /* UserStoryModel.swift */; };
@@ -275,8 +274,6 @@
 		637AD84327BF7381001D964A /* FooterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterManager.swift; sourceTree = "<group>"; };
 		637E620627C4FF4100B31760 /* ChangeMobileNumberVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMobileNumberVC.swift; sourceTree = "<group>"; };
 		638150B527C64E0E003E6DE4 /* UserStoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoryCell.swift; sourceTree = "<group>"; };
-		638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = file_example_MP3_5MG.mp3; sourceTree = "<group>"; };
-		638480BC27BE71D200035630 /* testAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio.mp3; sourceTree = "<group>"; };
 		63863DAD27D7258C00EFF6E2 /* UITextView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extension.swift"; sourceTree = "<group>"; };
 		63863DB427D7735A00EFF6E2 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		63863DB527D7735B00EFF6E2 /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
@@ -303,6 +300,7 @@
 		63863DFA27D784AF00EFF6E2 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		638FD58E27E20B810053CD79 /* SearchAudioClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAudioClient.swift; sourceTree = "<group>"; };
 		638FD59027E20BD30053CD79 /* SearchAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAudio.swift; sourceTree = "<group>"; };
+		639103D727FEEC8500DA214E /* spinner1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner1.gif; sourceTree = "<group>"; };
 		63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptVManager.swift; sourceTree = "<group>"; };
 		63AE25A927F450CA0029E367 /* StoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
 		63AE25AB27F4604C0029E367 /* UserStoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoryModel.swift; sourceTree = "<group>"; };
@@ -663,9 +661,8 @@
 		6358435E27B7CF9C0055DE7E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				638480BC27BE71D200035630 /* testAudio.mp3 */,
+				639103D727FEEC8500DA214E /* spinner1.gif */,
 				630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */,
-				638480B627BE4DD300035630 /* file_example_MP3_5MG.mp3 */,
 				6358431527B7AEDB0055DE7E /* Assets.xcassets */,
 				6358435F27B7CFC60055DE7E /* Media.xcassets */,
 			);
@@ -1376,7 +1373,6 @@
 				633DF8AB27FDB17300F3E177 /* CommutersSans-ExtraLightItalic.ttf in Resources */,
 				633DF8B427FDB17400F3E177 /* CommutersSans-ExtraLight.ttf in Resources */,
 				633DF8A727FDB17300F3E177 /* CommutersSans-SemiBold.ttf in Resources */,
-				638480BD27BE71D200035630 /* testAudio.mp3 in Resources */,
 				633DF8B227FDB17400F3E177 /* CommutersSans-SemiBoldItalic.ttf in Resources */,
 				633DF8AA27FDB17300F3E177 /* CommutersSans-ThinItalic.ttf in Resources */,
 				6378779F27C632930006BEA1 /* Other.storyboard in Resources */,
@@ -1386,10 +1382,10 @@
 				6358431927B7AEDB0055DE7E /* LaunchScreen.storyboard in Resources */,
 				633DF8B327FDB17400F3E177 /* CommutersSans-Regular.ttf in Resources */,
 				633DF8AF27FDB17400F3E177 /* CommutersSans-ExtraBold.ttf in Resources */,
+				639103D827FEEC8500DA214E /* spinner1.gif in Resources */,
 				633DF8B527FDB17400F3E177 /* CommutersSans-Italic.ttf in Resources */,
 				63D27C6227BD07FA0074EA7F /* Audio.storyboard in Resources */,
 				6337E6AA27DF57B90039C370 /* NoDataTableViewCell.xib in Resources */,
-				638480B727BE4DD300035630 /* file_example_MP3_5MG.mp3 in Resources */,
 				6358431627B7AEDB0055DE7E /* Assets.xcassets in Resources */,
 				6358431427B7AED90055DE7E /* Main.storyboard in Resources */,
 				6353708827BA271F000A144E /* Auth.storyboard in Resources */,
@@ -1841,7 +1837,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1878,7 +1874,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;

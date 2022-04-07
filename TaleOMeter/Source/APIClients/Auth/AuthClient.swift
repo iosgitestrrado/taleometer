@@ -110,9 +110,9 @@ class AuthClient {
         }
     }
 
-    static func updateProfile(_ profileReq: ProfileRequest, completion: @escaping(ProfileData?) -> Void) {
+    static func updateProfile(_ profileReq: ProfileRequest, showSuccMessage: Bool = false, completion: @escaping(ProfileData?) -> Void) {
         APIClient.shared.postJson(parameters: profileReq, feed: .UpdateProfileDetails) { result in
-            ResponseAPI.getResponseJson(result) { responseJson in
+            ResponseAPI.getResponseJson(result, showSuccMessage: showSuccMessage) { responseJson in
                 var verification: ProfileData?
                 if let response = responseJson {
                     verification = ProfileData(response)
@@ -180,7 +180,6 @@ class AuthClient {
                 } else {
                     do {
                         let mutableResponse = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
-                        print(mutableResponse)
                         //completionHandler(mutableResponse as? NSDictionary, (response as! HTTPURLResponse).allHeaderFields as NSDictionary, error)
                     } catch _ {
                         //completionHandler([:], [:], error)

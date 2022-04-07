@@ -74,9 +74,13 @@ class GridCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(_ cellData: TriviaDaily, gridWidth: CGFloat, gridHeight: CGFloat, titleViewHeight: CGFloat, row: Int) {
-        imageView.sd_setImage(with: URL(string: cellData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
-        imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
-        titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: (gridWidth * 2) + 10.0, height: titleViewHeight)
+        imageView.sd_setImage(with: URL(string: cellData.ImageUrl), placeholderImage: Constants.loaderImage, options: []) { [self] imgg, error, typrr, url in
+            if error != nil {
+                imageView.image = defaultImage
+            }
+        }
+//        imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth * 2, height: gridHeight - titleViewHeight)
+//        titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: (gridWidth * 2) + 10.0, height: titleViewHeight)
         self.titleLabel.text = cellData.Title
         let countString = NSMutableAttributedString(string: "\(cellData.Post_count)\nnew")
         let rangeTitle1 = NSRange(location: 0, length: cellData.Post_count.description.utf8.count)
@@ -89,10 +93,14 @@ class GridCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCellCat(_ cellData: TriviaCategory, gridWidth: CGFloat, gridHeight: CGFloat, titleViewHeight: CGFloat, row: Int) {
-        imageView.sd_setImage(with: URL(string: cellData.Category_image_url), placeholderImage: defaultImage, options: [], context: nil)
-        imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth, height: gridHeight - titleViewHeight)
-        titleView.frame = CGRect(x: 0.0, y: gridHeight - titleViewHeight, width: gridWidth, height: titleViewHeight)
-        titleLabel.frame = CGRect(x: 15.0, y: 0.0, width: gridWidth - 15.0, height: titleViewHeight)
+        imageView.sd_setImage(with: URL(string: cellData.Category_image_url), placeholderImage: Constants.loaderImage, options: []) { [self] imgg, error, typrr, url in
+            if error != nil {
+                imageView.image = defaultImage
+            }
+        }
+       // imageView.frame = CGRect(x: 0.0, y: 0.0, width: gridWidth, height: gridHeight - (titleViewHeight))
+        //titleView.frame = CGRect(x: 0.0, y: gridHeight - (titleViewHeight + 50.0), width: gridWidth, height: (titleViewHeight + 50.0))
+       //titleLabel.frame = CGRect(x: 15.0, y: 0.0, width: gridWidth - 15.0, height: (titleViewHeight + 50.0))
         self.titleLabel.text = cellData.Category_name
 //        let countString = NSMutableAttributedString(string: "\(count)\nNew Qus")
 //        countString.addAttributes(font15, range: rangeTitle1)
