@@ -91,11 +91,11 @@ class FeedCellView: UITableViewCell {
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
         if let cImage = self.coverImage {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
-                cImage.image = cellData.profilePic ?? defaultImage
+                cImage.image = cellData.profilePic ?? (cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage)
             } else {
                 cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImage, options: []) { imgg, error, typrr, url in
                     if error != nil {
-                        cImage.image = defaultImage
+                        cImage.image = cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage
                     }
                 }
             }

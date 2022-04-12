@@ -95,6 +95,8 @@ struct ProfileData: Codable {
 struct VerificationRequest: Encodable {
     var mobile = String()
     var otp = Int()
+    var isd_code = String()
+    var country_code = String()
 }
 /*{
  "id": 26,

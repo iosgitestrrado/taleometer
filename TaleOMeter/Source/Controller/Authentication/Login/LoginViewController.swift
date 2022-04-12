@@ -147,10 +147,14 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "verification", let veryVC = segue.destination as? VerificationViewController {
             veryVC.mobileNumber = self.mobileNumberTxt.text!
+            veryVC.countryCode = "IN"
             if let cCode = self.countryModel.countryCode {
                 veryVC.countryCode = cCode
             }
             veryVC.iSDCode = 91
+            if let isdCode = self.countryModel.extensionCode {
+                veryVC.iSDCode = Int(isdCode.replacingOccurrences(of: "+", with: "")) ?? 91
+            }
 //            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
 //                veryVC.iSDCode = isdCode
 //            }

@@ -18,7 +18,8 @@ class VerificationProfileVC: UIViewController {
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var profileDelegate: ProfileEditDelegate? = nil
     var mobileNumber = ""
-    var countryCode = ""
+    var countryCode = "IN"
+    var iSDCode = 91
     
     // MARK: - Private Property -
     private var profileData: ProfileData?
@@ -80,10 +81,10 @@ class VerificationProfileVC: UIViewController {
     
     private func verifyOTP(_ otp: Int) {
         Core.ShowProgress(self, detailLbl: "Verifying OTP")
-        AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp)) { result in
+        AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp, isd_code: "\(iSDCode)", country_code: countryCode)) { result in
             if let response = result {
                 Login.storeProfileData(response)
-                PromptVManager.present(self, verifyMessage: "Your Mobile Number is Successfully Changed", isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your mobile number is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
         }

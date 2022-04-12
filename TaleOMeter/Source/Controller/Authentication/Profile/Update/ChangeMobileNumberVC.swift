@@ -151,9 +151,14 @@ class ChangeMobileNumberVC: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "verification", let veriVC = segue.destination as? VerificationProfileVC {
             veriVC.profileDelegate = self.profileDelegate
-            if let mobile = self.mobileTextField.text, let countryCode = self.countryModel.countryCode {
+            if let mobile = self.mobileTextField.text {
                 veriVC.mobileNumber = mobile
+            }
+            if let countryCode = self.countryModel.countryCode {
                 veriVC.countryCode = countryCode
+            }
+            if let isdCode = self.countryModel.extensionCode {
+                veriVC.iSDCode = Int(isdCode.replacingOccurrences(of: "+", with: "")) ?? 91
             }
         }
     }

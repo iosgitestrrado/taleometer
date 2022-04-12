@@ -13,11 +13,13 @@ class ProfileViewController: UIViewController {
     // MARK: - Weak Property -
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var nameLabelView: UIView!
+    @IBOutlet weak var emailLabelView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var mobileLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var imageOptionPopup: UIView!
+    @IBOutlet weak var customActionSheet: UIView!
 
     // MARK: - Private Property -
     private let imagePicker = UIImagePickerController()
@@ -87,11 +89,11 @@ class ProfileViewController: UIViewController {
             self.titleLabel.attributedText = titleAttText
         }
         
-        self.nameLabelView.isHidden = name.isBlank
-        if !name.isBlank {
+//        self.nameLabelView.isHidden = name.isBlank
+        //if !name.isBlank {
             nameAttText.append(pencilAtt)
             self.nameLabel.attributedText = nameAttText
-        }
+        //}
         
         if !mobile.isBlank {
             let mobileAttText = phoneAtt
@@ -100,12 +102,12 @@ class ProfileViewController: UIViewController {
             self.mobileLabel.attributedText = mobileAttText
         }
         
-        if !email.isBlank {
+       // if !email.isBlank {
             let emailAttText = emailAtt
             emailAttText.append(emailText)
             emailAttText.append(pencilAtt)
             self.emailLabel.attributedText = emailAttText
-        }
+       // }
     }
     
     // MARK: - Side Menu button action -
@@ -154,11 +156,8 @@ class ProfileViewController: UIViewController {
             //Image
             imagePicker.delegate = self
             imagePicker.allowsEditing = true
-            UIView.transition(with: self.imageOptionPopup, duration: 0.4, options: .transitionCrossDissolve) {
-                self.imageOptionPopup.isHidden = false
-            } completion: { isDone in
-                
-            }
+            self.showHideView(self.customActionSheet, isHidden: false)
+
             /*let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { result in
                 if !UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -219,7 +218,7 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    // MARK: Change profile image options // Camera - 1, Photo - 2, Cancel - 3
+    // MARK: Change profile image options // Camera - 1, Photo - 2, Cancel - 3, 4 - Update Profile, 5 - Delete Profile, 6 - Close Option
     @IBAction func tapOnImageOptions(_ sender: UIButton) {
         switch sender.tag {
         case 1:
@@ -268,11 +267,28 @@ class ProfileViewController: UIViewController {
                 })
             }
             break
+        case 0, 4:
+            // 0 - Cancel // 4 - Update Profile
+            self.showHideView(self.imageOptionPopup, isHidden: sender.tag == 0)
+            break
+        case 5:
+            // Remove Profile
+            self.showHideView(self.customActionSheet, isHidden: true)
+            self.removeProfileImage()
+            break
         default:
-            // Cancel
-            self.imageOptionPopup.isHidden = true
+            // Close Option
+            self.showHideView(self.customActionSheet, isHidden: true)
             break
         }
+    }
+    
+    private func showHideView(_ viewd: UIView, isHidden: Bool) {
+        UIView.transition(with: viewd, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            UIView.animate(withDuration: 0.25, animations: {
+                viewd.isHidden = isHidden
+            })
+        }, completion: nil)
     }
 }
 
@@ -328,7 +344,9 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
         self.imagePicker.dismiss(animated: true) { [self] in
             Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
             if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.imageOptionPopup.isHidden = true
+                self.showHideView(self.customActionSheet, isHidden: true)
+                self.showHideView(self.imageOptionPopup, isHidden: true)
+
                 if let imgData = image.pngData() {
                     uploadProfileImage(imgData, image: image)
                 } else {

@@ -12,6 +12,7 @@ struct Constants {
     
 //    static let baseURL = "https://dev-taleometer.estrradoweb.com"
     static let baseURL = "https://app.taleometer.com"
+//    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
 
     static let loaderImage = UIImage.gif(name: "spinner1")
     

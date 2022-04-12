@@ -12,8 +12,8 @@ class VerificationViewController: UIViewController {
     
     // MARK: - Public Properties -
     var mobileNumber = ""
-    var countryCode = ""
-    var iSDCode = 0
+    var countryCode = "IN"
+    var iSDCode = 91
 
     // MARK: - Weak Properties -
     @IBOutlet weak var otp1TextField: CustomTextField!
@@ -107,7 +107,7 @@ class VerificationViewController: UIViewController {
         
         let otp = "\(self.otp1TextField.text!)\(self.otp2TextField.text!)\(self.otp3TextField.text!)\(self.otp4TextField.text!)"
         Core.ShowProgress(self, detailLbl: "Verification OTP...")
-        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0)) { result, status, token, isNewRegister in
+        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0, isd_code: "\(iSDCode)", country_code: countryCode)) { result, status, token, isNewRegister in
             if var response = result, !token.isBlank {
                 UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
                 UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)

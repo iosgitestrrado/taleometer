@@ -16,8 +16,8 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     
     // MARK: - Public Properties -
-    var countryCode = ""
-    var iSDCode = 0
+    var countryCode = "IN"
+    var iSDCode = 91
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
