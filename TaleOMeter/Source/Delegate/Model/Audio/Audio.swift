@@ -117,6 +117,13 @@ struct AudioRequest: Codable {
     var limit = Int()
 }
 
+struct AudioGenreRequest: Codable {
+    var genre_id = Int()
+    var shuffle = Int()
+    var page = String()
+    var limit = Int()
+}
+
 struct EndAudioRequest: Codable {
     var audio_history_id = Int()
 }

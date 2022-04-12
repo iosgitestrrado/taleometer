@@ -170,6 +170,7 @@ enum Feed {
     //Audio
     case GuestAudioStories
     case AudioStories
+    case AudioStoriesGenre
     case NonStopAudios
     case AddAudioStoryAction
     case EndAudioStoryPlaying
@@ -250,6 +251,7 @@ extension Feed: Endpoint {
         //Audio
         case .GuestAudioStories:        return "/api/guest-audio-stories"
         case .AudioStories:             return "/api/audio-stories"
+        case .AudioStoriesGenre:        return "/api/audio-stories/genre"
         case .NonStopAudios:            return "/api/audio-stories/non-stop"
         case .AddAudioStoryAction:      return "/api/audio-story/action"
         case .EndAudioStoryPlaying:     return "/api/audio-story/end-playing"

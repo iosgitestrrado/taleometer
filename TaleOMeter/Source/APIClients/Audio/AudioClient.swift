@@ -8,21 +8,16 @@
 import Foundation
 
 class AudioClient {
-    static func get(_ audioReq: AudioRequest, genreId: Int = -1, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
+    static func get(_ audioReq: AudioGenreRequest, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             // Get All audio list and set refrence for Story, Plot and Narration
-            APIClient.shared.post(parameters: audioReq, feed: .AudioStories) { result in
+            APIClient.shared.post(parameters: audioReq, feed: .AudioStoriesGenre) { result in
                 ResponseAPI.getResponseArray(result, showAlert: false) { response in
                     var audios = [Audio]()
                     if let audio = response {
                         audio.forEach({ (object) in
                             // Set refrence for Story, Plot and Narration
-                            let aud = Audio(object)
-                            if aud.Genre_id == genreId {
-                                if aud.Is_active {
-                                    audios.append(aud)
-                                }
-                            }
+                            audios.append(Audio(object))
                         })
                     }
                     completion(audios)
@@ -34,10 +29,7 @@ class AudioClient {
                     var audios = [Audio]()
                     if let audio = response {
                         audio.forEach({ (object) in
-                            let aud = Audio(object)
-                            if aud.Genre_id == genreId {
-                                audios.append(aud)
-                            }
+                            audios.append(Audio(object))
                         })
                     }
                     completion(audios)

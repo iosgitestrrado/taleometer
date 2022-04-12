@@ -80,7 +80,7 @@ class GridViewController: UIViewController {
         if showProgress {
             Core.ShowProgress(parentController!, detailLbl: "")
         }
-        AudioClient.get(AudioRequest(page: "\(pageNumber)", limit: pageLimit), genreId: genreId, completion: { [self] response in
+        AudioClient.get(AudioGenreRequest(genre_id: genreId, shuffle: 0, page: "\(pageNumber)", limit: pageLimit), completion: { [self] response in
             if let data = response {
                 morePage = data.count > 0
                 audioList = audioList + data
