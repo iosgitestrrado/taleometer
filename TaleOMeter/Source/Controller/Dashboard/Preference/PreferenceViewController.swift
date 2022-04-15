@@ -119,6 +119,7 @@ class PreferenceViewController: UIViewController {
     }
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
+        timerg1?.invalidate()
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)
             Core.HideProgress(self)
@@ -141,33 +142,37 @@ class PreferenceViewController: UIViewController {
         }
         //let name = UIImage.names.randomItem() //checkmark.seal.fill
         //let color = UIColor.colors.randomItem()
-        
+        let node = Node(text: "", image: defaultImage, color: .white, radius: 10.0)
+
         let bubblePref = bubbles[totalNodes]
         SDWebImageManager.shared.loadImage(with: URL(string: bubblePref.ImageUrl), options: [], progress: nil) { image, data, error, typp, status, url in
-            DispatchQueue.main.async { [self] in
-                if let downImage = image {
-                    let node = Node(text: "", image: downImage, color: .white, radius: 10.0)
-                    node.originalTexture = SKTexture(image: downImage)
-                    node.selectedTexture = SKTexture(image: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
+            DispatchQueue.global(qos: .background).async { [self] in
+                DispatchQueue.main.async {
+                    if let imgData = image?.jpegData(compressionQuality: 70.0), let downImage = UIImage(data: imgData) {
+                        node.setImage(image: downImage, selectedImage: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
+                    }
                     node.isSelected = selectedBubbles.contains(node.tag)
-                    node.scaleToFitContent = true
-                    node.selectedColor = .clear
-                    node.selectedStrokeColor = .red
-                    node.tag = bubblePref.Id
-                    //node.isSelected = selectedBubbles.contains(node.tag)
-                    node.speed = 0.1
-                    if totalNodes == 0 {
-                        firstNode = node
-                    }
-                    if totalNodes == bubbles.count - 1 {
-                        lastNode = node
-                    }
-                    magnetic.addChild(node)
-                    node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -50)
-                    totalNodes += 1
                 }
             }
         }
+//        node.originalTexture = SKTexture(image: defaultImage)
+//        node.selectedTexture = SKTexture(image: Core.combineImages(defaultImage, topImage: UIImage(named: "Default_sel_img")!))
+       
+        node.scaleToFitContent = true
+        node.selectedColor = .clear
+        node.selectedStrokeColor = .red
+        node.tag = bubblePref.Id
+        //node.isSelected = selectedBubbles.contains(node.tag)
+        node.speed = 0.1
+        if totalNodes == 0 {
+            firstNode = node
+        }
+        if totalNodes == bubbles.count - 1 {
+            lastNode = node
+        }
+        magnetic.addChild(node)
+        node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -150)
+        totalNodes += 1
         
         
     }

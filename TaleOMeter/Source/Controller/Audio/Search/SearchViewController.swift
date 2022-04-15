@@ -310,16 +310,6 @@ extension SearchViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-//        listArray.removeAll(keepingCapacity: false)
-//        let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchBar.text!)
-//        let array = (allListArray as NSArray).filtered(using: searchPredicate)
-//        listArray = array as! [String]
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //self.view.endEditing(true)
-        self.isRecentSearch = false
         if (searchBar.text?.utf8.count)! > 0 {
             throttler.throttle {
                 DispatchQueue.main.async {
@@ -331,7 +321,12 @@ extension SearchViewController: UISearchBarDelegate {
                 }
             }
         }
-       // searchBar.resignFirstResponder()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+        self.isRecentSearch = false
+        searchBar.resignFirstResponder()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

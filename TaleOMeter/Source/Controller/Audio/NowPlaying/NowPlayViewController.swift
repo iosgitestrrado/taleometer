@@ -257,14 +257,14 @@ class NowPlayViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first, touch.view == self.visualizationWave {
-            if let player = AudioPlayManager.shared.playerAV {
-                isPlayingTap = player.isPlaying
-                if (isPlayingTap) {
-                    player.pause()
-                }
-            }
-        }
+//        if let touch = touches.first, touch.view == self.visualizationWave {
+//            if let player = AudioPlayManager.shared.playerAV {
+//                isPlayingTap = player.isPlaying
+//                if (isPlayingTap) {
+//                    player.pause()
+//                }
+//            }
+//        }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -290,9 +290,9 @@ class NowPlayViewController: UIViewController {
                         self.udpateTime()
                     }
                 }
-                if (isPlayingTap) {
-                    player.play()
-                }
+//                if (isPlayingTap) {
+//                    player.play()
+//                }
             }
             // do something with your currentPoint
         }

@@ -159,8 +159,10 @@ class TRFeedViewController: UIViewController {
     
     // MARK: Tap on post button
     @objc private func tapOnPost(_ sender: UIButton) {
+        sender.isUserInteractionEnabled  = false
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)
+            sender.isUserInteractionEnabled  = true
             return
         }
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
@@ -169,26 +171,39 @@ class TRFeedViewController: UIViewController {
                     if let textView = postData[sender.tag].CommTextView {
                         Validator.showRequiredErrorTextView(textView)
                     }
+                    sender.isUserInteractionEnabled  = true
                     return
                 }
                 // Add new comment
+                Core.ShowProgress(self, detailLbl: "")
                 addComment(postData[sender.tag].Post_id, commentId: nil, comment: postData[sender.tag].Value) { [self] status in
                     if let st = status, st {
                         self.getComments(postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                    } else {
+                        Core.HideProgress(self)
                     }
+                    postData[sender.tag].Value = ""
+                    sender.isUserInteractionEnabled  = true
+                    
                 }
             } else if cellDataArray[rowIndex].cellId == FeedCellIdentifier.replyPost, let commIndex = sender.layer.value(forKey: "CommentIndex") as? Int {
                 if postData[sender.tag].Value.isBlank {
                     if let textView = postData[sender.tag].RepTextView {
                         Validator.showRequiredErrorTextView(textView)
                     }
+                    sender.isUserInteractionEnabled  = true
                     return
                 }
+                Core.ShowProgress(self, detailLbl: "")
                 // Add new reply in comment
                 addComment(postData[sender.tag].Post_id, commentId: postData[sender.tag].Comments[commIndex].Comment_id, comment: postData[sender.tag].Value) { [self] status in
                     if let st = status, st {
                         self.getComments(true, postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                    } else {
+                        Core.HideProgress(self)
                     }
+                    postData[sender.tag].Value = ""
+                    sender.isUserInteractionEnabled  = true
                 }
             }
         }
@@ -303,6 +318,7 @@ extension TRFeedViewController {
     private func getComments(_ replyExpanded: Bool = false, postId: Int, postIndex: Int) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)
+            Core.HideProgress(self)
             return
         }
         //Core.ShowProgress(self, detailLbl: "")
@@ -318,11 +334,11 @@ extension TRFeedViewController {
     
     // MARK: - Add Commnet -
     private func addComment(_ postId: Int, commentId: Int?, comment: String, completion: @escaping(Bool?) -> Void) {
-        DispatchQueue.global(qos: .background).async {
+//        DispatchQueue.global(qos: .background).async {
             TriviaClient.addComments(AddCommentRequest(post_id: postId, comment_id: commentId, comment: comment)) { status in
                 completion(status)
             }
-        }
+//        }
     }
     
     // MARK: - Set cell for tableview

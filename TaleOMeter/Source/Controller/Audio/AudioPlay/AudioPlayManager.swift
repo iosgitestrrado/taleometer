@@ -570,7 +570,7 @@ extension AudioPlayManager {
     
     // MARK: - Share current audio -
     static func shareAudio(_ target: UIViewController, completion: @escaping(Bool?) -> Void) {
-        let content = "Introducing tele'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
+        let content = "Introducing tale'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
         let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
         controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
         controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
