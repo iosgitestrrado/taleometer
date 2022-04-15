@@ -6,9 +6,15 @@
 //  Copyright © 2022 Durgesh. All rights reserved.
 //
 
+import UIKit
+
 struct Constants {
     
-    static let baseURL = "https://dev-taleometer.estrradoweb.com"
+//    static let baseURL = "https://dev-taleometer.estrradoweb.com"
+    static let baseURL = "https://app.taleometer.com"
+//    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
+
+    static let loaderImage = UIImage.gif(name: "spinner1")
     
     struct Storyboard {
         static let dashboard = "Main"
@@ -24,5 +30,15 @@ struct Constants {
         static let AuthTokenStr = "authenticateToken"
         static let IsLogin = "isLogin"
         static let ProfileData = "ProfileData"
+        static let StartUsageId = "StartUsageId"
+    }
+    
+    public struct DateFormate {
+        static let app = "dd/MM/yyyy"
+        static let appWithTime = "dd/MM/yyyy HH:mm:ss"
+        static let server = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        static let serverDate = "yyyy-MM-dd"
+        static let serverWithTime = "yyyy-MM-dd'T'HH:mm:ss"
+        static let aPIWithTime = "yyyy-MM-dd HH:mm:ss"
     }
 }

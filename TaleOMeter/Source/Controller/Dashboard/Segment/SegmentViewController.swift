@@ -33,14 +33,14 @@ class SegmentViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //self.view.frame.size.height = (parentFrame?.size.height)!
-        //self.view.frame.size.width = (parentFrame?.size.width)!
+        self.containerVC?.view.frame.size.width = self.parentFrame!.size.width
+        self.containerVC?.view.frame.size.height = self.parentFrame!.size.height
     }
     
     // MARK: - Get Genres from API's -
     private func getGenres() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(parentController!, detailLbl: "")
@@ -68,10 +68,14 @@ class SegmentViewController: UIViewController {
         }
         
         self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .red, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? 320)
+        self.containerVC?.view.frame.size.width = self.parentFrame!.size.width
+        self.containerVC?.view.frame.size.height = self.parentFrame!.size.height
         self.containerVC?.delegate = self
     }
 }
 
+
+// MARK: - ContainerVCDelegate -
 extension SegmentViewController: ContainerVCDelegate {
     func containerViewItem(_ index: NSInteger, currentController: UIViewController) {
         if let grid = currentController as? GridViewController {

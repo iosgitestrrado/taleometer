@@ -50,30 +50,50 @@ class AuthClient {
         }
     }
     
-    static func logout(_ message: String = "") {
-        if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController, !(cont.viewControllers.last is LoginViewController) {
-            let domain = Bundle.main.bundleIdentifier!
-            UserDefaults.standard.removePersistentDomain(forName: domain)
-            UserDefaults.standard.synchronize()
-            AudioPlayManager.shared.isMiniPlayerActive = false
-            AudioPlayManager.shared.isNonStop = false
-            
-            Login.setGusetData()
-            var contStacks = [UIViewController]()
-            if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
-                contStacks.append(myobject)
-            }
-            if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
-                contStacks.append(myobject)
-            }
-            cont.viewControllers = contStacks
-            let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
-            cont.pushViewController(myobject, animated: true)
-            if !message.isBlank {
-                Toast.show(message)
-            }
-            APIClient.shared.getJson("", feed: .Logout) { result in
+    static func logout(_ message: String = "", moveToLogin: Bool = true) {
+        DispatchQueue.main.async {
+            if moveToLogin, let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController, !(cont.viewControllers.last is LoginViewController) {
                 
+                let domain = Bundle.main.bundleIdentifier!
+                UserDefaults.standard.removePersistentDomain(forName: domain)
+                UserDefaults.standard.synchronize()
+                AudioPlayManager.shared.isMiniPlayerActive = false
+                AudioPlayManager.shared.isNonStop = false
+                Login.setGusetData()
+                
+//                var contStacks = [UIViewController]()
+//                if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
+//                    contStacks.append(myobject)
+//                }
+//                if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
+//                    contStacks.append(myobject)
+//                }
+//                cont.viewControllers = contStacks
+                let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+                cont.pushViewController(myobject, animated: true)
+                if !message.isBlank {
+                    Toast.show(message)
+                }
+                DispatchQueue.global(qos: .background).async {
+                    APIClient.shared.getJson("", feed: .Logout) { result in
+                    }
+                }
+            } else {
+                let domain = Bundle.main.bundleIdentifier!
+                UserDefaults.standard.removePersistentDomain(forName: domain)
+                UserDefaults.standard.synchronize()
+                AudioPlayManager.shared.isMiniPlayerActive = false
+                AudioPlayManager.shared.isNonStop = false
+                
+                Login.setGusetData()
+                
+                if !message.isBlank {
+                    Toast.show(message)
+                }
+                DispatchQueue.global(qos: .background).async {
+                    APIClient.shared.getJson("", feed: .Logout) { result in
+                    }
+                }
             }
         }
     }
@@ -90,9 +110,9 @@ class AuthClient {
         }
     }
 
-    static func updateProfile(_ profileReq: ProfileRequest, completion: @escaping(ProfileData?) -> Void) {
+    static func updateProfile(_ profileReq: ProfileRequest, showSuccMessage: Bool = false, completion: @escaping(ProfileData?) -> Void) {
         APIClient.shared.postJson(parameters: profileReq, feed: .UpdateProfileDetails) { result in
-            ResponseAPI.getResponseJson(result) { responseJson in
+            ResponseAPI.getResponseJson(result, showSuccMessage: showSuccMessage) { responseJson in
                 var verification: ProfileData?
                 if let response = responseJson {
                     verification = ProfileData(response)
@@ -104,6 +124,26 @@ class AuthClient {
     
     static func updateProfilePicture(_ imageData: Data, completion: @escaping(ProfileData?) -> Void) {
         self.sendFile("\(Constants.baseURL)/api/update-profile/image", fileName: "profilePic.jpeg", data: imageData) { result in
+            ResponseAPI.getResponseJson(result) { responseJson in
+                var verification: ProfileData?
+                if let response = responseJson {
+                    verification = ProfileData(response)
+                }
+                completion(verification)
+            }
+        }
+    }
+    
+    static func updateNotificationToken(_ req: NotificationRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .UpdateDeviceToke) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
+            }
+        }
+    }
+    
+    static func removeProfileImage(_ completion: @escaping(ProfileData?) -> Void) {
+        APIClient.shared.deleteJson(EmptyRequest(), query: "", feed: .RemoveProfileImage) { result in
             ResponseAPI.getResponseJson(result) { responseJson in
                 var verification: ProfileData?
                 if let response = responseJson {
@@ -140,7 +180,6 @@ class AuthClient {
                 } else {
                     do {
                         let mutableResponse = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
-                        print(mutableResponse)
                         //completionHandler(mutableResponse as? NSDictionary, (response as! HTTPURLResponse).allHeaderFields as NSDictionary, error)
                     } catch _ {
                         //completionHandler([:], [:], error)

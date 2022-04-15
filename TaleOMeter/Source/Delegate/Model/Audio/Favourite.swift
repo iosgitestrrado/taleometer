@@ -14,7 +14,7 @@ struct Favourite {
     var User_id = Int()
     var Audio_story_id = Int()
     var Created_at = String()
-    var Ypdated_at = String()
+    var Updated_at = String()
     var Audio_story = Audio()
     
     init() { }
@@ -23,7 +23,7 @@ struct Favourite {
         User_id = json["user_id"].intValue
         Audio_story_id = json["audio_story_id"].intValue
         Created_at = json["created_at"].stringValue
-        Ypdated_at = json["updated_at"].stringValue
+        Updated_at = json["updated_at"].stringValue
         
         if let audio_story = json["audio_story"].dictionaryObject {
             Audio_story = Audio(JSON(audio_story))

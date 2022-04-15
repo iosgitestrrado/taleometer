@@ -5,6 +5,8 @@
 //  Created by Durgesh on 11/03/22.
 //
 
+import Foundation
+
 class FavouriteAudioClient {
     static func get(_ pageNumber: String, completion: @escaping([Audio]?) -> Void) {
         APIClient.shared.get(pageNumber == "all" ? "?page=\(pageNumber)" : "?page=\(pageNumber)&limit=10", feed: .FavoriteAudio) { result in
@@ -12,12 +14,10 @@ class FavouriteAudioClient {
                 var favs = [Audio]()
                 if let fav = response {
                     fav.forEach({ (object) in
-                        let favor = Favourite(object)
+                        var favor = Favourite(object)
+                        favor.Audio_story.Is_favorite = true
                         favs.append(favor.Audio_story)
                     })
-                }
-                if pageNumber == "all" {
-                    favouriteAudio = favs
                 }
                 completion(favs)
             }
@@ -27,9 +27,7 @@ class FavouriteAudioClient {
     static func add(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(parameters: favRequest, feed: .AddFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
-                self.get("all") { response in
                     completion(status)
-                }
             }
         }
     }
@@ -37,9 +35,7 @@ class FavouriteAudioClient {
     static func remove(_ favRequest: FavouriteRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.deleteJson(favRequest, query: "", feed: .RemoveFavoriteAudio) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
-                self.get("all") { response in
                     completion(status)
-                }
             }
         }
     }

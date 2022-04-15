@@ -41,17 +41,25 @@ class NonStopViewController: UIViewController {
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
     private var isPlaying = false
-    private var player = AVPlayer()
     private var isPlayingTap = false
-    private var audio = Audio()
+    private var currentAudio = Audio()
     private var audioURL = URL(string: "")
+    private var myAudioList = [Audio]()
+    private var currentAudioIndex = -1
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view
+        AudioPlayManager.shared.audioHistoryId = -1
         getAudioList()
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
+        
+        // Pan gesture for scrubbing support.
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+//        panGestureRecognizer.cancelsTouchesInView = false
+//        visualizationWave.addGestureRecognizer(panGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,81 +69,95 @@ class NonStopViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setAudioData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         audioTimer.invalidate()
+//        visualizationWave.pause()
+    }
+    
+    // MARK: - When audio playing is finished -
+    @objc private func itemDidFinishedPlaying(_ notification: Notification) {
+        if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
+            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+        }
     }
     
     // Get non stop audio
     private func getAudioList() {
         if existingAudio {
             setupExistingAudio(isPlayingExisting)
-            if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
-                audio = audList[AudioPlayManager.shared.currentAudio]
+            if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
+                currentAudio = audList[AudioPlayManager.shared.currentIndex]
                 setAudioData()
             }
         } else {
             if !Reachability.isConnectedToNetwork() {
-                Toast.show()
+                Core.noInternet(self)
                 return
             }
-            Core.ShowProgress(self, detailLbl: "Getting Audio...")
-            AudioClient.get(AudioRequest(page: 1, limit: 10), isNonStop: true, completion: { [self] result in
+            Core.ShowProgress(self, detailLbl: "")
+            AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 10)) { [self] result in
                 if let response = result {
-                    var currentIndex = -1
-                    for idx in 0..<response.count {
-                        if let audioUrl = URL(string: response[idx].File) {
-                            let fileName = NSString(string: audioUrl.lastPathComponent)
-                            if supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                                currentIndex = idx
-                                break
-                            }
-                        }
-                    }
-                    
-                    if currentIndex >= 0 {
-                        AudioPlayManager.shared.audioList = response
-                        AudioPlayManager.shared.currentAudio = currentIndex
-                        AudioPlayManager.shared.nextAudio = response.count - 1 > currentIndex ? currentIndex + 1 : 0
-                        AudioPlayManager.shared.prevAudio = currentIndex > 0 ? currentIndex - 1 : response.count
-                        if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentAudio >= 0 {
-                            audio = audList[AudioPlayManager.shared.currentAudio]
-                            // Configure audio data
-                            Core.HideProgress(self)
-                            setupAudioDataPlay(false)
-                            return
-                        }
-                    }
-                    Toast.show("Audio not found!")
+                    AudioPlayManager.shared.audioList = response
+                    myAudioList = response
+                    currentAudioIndex = 0
+                    AudioPlayManager.shared.setAudioIndex(0 ,isNext: false)
+                    currentAudio = response[AudioPlayManager.shared.currentIndex]
+                    setupAudioDataPlay(true)
+                } else {
+                    Core.HideProgress(self)
                 }
-                Core.HideProgress(self)
-            })
+            }
+//            AudioClient.get(AudioRequest(page: "all", limit: 10), isNonStop: true, completion: { [self] result in
+//                if let response = result {
+//                    AudioPlayManager.shared.audioList = response
+//                    myAudioList = response
+//                    currentAudioIndex = 0
+//                    AudioPlayManager.shared.setAudioIndex(0 ,isNext: false)
+//                    currentAudio = response[AudioPlayManager.shared.currentIndex]
+//                    setupAudioDataPlay(true)
+//                }
+//                Core.HideProgress(self)
+//            })
         }
     }
     
     // MARK: Set audio data only
     private func setAudioData() {
-        self.audioTitle.text = audio.Title
-        self.storyLabel.setTitle("Story: \(audio.Story.Name)", for: .normal)
-        self.plotLabel.setTitle("Plot: \(audio.Plot.Name)", for: .normal)
-        self.narrotionLabel.setTitle("Narration: \(audio.Narration.Name)", for: .normal)
-        self.favButton.isSelected = favouriteAudio.contains(where: { $0.Id == audio.Id })
+        self.audioTitle.text = currentAudio.Title
+        self.storyLabel.isHidden = currentAudio.IsLinkedAudio
+        self.plotLabel.isHidden = currentAudio.IsLinkedAudio
+        self.narrotionLabel.isHidden = currentAudio.IsLinkedAudio
+        self.storyLabel.setTitle("Story: \(currentAudio.Story.Name)", for: .normal)
+        self.plotLabel.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
+        self.narrotionLabel.setTitle("Narration: \(currentAudio.Narration.Name)", for: .normal)
+        self.favButton.isSelected = currentAudio.Is_favorite
     }
     
     // MARK: Set audio data and play
     private func setupAudioDataPlay(_ playNow: Bool) {
+        // Set audio data like image, title, story etc..
+        setAudioData()
+        
+        // Check if existing audio want to play
         if existingAudio {
+            // Setup existing audio
             setupExistingAudio(playNow)
         } else {
-            if let player = AudioPlayManager.shared.playerAV {
-                player.pause()
-            }
-            Core.ShowProgress(self, detailLbl: "Streaming Audio")
+            // Pause audio
+            AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: false)
+            
+            // Start progress
+            //Core.ShowProgress(self, detailLbl: "Streaming Audio")
+            
+            // Initialize audio play in audio player manager
             AudioPlayManager.shared.initPlayerManager(isNonStop: true) { result in
+                // Config audio in current view
                 self.configureAudio(playNow, result: result)
+                
+                // Hide progress
                 Core.HideProgress(self)
             }
         }
@@ -143,8 +165,7 @@ class NonStopViewController: UIViewController {
     
     // MARK: - Playing existing Audio
     private func setupExistingAudio(_ playNow: Bool) {
-        if let playerk = AudioPlayManager.shared.playerAV {
-            player = playerk
+        if let player = AudioPlayManager.shared.playerAV {
             
             // Reset visulization wave
             self.visualizationWave.reset()
@@ -169,6 +190,9 @@ class NonStopViewController: UIViewController {
                     chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
                 }
             }
+            if !playNow {
+                udpateTime()
+            }
             self.playPauseAudio(playNow)
         }
     }
@@ -178,10 +202,7 @@ class NonStopViewController: UIViewController {
         DispatchQueue.main.async { [self] in
             // Reset visulization wave
             self.visualizationWave.reset()
-            if let playerk = AudioPlayManager.shared.playerAV {
-                // Set player private variable
-                player = playerk
-                
+            if let player = AudioPlayManager.shared.playerAV {
                 // setup waveform count
                 waveFormcount = result.count
                 
@@ -196,24 +217,31 @@ class NonStopViewController: UIViewController {
                     
                     // Setup chrono meter befor playing video
                     if playNow {
+                        // Visulization chrono set to null
                         self.visualizationWave.playChronometer = nil
                     } else if self.visualizationWave.playChronometer == nil {
-                        visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
+                        // Set audio start end label
+                        self.udpateTime()
                     }
+                    // Set up visulation wave as per audio duration
+                    visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
+                    
+                    // Play or pause current audio
                     self.playPauseAudio(playNow)
                 }
             }
-            // Pan gesture for scrubbing support.
-            let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-            panGestureRecognizer.cancelsTouchesInView = false
-            visualizationWave.addGestureRecognizer(panGestureRecognizer)
         }
     }
     
     //MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
-        if let isPlay = notification.userInfo?["isPlaying"] as? Bool {
-            self.playPauseAudio(isPlay)
+        // Check audio is playing
+        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
+            // Play pause audio wave
+            self.playPauseWave()
+        } else if let isNext = notification.userInfo?["isNext"] as? Bool {
+            // Play next or previouse audio
+            nextPrevPlay(isNext ,isPlayNow: true)
         }
     }
     
@@ -233,21 +261,23 @@ class NonStopViewController: UIViewController {
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
         let authorView = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "AuthorViewController") as! AuthorViewController
+        authorView.delegate = self
+        authorView.currentAudio = currentAudio
         switch sender.tag {
         case 0:
             //Story
             authorView.isStroy = true
-            authorView.storyData = audio.Story
+            authorView.storyData = currentAudio.Story
             break
         case 1:
             //Plot
             authorView.isPlot = true
-            authorView.storyData = audio.Plot
+            authorView.storyData = currentAudio.Plot
             break
         default:
             //Narrotion
             authorView.isNarration = true
-            authorView.storyData = audio.Narration
+            authorView.storyData = currentAudio.Narration
             break
         }
         self.navigationController?.pushViewController(authorView, animated: true)
@@ -255,40 +285,33 @@ class NonStopViewController: UIViewController {
     
     // MARK: - Play(0) Next(1) Favourite(2)
     @IBAction func tapOnAudioController(_ sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            //Play
-            self.playPauseAudio(!player.isPlaying)
-            break
-        case 1:
-            //Next
-            if player.isPlaying {
-                playPauseAudio(false)
-                visualizationWave.stop()
-            }
-            self.nextPrevPlay(player.isPlaying)
-            break
-        default:
-            //Favourite
-            if sender.isSelected {
-                self.removeFromFav(audio.Id) { status in
-                    if let st = status, st {
-                        sender.isSelected = !sender.isSelected
-                    }
+        if let player = AudioPlayManager.shared.playerAV {
+            switch sender.tag {
+            case 0:
+                //Play
+                self.playPauseAudio(!player.isPlaying)
+                break
+            case 1:
+                //Next
+                self.nextPrevPlay(true, isPlayNow: player.isPlaying)
+                break
+            default:
+                //Favourite
+                if sender.isSelected {
+                    self.removeFromFav(currentAudio.Id) { status in }
+                } else {
+                    self.addToFav(currentAudio.Id) { status in }
                 }
-            } else {
-                self.addToFav(audio.Id) { status in
-                    if let st = status, st {
-                        sender.isSelected = !sender.isSelected
-                    }
-                }
+                break
             }
-            break
         }
     }
     
     // MARK: - Play next or previous audio
-    private func nextPrevPlay(_ isNext: Bool = true) {
+    private func nextPrevPlay(_ isNext: Bool = true, isPlayNow: Bool) {
+        // Current player pause and visualization wave stop
+//        visualizationWave.pause()
+        
         // Setup audio index
         AudioPlayManager.shared.setAudioIndex(isNext: isNext)
         
@@ -296,20 +319,57 @@ class NonStopViewController: UIViewController {
         self.existingAudio = false
         
         // Setup current audio variable
-        self.audio = AudioPlayManager.shared.audio
-        
+        self.currentAudio = AudioPlayManager.shared.currentAudio
+        Core.ShowProgress(self, detailLbl: "")
         // Configure audio data
-        setupAudioDataPlay(player.isPlaying)
-        
-        // Current player pause and visualization wave stop
-        if player.isPlaying {
-            playPauseAudio(false)
-            visualizationWave.stop()
+        setupAudioDataPlay(isPlayNow)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            if let player = AudioPlayManager.shared.playerAV {
+                isPlayingTap = player.isPlaying
+                if (isPlayingTap) {
+                    player.pause()
+                }
+            }
+        }
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            let xLocation = Float(touch.location(in: self.visualizationWave).x)
+            updateWaveWith(xLocation)
+            // do something with your currentPoint
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first, touch.view == self.visualizationWave {
+            let xLocation = Float(touch.location(in: self.visualizationWave).x)
+            updateWaveWith(xLocation)
+            if let player = AudioPlayManager.shared.playerAV {
+                if let totalAudioDuration = player.currentItem?.asset.duration {
+                    let percentageInSelf = Double(xLocation / Float(self.visualizationWave.bounds.width))
+                    let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+                    let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
+                    let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
+                    player.seek(to: scrubbedDutationMediaTime)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        self.udpateTime()
+                    }
+                }
+                if (isPlayingTap) {
+                    player.play()
+                }
+            }
+            // do something with your currentPoint
         }
     }
     
     // MARK: - When swipe wave handle here
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
+        if let player = AudioPlayManager.shared.playerAV {
         switch recognizer.state {
             case .began:
                 isPlayingTap = player.isPlaying
@@ -338,6 +398,7 @@ class NonStopViewController: UIViewController {
             default:
                 break
         }
+        }
     }
     
     // MARK: - Update wave as per swipe
@@ -353,28 +414,52 @@ class NonStopViewController: UIViewController {
         }
     }
     
+    private func playPauseWave() {
+        if let player = AudioPlayManager.shared.playerAV {
+            if !player.isPlaying {
+                if audioTimer.isValid {
+                    audioTimer.invalidate()
+                }
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+//                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
+//                    visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//                }
+            } else {
+                audioTimer.invalidate()
+//                visualizationWave.pause()
+            }
+            self.playButton.isSelected = !player.isPlaying
+        }
+    }
+    
     // MARK: - Handle audio play and pause
     private func playPauseAudio(_ playing: Bool) {
-        self.playButton.isSelected = playing
+        //if let player = AudioPlayManager.shared.playerAV {
+        AudioPlayManager.shared.playPauseAudioOnly(playing)
+        DispatchQueue.main.async {
+            self.playButton.isSelected = playing
+        }
+        
         isPlaying = playing
         if !playing {
-            player.pause()
             audioTimer.invalidate()
-            visualizationWave.pause()
+//            visualizationWave.pause()
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "pauseAudio"), object: nil)
         } else {
-            player.play()
-            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NonStopViewController.udpateTime), userInfo: nil, repeats: true)
+            audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NonStopViewController.udpateTime), userInfo: nil, repeats: true)
             RunLoop.main.add(self.audioTimer, forMode: .default)
             audioTimer.fire()
             //NotificationCenter.default.post(name: Notification.Name(rawValue: "playAudio"), object: nil)
-            visualizationWave.play(for: TimeInterval(totalTimeDuration))
+//            visualizationWave.play(for: TimeInterval(totalTimeDuration))
         }
+       // }
     }
     
     // MARK: - Set start and end time
     @objc func udpateTime() {
-        if let currentItem = player.currentItem {
+        if let player = AudioPlayManager.shared.playerAV, let currentItem = player.currentItem {
             // Get the current time in seconds
             let playhead = currentItem.currentTime().seconds
             let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
@@ -385,10 +470,14 @@ class NonStopViewController: UIViewController {
                 } else {
                     self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
                 }
+                if let chronometer = self.visualizationWave.playChronometer {
+                    chronometer.timerCurrentValue = TimeInterval(playhead)
+                    chronometer.timerDidUpdate?(TimeInterval(playhead))
+                }
             }
-            if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(self, verifyTitle: audio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextAudio].Image)
-            }
+//            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+//                PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+//            }
             AudioPlayManager.shared.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
             MPNowPlayingInfoCenter.default().nowPlayingInfo = AudioPlayManager.shared.nowPlayingInfo
         }
@@ -410,26 +499,43 @@ extension NonStopViewController {
     // Add to favourite
     private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
-        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { status in
-            Core.HideProgress(self)
-            completion(status)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    favButton.isSelected = !favButton.isSelected
+                    AudioPlayManager.shared.currentAudio.Is_favorite = true
+                    currentAudio.Is_favorite = true
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = true
+                    }
+                }
+                completion(status)
+            }
         }
+        
     }
     
     // Remove from favourite
     private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
-        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { status in
-            Core.HideProgress(self)
-            completion(status)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    favButton.isSelected = !favButton.isSelected
+                    AudioPlayManager.shared.currentAudio.Is_favorite = false
+                    currentAudio.Is_favorite = false
+                    if AudioPlayManager.shared.audioList != nil {
+                        AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
+                    }
+                }
+                completion(status)
+            }
         }
     }
 }
@@ -441,19 +547,62 @@ extension NonStopViewController: PromptViewDelegate {
         switch tag {
         case 0:
             //0 - Add to fav
-            self.addToFav(audio.Id) { status in }
+//            if self.favButton.isSelected {
+//                self.removeFromFav(currentAudio.Id) { status in }
+//            } else {
+//                self.addToFav(currentAudio.Id) { status in }
+//            }
             break
         case 1, 3:
-            //1 - Once more //3 - Close mini player
-            self.player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-            self.visualizationWave.stop()
-            self.player.pause()
-            self.existingAudio = true
-            self.setupAudioDataPlay(tag == 1)
+            //1 - Once more //3 - Close mini player //4 - Share audio
+            DispatchQueue.main.async { [self] in
+                currentAudio = AudioPlayManager.shared.currentAudio
+                favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
+                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                if let player = AudioPlayManager.shared.playerAV {
+                    player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+                    AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: tag != 1)
+                }
+                self.visualizationWave.stop()
+                self.existingAudio = true
+                if tag == 1 {
+                    AudioPlayManager.shared.audioHistoryId = -1
+                }
+                self.setupAudioDataPlay(tag == 1)
+            }
+            break
         default:
             //2 - play next song
-            nextPrevPlay()
+            DispatchQueue.main.async { [self] in
+                currentAudio = AudioPlayManager.shared.currentAudio
+                favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
+                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                nextPrevPlay(isPlayNow: true)
+            }
             break
+        }
+    }
+}
+
+// MARK: - AudioListViewDelegate -
+extension NonStopViewController: AudioListViewDelegate {
+    func changeIntoPlayingAudio(_ currentAudio: Audio) {
+        self.currentAudio = currentAudio
+        self.setAudioData()
+        if AudioPlayManager.shared.currentAudio.Id == currentAudio.Id, let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            self.existingAudio = true
+            self.setupExistingAudio(true)
+        } else if AudioPlayManager.shared.currentAudio.Id != currentAudio.Id {
+            AudioPlayManager.shared.audioList = myAudioList
+            AudioPlayManager.shared.setAudioIndex(currentAudioIndex, isNext: false)
+            if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
+                self.existingAudio = false
+                self.currentAudio = audList[AudioPlayManager.shared.currentIndex]
+                // Configure audio data
+                setupAudioDataPlay(false)
+            } else {
+                Toast.show("Selected Audio not found!")
+            }
         }
     }
 }

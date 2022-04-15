@@ -94,7 +94,7 @@ struct ResponseAPI {
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
-                    AuthClient.logout(messageis)
+                    AuthClient.logout("Logged out successfully")
                     completion(nil)
                 } else {
                     if showAlert {
@@ -127,7 +127,7 @@ struct ResponseAPI {
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
-                    AuthClient.logout(messageis)
+                    AuthClient.logout("Logged out successfully")
                     completion(nil)
                 } else {
                     if showAlert {
@@ -160,7 +160,7 @@ struct ResponseAPI {
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
-                    AuthClient.logout(messageis)
+                    AuthClient.logout("Logged out successfully")
                     completion(false)
                 } else {
                     if showAlert {
@@ -197,7 +197,7 @@ struct ResponseAPI {
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
-                    AuthClient.logout(messageis)
+                    AuthClient.logout("Logged out successfully")
                     completion(nil, false, "", false)
                 } else {
                     if showAlert {

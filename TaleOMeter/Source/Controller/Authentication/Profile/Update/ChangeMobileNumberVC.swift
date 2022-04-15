@@ -48,18 +48,25 @@ class ChangeMobileNumberVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false, titleInLeft: true, backImage: true, backImageColor: .red)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mobileTextField.setError()
+        }
     }
     
     @IBAction func tapOnCountry(_ sender: Any) {
         let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
         myobject.delegate = self
-        self.navigationController?.present(myobject, animated: true, completion: nil)
+        self.navigationController?.pushViewController(myobject, animated: true)
     }
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.mobileTextField.text!.isBlank {
@@ -76,7 +83,7 @@ class ChangeMobileNumberVC: UIViewController {
     
     private func sendOpt() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
@@ -144,9 +151,14 @@ class ChangeMobileNumberVC: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "verification", let veriVC = segue.destination as? VerificationProfileVC {
             veriVC.profileDelegate = self.profileDelegate
-            if let mobile = self.mobileTextField.text, let countryCode = self.countryModel.countryCode {
+            if let mobile = self.mobileTextField.text {
                 veriVC.mobileNumber = mobile
+            }
+            if let countryCode = self.countryModel.countryCode {
                 veriVC.countryCode = countryCode
+            }
+            if let isdCode = self.countryModel.extensionCode {
+                veriVC.iSDCode = Int(isdCode.replacingOccurrences(of: "+", with: "")) ?? 91
             }
         }
     }

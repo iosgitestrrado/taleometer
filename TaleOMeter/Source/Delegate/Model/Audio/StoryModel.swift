@@ -10,7 +10,8 @@ import SwiftyJSON
 struct StoryModel {
     var Id = Int()
     var Name = String()
-    var Image = UIImage()
+//    var Image = UIImage()
+    var ImageUrl = String()
     var Created_at = String()
     var Updated_at = String()
     var Deleted_at = String()
@@ -19,7 +20,8 @@ struct StoryModel {
     init(_ json: JSON) {
         Id = json["id"].intValue
         Name = json["name"].stringValue
-        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
@@ -28,18 +30,23 @@ struct StoryModel {
 
 struct StoryRequest: Codable {
     var story_id = Int()
+    var shuffle = Int()
+    var page = String()
+    var limit = Int()
 }
 
 struct PlotRequest: Codable {
     var plot_id = Int()
+    var shuffle = Int()
     var page = String()
-    var limit = String()
+    var limit = Int()
 }
 
 struct NarrationRequest: Codable {
     var narration_id = Int()
+    var shuffle = Int()
     var page = String()
-    var limit = String()
+    var limit = Int()
 }
 /* {
  "id": 8,

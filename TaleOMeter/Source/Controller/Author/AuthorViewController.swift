@@ -18,9 +18,12 @@ class AuthorViewController: UIViewController {
     @IBOutlet weak var storiesLabel: UILabel!
     @IBOutlet weak var lengthLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
+    // Making this a weak variable, so that it won't create a strong reference cycle
+    weak var delegate: AudioListViewDelegate? = nil
     
     // MARK: - Public Property -
     var storyData = StoryModel()
+    var currentAudio = Audio()
     var isStroy = false
     var isPlot = false
     var isNarration = false
@@ -31,11 +34,14 @@ class AuthorViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         //bannerImage.image = storyData.Image
-        profileImage.image = storyData.Image
-        favButton.isSelected = favouriteAudio.contains(where: { $0.Id == storyData.Id })
+        profileImage.sd_setImage(with: URL(string: storyData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+        favButton.isHidden = true
         titleLabel.text = storyData.Name
         storiesLabel.text = "0\nStories"
         lengthLabel.text = "0\nLength"
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: remoteCommandName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playButtonSelected(_:)), name: Notification.Name(rawValue: "mainScreenPlay"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,20 +64,34 @@ class AuthorViewController: UIViewController {
         }
     }
     
-    @IBAction func tapOnShuffle(_ sender: Any) {
+    @IBAction func tapOnShuffle(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "shuffleAudio"), object: nil)
     }
     
     @IBAction func tapOnPlay(_ sender: UIButton) {
-        //sender.isSelected = !sender.isSelected
+        sender.isSelected = !sender.isSelected
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "playStoryAudio"), object: nil, userInfo: ["PlayNow" : sender.isSelected])
+    }
+    
+    @objc private func playButtonSelected(_ notification: Notification) {
+        if let IsSelected = notification.userInfo?["IsSelected"] as? Bool {
+            self.playButton.isSelected = IsSelected
+        }
+        if let totalStories = notification.userInfo?["TotalStories"] as? Int {
+            storiesLabel.text = "\(totalStories)\nStories"
+        }
     }
     
     // MARK: - Play Pause current audio -
     @objc private func playPauseAudio(_ notification: Notification) {
         if (notification.userInfo?["isPlaying"] as? Bool) != nil {
-            self.playButton.isSelected = true
-        } else {
-            self.playButton.isSelected = true
+            if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+                self.playButton.isSelected = true
+                return
+            }
         }
+        self.playButton.isSelected = false
     }
     
     // MARK: - Navigation
@@ -86,6 +106,8 @@ class AuthorViewController: UIViewController {
             segVC.isStroy = self.isStroy
             segVC.isPlot = self.isPlot
             segVC.isNarration = self.isNarration
+            segVC.delegate = self.delegate
+            segVC.currentAudio = self.currentAudio
         }
     }
 }

@@ -8,14 +8,10 @@
 import Foundation
 import UIKit
 
-//Default color: 25253C 37,37,60
-
 let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")
-
 let supportedAudioExtenstion = ["mp3", "mp4", "m4a", "wav", "aac", "adts", "ac3", "aif", "aiff", "aifc", "caf", "snd", "au", "sd2"]
 let defaultImage = UIImage(named: "logo")!
 let isOnlyTrivia = false
-var favouriteAudio = [Audio]()
 
 // MARK: - Side menubar properties -
 let menuIconImage: UIImage = {
@@ -44,7 +40,6 @@ let menuIconImage: UIImage = {
         ctx.strokePath()
     }
 }()
-
 
 func isLightTheme() -> Bool {
     if #available(iOS 13.0, *) {

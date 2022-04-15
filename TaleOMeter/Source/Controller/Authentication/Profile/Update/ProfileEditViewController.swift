@@ -22,7 +22,7 @@ class ProfileEditViewController: UIViewController {
     weak var profileDelegate: ProfileEditDelegate? = nil
     
     // MARK: - Public Property -
-    var titleString = "Change Name"
+    var titleString = "Change Display Name"
     var fieldValue = ""
     
     // MARK: - Private Property -
@@ -32,16 +32,23 @@ class ProfileEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        self.hideKeyboard()
         if let pfData = Login.getProfileData() {
             profileData = pfData
         }
         self.textField.text = fieldValue
-        if titleString == "Change Name" {
-            self.titleLabelL.text = "Enter your name"
-            self.textField.placeholder = "Enter your name"
+        
+        if titleString == "Change Display Name" {
+            self.titleLabelL.text = "Enter Your Display Name"
+            self.textField.placeholder = "Enter Your Display Name"
             if let pfData = profileData {
                 self.textField.text = pfData.Fname
+            }
+        } else if titleString == "Change Name" {
+            self.titleLabelL.text = "Enter Your Name"
+            self.textField.placeholder = "Enter Your Name"
+            if let pfData = profileData {
+                self.textField.text = pfData.User_code
             }
         } else if let pfData = profileData {
             self.textField.text = pfData.Email
@@ -51,24 +58,29 @@ class ProfileEditViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = titleString
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false, titleInLeft: true, backImage: true, backImageColor: .red)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.textField.setError()
+        }
     }
         
     private func updateProfileData() {
+        self.view.endEditing(true)
         if let prof = profileData {
             if !Reachability.isConnectedToNetwork() {
-                Toast.show()
+                Core.noInternet(self)
                 return
             }
             Core.ShowProgress(self, detailLbl: "Updating Profile")
-            AuthClient.updateProfile(ProfileRequest(name: prof.User_code, display_name: titleString == "Change Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Name" ? prof.Email : self.textField.text!)) { [self] result in
+            
+            AuthClient.updateProfile(ProfileRequest(name: titleString == "Change Name" ? self.textField.text! : prof.User_code, display_name: titleString == "Change Display Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Email ID" ? self.textField.text! : prof.Email)) { [self] result in
                 if let response = result {
-                    Login.storeProfileData(response)
-                    if titleString == "Change Name" {
-                        PromptVManager.present(self, verifyMessage: "Your name is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
-                    } else {
-                        PromptVManager.present(self, verifyMessage: "Your Email ID is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
-                    }
+                    Login.storeProfileData(response)//Change Name
+                    PromptVManager.present(self, verifyMessage: titleString == "Change Display Name" ? "Your display name is successfully changed" : (titleString == "Change Name" ? "Your name is successfully changed" : "Your email id is successfully changed"), isUserStory: true)
                 }
                 Core.HideProgress(self)
             }
@@ -80,15 +92,14 @@ class ProfileEditViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
-        if titleString == "Change Name" {
-            if textField.text!.isBlank {
+        if titleString == "Change Display Name" || titleString == "Change Name" {
+            if textField.text!.isBlank && titleString == "Change Display Name" {
                 Validator.showRequiredError(textField)
                 return
             }
-            
             self.updateProfileData()
         } else {
             if textField.text!.isBlank {
@@ -127,12 +138,27 @@ extension ProfileEditViewController: UITextFieldDelegate {
         textField.setError()
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if titleString == "Change Name" {
+            do {
+               let regex = try NSRegularExpression(pattern: ".*[^A-Za-z ].*", options: [])
+               if regex.firstMatch(in: string, options: [], range: NSMakeRange(0, string.count)) != nil {
+                   return false
+               }
+           }
+           catch {
+               print("ERROR")
+           }
+        }
+       return true
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.text!.isBlank {
+        if textField.text!.isBlank && titleString == "Change Display Name" {
             Validator.showRequiredError(textField)
             return
         }
-        if titleString != "Change Name" && !textField.text!.isEmail {
+        if titleString == "Change Email ID" && !textField.text!.isEmail {
             Validator.showError(textField, message: "Invalid email")
             return
         }

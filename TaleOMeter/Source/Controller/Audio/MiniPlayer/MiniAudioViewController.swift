@@ -35,7 +35,7 @@ class MiniAudioViewController: UIViewController {
                 let total = Int(secondDuration * Double(location.x / progressBar.frame.size.width))
                 let targetTime : CMTime = CMTimeMake(value: Int64(total), timescale: 1)
                 player.seek(to: targetTime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
-                AudioPlayManager.shared.udpateMiniPlayerTime()
+                AudioPlayManager.shared.updateMiniPlayerTime()
             }
         }
     }

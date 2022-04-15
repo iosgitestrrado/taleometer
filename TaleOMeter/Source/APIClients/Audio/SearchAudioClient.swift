@@ -8,11 +8,14 @@
 class SearchAudioClient {
     static func get(_ req: SearchAudioRequest, completion: @escaping([Audio]?) -> Void) {
         APIClient.shared.post(parameters: req, feed: .SearchAudio) { result in
-            ResponseAPI.getResponseArray(result) { response in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
                 var searches = [Audio]()
                 if let seas = response {
                     seas.forEach({ (object) in
-                        searches.append(Audio(object))
+                        let aud = Audio(object)
+                        if aud.Is_active {
+                            searches.append(aud)
+                        }
                     })
                 }
                 completion(searches)
@@ -20,13 +23,13 @@ class SearchAudioClient {
         }
     }
     
-    static func getRecent(_ pageNumber: String, completion: @escaping([Audio]?) -> Void) {
-        APIClient.shared.post("?page=\(pageNumber)&limit=10" ,parameters: EmptyRequest(), feed: .RecentSearchAudio) { result in
-            ResponseAPI.getResponseArray(result) { response in
-                var searches = [Audio]()
+    static func getRecent(_ pageNumber: String, limit: Int, completion: @escaping([SearchAudio]?) -> Void) {
+        APIClient.shared.get("?page=\(pageNumber)&limit=\(limit)", feed: .RecentSearchAudio) { result in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
+                var searches = [SearchAudio]()
                 if let seas = response {
                     seas.forEach({ (object) in
-                        searches.append(Audio(object))
+                        searches.append(SearchAudio(object))
                     })
                 }
                 completion(searches)

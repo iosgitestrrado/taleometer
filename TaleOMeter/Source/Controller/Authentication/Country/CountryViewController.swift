@@ -23,6 +23,7 @@ class CountryViewController: UIViewController {
     // MARK: - Private Properties -
     private var list: [Country] = [Country]()
     private var dupList: [Country] = [Country]()
+    private var viewOriHeight: CGFloat = 0
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -31,37 +32,38 @@ class CountryViewController: UIViewController {
         self.navigationItem.title = "Select Country"
         self.hideKeyboard()
         configuration()
+        self.searchBar.searchTextField.textColor = .white
+        viewOriHeight = self.view.frame.size.height
+        self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.view.frame.size.height -= keyboardHeight
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [self] in
+                self.view.frame.size.height = viewOriHeight - keyboardHeight
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
     }
     
     @objc private func keyboardWillHideNotification (notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-                self.view.frame.size.height += keyboardHeight
+       // if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  {
+            //let keyboardRectangle = keyboardFrame.cgRectValue
+            //let keyboardHeight = keyboardRectangle.height
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: { [self] in
+                self.view.frame.size.height = viewOriHeight
                 self.view.layoutIfNeeded()
             }, completion: nil)
-        }
+        //}
     }
     
     private func configuration() {
@@ -96,13 +98,20 @@ class CountryViewController: UIViewController {
 // MARK: - UITableViewDelegate - UITableViewDataSource -
 extension CountryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dupList.count
+        return dupList.count > 0 ? dupList.count : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if self.dupList.count <= 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
+            cell.titleLabel.text = "No result found!"
+            return cell
+        }
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
         if let txtLable = cell.textLabel {
             txtLable.text = "\(dupList[indexPath.row].flag!) \(dupList[indexPath.row].extensionCode!) - \(dupList[indexPath.row].name!)"
+            txtLable.textColor = .white
         }
         cell.selectionStyle = .none
         return cell
@@ -110,7 +119,8 @@ extension CountryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.selectedCountryCode(country: dupList[indexPath.row])
-        dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
+//        dismiss(animated: true)
     }
 }
 
@@ -122,6 +132,10 @@ extension CountryViewController : UISearchBarDelegate {
         
         self.dupList = self.list
         self.tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

@@ -37,14 +37,18 @@ class UserStoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         setStoryData()
         self.hideKeyboard()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
        // Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
         
     // MARK: - Add total cells in property
@@ -66,7 +70,7 @@ class UserStoryViewController: UIViewController {
         
         var mySelfStr = "MySelf"
         var someoneStr = "Someone Else"
-        if self.title == "Tamil" {
+        if self.title != "English" {
             mySelfStr = "நானே"
             someoneStr = "வேறு யாரோ"
         }
@@ -123,7 +127,7 @@ class UserStoryViewController: UIViewController {
                     return
                 }
             }
-            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", image: UIImage(named: "thank")!, ansImage: nil, isUserStory: true)
+            PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Contribution", verifyImage: UIImage(named: "thank")!, isUserStory: true)
             //print(storyDataList)
             break
         }
@@ -167,7 +171,7 @@ extension UserStoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellData.cellIdentifier, for: indexPath) as? UserStoryCell else {
             return UITableViewCell()
         }
-        cell.configuration(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
+        cell.configuration1(self.title ?? "", cellData: cellData, tamilTermsString: tamilTermsString, section: indexPath.section, row: indexPath.row, target: self, selectors: [#selector(tapOnButton1(_:)), #selector(tapOnButton2(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:))], optionButton1: &optionButton1, optionButton2: &optionButton2)
         if let textField = cell.textField {
             storyDataList[indexPath.section].textField = textField
         }
@@ -195,7 +199,7 @@ extension UserStoryViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.setError()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             let indexPath = IndexPath(row: 0, section: textField.tag)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
@@ -228,7 +232,7 @@ extension UserStoryViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.setError()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [self] in
             let indexPath = IndexPath(row: 0, section: textView.tag)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }

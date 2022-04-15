@@ -12,7 +12,8 @@ struct TriviaCategory {
     var Category_id = Int()
     var Category_name = String()
     var Post_count = Int()
-    var Category_image = UIImage()
+//    var Category_image = UIImage()
+    var Category_image_url = String()
 
     init() { }
     init(_ json: JSON) {
@@ -21,11 +22,10 @@ struct TriviaCategory {
         Category_name = json["category_name"].stringValue
         Post_count = json["post_count"].intValue
         
-        var imageURL = ""
         if let urlString = json["category_image"].string {
-            imageURL = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+            Category_image_url = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
         }
-        Core.setImage(imageURL, image: &Category_image)
+        //Core.setImage(imageURL, image: &Category_image)
     }
 }
 

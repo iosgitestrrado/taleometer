@@ -30,16 +30,29 @@ class StorySegmentViewController: UIViewController {
     
     // MARK: - Add views into container -
     private func addContainerViews() {
-        var storyView = Core.getController(Constants.Storyboard.other, storyboardId: "UserStoryViewController") as! UserStoryViewController
+        var storyView = Core.getController(Constants.Storyboard.other, storyboardId: "StoryViewController") as! StoryViewController
         storyView.title = "English"
+        storyView.parentController = self
         //gridView.parentController = self.parentController
         viewsArray.append(storyView)
         
-        storyView = Core.getController(Constants.Storyboard.other, storyboardId: "UserStoryViewController") as! UserStoryViewController
+        storyView = Core.getController(Constants.Storyboard.other, storyboardId: "StoryViewController") as! StoryViewController
+        storyView.parentController = self
+//        storyView = Core.getController(Constants.Storyboard.other, storyboardId: "UserStoryViewController") as! UserStoryViewController
         //gridView.parentController = self.parentController
-        storyView.title = "Tamil"
+        storyView.title = "தமிழ்"
         viewsArray.append(storyView)
         
         self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .red, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? UIScreen.main.bounds.size.width)
+        self.containerVC?.delegate = self
+    }
+}
+
+// MARK: - ContainerVCDelegate -
+extension StorySegmentViewController: ContainerVCDelegate {
+    func containerViewItem(_ index: NSInteger, currentController: UIViewController) {
+//        if let grid = currentController as? StoryViewController {
+//            grid.getUserStory()
+//        }
     }
 }

@@ -41,14 +41,17 @@ class TRPostViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
         self.getTriviaPosts()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     // MARK: - Side Menu button action -
@@ -59,7 +62,7 @@ class TRPostViewController: UIViewController {
     // MARK: Tap on submit Button
     @objc private func tapOnSubmit(_ sender: UIButton) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if postArray[sender.tag].Value.isBlank, let textFlield = postArray[sender.tag].TextField {
@@ -116,7 +119,7 @@ extension TRPostViewController {
     // MARK: - Get trivia posts
     private func getTriviaPosts() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -156,7 +159,7 @@ extension TRPostViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? PostCellView else { return UITableViewCell() }
         let cellData = postArray[indexPath.row]
-        cell.configureCell(cellData.Question, value: cellData.Value, coverImage: cellData.Question_media, videoUrl: cellData.QuestionVideoURL, row: indexPath.row, target: self, selectors: [#selector(tapOnSubmit(_:)), #selector(tapOnVideo(_:))])
+        cell.configureCell(cellData.Question, value: cellData.Value, coverImage: defaultImage, videoUrl: cellData.QuestionVideoURL, row: indexPath.row, target: self, selectors: [#selector(tapOnSubmit(_:)), #selector(tapOnVideo(_:))])
         if let textField = cell.answerText {
             postArray[indexPath.row].TextField = textField
         }

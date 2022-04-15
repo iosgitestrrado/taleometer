@@ -25,16 +25,20 @@ class AudioPlayManager: NSObject {
     var playerAV: AVPlayer?
     var isMiniPlayerActive = false
     var isNonStop = false
+    var isAudioPlaying = false
     var isFavourite = false
+    var isFromFavourite = false
+    var isHistory = false
     var waveFormcount = 0
     var audioMetering = [Float]()
     var nowPlayingInfo = [String: Any]()
-    var currentAudio = -1
-    var nextAudio = -1
-    var prevAudio = -1
+    var currentIndex = -1
+    var nextIndex = -1
+    var prevIndex = -1
     var audioList: [Audio]?
     var audioURL = URL(string: "")
-    var audio = Audio()
+    var currentAudio = Audio()
+    var audioHistoryId = -1
 
     // MARK: - Private Properties -
     private var audioTimer = Timer()
@@ -43,7 +47,7 @@ class AudioPlayManager: NSObject {
     private var miniVController = MiniAudioViewController()
 
     // MARK: - Configure audio as per pass url -
-    public func initPlayerManager(_ isFavourite: Bool = false, isNonStop: Bool = false, getMeters: Bool = true, completionHandler: @escaping(_ success: [Float]) -> ()) {
+    public func initPlayerManager(_ isFavourite: Bool = false, isNonStop: Bool = false, getMeters: Bool = true, isHistory: Bool = false, completionHandler: @escaping(_ success: [Float]) -> ()) {
         
         guard let audList = audioList else {
             Toast.show("No audio found!")
@@ -51,26 +55,34 @@ class AudioPlayManager: NSObject {
         }
         self.isNonStop = isNonStop
         self.isFavourite = isFavourite
-        audio = audList[currentAudio]
+        self.isHistory = isHistory
+        currentAudio = audList[currentIndex]
+        audioHistoryId = -1
         
-        guard let url = URL(string: audio.File) else { return }
-        stramingAudio(url, isFavourite: isFavourite, getMeters: getMeters) { result in
+        guard let url = URL(string: currentAudio.File) else { return }
+        stramingAudio(url, getMeters: getMeters) { result in
             completionHandler(result)
         }
     }
     
     // MARK: - Streaming audio file -
-    private func stramingAudio(_ audioUrl: URL, isFavourite: Bool, getMeters: Bool, completionHandler: @escaping(_ success: [Float]) -> ()) {
+    private func stramingAudio(_ audioUrl: URL, getMeters: Bool, completionHandler: @escaping(_ success: [Float]) -> ()) {
         // then lets create your document folder url
         let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 
         // lets create your destination file url
-        let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
-
+        var destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
+       
+        // if audio file is not supported change to mp3
+        let fileName = NSString(string: destinationUrl.lastPathComponent)
+        if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+            destinationUrl = destinationUrl.deletingPathExtension().appendingPathExtension("mp3")
+        }
+        
         // to check if it exists before downloading it
         if FileManager.default.fileExists(atPath: destinationUrl.path) {
             audioURL = destinationUrl
-            configureAudio(isFavourite, getMeters: getMeters) { result in
+            configureAudio(getMeters) { result in
                 completionHandler(result)
             }
         } else {
@@ -81,17 +93,19 @@ class AudioPlayManager: NSObject {
                     // after downloading your file you need to move it to your destination url
                     try FileManager.default.moveItem(at: location, to: destinationUrl)
                     audioURL = destinationUrl
-                    configureAudio(isFavourite, getMeters: getMeters) { result in
+                    configureAudio(getMeters) { result in
                         completionHandler(result)
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
+                    Toast.show(error.localizedDescription)
+                    Core.HideProgress(currVController)
                 }
             }).resume()
         }
     }
     
-    private func configureAudio(_ isFavourite: Bool, getMeters: Bool, completionHandler: @escaping(_ success: [Float]) -> ()) {
+    private func configureAudio(_ getMeters: Bool, completionHandler: @escaping(_ success: [Float]) -> ()) {
         
         // Check URL exists
         guard let url = audioURL else {
@@ -135,7 +149,7 @@ class AudioPlayManager: NSObject {
         
         // Add handler for Play Command
         commandCenter.playCommand.addTarget { [unowned self] event in
-            if let playerAV = playerAV, !playerAV.isPlaying {
+            if let player = playerAV, !player.isPlaying {
                 self.playPauseAudio(true)
                 NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": false])
                 return .success
@@ -145,8 +159,9 @@ class AudioPlayManager: NSObject {
 
         // Add handler for Pause Command
         commandCenter.pauseCommand.addTarget { [unowned self] event in
-            if let playerAV = playerAV, playerAV.isPlaying {
-                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": false])
+            if let player = playerAV, player.isPlaying {
+                self.playPauseAudio(false)
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isPlaying": true])
                 return .success
             }
             return .commandFailed
@@ -179,123 +194,165 @@ class AudioPlayManager: NSObject {
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
 
-        if let audioList = audioList, currentAudio >= 0 {
-            let audio = audioList[currentAudio]
+        if let audioList = audioList, currentIndex >= 0 {
+            let audio = audioList[currentIndex]
             nowPlayingInfo[MPMediaItemPropertyTitle] = audio.Title
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = audio.Story.Name
             nowPlayingInfo[MPMediaItemPropertyArtist] = "Story"
+            
+            var audioImage = defaultImage
+            Core.setImage(audio.ImageUrl, image: &audioImage)
+            
             nowPlayingInfo[MPMediaItemPropertyArtwork] =
-            MPMediaItemArtwork(boundsSize: audio.Image.size) { size in
-                    return audio.Image
+            MPMediaItemArtwork(boundsSize: CGSize(width: 140.0, height: 140.0)) { size in
+                    return audioImage
             }
         }
         
-        if let playerAV = playerAV {
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playerAV.currentTime().seconds
-            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = Int((playerAV.currentItem?.asset.duration.seconds)!)
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playerAV.rate
+        if let player = playerAV {
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.currentTime().seconds
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = Int((player.currentItem?.asset.duration.seconds)!)
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
         }
         
         // Set the metadata
         nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
     }
     
-    // MARK: Play pause audio
-    func playPauseAudio(_ isPlay: Bool) {
-        guard let player = playerAV else { return }
-        if let miniPlayBtn = miniVController.playButton {
-            miniPlayBtn.isSelected = !isPlay
+    // MARK: Play pause audio with mini player update
+    func playPauseAudio(_ isPlay: Bool, addToHistory: Bool = true) {
+        DispatchQueue.main.async { [self] in
+            guard let player = playerAV else { return }
+            //Add update history
+            if addToHistory {
+                addUpdateAudioActionHistory(isPlay)
+            }
+            if let miniPlayBtn = miniVController.playButton {
+                miniPlayBtn.isSelected = !isPlay
+            }
+            isAudioPlaying = isPlay
+            if isPlay {
+                if !player.isPlaying {
+                    player.play()
+                }
+                
+                if audioTimer.isValid {
+                    self.audioTimer.invalidate()
+                }
+                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.updateMiniPlayerTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+            } else {
+                if player.isPlaying {
+                    player.pause()
+                }
+                if audioTimer.isValid {
+                    self.audioTimer.invalidate()
+                }
+                self.updateMiniPlayerTime()
+            }
+            if isHistory {
+                NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
+            }
         }
+    }
+    
+    // MARK: Play pause audio only
+    func playPauseAudioOnly(_ isPlay: Bool, addToHistory: Bool = true) {
+        guard let player = playerAV else { return }
+        if addToHistory {
+            addUpdateAudioActionHistory(isPlay)
+        }
+        isAudioPlaying = isPlay
         if isPlay {
-            if !player.isPlaying {
-                player.play()
-            }
-            
-            if audioTimer.isValid {
-                self.audioTimer.invalidate()
-            }
-            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(AudioPlayManager.udpateMiniPlayerTime), userInfo: nil, repeats: true)
-            RunLoop.main.add(self.audioTimer, forMode: .default)
-            audioTimer.fire()
+            player.play()
         } else {
-            if player.isPlaying {
-                player.pause()
-            }
-            if audioTimer.isValid {
-                self.audioTimer.invalidate()
-            }
+            player.pause()
         }
     }
     
     // MARK: - When audio completed call function -
     @objc private func itemDidFinishPlaying(notification: NSNotification) {
         //if let player = playerAV, player.isPlaying {
-        audioTimer.invalidate()
-        if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
-            // Get the current time in seconds
-            let duration = currentItem.duration.seconds
-            miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
-            miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
-            miniVController.progressBar.progress = 0.0
-            miniVController.progressBar.setNeedsDisplay()
-            if let player = playerAV {
-                miniVController.playButton.isSelected = !player.isPlaying
+        endAudioPlaying()
+        DispatchQueue.main.async { [self] in
+            audioTimer.invalidate()
+            if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
+                // Get the current time in seconds
+                let duration = currentItem.duration.seconds
+                miniVController.startTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: 0)
+                miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+                //miniVController.progressBar.progress = 0.0
+                miniVController.progressBar.setNeedsDisplay()
+                if let player = playerAV {
+                    miniVController.playButton.isSelected = !player.isPlaying
+                }
+                nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             }
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            if let player = playerAV {
+                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+            }
+            if isHistory {
+                playPauseAudioOnly(false)
+            }
+            NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
+            
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && isMiniPlayerActive {
+                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl, isFavourite: isFromFavourite)
+            }
         }
-        if let player = playerAV {
-            player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-        }
-        NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
     }
     
     // MARK: - Play next or previous audio
     private func nextPrevPlay(_ isNext: Bool = true) {
+        DispatchQueue.main.async { [self] in
         // Check current audio supported or not
-        var isSupported = true
-        if let audioUrl = URL(string: audioList![isNext ? nextAudio : prevAudio].File) {
-            let fileName = NSString(string: audioUrl.lastPathComponent)
-            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                Toast.show("Audio File \"\(fileName)\" is not supported!")
-                isSupported = false
-            }
-        }
+//        var isSupported = true
+//        if let audioUrl = URL(string: audioList![isNext ? nextIndex : prevIndex].File) {
+//            let fileName = NSString(string: audioUrl.lastPathComponent)
+//            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+//                Toast.show("Audio File \"\(fileName)\" is not supported!")
+//                isSupported = false
+//            }
+//        }
         
         // Set current auio index
-        let currentAudioNow = isNext ? nextAudio : prevAudio
+        let currentAudioNow = isNext ? nextIndex : prevIndex
         guard let audioList = AudioPlayManager.shared.audioList else {
             Toast.show("No next audio found!")
             return
         }
         
         //Set up next previous audio index
-        currentAudio = currentAudioNow
-        nextAudio = audioList.count - 1 > currentAudioNow ? currentAudioNow + 1 : 0
-        prevAudio = currentAudioNow > 0 ? currentAudioNow - 1 : audioList.count - 1
-        audio = audioList[currentAudio]
+        currentIndex = currentAudioNow
+            nextIndex = audioList.count - 1 > currentAudioNow ? currentAudioNow + 1 : 0
+            prevIndex = currentAudioNow > 0 ? currentAudioNow - 1 : audioList.count - 1
+        currentAudio = audioList[currentIndex]
         
-        if isSupported {
+//        if isSupported {
             // Configure audio data
             self.playerAV?.pause()
             self.playerAV = nil
             if audioTimer.isValid {
                 audioTimer.invalidate()
             }
-            self.initPlayerManager(isFavourite, isNonStop: isNonStop, getMeters: false, completionHandler: { [self] success in
+            self.initPlayerManager(isFavourite, isNonStop: isNonStop, getMeters: false, isHistory: isHistory, completionHandler: { [self] success in
                 self.playPauseAudio(true)
-                if miniVController.songTitle != nil  {
-                    // Update miniplayer
-                    miniVController.songTitle.text = audioList[currentAudio].Title
-                    miniVController.songImage.image = audioList[currentAudio].Image
+                DispatchQueue.main.async { [self] in
+                    if miniVController.songTitle != nil  {
+                        // Update miniplayer
+                        miniVController.songTitle.text = audioList[currentIndex].Title
+                        miniVController.songImage.sd_setImage(with: URL(string: audioList[currentIndex].ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+                    }
+                    NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil, userInfo: ["isNextPrev" : true])
                 }
-                NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil, userInfo: ["isNextPrev" : true])
             })
-        } else {
-            // Check next or previous audio
-            self.nextPrevPlay(isNext)
+//        } else {
+//            // Check next or previous audio
+//            self.nextPrevPlay(isNext)
+//        }
         }
-        
     }
     
     // Action on promt screen button
@@ -303,23 +360,20 @@ class AudioPlayManager: NSObject {
         switch tag {
         case 0:
             //0 - Add to fav
-            self.addToFav(audio.Id) { status in }
+            self.addToFav(currentAudio.Id)
             break
-        case 1:
-            //1 - Once more
-            if let player = playerAV {
-                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+        case 1, 3:
+            //1 - Once more //3 - Close mini player //4 - Share audio
+            DispatchQueue.main.async { [self] in
+                if let player = playerAV {
+                    player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+                }
+                miniVController.progressBar.progress = 0
+                if tag == 1 {
+                    audioHistoryId = -1
+                }
+                self.playPauseAudio(tag == 1)
             }
-            miniVController.progressBar.progress = 0
-            self.playPauseAudio(true)
-            break
-        case 3:
-            //1 - Once more
-            if let player = playerAV {
-                player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
-            }
-            miniVController.progressBar.progress = 0
-            self.playPauseAudio(false)
             break
         default:
             //2 - play next song
@@ -331,7 +385,7 @@ class AudioPlayManager: NSObject {
 
 // MARK: - Setup audio index
 extension AudioPlayManager {
-    func setAudioIndex(_ currentIndex: Int = -1, isNext: Bool) {
+    func setAudioIndex(_ currentIdx: Int = -1, isNext: Bool) {
         // Get current audio list
         guard let audioList = AudioPlayManager.shared.audioList else {
             Toast.show("No audio list found!")
@@ -339,29 +393,29 @@ extension AudioPlayManager {
         }
         
         // Set current audio index
-        let tempCurrentIdx = currentIndex == -1 ? (isNext ? nextAudio : prevAudio) : currentIndex
+        let tempCurrentIdx = currentIdx == -1 ? (isNext ? nextIndex : prevIndex) : currentIdx
         
-        // Check current audio supported or not
-        var isSupported = true
-        
-        // Check file id supported or not
-        if let audioUrl = URL(string: audioList[tempCurrentIdx].File) {
-            let fileName = NSString(string: audioUrl.lastPathComponent)
-            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
-                Toast.show("Audio File \"\(fileName)\" is not supported!")
-                isSupported = false
-            }
-        }
-        
+//        // Check current audio supported or not
+//        var isSupported = true
+//
+//        // Check file id supported or not
+//        if let audioUrl = URL(string: audioList[tempCurrentIdx].File) {
+//            let fileName = NSString(string: audioUrl.lastPathComponent)
+//            if !supportedAudioExtenstion.contains(fileName.pathExtension.lowercased()) {
+//                Toast.show("Audio File \"\(fileName)\" is not supported!")
+//                isSupported = false
+//            }
+//        }
+//
         //Set up next previous audio index
-        currentAudio = tempCurrentIdx
-        nextAudio = audioList.count - 1 > tempCurrentIdx ? tempCurrentIdx + 1 : 0
-        prevAudio = tempCurrentIdx > 0 ? tempCurrentIdx - 1 : audioList.count - 1
-        audio = audioList[currentAudio]
+        currentIndex = tempCurrentIdx
+        nextIndex = audioList.count - 1 > tempCurrentIdx ? tempCurrentIdx + 1 : 0
+        prevIndex = tempCurrentIdx > 0 ? tempCurrentIdx - 1 : audioList.count - 1
+        currentAudio = audioList[currentIndex]
         
-        if !isSupported {
-            self.setAudioIndex(currentIndex, isNext: isNext)
-        }
+//        if !isSupported {
+//            self.setAudioIndex(currentIndex, isNext: isNext)
+//        }
     }
 }
 
@@ -373,13 +427,13 @@ extension AudioPlayManager {
             // Check mini player is already added
             if controller.view.viewWithTag(AudioPlayManager.miniViewTag) != nil, miniVController.songTitle != nil {
                 // Set audio data to mini view
-                if let audioList = audioList, currentAudio >= 0 {
-                    let audio = audioList[currentAudio]
+                if let audioList = audioList, currentIndex >= 0 {
+                    let audio = audioList[currentIndex]
                     miniVController.songTitle.text = audio.Title
-                    miniVController.songImage.image = audio.Image
+                    miniVController.songImage.sd_setImage(with: URL(string: audio.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
                 }
                 // Update audio timer
-                udpateMiniPlayerTime()
+                updateMiniPlayerTime()
                 // Play audio
                 if let player = playerAV, player.isPlaying {
                     self.playPauseAudio(true)
@@ -409,16 +463,16 @@ extension AudioPlayManager {
             }
             
             // Set audio data to mini view
-            if let audioList = audioList, currentAudio >= 0 {
-                let audio = audioList[currentAudio]
+            if let audioList = audioList, currentIndex >= 0 {
+                let audio = audioList[currentIndex]
                 miniVController.songTitle.text = audio.Title
-                miniVController.songImage.image = audio.Image
+                miniVController.songImage.sd_setImage(with: URL(string: audio.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
             }
             // Update audio timer
-            udpateMiniPlayerTime()
+            updateMiniPlayerTime()
             // Play audio
             if let player = playerAV, player.isPlaying {
-                self.playPauseAudio(true)
+                self.playPauseAudio(true, addToHistory: false)
             } else {
                 miniVController.playButton.isSelected = true
             }
@@ -455,7 +509,7 @@ extension AudioPlayManager {
     }
     
     // MARK: - Add mini player time and progress bar
-    @objc func udpateMiniPlayerTime() {
+    @objc func updateMiniPlayerTime() {
         if let currentItem = playerAV?.currentItem, miniVController.startTimeLabel != nil {
             // Get the current time in seconds
             let playhead = currentItem.currentTime().seconds
@@ -472,9 +526,9 @@ extension AudioPlayManager {
                 miniVController.progressBar.progress = Float(playhead / currentItem.duration.seconds)
             }
             
-            if !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
-                PromptVManager.present(currVController, verifyTitle: audioList![currentAudio].Title, verifyMessage: audioList![nextAudio].Title, image: nil, ansImage: nil, isAudioView: true, audioImage: audioList![nextAudio].Image)
-            }
+//            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !duration.isNaN && (duration >= 5.0 && duration <= 6.0) {
+//                PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl)
+//            }
             
             miniVController.progressBar.setNeedsDisplay()
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
@@ -510,15 +564,29 @@ extension AudioPlayManager {
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            self.udpateMiniPlayerTime()
+            self.updateMiniPlayerTime()
         }
+    }
+    
+    // MARK: - Share current audio -
+    static func shareAudio(_ target: UIViewController, completion: @escaping(Bool?) -> Void) {
+        let content = "Introducing tale'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
+        let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
+        controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
+        controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+            completion(completed)
+         }
+        target.present(controller, animated: true) {
+            
+        }
+       // target.present(controller, animated: true, completion: nil)
     }
     
     // MARK: - Remove mini player from view controller
     public func removeMiniPlayer() {
         DispatchQueue.main.async { [self] in
             bottomConstraint.constant = 0
-            if (FooterManager.shared.isActive) {
+            if FooterManager.shared.isActive {
                 if let footerView = miniVController.view.viewWithTag(FooterManager.viewTag) {
                     footerView.removeFromSuperview()
                     footerView.frame.origin.y = currVController.view.frame.size.height - 80.0
@@ -530,10 +598,6 @@ extension AudioPlayManager {
                 }
             }
             miniVController.view.removeFromSuperview()
-            guard let player = AudioPlayManager.shared.playerAV else { return }
-            if player.isPlaying {
-                playPauseAudio(false)
-            }
         }
     }
     
@@ -549,9 +613,17 @@ extension AudioPlayManager {
         if isNonStop {
             NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
         }
-        NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
         isMiniPlayerActive = false
+        audioList = [Audio]()
+        currentIndex = -1
         removeMiniPlayer()
+        NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
+
+        guard let player = AudioPlayManager.shared.playerAV else { return }
+        if player.isPlaying {
+            player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
+            playPauseAudio(false)
+        }
     }
     
     // MARK: - Click on miniplayer
@@ -562,50 +634,176 @@ extension AudioPlayManager {
             nonStopView.isPlayingExisting = playerAV != nil && playerAV!.isPlaying
             currVController.navigationController?.pushViewController(nonStopView, animated: true)
             self.removeMiniPlayer()
+            if audioTimer.isValid {
+                self.audioTimer.invalidate()
+            }
         } else if isFavourite {
             let favView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "FavouriteViewController") as! FavouriteViewController
             currVController.navigationController?.pushViewController(favView, animated: true)
+        } else if isHistory {
+            let hisView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController") as! HistoryViewController
+            currVController.navigationController?.pushViewController(hisView, animated: true)
         } else {
             let nowPlayingView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
             nowPlayingView.existingAudio = true
             nowPlayingView.isPlaying = playerAV != nil && playerAV!.isPlaying
             currVController.navigationController?.pushViewController(nowPlayingView, animated: true)
             self.removeMiniPlayer()
+            if audioTimer.isValid {
+                self.audioTimer.invalidate()
+            }
         }
+    }
+    
+    private func getCurrentSecond(_ currentItem: AVPlayerItem) -> Int {
+        var playhead = currentItem.currentTime().seconds
+        if Int(playhead) <= 1 {
+            playhead = currentItem.duration.seconds
+        }
+        if playhead.isNaN {
+            playhead = 0
+        }
+        return Int(playhead)
     }
 }
 
 // MARK: - API calls -
 extension AudioPlayManager {
     // Add to favourite
-    private func addToFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+    private func addToFav(_ audio_story_id: Int) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(currVController)
             return
         }
-        Core.ShowProgress(currVController, detailLbl: "")
-        FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
-            Core.HideProgress(currVController)
-            completion(status)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.add(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    currentAudio.Is_favorite = true
+                    if audioList != nil {
+                        audioList![currentIndex].Is_favorite = true
+                    }
+                }
+            }
         }
     }
     
     // Remove from favourite
-    private func removeFromFav(_ audio_story_id: Int, completion: @escaping(Bool?) -> Void) {
+    private func removeFromFav(_ audio_story_id: Int) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(currVController)
             return
         }
-        Core.ShowProgress(currVController, detailLbl: "")
-        FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
-            Core.HideProgress(currVController)
-            completion(status)
+        DispatchQueue.global(qos: .background).async {
+            FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
+                if let st = status, st {
+                    currentAudio.Is_favorite = false
+                    if audioList != nil {
+                        audioList![currentIndex].Is_favorite = false
+                    }
+                }
+            }
+        }
+    }
+    
+    // Add to history
+    private func addAudioToHistory() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        
+        // Add history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            if let currentItem = playerAV?.currentItem {
+                HistoryAudioClient.add(HistoryAddRequest(audio_story_id: currentAudio.Id, time: getCurrentSecond(currentItem))) { [self] result in
+                    if let data = result {
+                        audioHistoryId = data.Id
+//                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: data.Id, action: AudioAction.resume.description)) { status in }
+                    }
+                }
+            }
+        }
+    }
+        
+    // Update History
+    private func updateHistory() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        // Update history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            if let currentItem = playerAV?.currentItem {
+                HistoryAudioClient.update(HistoryUpdateRequest(audio_history_id: audioHistoryId, time: getCurrentSecond(currentItem))) { status in
+                    if let st = status, st {
+                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: audioHistoryId, action: AudioAction.pause.description)) { status in }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Add audio story action and update history
+    private func updateHistoryAction(_ isPlay: Bool) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        // Update history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            if let currentItem = playerAV?.currentItem {
+                AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: audioHistoryId, action: isPlay ? AudioAction.resume.description : AudioAction.pause.description, time: getCurrentSecond(currentItem))) { status in }
+            }
+        }
+    }
+    
+    // Add update audio history with audio action
+    private func addUpdateAudioActionHistory(_ isPlay: Bool) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        audioHistoryId == -1 ? self.addAudioToHistory() : self.updateHistoryAction(isPlay)
+    }
+    
+    // End Audio Playing
+    private func endAudioPlaying() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        // Update history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            AudioClient.endAudioPlaying(EndAudioRequest(audio_history_id: audioHistoryId)) { status in }
         }
     }
 }
 
 // MARK: - Other methods
 extension AudioPlayManager {
+    
+    // MARK: Convert seconds to current time for audio
+    static func getHoursMinutesSecondsFromString(seconds: Double) -> String {
+        let secs = Int(seconds)
+        let hours = secs / 3600
+        let minutes = (secs % 3600) / 60
+        let seconds = (secs % 3600) % 60
+        var durationStr = ""
+        if hours > 0 {
+            durationStr = "\(hours) hr "
+        }
+        if minutes > 0 {
+            durationStr = "\(durationStr) \(minutes) min "
+        }
+        if seconds > 0 {
+            durationStr = "\(durationStr) \(seconds) sec "
+        }
+        if durationStr.isBlank {
+            durationStr = "0 sec"
+        }
+        return durationStr
+    }
+    
     // MARK: Convert seconds to current time for playing audio
     static func getHoursMinutesSecondsFrom(seconds: Double) -> (hours: Int, minutes: Int, seconds: Int) {
         let secs = Int(seconds)
@@ -645,6 +843,9 @@ extension AudioPlayManager {
     static func getAudioMeters(_ audioFileURL: URL, forChannel channelNumber: Int, completionHandler: @escaping(_ success: [Float]) -> ()) {
         
         guard let audioFile = try? AVAudioFile(forReading: audioFileURL) else {
+            AudioPlayManager.shared.isMiniPlayerActive = false
+            Toast.show("No audio file found")
+            Core.HideProgress(AudioPlayManager.shared.currVController)
             return
         }
         let audioFilePFormat = audioFile.processingFormat

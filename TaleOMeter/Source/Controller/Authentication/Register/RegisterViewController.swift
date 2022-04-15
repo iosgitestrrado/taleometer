@@ -13,10 +13,11 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var displayNameText: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var titleLabel: UILabel!
     
     // MARK: - Public Properties -
-    var countryCode = ""
-    var iSDCode = 0
+    var countryCode = "IN"
+    var iSDCode = 91
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -24,21 +25,28 @@ class RegisterViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
         //self.navigationItem.hidesBackButton = true
+        //titleLabel.addUnderline()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        if let childVies = self.navigationController?.viewControllers, childVies.count > 1 {
+            self.navigationController?.viewControllers.remove(at: childVies.count - 2)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.view.frame.origin.y -= 170.0
+                self.view.frame.origin.y -= 190.0
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
@@ -55,13 +63,21 @@ class RegisterViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
+//        if nameTextField.text!.isBlank {
+//            Validator.showRequiredError(nameTextField)
+//            return
+//        }
         if displayNameText.text!.isBlank {
             Validator.showRequiredError(displayNameText)
             return
         }
+//        if emailTextField.text!.isBlank {
+//            Validator.showRequiredError(emailTextField)
+//            return
+//        }
         if !emailTextField.text!.isBlank && !emailTextField.text!.isEmail {
             Validator.showError(emailTextField, message: "Invalid email")
             return
@@ -77,7 +93,7 @@ class RegisterViewController: UIViewController {
             profileReq.email = email
         }
         Core.ShowProgress(self, detailLbl: "")
-        AuthClient.updateProfile(profileReq) { [self] result in
+        AuthClient.updateProfile(profileReq, showSuccMessage: true) { [self] result in
             if var response = result {
                 if isOnlyTrivia {
                     response.StoryBoardName = ""
@@ -99,6 +115,34 @@ class RegisterViewController: UIViewController {
 extension RegisterViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.setError()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.nameTextField {
+            do {
+               let regex = try NSRegularExpression(pattern: ".*[^A-Za-z ].*", options: [])
+               if regex.firstMatch(in: string, options: [], range: NSMakeRange(0, string.count)) != nil {
+                   return false
+               }
+           }
+           catch {
+               print("ERROR")
+           }
+        }
+       return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.returnKeyType == .next {
+            if textField == nameTextField {
+                displayNameText.becomeFirstResponder()
+            } else if textField == displayNameText {
+                emailTextField.becomeFirstResponder()
+            }
+        } else if textField.returnKeyType == .done {
+            self.view.endEditing(true)
+        }
+        return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

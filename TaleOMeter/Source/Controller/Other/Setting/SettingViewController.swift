@@ -17,7 +17,7 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        notificationSwitch.isOn = UserDefaults.standard.bool(forKey: "NotificationEnable")
+        notificationSwitch.isOn = true
         autoPlaySwitch.isOn = UserDefaults.standard.bool(forKey: "AutoplayEnable")
     }
     
@@ -26,18 +26,45 @@ class SettingViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let profileData = Login.getProfileData() {
+            notificationSwitch.isOn = profileData.Push_notify
+            autoPlaySwitch.isOn = profileData.Autoplay.lowercased().contains("enable")
+        }
+    }
+    
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
     @IBAction func changeNotification(_ sender: UISwitch) {
-        UserDefaults.standard.set(sender.isOn, forKey: "NotificationEnable")
-        UserDefaults.standard.synchronize()
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        OtherClient.setNotificationSetting(NotificationSetRequest(value: sender.isOn ? 1 : 0)) { status in
+            Core.HideProgress(self)
+        }
     }
     
     @IBAction func changeAutoplay(_ sender: UISwitch) {
-        UserDefaults.standard.set(sender.isOn, forKey: "AutoplayEnable")
-        UserDefaults.standard.synchronize()
+        Core.ShowProgress(self, detailLbl: "")
+        OtherClient.setAutoPlaySetting(AutoplaySetRequest(value: sender.isOn ? "Enable" : "Disable")) { status in
+            if let st = status, st {
+                UserDefaults.standard.set(sender.isOn, forKey: "AutoplayEnable")
+                UserDefaults.standard.synchronize()
+            }
+            Core.HideProgress(self)
+        }
     }
 }

@@ -7,11 +7,14 @@
 
 import UIKit
 import SwiftyJSON
+import AVFoundation
+import AVKit
 
 struct Audio {
     var Id = Int()
     var Title = String()
-    var Image = UIImage()
+    //var Image = UIImage()
+    var ImageUrl = String()
     var File = String()
     var Genre_id = Int()
     var Story_id = Int()
@@ -23,11 +26,14 @@ struct Audio {
     var Updated_at = String()
     var Deleted_at = String()
     var Views_count = Int()
+    var Is_favorite = Bool()
+    var Duration = Int()
+    var Favorites_count = Int()
+    var IsLinkedAudio = Bool()
     
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
-    var IsFavourite = Bool()
     
 //    var Stories: [Story]?
 //    var Plots: [Story]?
@@ -37,7 +43,8 @@ struct Audio {
     init(_ json: JSON) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
-        Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
+        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
         File = Constants.baseURL.appending("/\(json["file"].stringValue)")
         Genre_id = json["genre_id"].intValue
         Story_id = json["story_id"].intValue
@@ -49,7 +56,9 @@ struct Audio {
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
         Views_count = json["views_count"].intValue
-        
+        Is_favorite = json["is_favorite"].boolValue
+        Duration = json["duration"].intValue
+        Favorites_count = json["favorites_count"].intValue
         if let audio_story = json["story"].dictionaryObject {
             Story = StoryModel(JSON(audio_story))
         }
@@ -61,9 +70,7 @@ struct Audio {
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
         }
-        
-        IsFavourite = favouriteAudio.contains(where: { $0.Id == Id })
-        
+                
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story
 //        }
@@ -76,6 +83,14 @@ struct Audio {
 //        Stories = strories
 //        Plots = plots
 //        Narrations = narrations
+    }
+    
+    static func getAudioDuration(_ file: String) -> Float {
+        if let audioUrl = URL(string: file) {
+            let audioAsset = AVURLAsset(url: audioUrl)
+            return Float(CMTimeGetSeconds(audioAsset.duration))
+        }
+        return 0
     }
 }
 
@@ -98,11 +113,37 @@ struct Audio {
 
 
 struct AudioRequest: Codable {
-    var page = Int()
+    var page = String()
     var limit = Int()
 }
 
-struct AudioAddRequst: Codable {
-    var audio_story_id = Int()
+struct AudioGenreRequest: Codable {
+    var genre_id = Int()
+    var shuffle = Int()
+    var page = String()
+    var limit = Int()
+}
+
+struct EndAudioRequest: Codable {
+    var audio_history_id = Int()
+}
+
+struct AddAudioActionRequest: Codable {
+    var audio_history_id = Int()
+    var action = String()
     var time = Int()
+}
+
+public enum AudioAction: Equatable {
+    case pause
+    case resume
+
+    var description: String {
+        switch self {
+        case .pause:
+            return "pause"
+        case .resume:
+            return "resume"
+        }
+    }
 }

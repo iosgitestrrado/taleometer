@@ -21,7 +21,7 @@ class RightViewController: UIViewController {
     
     private enum SideViewCellItem: Equatable {
         case profile
-//        case triviaQuiz
+        case triviaQuiz
 //        case triviaComments
         case shareStory
         case history
@@ -34,8 +34,8 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return "My Account"
-//            case .triviaQuiz:
-//                return "Trivia Quiz"
+            case .triviaQuiz:
+                return "Trivia"
 //            case .triviaComments:
 //                return "Trivia Comments"
             case .shareStory:
@@ -57,14 +57,14 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return Constants.Storyboard.auth
-//            case .triviaQuiz, .triviaComments:
-//                return Constants.Storyboard.trivia
+            case .triviaQuiz/*, .triviaComments*/:
+                return Constants.Storyboard.trivia
             case .shareStory, .preference, .aboutUs, .feedback:
                 return Constants.Storyboard.other
             case .history:
                 return Constants.Storyboard.audio
             case .logout:
-                return "Logout"
+                return Constants.Storyboard.auth
             }
         }
         
@@ -72,8 +72,8 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return "ProfileViewController"
-//            case .triviaQuiz:
-//                return "TriviaViewController"
+            case .triviaQuiz:
+                return "TriviaViewController"
 //            case .triviaComments:
 //                return "TRFeedViewController"
             case .shareStory:
@@ -87,13 +87,13 @@ class RightViewController: UIViewController {
             case .feedback:
                 return "FeedbackViewController"
             case .logout:
-                return "Logout"
+                return "LoginViewController"
             }
         }
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .profile/*, .triviaQuiz, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .triviaQuiz/*, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
@@ -110,13 +110,14 @@ class RightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
         if let pfData = Login.getProfileData() {
             profileData = pfData
         }
         if isOnlyTrivia {
             sections = triviaSections
         }
+        // Set notification center for audio playing completed
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
     
     @objc private func updateUserData(_ notification: Notification) {
@@ -166,6 +167,7 @@ class RightViewController: UIViewController {
         super.viewWillDisappear(animated)
         struct Counter { static var count = 0 }
         Counter.count += 1
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -191,16 +193,20 @@ extension RightViewController: UITableViewDelegate {
         func getNavigationController() -> UINavigationController {
             return sideMenuController.rootViewController as! UINavigationController
         }
-        sideMenuController.hideRightView(animated: true)
+        sideMenuController.hideRightView(animated: false)
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
             case .logout:
                 if !Reachability.isConnectedToNetwork() {
-                    Toast.show()
+                    Core.noInternet(self)
                     return
                 }
-                AuthClient.logout()
-                self.tableView.reloadData()
+                AuthClient.logout("", moveToLogin: false)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
+                return
             default:
                 self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
 //                let domain = Bundle.main.bundleIdentifier!
@@ -239,6 +245,9 @@ extension RightViewController: UITableViewDelegate {
                 }
             }
             let myobject = UIStoryboard(name: storyBoardName, bundle: nil).instantiateViewController(withIdentifier: storyBoradId)
+            if let trivia = myobject as? TriviaViewController {
+                trivia.fromSideMenu = true
+            }
             cont.pushViewController(myobject, animated: true)
         }
     }
@@ -285,6 +294,8 @@ extension RightViewController: UITableViewDataSource {
             cell.subTitleLabel.text = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "00000 00000")"
             if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
                 cell.profileImage.image = img
+            } else {
+                cell.profileImage.image = Login.defaultProfileImage
             }
             cell.closeButton.addTarget(self, action: #selector(self.clickOnClose(_:)), for: .touchUpInside)
             cell.isFirst = (indexPath.row == 0)

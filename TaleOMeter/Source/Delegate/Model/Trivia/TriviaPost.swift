@@ -18,7 +18,8 @@ struct TriviaPost {
     var CommTextView: UITextView?
     var RepTextView: UITextView?
     var Question_type = String()
-    var Question_media = UIImage()
+    //var Question_media = UIImage()
+    var Question_media_url = String()
     var QuestionVideoURL = String()
     var User_opened = Bool()
     var User_opened_status = Int()
@@ -39,7 +40,7 @@ struct TriviaPost {
         Question_type = json["question_type"].stringValue
         User_opened = json["user_opened"].boolValue
         User_opened_status = json["user_opened_status"].intValue
-        Date = json["date"].stringValue
+        Date = "  \(json["date"].stringValue)  "
         User_answered = json["user_answered"].boolValue
         User_answer_status = json["user_answer_status"].boolValue
         
@@ -49,13 +50,12 @@ struct TriviaPost {
             }
         }
         
-        var imageURL = ""
         if let urlString = json["question_media"].string, Question_type.lowercased() == "image" {
-            imageURL = Core.verifyUrl(urlString) ? urlString :  Constants.baseURL.appending("/\(urlString)")
-            Core.setImage(imageURL, image: &Question_media)
+            Question_media_url = Core.verifyUrl(urlString) ? urlString :  Constants.baseURL.appending("/\(urlString)")
+            //Core.setImage(Question_media_url, image: &Question_media)
         } else {
             QuestionVideoURL = json["question_media"].stringValue
-            Question_media = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
+            //Question_media = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
         }
     }
 }

@@ -6,15 +6,21 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ProfileViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var nameLabelView: UIView!
+    @IBOutlet weak var emailLabelView: UIView!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var mobileLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
-    
+    @IBOutlet weak var imageOptionPopup: UIView!
+    @IBOutlet weak var customActionSheet: UIView!
+
     // MARK: - Private Property -
     private let imagePicker = UIImagePickerController()
     private var editIndex = -1
@@ -29,19 +35,29 @@ class ProfileViewController: UIViewController {
         
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true, backImageColor: .red)
         
-        //Add footer view and manager current view frame
-        FooterManager.addFooter(self)
-        if AudioPlayManager.shared.isMiniPlayerActive {
-            AudioPlayManager.shared.addMiniPlayer(self)
+        if !isOnlyTrivia {
+            //Add footer view and manager current view frame
+            FooterManager.addFooter(self)
+            if AudioPlayManager.shared.isMiniPlayerActive {
+                AudioPlayManager.shared.addMiniPlayer(self)
+            }
         }
         Core.ShowProgress(self, detailLbl: "Getting Profile details...")
         setProfileData()
+        self.profileImage.image = Login.defaultProfileImage
         if let imgData = profileData?.ImageData, let img = UIImage(data: imgData) {
             self.profileImage.image = img
         }
         Core.HideProgress(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,7 +70,8 @@ class ProfileViewController: UIViewController {
             profileData = pfData
         }
         
-        let name = profileData?.Fname ?? ""
+        let name = profileData?.User_code ?? ""
+        let displayName = profileData?.Fname ?? ""
         let mobile = "+\(profileData?.Isd_code ?? 0) \(profileData?.Phone ?? "")"
         let email = profileData?.Email ?? ""
         
@@ -62,28 +79,35 @@ class ProfileViewController: UIViewController {
         let phoneAtt = Core.getImageString("phone")
         let emailAtt = Core.getImageString("email")
 
-        let titleAttText = NSMutableAttributedString(string: "\(name)  ")
+        let nameAttText = NSMutableAttributedString(string: "\(name)  ")
+        let titleAttText = NSMutableAttributedString(string: "\(displayName)  ")
         let mobileText = NSMutableAttributedString(string: " \(mobile)  ")
         let emailText = NSMutableAttributedString(string: " \(email)  ")
         
-        if !name.isEmpty {
+        if !displayName.isBlank {
             titleAttText.append(pencilAtt)
             self.titleLabel.attributedText = titleAttText
         }
         
-        if !mobile.isEmpty {
+//        self.nameLabelView.isHidden = name.isBlank
+        //if !name.isBlank {
+            nameAttText.append(pencilAtt)
+            self.nameLabel.attributedText = nameAttText
+        //}
+        
+        if !mobile.isBlank {
             let mobileAttText = phoneAtt
             mobileAttText.append(mobileText)
             mobileAttText.append(pencilAtt)
             self.mobileLabel.attributedText = mobileAttText
         }
         
-        if !email.isEmpty {
+       // if !email.isBlank {
             let emailAttText = emailAtt
             emailAttText.append(emailText)
             emailAttText.append(pencilAtt)
             self.emailLabel.attributedText = emailAttText
-        }
+       // }
     }
     
     // MARK: - Side Menu button action -
@@ -96,9 +120,9 @@ class ProfileViewController: UIViewController {
         editIndex = sender.tag
         switch sender.tag {
         case 1:
-            //Name
+            //Display Name
             guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
-            myobject.titleString = "Change Name"
+            myobject.titleString = "Change Display Name"
             myobject.fieldValue = profileData?.Fname ?? ""
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
@@ -120,37 +144,159 @@ class ProfileViewController: UIViewController {
             myobject.profileDelegate = self
             self.navigationController?.pushViewController(myobject, animated: true)
             break
+        case 4:
+            //Name
+            guard let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "ProfileEditViewController") as? ProfileEditViewController else { break }
+            myobject.titleString = "Change Name"
+            myobject.fieldValue = profileData?.User_code ?? ""
+            myobject.profileDelegate = self
+            self.navigationController?.pushViewController(myobject, animated: true)
+            break
         default:
             //Image
             imagePicker.delegate = self
             imagePicker.allowsEditing = true
-            let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
+            self.showHideView(self.customActionSheet, isHidden: false)
+
+            /*let alert = UIAlertController(title: "Please Select", message: "", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { result in
-                self.imagePicker.sourceType = .camera
-                self.present(self.imagePicker, animated: true, completion: nil)
+                if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    Toast.show("Camera not supported")
+                    return
+                }
+                
+                if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                    DispatchQueue.main.async {
+                        self.imagePicker.sourceType = .camera
+                        self.present(self.imagePicker, animated: true, completion: nil)
+                    }
+                } else {
+                    AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                        if granted {
+                            DispatchQueue.main.async {
+                                self.imagePicker.sourceType = .camera
+                                self.present(self.imagePicker, animated: true, completion: nil)
+                            }
+                        }
+                    })
+                }
             }))
             
             alert.addAction(UIAlertAction(title: "Photo library", style: .default, handler: { result in
-                self.imagePicker.sourceType = .photoLibrary
-                self.present(self.imagePicker, animated: true, completion: nil)
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Remove Profile", style: .destructive, handler: { result in
-                Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
-                if let imgData = defaultImage.pngData() {
-                    self.uploadProfileImage(imgData, image: defaultImage)
+                if !UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                    Toast.show("Photo library not supported")
+                    return
+                }
+                
+                if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                    DispatchQueue.main.async {
+                        self.imagePicker.sourceType = .photoLibrary
+                        self.present(self.imagePicker, animated: true, completion: nil)
+                    }
                 } else {
-                    Core.HideProgress(self)
+                    AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                        if granted {
+                            DispatchQueue.main.async {
+                                self.imagePicker.sourceType = .photoLibrary
+                                self.present(self.imagePicker, animated: true, completion: nil)
+                            }
+                        }
+                    })
                 }
             }))
-            self.present(alert, animated: true, completion: nil)
+            
+            alert.addAction(UIAlertAction(title: "Remove Profile Picture", style: .destructive, handler: { result in
+                self.removeProfileImage()
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }*/
             break
         }
     }
     
+    // MARK: Change profile image options // Camera - 1, Photo - 2, Cancel - 3, 4 - Update Profile, 5 - Delete Profile, 6 - Close Option
+    @IBAction func tapOnImageOptions(_ sender: UIButton) {
+        switch sender.tag {
+        case 1:
+            // Open Camera
+            if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Toast.show("Camera not supported")
+                return
+            }
+            
+            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                DispatchQueue.main.async {
+                    self.imagePicker.sourceType = .camera
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            } else {
+                AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                    if granted {
+                        DispatchQueue.main.async {
+                            self.imagePicker.sourceType = .camera
+                            self.present(self.imagePicker, animated: true, completion: nil)
+                        }
+                    }
+                })
+            }
+            break
+        case 2:
+            // Open Gallary
+            if !UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                Toast.show("Photo library not supported")
+                return
+            }
+            
+            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                DispatchQueue.main.async {
+                    self.imagePicker.sourceType = .photoLibrary
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
+            } else {
+                AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+                    if granted {
+                        DispatchQueue.main.async {
+                            self.imagePicker.sourceType = .photoLibrary
+                            self.present(self.imagePicker, animated: true, completion: nil)
+                        }
+                    }
+                })
+            }
+            break
+        case 0, 4:
+            // 0 - Cancel // 4 - Update Profile
+            self.showHideView(self.imageOptionPopup, isHidden: sender.tag == 0)
+            break
+        case 5:
+            // Remove Profile
+            self.showHideView(self.customActionSheet, isHidden: true)
+            self.removeProfileImage()
+            break
+        default:
+            // Close Option
+            self.showHideView(self.customActionSheet, isHidden: true)
+            break
+        }
+    }
+    
+    private func showHideView(_ viewd: UIView, isHidden: Bool) {
+        UIView.transition(with: viewd, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            UIView.animate(withDuration: 0.25, animations: {
+                viewd.isHidden = isHidden
+            })
+        }, completion: nil)
+    }
+}
+
+// MARK: Call API's
+extension ProfileViewController {
     private func uploadProfileImage(_ imageData: Data, image: UIImage) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         var imgData = imageData
@@ -167,7 +313,24 @@ class ProfileViewController: UIViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
-                PromptVManager.present(self, verifyMessage: "Your Profile Image is Successfully Changed", image: nil, ansImage: nil, isUserStory: true)
+                PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
+    private func removeProfileImage() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "removeProfileImage")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AuthClient.removeProfileImage { result in
+            if let response = result {
+                self.profileData = response
+                Login.storeProfileData(response)
+                self.profileImage.image = Login.defaultProfileImage
+                PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
         }
@@ -181,6 +344,9 @@ extension ProfileViewController: UIImagePickerControllerDelegate & UINavigationC
         self.imagePicker.dismiss(animated: true) { [self] in
             Core.ShowProgress(self, detailLbl: "Uploading Profile Picture...")
             if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                self.showHideView(self.customActionSheet, isHidden: true)
+                self.showHideView(self.imageOptionPopup, isHidden: true)
+
                 if let imgData = image.pngData() {
                     uploadProfileImage(imgData, image: image)
                 } else {
@@ -214,6 +380,15 @@ extension ProfileViewController: ProfileEditDelegate  {
             //Email Id
 //            self.setProfileData()
             break
+        }
+    }
+}
+
+// MARK: - NoInternetDelegate -
+extension ProfileViewController: NoInternetDelegate {
+    func connectedToNetwork(_ methodName: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.perform(Selector((methodName)))
         }
     }
 }

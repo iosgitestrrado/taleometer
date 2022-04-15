@@ -23,11 +23,11 @@ class AudioViewCell: UITableViewCell {
     func configureCell(_ audioData: Audio, likesCount: Int, duration: Double, isFavourite: Bool, row: Int, selectedIndex: Int, target: Any, selectors: [Selector]) {
         self.isSelected = row == selectedIndex
         if let image = self.profileImage {
-            image.image = audioData.Image
+            image.sd_setImage(with: URL(string: audioData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
             image.cornerRadius = image.frame.size.height / 2.0
         }
         if let subTitle = self.subTitleLabel {
-            subTitle.text = "\(likesCount.formatPoints()) Likes | \(duration.asString(style: .short))"
+            subTitle.text = "\(audioData.Favorites_count) Likes | \(AudioPlayManager.getHoursMinutesSecondsFromString(seconds: Double(audioData.Duration)))"
         }
         if let titleLbl = self.titleLabel {
             if self.isSelected {
@@ -46,7 +46,7 @@ class AudioViewCell: UITableViewCell {
         self.playButton.addTarget(target, action: selectors[0], for: .touchUpInside)
         self.favButton.tag = row
         self.favButton.addTarget(target, action: selectors[1], for: .touchUpInside)
-        self.favButton.isSelected = audioData.IsFavourite
+        self.favButton.isSelected = audioData.Is_favorite
         if isFavourite {
             self.favButton.isSelected = isFavourite
         }

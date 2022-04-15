@@ -12,7 +12,8 @@ struct TriviaAnswer {
     var Post_id = Int()
     var Category_id = Int()
     var Answer_type = String()
-    var Answer_image = UIImage()
+    //var Answer_image = UIImage()
+    var Answer_image_url = String()
     var Answer_text = String()
     var User_opened = Bool()
     
@@ -23,11 +24,10 @@ struct TriviaAnswer {
         Category_id = json["category_id"].intValue
         Answer_type = json["answer_type"].stringValue
         
-        var imageURL = ""
         if let urlString = json["answer_image"].string {
-            imageURL = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+            Answer_image_url = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
         }
-        Core.setImage(imageURL, image: &Answer_image)
+//        Core.setImage(imageURL, image: &Answer_image)
         Answer_text = json["answer_text"].stringValue
         User_opened = json["user_opened"].boolValue
     }

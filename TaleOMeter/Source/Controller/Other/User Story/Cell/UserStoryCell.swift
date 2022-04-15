@@ -130,24 +130,107 @@ class UserStoryCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var optionBtn: UIButton!
+    @IBOutlet weak var optionBtnn: UIButton!
+    @IBOutlet weak var termsBtn: UIButton!
+    @IBOutlet weak var submitBtn: UIButton!
+
     @IBOutlet weak var option1Btn: UIButton!
     @IBOutlet weak var option2Btn: UIButton!
     @IBOutlet weak var option1Lbl: UILabel!
     @IBOutlet weak var option2Lbl: UILabel!
+    @IBOutlet weak var radioStackView: UIStackView!
+    @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var radioButton: UIButton!
+    @IBOutlet weak var radioLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
     
-    func configuration(_ viewTitle: String, cellData: UserStoryCellItem, tamilTermsString: String, section: Int, row: Int, target: Any, selectors: [Selector], optionButton1: inout UIButton, optionButton2: inout UIButton) {
+    func configuration(_ viewTitle: String, cellData: UserStoryModel, tamilTermsString: String, row: Int, target: Any, selectors: [Selector]) {
+        
+        // Selector: 0 - Terms and Condition, 1 - Submit button, 2 - Done tool bar, 3 - Next Tool bar, 4 - Option button
+        
+        if let titleLbl = self.titleLabel {
+            titleLbl.text = cellData.Title
+//            if viewTitle != "English" {
+//                titleLbl.text = cellData.titleTamil
+//            }
+        }
+        
+        if cellData.TypeT.lowercased() == "choice", cellData.Options.count > 0, let optBtn = self.optionBtn, let optBtnn = self.optionBtnn {
+            optBtn.tag = row
+            optBtn.addTarget(target, action: selectors[4], for: .touchUpInside)
+            optBtn.setTitle(cellData.Value, for: .normal) //
+            
+            optBtnn.tag = row
+            optBtnn.addTarget(target, action: selectors[4], for: .touchUpInside)
+            optBtnn.setTitle("", for: .normal)
+        }
+        
+//        if viewTitle != "English" {
+//            if let opt1Lbl = self.option1Lbl {
+//                opt1Lbl.text = "நானே"
+//            }
+//            if let opt2Lbl = self.option2Lbl {
+//                opt2Lbl.text = "வேறு யாரோ"
+//            }
+//        }
+        
+        if let btn1 = self.termsBtn {
+            btn1.tag = row
+            btn1.addTarget(target, action: selectors[0], for: .touchUpInside)
+            if viewTitle != "English" {
+                //cell.option1Btn.titleLabel?.attributedText = NSAttributedString("எங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளைப் படிக்கவும்")
+                let attString = NSMutableAttributedString(string: tamilTermsString)
+                let fontBlue = [ NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 116.0 / 255.0, green: 117.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0) ]
+                let fontRed = [ NSAttributedString.Key.foregroundColor:  UIColor(displayP3Red: 232.0 / 255.0, green: 56.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0) ]
+                let rangeTitle1 = NSRange(location: 0, length: 65)
+                let rangeTitle2 = NSRange(location: 33, length: 32)
+                attString.addAttributes(fontBlue, range: rangeTitle1)
+                attString.addAttributes(fontRed, range: rangeTitle2)
+                if #available(iOS 15, *) {
+                    btn1.setAttributedTitle(attString, for: .normal)
+                } else {
+                    // Fallback on earlier versions
+                    btn1.setAttributedTitle(attString, for: .normal)
+                }
+            }
+        }
+        
+        if let btn1 = self.submitBtn {
+            btn1.tag = row
+            btn1.addTarget(target, action: selectors[1], for: .touchUpInside)
+        }
+       
+        if let textView = self.textView {
+            textView.tag = row
+
+            var doneString = "Done"
+            if viewTitle != "English" {
+                doneString = "முடிந்தது"
+            }
+
+            var nextString = "Next"
+            if viewTitle != "English" {
+                nextString = "அடுத்தது"
+            }
+            textView.addInputAccessoryView(cellData.IsLast ? doneString : nextString, target: target, selector: cellData.IsLast ? selectors[2] : selectors[3], tag: row)
+            textView.delegate = target as? UITextViewDelegate
+        }
+    }
+    
+    func configuration1(_ viewTitle: String, cellData: UserStoryCellItem, tamilTermsString: String, section: Int, row: Int, target: Any, selectors: [Selector], optionButton1: inout UIButton, optionButton2: inout UIButton) {
         if let titleLbl = self.titleLabel {
             titleLbl.text = cellData.title
-            if viewTitle == "Tamil" {
+            if viewTitle != "English" {
                 titleLbl.text = cellData.titleTamil
             }
         }
-        if viewTitle == "Tamil" {
+
+        if viewTitle != "English" {
             if let opt1Lbl = self.option1Lbl {
                 opt1Lbl.text = "நானே"
             }
@@ -161,7 +244,7 @@ class UserStoryCell: UITableViewCell {
             }
             btn1.tag = section
             btn1.addTarget(target, action: selectors[0], for: .touchUpInside)
-            if viewTitle == "Tamil" && section == 6 {
+            if viewTitle != "English" && section == 6 {
                 //cell.option1Btn.titleLabel?.attributedText = NSAttributedString("எங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளைப் படிக்கவும்")
                 let attString = NSMutableAttributedString(string: tamilTermsString)
                 let fontBlue = [ NSAttributedString.Key.foregroundColor: UIColor(displayP3Red: 116.0 / 255.0, green: 117.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0) ]
@@ -194,13 +277,13 @@ class UserStoryCell: UITableViewCell {
             textView.tag = section
             if section == 5 {
                 var doneString = "Done"
-                if viewTitle == "Tamil" {
+                if viewTitle != "English" {
                     doneString = "முடிந்தது"
                 }
                 textView.addInputAccessoryView(doneString, target: target, selector: selectors[2], tag: section)
             } else {
                 var nextString = "Next"
-                if viewTitle == "Tamil" {
+                if viewTitle != "English" {
                     nextString = "அடுத்தது"
                 }
                 textView.addInputAccessoryView(nextString, target: target, selector: selectors[3], tag: section)
@@ -208,5 +291,4 @@ class UserStoryCell: UITableViewCell {
             textView.delegate = target as? UITextViewDelegate
         }
     }
-    
 }

@@ -14,7 +14,9 @@ class LoginViewController: UIViewController {
     // MARK: - Weak Properties -
     @IBOutlet weak var countryCodeLbl: UILabel!
     @IBOutlet weak var mobileNumberTxt: UITextField!
-    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel1: UILabel!
+
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
     
@@ -25,14 +27,37 @@ class LoginViewController: UIViewController {
         self.hideKeyboard()
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
+//        titleLabel.addUnderline()
+        
+//        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\nSign up To Keep Hearing Amazing")
+//        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Bold", size: 25) ]
+//        let font22 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Bold", size: 16) ]
+//        
+//        let rangeTitle1 = NSRange(location: 0, length: 23)
+//        let rangeTitle2 = NSRange(location: 23, length: 55 - 23)
+//        
+//        titleString.addAttributes(font36 as [NSAttributedString.Key : Any], range: rangeTitle1)
+//        titleString.addAttributes(font22 as [NSAttributedString.Key : Any], range: rangeTitle2)
+//        
+//        titleLabel1.attributedText = titleString
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
+            player.pause()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
@@ -55,7 +80,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.mobileNumberTxt.text!.isBlank {
@@ -110,7 +135,8 @@ class LoginViewController: UIViewController {
     @IBAction func tapOnCountry(_ sender: Any) {
         let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "CountryViewController") as! CountryViewController
         myobject.delegate = self
-        self.navigationController?.present(myobject, animated: true, completion: nil)
+        self.navigationController?.pushViewController(myobject, animated: true)
+        //self.navigationController?.present(myobject, animated: true, completion: nil)
     }
     
     // MARK: - Navigation
@@ -121,10 +147,14 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "verification", let veryVC = segue.destination as? VerificationViewController {
             veryVC.mobileNumber = self.mobileNumberTxt.text!
+            veryVC.countryCode = "IN"
             if let cCode = self.countryModel.countryCode {
                 veryVC.countryCode = cCode
             }
             veryVC.iSDCode = 91
+            if let isdCode = self.countryModel.extensionCode {
+                veryVC.iSDCode = Int(isdCode.replacingOccurrences(of: "+", with: "")) ?? 91
+            }
 //            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
 //                veryVC.iSDCode = isdCode
 //            }

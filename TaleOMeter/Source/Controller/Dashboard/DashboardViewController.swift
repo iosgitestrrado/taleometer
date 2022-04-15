@@ -16,6 +16,9 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     @IBOutlet weak var surpriseButton: UIButton!
     @IBOutlet weak var nonStopBtn: UIButton!
+    
+    // MARK: - Private Property -
+    var segmentController = SegmentViewController()
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -37,8 +40,16 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let heightt = self.view.safeAreaInsets.bottom == 0 ? -34.0 : self.view.safeAreaInsets.bottom
+        self.containerView.frame.size.width = CGFloat((350.0 * UIScreen.main.bounds.width) / 390.0)
+        self.containerView.frame.size.height = CGFloat(((469.0 + heightt) * UIScreen.main.bounds.height) / 844.0)
+        segmentController.parentFrame = self.containerView.frame
     }
     
     // MARK: Close Audio Mini player
@@ -65,6 +76,10 @@ class DashboardViewController: UIViewController {
                     AudioPlayManager.shared.isNonStop = !sender.isSelected
                     AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
                     AudioPlayManager.shared.removeMiniPlayer()
+                    guard let player = AudioPlayManager.shared.playerAV else { return }
+                    if player.isPlaying {
+                        AudioPlayManager.shared.playPauseAudio(false)
+                    }
                 }
             }
         } else {
@@ -75,7 +90,22 @@ class DashboardViewController: UIViewController {
     // MARK: Click on surprise button
     @IBAction func tapOnSurprise(_ sender: Any) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
-            Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NowPlayViewController")
+            Core.ShowProgress(self, detailLbl: "")
+            AudioClient.getSurpriseAudio(AudioRequest(page: "all", limit: 10)) { response in
+                if let data = response, data.count > 0 {
+                    if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+                        if AudioPlayManager.shared.isNonStop {
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                        }
+                        myobject.myAudioList = data
+                        myobject.currentAudioIndex = 0
+                        AudioPlayManager.shared.audioList = data
+                        AudioPlayManager.shared.setAudioIndex(0, isNext: false)
+                        self.navigationController?.pushViewController(myobject, animated: true)
+                    }
+                }
+                Core.HideProgress(self)
+            }
         } else {
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }
@@ -89,8 +119,10 @@ class DashboardViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "segmentview", let segVC = segue.destination as? SegmentViewController {
             segVC.parentController = self
-            self.containerView.frame.size.width = CGFloat((335.0 * UIScreen.main.bounds.width) / 375.0)
+            self.containerView.frame.size.width = CGFloat((350.0 * UIScreen.main.bounds.width) / 390.0)
+            self.containerView.frame.size.height = CGFloat((503.0 * UIScreen.main.bounds.height) / 844.0)
             segVC.parentFrame = self.containerView.frame
+            segmentController = segVC
         }
     }
 }

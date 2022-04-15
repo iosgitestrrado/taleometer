@@ -12,6 +12,8 @@ class TriviaViewController: UIViewController {
     // MARK: - Weak Properties -
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var fromSideMenu = false
+    
     // MARK: - Private Properties -
     private var gridWidth: CGFloat = 187.0
     private var gridHeight: CGFloat = 225.0
@@ -37,27 +39,37 @@ class TriviaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        gridWidth = (UIScreen.main.bounds.width - titleViewHeight) / 2.0
-        gridHeight = gridWidth + titleViewHeight
+        
+        gridWidth = self.collectionView.frame.size.width / 2.0
+        gridHeight = (gridWidth + titleViewHeight)
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()//collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+       // layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: gridWidth, height: gridHeight)
-        layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         collectionView.collectionViewLayout = layout
-        getTrivia()
+        collectionView.alwaysBounceVertical = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImageColor: .red)
-        self.navigationItem.hidesBackButton = true
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
+        self.navigationItem.hidesBackButton = !fromSideMenu
+        getTrivia()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if fromSideMenu && isMovingFromParent {
+            self.sideMenuController!.toggleRightView(animated: false)
+        }
+        
     }
     
     // MARK: - Get trivia home data from server -
     private func getTrivia() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -110,19 +122,9 @@ extension TriviaViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? GridCollectionViewCell {
             if indexPath.row == 0 {
-                if triviaHome.Trivia_daily.Post_count > 0 {
-                    let celldata1 = triviaHome.Trivia_daily
-                    cell.configureCell(celldata1.Title, coverImage: celldata1.Image, count: celldata1.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
-                } else {
-                    Toast.show("No post found!")
-                }
+                cell.configureCell(triviaHome.Trivia_daily, gridWidth: gridWidth, gridHeight: gridHeight + 60.0, titleViewHeight: titleViewHeight, row: indexPath.row)
             } else {
-                let cellData = triviaHome.Trivia_category[indexPath.row - 1]
-                if cellData.Post_count > 0 {
-                    cell.configureCell(cellData.Category_name, coverImage: cellData.Category_image, count: cellData.Post_count, gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
-                } else {
-                    Toast.show("No post found!")
-                }
+                cell.configureCellCat(triviaHome.Trivia_category[indexPath.row - 1], gridWidth: gridWidth, gridHeight: gridHeight, titleViewHeight: titleViewHeight, row: indexPath.row)
             }
             return cell
         }
@@ -133,7 +135,14 @@ extension TriviaViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate -
 extension TriviaViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        if indexPath.row == 0 && triviaHome.Trivia_daily.Post_count_today == 0 {
+            Toast.show(triviaHome.Trivia_daily.Post_msg)
+            return
+        }
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
         if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
             myobject.categoryId =  indexPath.row != 0 ? triviaHome.Trivia_category[indexPath.row - 1].Category_id : -1
             self.navigationController?.pushViewController(myobject, animated: true)
@@ -146,8 +155,8 @@ extension TriviaViewController: UICollectionViewDelegate {
 extension TriviaViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {
-            return CGSize(width: gridWidth*2, height: gridHeight)
+            return CGSize(width: collectionView.frame.size.width, height: gridHeight + 60.0)
         }
-        return CGSize(width: gridWidth, height: gridHeight)
+        return CGSize(width: (collectionView.frame.size.width) / 2.0, height: gridHeight)
     }
 }

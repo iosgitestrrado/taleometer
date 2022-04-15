@@ -12,14 +12,16 @@ class VerificationViewController: UIViewController {
     
     // MARK: - Public Properties -
     var mobileNumber = ""
-    var countryCode = ""
-    var iSDCode = 0
+    var countryCode = "IN"
+    var iSDCode = 91
 
     // MARK: - Weak Properties -
-    @IBOutlet weak var otp1TextField: UITextField!
-    @IBOutlet weak var otp2TextField: UITextField!
-    @IBOutlet weak var otp3TextField: UITextField!
-    @IBOutlet weak var otp4TextField: UITextField!
+    @IBOutlet weak var otp1TextField: CustomTextField!
+    @IBOutlet weak var otp2TextField: CustomTextField!
+    @IBOutlet weak var otp3TextField: CustomTextField!
+    @IBOutlet weak var otp4TextField: CustomTextField!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel1: UILabel!
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -27,15 +29,40 @@ class VerificationViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.hideKeyboard()
         //self.navigationItem.hidesBackButton = true
+        otp1TextField.backSpaceDelegate = self
+        otp2TextField.backSpaceDelegate = self
+        otp3TextField.backSpaceDelegate = self
+        otp4TextField.backSpaceDelegate = self
+        titleLabel.addUnderline()
+        
+//        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\n           Your Phone Number.")
+//        let font36 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 34) ]
+//        let font22 = [ NSAttributedString.Key.font: UIFont(name: "CommutersSans-Regular", size: 20) ]
+//
+//        let rangeTitle1 = NSRange(location: 0, length: 23)
+//        let rangeTitle2 = NSRange(location: 23, length: 30)
+//
+//        titleString.addAttributes(font36 as [NSAttributedString.Key : Any], range: rangeTitle1)
+//        titleString.addAttributes(font22 as [NSAttributedString.Key : Any], range: rangeTitle2)
+//
+//        titleLabel1.attributedText = titleString
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        otp1TextField.becomeFirstResponder()
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
@@ -58,7 +85,7 @@ class VerificationViewController: UIViewController {
     
     @IBAction func tapOnResendOTP(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP...")
@@ -69,7 +96,7 @@ class VerificationViewController: UIViewController {
     
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         if self.otp1TextField.text!.isEmpty || self.otp2TextField.text!.isEmpty || self.otp3TextField.text!.isEmpty ||
@@ -80,7 +107,7 @@ class VerificationViewController: UIViewController {
         
         let otp = "\(self.otp1TextField.text!)\(self.otp2TextField.text!)\(self.otp3TextField.text!)\(self.otp4TextField.text!)"
         Core.ShowProgress(self, detailLbl: "Verification OTP...")
-        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0)) { result, status, token, isNewRegister in
+        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0, isd_code: "\(iSDCode)", country_code: countryCode)) { result, status, token, isNewRegister in
             if var response = result, !token.isBlank {
                 UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
                 UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
@@ -116,7 +143,29 @@ class VerificationViewController: UIViewController {
     }
 }
 
-extension VerificationViewController: UITextFieldDelegate {
+extension VerificationViewController: UITextFieldDelegate, BackSpaceDelegate {
+    
+    func deleteBackWord(textField: CustomTextField) {
+        /// do your stuff here. That means resign or become first responder your expected textfield.
+        switch textField {
+        case otp2TextField:
+            otp2TextField.text = ""
+            otp1TextField.becomeFirstResponder()
+            return
+        case otp3TextField:
+            otp3TextField.text = ""
+            otp2TextField.becomeFirstResponder()
+            return
+        case otp4TextField:
+            otp4TextField.text = ""
+            otp3TextField.becomeFirstResponder()
+            return
+        default:
+            otp1TextField.text = ""
+            return
+        }
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
@@ -124,15 +173,15 @@ extension VerificationViewController: UITextFieldDelegate {
                 switch textField {
                 case otp2TextField:
                     otp2TextField.text = ""
-                    otp1TextField.becomeFirstResponder()
+                    //otp1TextField.becomeFirstResponder()
                     return false
                 case otp3TextField:
                     otp3TextField.text = ""
-                    otp2TextField.becomeFirstResponder()
+                    //otp2TextField.becomeFirstResponder()
                     return false
                 case otp4TextField:
                     otp4TextField.text = ""
-                    otp3TextField.becomeFirstResponder()
+                    //otp3TextField.becomeFirstResponder()
                     return false
                 default:
                     otp1TextField.text = ""

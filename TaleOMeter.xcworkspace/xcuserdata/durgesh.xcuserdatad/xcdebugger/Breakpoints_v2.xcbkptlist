@@ -18,6 +18,38 @@
             endingLineNumber = "1879"
             landmarkName = "rightViewStatusBarBackgroundBlurEffect"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "F0EC46C2-4178-4A61-A9A4-ABB91A263000 - e35ea8a585bd7524"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LGSideMenuController.LGSideMenuController.rightViewStatusBarBackgroundBlurEffect.getter : Swift.Optional&lt;__C.UIBlurEffect&gt;"
+                  moduleName = "LGSideMenuController"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/Pods/LGSideMenuController/LGSideMenuController/LGSideMenuController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1879"
+                  endingLineNumber = "1879"
+                  offsetFromSymbolStart = "224">
+               </Location>
+               <Location
+                  uuid = "F0EC46C2-4178-4A61-A9A4-ABB91A263000 - e35ea8a585bd7524"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LGSideMenuController.LGSideMenuController.rightViewStatusBarBackgroundBlurEffect.getter : Swift.Optional&lt;__C.UIBlurEffect&gt;"
+                  moduleName = "LGSideMenuController"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/durgesh/Documents/Projects/TaleOMeter/Pods/LGSideMenuController/LGSideMenuController/LGSideMenuController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1879"
+                  endingLineNumber = "1879"
+                  offsetFromSymbolStart = "235">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -71,32 +103,80 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3D307453-ADF9-4C52-BD0F-32410682035F"
+            uuid = "514FB0F8-8F5B-47E0-8EF2-CAFFEF2075C8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Authentication/Register/RegisterViewController.swift"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "tapOnSubmit(_:)"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
+            landmarkName = "nextPrevPlay(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5925CF7D-73F5-4A03-A2A8-DC9032E620E2"
+            uuid = "A7AF18EF-E286-484F-91E2-A7664BFE801A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
-            landmarkName = "tapOnAudioController(_:)"
+            startingLineNumber = "375"
+            endingLineNumber = "375"
+            landmarkName = "didActionOnPromptButton(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "380D490A-CEC2-4163-87A7-43352E68BD49"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "setupRemoteTransportControls()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "93927195-6597-4089-AAAA-6B991A3B4073"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "setupRemoteTransportControls()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "20A7A562-408E-4018-A286-9829EEABCC83"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
+            landmarkName = "addMiniPlayer(_:bottomConstraint:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

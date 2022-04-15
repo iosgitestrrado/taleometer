@@ -11,7 +11,10 @@ import SpriteKit
 import SDWebImage
 
 class PreferenceViewController: UIViewController {
-
+    
+    // MARK: - Weak Properties -
+    @IBOutlet weak var prefrenceView: UIView!
+    
     // MARK: - Storyboard outlet -
     @IBOutlet weak var magneticView: MagneticView! {
         didSet {
@@ -45,20 +48,17 @@ class PreferenceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
-        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
     }
     
     @objc func runTimedCode() {
-        if let nodd = firstNode, nodd.position.y + nodd.frame.size.height > UIScreen.main.bounds.size.height {
+        if let nodd = firstNode, (nodd.position.y + nodd.frame.size.height - 180) > UIScreen.main.bounds.size.height {
             timerg?.invalidate()
             skipButton.isHidden = false
         }
     }
     
     @objc func runTimedCodeLast() {
-        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 120) > UIScreen.main.bounds.size.height {
+        if let nodd = lastNode, (nodd.position.y + nodd.frame.size.height - 200) > UIScreen.main.bounds.size.height {
             timerg1?.invalidate()
             Core.ShowProgress(self, detailLbl: "Moving To Home Page")
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -73,15 +73,29 @@ class PreferenceViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.timerg?.invalidate()
+        self.timerg1?.invalidate()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    @IBAction func tapOnClosePrePrompt(_ sender: Any) {
+        self.prefrenceView.isHidden = true
+        self.timerg = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.runTimedCode), userInfo: nil, repeats: true)
+        self.timerg1 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.runTimedCodeLast), userInfo: nil, repeats: true)
+//        Login.removeStoryBoardData()
+//        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         getBubbles()
     }
     
     // MARK: - Get bubbles from API's -
     private func getBubbles() {
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             return
         }
         Core.ShowProgress(self, detailLbl: "")
@@ -105,10 +119,11 @@ class PreferenceViewController: UIViewController {
     }
     
     @IBAction func tapOnSkipButton(_ sender: Any) {
+        timerg1?.invalidate()
         if !Reachability.isConnectedToNetwork() {
-            Toast.show()
+            Core.noInternet(self)
             Core.HideProgress(self)
-            Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+            //Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
             return
         }
         Core.ShowProgress(self, detailLbl: "Moving To Home Page")
@@ -127,18 +142,27 @@ class PreferenceViewController: UIViewController {
         }
         //let name = UIImage.names.randomItem() //checkmark.seal.fill
         //let color = UIColor.colors.randomItem()
-        
+        let node = Node(text: "", image: defaultImage, color: .white, radius: 10.0)
+
         let bubblePref = bubbles[totalNodes]
-        
-        let node = Node(text: "", image: bubblePref.Image, color: .white, radius: 10.0)
-        node.originalTexture = SKTexture(image: bubblePref.Image)
-        node.selectedTexture = SKTexture(image: Core.combineImages(bubblePref.Image, topImage: UIImage(named: "Default_sel_img")!))
-        
+        SDWebImageManager.shared.loadImage(with: URL(string: bubblePref.ImageUrl), options: [], progress: nil) { image, data, error, typp, status, url in
+            DispatchQueue.global(qos: .background).async { [self] in
+                DispatchQueue.main.async {
+                    if let imgData = image?.jpegData(compressionQuality: 70.0), let downImage = UIImage(data: imgData) {
+                        node.setImage(image: downImage, selectedImage: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
+                    }
+                    node.isSelected = selectedBubbles.contains(node.tag)
+                }
+            }
+        }
+//        node.originalTexture = SKTexture(image: defaultImage)
+//        node.selectedTexture = SKTexture(image: Core.combineImages(defaultImage, topImage: UIImage(named: "Default_sel_img")!))
+       
         node.scaleToFitContent = true
         node.selectedColor = .clear
         node.selectedStrokeColor = .red
         node.tag = bubblePref.Id
-        node.isSelected = selectedBubbles.contains(node.tag)
+        //node.isSelected = selectedBubbles.contains(node.tag)
         node.speed = 0.1
         if totalNodes == 0 {
             firstNode = node
@@ -147,8 +171,10 @@ class PreferenceViewController: UIViewController {
             lastNode = node
         }
         magnetic.addChild(node)
-        node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -50)
+        node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -150)
         totalNodes += 1
+        
+        
     }
 }
 
