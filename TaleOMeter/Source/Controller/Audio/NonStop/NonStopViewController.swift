@@ -79,7 +79,7 @@ class NonStopViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if UserDefaults.standard.bool(forKey: "AutoplayEnable") {
+        if AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable") {
             PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }
@@ -247,12 +247,12 @@ class NonStopViewController: UIViewController {
     
     // MARK: - Tap On Non stop
     @IBAction func tapOnNonStop(_ sender: UIButton) {
-        UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
+        UIView.transition(with: sender as UIView, duration: 0.1, options: .transitionCrossDissolve) {
             sender.isSelected = !sender.isSelected
         } completion: { [self] isDone in
-            if isPlaying {
-                playPauseAudio(!sender.isSelected)
-            }
+//            if isPlaying {
+            playPauseAudio(!sender.isSelected)
+//            }
             AudioPlayManager.shared.isNonStop = !sender.isSelected
             AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
         }
@@ -420,7 +420,7 @@ class NonStopViewController: UIViewController {
                 if audioTimer.isValid {
                     audioTimer.invalidate()
                 }
-                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(self.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
 //                if let ch = visualizationWave.playChronometer, !ch.isPlaying {

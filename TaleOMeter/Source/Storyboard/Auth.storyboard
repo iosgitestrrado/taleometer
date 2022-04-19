@@ -141,28 +141,60 @@ Cg
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0C-7d-bf2">
-                                <rect key="frame" x="20" y="411" width="240" height="20"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="o0C-7d-bf2">
+                                <rect key="frame" x="20" y="416" width="350" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please read our " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oq5-9s-Km2">
-                                        <rect key="frame" x="0.0" y="0.0" width="104" height="20"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Signing up, you are agreeing to the " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oq5-9s-Km2" userLabel="Please read our">
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="I9e-Vw-j2l"/>
+                                            <constraint firstAttribute="height" constant="40" id="I9e-Vw-j2l"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                         <color key="textColor" red="0.3294117647" green="0.33333333329999998" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-ca-UGv">
-                                        <rect key="frame" x="104" y="0.0" width="136" height="20"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-ca-UGv">
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="cf3-6V-mtO"/>
+                                            <constraint firstAttribute="height" constant="40" id="cf3-6V-mtO"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="CommutersSans-Regular" family="Commuters Sans" pointSize="12"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="terms and conditions">
-                                            <color key="titleColor" red="0.90980392156862744" green="0.2196078431372549" blue="0.29019607843137252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="By Signing up, you are agreeing to the">
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.32941176470588235" green="0.33333333333333331" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="12" name="CommutersSans-Regular"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment content=" Terms &amp; Conditions &amp; Data Privacy Policy">
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.90980392156862744" green="0.2196078431372549" blue="0.29019607843137252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="12" name="CommutersSans-Regular"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                         </state>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="By Signing up, you are agreeing to the">
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.32941176470588235" green="0.33333333333333331" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="12" name="CommutersSans-Regular"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment content=" Terms &amp; Conditions &amp; Data Privacy Policy">
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.90980392156862744" green="0.2196078431372549" blue="0.29019607843137252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="12" name="CommutersSans-Regular"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="tapOnTermsAndCond:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="f2R-ew-nvY"/>
                                         </connections>
@@ -170,7 +202,7 @@ Cg
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bht-zK-LF7">
-                                <rect key="frame" x="320" y="441" width="50" height="50"/>
+                                <rect key="frame" x="320" y="466" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="6N9-QX-Rjg"/>
                                     <constraint firstAttribute="height" constant="50" id="lxx-pD-c6m"/>
@@ -202,7 +234,7 @@ Cg
                             <constraint firstItem="o0C-7d-bf2" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="6Dz-rM-8vL"/>
                             <constraint firstItem="QlC-xM-3n3" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="CKi-KK-cbE"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="9mA-hR-n5h" secondAttribute="trailing" constant="20" id="DYy-gy-OEj"/>
-                            <constraint firstItem="o0C-7d-bf2" firstAttribute="top" secondItem="9mA-hR-n5h" secondAttribute="bottom" constant="10" id="Dae-Qo-NG5"/>
+                            <constraint firstItem="o0C-7d-bf2" firstAttribute="top" secondItem="9mA-hR-n5h" secondAttribute="bottom" constant="15" id="Dae-Qo-NG5"/>
                             <constraint firstItem="9mA-hR-n5h" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="DvA-yK-sO5"/>
                             <constraint firstItem="9mA-hR-n5h" firstAttribute="top" secondItem="QlC-xM-3n3" secondAttribute="bottom" constant="8" id="ERG-Nt-nP7"/>
                             <constraint firstItem="pjK-tQ-k0w" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="F9U-6W-9k5"/>
@@ -215,6 +247,7 @@ Cg
                             <constraint firstItem="fhc-vO-J4N" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="hG6-OL-LV1"/>
                             <constraint firstItem="pjK-tQ-k0w" firstAttribute="top" secondItem="SaH-GP-U1y" secondAttribute="bottom" constant="30" id="hoo-Xr-ZmJ"/>
                             <constraint firstAttribute="bottom" secondItem="fhc-vO-J4N" secondAttribute="bottom" id="mQz-SO-sVB"/>
+                            <constraint firstAttribute="trailing" secondItem="o0C-7d-bf2" secondAttribute="trailing" constant="20" id="o2b-dp-ZNz"/>
                             <constraint firstItem="SaH-GP-U1y" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="pAF-px-AWu"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="QlC-xM-3n3" secondAttribute="trailing" constant="20" id="vak-KY-c3i"/>
                             <constraint firstItem="bht-zK-LF7" firstAttribute="top" secondItem="o0C-7d-bf2" secondAttribute="bottom" constant="10" id="xl5-vJ-Ygo"/>

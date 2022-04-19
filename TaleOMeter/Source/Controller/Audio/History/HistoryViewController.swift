@@ -331,13 +331,14 @@ extension HistoryViewController {
 //                }
                 playingCurrentAudio()
             }
+        
             // Scroll to perticuler row
             DispatchQueue.main.async {
+                self.tableView.reloadData()
                 if pageNumber == 1 && selectedIndex >= 0 && selectedSection >= 0 {
                     let indexPath = IndexPath(row: selectedIndex, section: selectedSection)
                     self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                 }
-                self.tableView.reloadData()
             }
             tableView.tableFooterView = UIView()
             // Check mini player audio is playing or not

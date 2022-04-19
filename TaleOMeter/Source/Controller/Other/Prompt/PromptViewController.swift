@@ -61,7 +61,6 @@ class PromptViewController: UIViewController {
             //You Just listened to "Track To Relax"
             let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
             
-            
             var font22 = [ NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22.0) ]
             
             if let regular16 = UIFont(name: "CommutersSans-Regular", size: 16.0) {

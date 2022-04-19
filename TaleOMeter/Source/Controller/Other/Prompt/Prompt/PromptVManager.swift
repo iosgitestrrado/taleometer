@@ -43,7 +43,8 @@ class PromptVManager: NSObject {
                         myobject.answerImage.isHidden = true
                     }
                     myobject.answerMessage.text = verifyMessage
-
+                    myobject.answerMessage.isHidden = true
+                    myobject.questionImage.isHidden = true
                 } else {
                     myobject.titleLabelV.text = verifyTitle
                     myobject.messageLabelV.text = verifyMessage

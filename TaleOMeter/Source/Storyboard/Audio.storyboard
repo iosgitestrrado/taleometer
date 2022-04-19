@@ -26,8 +26,12 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gku-sP-Vhc">
                                         <rect key="frame" x="97" y="0.0" width="196" height="196"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
                                                 <rect key="frame" x="0.0" y="0.0" width="196" height="196"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="abr-mx-hzm" secondAttribute="height" multiplier="1:1" id="sfO-O9-DUK"/>
+                                                </constraints>
                                             </imageView>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Concurrent Users: 1.3 k  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="Qg3-1j-ivw">
                                                 <rect key="frame" x="71" y="88" width="125" height="20"/>
@@ -331,7 +335,7 @@
                         <outlet property="cuncurrentUserLbl" destination="Qg3-1j-ivw" id="b9l-PM-y43"/>
                         <outlet property="endTimeLabel" destination="JOY-KK-IKu" id="8X6-d3-Eui"/>
                         <outlet property="favButton" destination="P8z-Zm-Lq4" id="NdN-gj-YJV"/>
-                        <outlet property="imageView" destination="abr-mx-hzm" id="4lC-4I-UmU"/>
+                        <outlet property="imageView" destination="abr-mx-hzm" id="0Ii-g2-kdb"/>
                         <outlet property="narrotionButton" destination="pco-Oi-ATm" id="eAE-96-gj5"/>
                         <outlet property="playButton" destination="gIy-g5-Ed7" id="Z24-ky-yhc"/>
                         <outlet property="plotButton" destination="kRI-wi-ZNk" id="wg7-ny-aq6"/>
@@ -547,16 +551,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccY-oP-qgf">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="265"/>
+                                <rect key="frame" x="0.0" y="44" width="390" height="265"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0no-Ea-AmG">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="0no-Ea-AmG">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="265"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lh9-2i-qLk">
                                         <rect key="frame" x="20" y="100" width="80" height="80"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="jx7-Nj-Z9S">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="jx7-Nj-Z9S">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -691,7 +695,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JH5-Uo-0bF">
-                                <rect key="frame" x="0.0" y="265" width="390" height="545"/>
+                                <rect key="frame" x="0.0" y="309" width="390" height="501"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="BZ2-7S-NI9" kind="embed" identifier="audioList" id="W2Q-wH-ecf"/>
@@ -702,12 +706,12 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="JH5-Uo-0bF" firstAttribute="trailing" secondItem="WOy-yn-Stw" secondAttribute="trailing" id="5g0-bm-oF4"/>
-                            <constraint firstItem="JH5-Uo-0bF" firstAttribute="top" secondItem="ccY-oP-qgf" secondAttribute="bottom" id="Ggu-EA-Iu7"/>
+                            <constraint firstItem="JH5-Uo-0bF" firstAttribute="top" secondItem="ccY-oP-qgf" secondAttribute="bottom" id="CsB-09-gk5"/>
                             <constraint firstItem="ccY-oP-qgf" firstAttribute="leading" secondItem="WOy-yn-Stw" secondAttribute="leading" id="Qbt-UQ-pxq"/>
                             <constraint firstAttribute="bottom" secondItem="sgV-mW-944" secondAttribute="bottom" id="RsY-YB-goe"/>
                             <constraint firstItem="sgV-mW-944" firstAttribute="top" secondItem="vQG-tk-inF" secondAttribute="top" id="SYD-0q-aYc"/>
                             <constraint firstItem="sgV-mW-944" firstAttribute="leading" secondItem="WOy-yn-Stw" secondAttribute="leading" id="UEq-Ky-QJr"/>
-                            <constraint firstItem="ccY-oP-qgf" firstAttribute="top" secondItem="vQG-tk-inF" secondAttribute="top" id="UaW-ls-h0J"/>
+                            <constraint firstItem="ccY-oP-qgf" firstAttribute="top" secondItem="WOy-yn-Stw" secondAttribute="top" id="UaW-ls-h0J"/>
                             <constraint firstItem="sgV-mW-944" firstAttribute="trailing" secondItem="WOy-yn-Stw" secondAttribute="trailing" id="XA2-AE-FMZ"/>
                             <constraint firstItem="JH5-Uo-0bF" firstAttribute="leading" secondItem="WOy-yn-Stw" secondAttribute="leading" id="Y2q-6l-VF8"/>
                             <constraint firstItem="WOy-yn-Stw" firstAttribute="bottom" secondItem="JH5-Uo-0bF" secondAttribute="bottom" id="p4T-0u-5C4"/>
@@ -734,7 +738,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="AudioListViewController" id="BZ2-7S-NI9" customClass="AudioListViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="njp-Po-3Us">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="722"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="501"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
@@ -1015,7 +1019,7 @@
                                     <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for stories" translatesAutoresizingMaskIntoConstraints="NO" id="wW5-og-7VZ">
                                         <rect key="frame" x="40" y="0.0" width="334" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                         <connections>
@@ -1244,9 +1248,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ns_pop-bg" translatesAutoresizingMaskIntoConstraints="NO" id="Two-iF-lj4">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ns_pop-bg" translatesAutoresizingMaskIntoConstraints="NO" id="Two-iF-lj4">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jjW-cw-GMD">
                                 <rect key="frame" x="0.0" y="168" width="390" height="642"/>
@@ -1431,13 +1434,19 @@
                         <viewLayoutGuide key="safeArea" id="N6A-Sh-qQd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Two-iF-lj4" secondAttribute="bottom" id="COz-GC-jyL"/>
                             <constraint firstItem="jjW-cw-GMD" firstAttribute="leading" secondItem="N6A-Sh-qQd" secondAttribute="leading" id="OvB-Nb-1Kh"/>
+                            <constraint firstItem="Two-iF-lj4" firstAttribute="leading" secondItem="N6A-Sh-qQd" secondAttribute="leading" id="Pxu-Cs-oEK"/>
                             <constraint firstItem="jjW-cw-GMD" firstAttribute="centerX" secondItem="qqg-e4-1Pj" secondAttribute="centerX" id="R0o-z9-DMV"/>
+                            <constraint firstItem="Two-iF-lj4" firstAttribute="centerX" secondItem="qqg-e4-1Pj" secondAttribute="centerX" id="UJT-7v-pdH"/>
                             <constraint firstItem="GmT-og-kp8" firstAttribute="leading" secondItem="N6A-Sh-qQd" secondAttribute="leading" constant="77" id="UUw-gP-mOn"/>
                             <constraint firstItem="N6A-Sh-qQd" firstAttribute="trailing" secondItem="jjW-cw-GMD" secondAttribute="trailing" id="ble-Pj-KSr"/>
                             <constraint firstItem="N6A-Sh-qQd" firstAttribute="bottom" secondItem="jjW-cw-GMD" secondAttribute="bottom" id="c0c-sL-Yh3"/>
+                            <constraint firstItem="Two-iF-lj4" firstAttribute="centerY" secondItem="qqg-e4-1Pj" secondAttribute="centerY" id="d0s-dh-Eud"/>
                             <constraint firstItem="GmT-og-kp8" firstAttribute="top" secondItem="N6A-Sh-qQd" secondAttribute="top" constant="23" id="iWF-Ar-tDU"/>
                             <constraint firstItem="jjW-cw-GMD" firstAttribute="top" secondItem="N6A-Sh-qQd" secondAttribute="top" constant="80" id="iwg-D8-EZf"/>
+                            <constraint firstItem="Two-iF-lj4" firstAttribute="top" secondItem="qqg-e4-1Pj" secondAttribute="top" id="kdw-Td-1DB"/>
+                            <constraint firstItem="Two-iF-lj4" firstAttribute="trailing" secondItem="N6A-Sh-qQd" secondAttribute="trailing" id="qfg-gQ-gtM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Listen Non-Stop" id="MSN-qf-Alq"/>
@@ -2106,7 +2115,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="OsM-f0-nSp"/>
+        <segue reference="W2Q-wH-ecf"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
