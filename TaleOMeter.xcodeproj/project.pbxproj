@@ -908,12 +908,12 @@
 			path = Footer;
 			sourceTree = "<group>";
 		};
-		63A4F57327BFDCA500FDBB03 /* Prompt */ = {
+		63A4F57327BFDCA500FDBB03 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				63A4F57427BFDCBF00FDBB03 /* PromptVManager.swift */,
 			);
-			path = Prompt;
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		63BB27F327EC84F3004D2D9B /* Toast */ = {
@@ -1093,7 +1093,7 @@
 		63D27C9627BD0C1D0074EA7F /* Prompt */ = {
 			isa = PBXGroup;
 			children = (
-				63A4F57327BFDCA500FDBB03 /* Prompt */,
+				63A4F57327BFDCA500FDBB03 /* Manager */,
 				63D27C9727BD0C2F0074EA7F /* PromptViewController.swift */,
 			);
 			path = Prompt;
@@ -1819,7 +1819,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G8XJ77D87N;
+				DEVELOPMENT_TEAM = XLPSEH973Z;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
@@ -1837,8 +1837,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.7;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
+				MARKETING_VERSION = 1.4.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1874,10 +1874,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.7;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
+				MARKETING_VERSION = 1.4.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = TaleOMeterV1_appstore;
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

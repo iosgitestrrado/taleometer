@@ -35,15 +35,16 @@ class PromptVManager: NSObject {
                     myobject.audioImageView.cornerRadius = myobject.audioImageView.frame.size.height / 2.0
                 } else if isQuestion {
                     myobject.questionImage.sd_setImage(with: URL(string: queImage), placeholderImage: defaultImage, options: [], context: nil)
-                    myobject.answerTitle.text = verifyTitle
+                    myobject.answerTitle.text = verifyMessage
+                    //myobject.answerMessage.text = verifyMessage
+                    myobject.answerMessage.text = "Answer:"
                     if !ansImage.isBlank {
-                        myobject.answerTitle.text = "Answer:"
                         myobject.answerImage.sd_setImage(with: URL(string: ansImage), placeholderImage: defaultImage, options: [], context: nil)
+                        myobject.answerTitle.isHidden = true
                     } else {
                         myobject.answerImage.isHidden = true
+                        myobject.answerMessage.isHidden = false
                     }
-                    myobject.answerMessage.text = verifyMessage
-                    myobject.answerMessage.isHidden = true
                     myobject.questionImage.isHidden = true
                 } else {
                     myobject.titleLabelV.text = verifyTitle
