@@ -39,6 +39,10 @@ class SearchViewController: UIViewController {
         self.searchBar.searchTextField.backgroundColor = .white
         searchBar.searchTextField.leftView?.tintColor = .black
         searchBar.searchTextField.textColor = .black
+        
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+
+        
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -317,6 +321,7 @@ extension SearchViewController: UISearchBarDelegate {
                     self.morePage[0] = true
                     self.pageNumber[0] = 1
                     self.showNoData[0] = 0
+                    self.isRecentSearch = false
                     self.get(searchBar.text!)
                 }
             }

@@ -187,7 +187,8 @@ class AudioListViewController: UITableViewController {
             // Enable isfavorite of audio player manager
             AudioPlayManager.shared.isFavourite = true
             AudioPlayManager.shared.isNonStop = false
-            
+            AudioPlayManager.shared.isHistory = false
+
             // Set audio for audio play manager
             AudioPlayManager.shared.audioList = [Audio]()
             audioList.forEach { fav in
@@ -256,14 +257,8 @@ class AudioListViewController: UITableViewController {
     // MARK: - Audio playing completed
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
         selectedIndex = -1
-        if let isNextPrev = notification.userInfo?["isNextPrev"] as? Bool, isNextPrev {
-            if let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
-                    selectedIndex = selectedAudio
-            }
-        } else {
-            if let audioList2 = AudioPlayManager.shared.audioList, audioList2.count > 0, let selectedAudio = audioList.firstIndex(where: { $0.Id == audioList2[AudioPlayManager.shared.nextIndex].Id }) {
-                    selectedIndex = selectedAudio
-            }
+        if let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
+                selectedIndex = selectedAudio
         }
         if selectedIndex >= 0 {
             let indexPath = IndexPath(row: selectedIndex, section: 0)
@@ -349,14 +344,31 @@ extension AudioListViewController {
                 audioList = pageNumber == 1 ? response : audioList + response
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio
+                    if !AudioPlayManager.shared.isFavourite {
+                        // Enable isfavorite of audio player manager
+                        AudioPlayManager.shared.isFavourite = true
+                        AudioPlayManager.shared.isNonStop = false
+                        AudioPlayManager.shared.isHistory = false
+
+                        // Set audio for audio play manager
+                        AudioPlayManager.shared.audioList = [Audio]()
+                        audioList.forEach { fav in
+                            AudioPlayManager.shared.audioList?.append(fav)
+                        }
+                        
+                        // Set current audio index of audio play manager
+                        AudioPlayManager.shared.setAudioIndex(selectedIndex, isNext: false)
+                    }
                 }
             }
-            if selectedIndex >= 0 {
-                let indexPath = IndexPath(row: selectedIndex, section: 0)
-                self.tableView.reloadData()
-                self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
-            } else {
-                tableView.reloadData()
+            DispatchQueue.main.async {
+                if selectedIndex >= 0 {
+                    let indexPath = IndexPath(row: selectedIndex, section: 0)
+                    self.tableView.reloadData()
+                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                } else {
+                    tableView.reloadData()
+                }
             }
             tableView.tableFooterView = UIView()
             Core.HideProgress(parentConroller)
@@ -415,18 +427,37 @@ extension AudioListViewController {
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
                 audioList = pageNumber == 1 ? data : audioList + data
+                var isPlayingAudio = false
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
+                    isPlayingAudio = true
                     selectedIndex = selectedAudio
+                    if !AudioPlayManager.shared.isFavourite {
+                        // Enable isfavorite of audio player manager
+                        AudioPlayManager.shared.isFavourite = true
+                        AudioPlayManager.shared.isNonStop = false
+                        AudioPlayManager.shared.isHistory = false
+
+                        // Set audio for audio play manager
+                        AudioPlayManager.shared.audioList = [Audio]()
+                        audioList.forEach { fav in
+                            AudioPlayManager.shared.audioList?.append(fav)
+                        }
+                        
+                        // Set current audio index of audio play manager
+                        AudioPlayManager.shared.setAudioIndex(selectedIndex, isNext: false)
+                    }
                 }
-                if selectedIndex >= 0 {
-                    let indexPath = IndexPath(row: selectedIndex, section: 0)
-                    self.tableView.reloadData()
-                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
-                } else {
-                    tableView.reloadData()
+                DispatchQueue.main.async {
+                    if selectedIndex >= 0 {
+                        let indexPath = IndexPath(row: selectedIndex, section: 0)
+                        self.tableView.reloadData()
+                        self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                    } else {
+                        tableView.reloadData()
+                    }
                 }
                 tableView.tableFooterView = UIView()
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList.count])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList.count, "IsSelected" : isPlayingAudio])
             }
             Core.HideProgress(parentConroller)
         }
@@ -443,18 +474,37 @@ extension AudioListViewController {
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
                 audioList = pageNumber == 1 ? data : audioList + data
+                var isPlayingAudio = false
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
+                    isPlayingAudio = true
                     selectedIndex = selectedAudio
+                    if !AudioPlayManager.shared.isFavourite {
+                        // Enable isfavorite of audio player manager
+                        AudioPlayManager.shared.isFavourite = true
+                        AudioPlayManager.shared.isNonStop = false
+                        AudioPlayManager.shared.isHistory = false
+
+                        // Set audio for audio play manager
+                        AudioPlayManager.shared.audioList = [Audio]()
+                        audioList.forEach { fav in
+                            AudioPlayManager.shared.audioList?.append(fav)
+                        }
+                        
+                        // Set current audio index of audio play manager
+                        AudioPlayManager.shared.setAudioIndex(selectedIndex, isNext: false)
+                    }
                 }
-                if selectedIndex >= 0 {
-                    let indexPath = IndexPath(row: selectedIndex, section: 0)
-                    self.tableView.reloadData()
-                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
-                } else {
-                    tableView.reloadData()
+                DispatchQueue.main.async {
+                    if selectedIndex >= 0 {
+                        let indexPath = IndexPath(row: selectedIndex, section: 0)
+                        self.tableView.reloadData()
+                        self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                    } else {
+                        tableView.reloadData()
+                    }
                 }
                 tableView.tableFooterView = UIView()
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList.count])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList.count, "IsSelected" : isPlayingAudio])
             }
             Core.HideProgress(parentConroller)
         }
@@ -471,19 +521,37 @@ extension AudioListViewController {
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
                 audioList = pageNumber == 1 ? data : audioList + data
-                
+                var isPlayingAudio = false
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
+                    isPlayingAudio = true
                     selectedIndex = selectedAudio
+                    if !AudioPlayManager.shared.isFavourite {
+                        // Enable isfavorite of audio player manager
+                        AudioPlayManager.shared.isFavourite = true
+                        AudioPlayManager.shared.isNonStop = false
+                        AudioPlayManager.shared.isHistory = false
+
+                        // Set audio for audio play manager
+                        AudioPlayManager.shared.audioList = [Audio]()
+                        audioList.forEach { fav in
+                            AudioPlayManager.shared.audioList?.append(fav)
+                        }
+                        
+                        // Set current audio index of audio play manager
+                        AudioPlayManager.shared.setAudioIndex(selectedIndex, isNext: false)
+                    }
                 }
-                if selectedIndex >= 0 {
-                    let indexPath = IndexPath(row: selectedIndex, section: 0)
-                    self.tableView.reloadData()
-                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
-                } else {
-                    tableView.reloadData()
+                DispatchQueue.main.async {
+                    if selectedIndex >= 0 {
+                        let indexPath = IndexPath(row: selectedIndex, section: 0)
+                        self.tableView.reloadData()
+                        self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                    } else {
+                        tableView.reloadData()
+                    }
                 }
                 tableView.tableFooterView = UIView()
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList.count])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList.count, "IsSelected" : isPlayingAudio])
             }
             Core.HideProgress(parentConroller)
         }

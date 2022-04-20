@@ -35,6 +35,8 @@ class AuthorViewController: UIViewController {
         
         //bannerImage.image = storyData.Image
         profileImage.sd_setImage(with: URL(string: storyData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+        bannerImage.sd_setImage(with: URL(string: storyData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+        bannerImage.alpha = 0.75
         favButton.isHidden = true
         titleLabel.text = storyData.Name
         storiesLabel.text = "0\nStories"

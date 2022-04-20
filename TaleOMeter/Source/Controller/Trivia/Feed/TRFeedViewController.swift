@@ -414,7 +414,7 @@ extension TRFeedViewController {
                 /// Add post comment cell
                 cellDataArray.append(CellItem(cellId: FeedCellIdentifier.post, data: CellData(imageUrl: "", profilePic: profilePic, title: "", description: "", time: "", index: index)))
             }
-        }
+        }// 360 x 185 // 1280 x 660
         self.tableView.reloadData()
         //self.tableView.reloadSections(IndexSet(integer: 0), with: .bottom)
     }

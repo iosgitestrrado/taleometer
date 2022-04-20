@@ -56,6 +56,7 @@ class NowPlayViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
+        self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
         
         if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
             currentAudio = audList[AudioPlayManager.shared.currentIndex]
@@ -82,11 +83,13 @@ class NowPlayViewController: UIViewController {
         
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        audioTimer.invalidate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
+        self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -111,7 +114,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
+        if !AudioPlayManager.shared.isHistory, !AudioPlayManager.shared.isFavourite, !AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
             PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: aList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: aList[AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }
@@ -376,7 +379,7 @@ class NowPlayViewController: UIViewController {
                 if audioTimer.isValid {
                     audioTimer.invalidate()
                 }
-                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(self.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
 //                if let ch = visualizationWave.playChronometer, !ch.isPlaying {
@@ -412,7 +415,7 @@ class NowPlayViewController: UIViewController {
 //                visualizationWave.pause()
             } else {
                 //player.play()
-                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(NowPlayViewController.udpateTime), userInfo: nil, repeats: true)
+                audioTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(self.udpateTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
 //                visualizationWave.play(for: TimeInterval(totalTimeDuration))
@@ -513,7 +516,7 @@ class NowPlayViewController: UIViewController {
     }
     
     // MARK: - Update time as per playing audio
-    @objc func udpateTime() {
+    @objc private func udpateTime() {
         if self.checkForActiveCall() {
             self.playPauseAudio(false)
             audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.checkActiveCall), userInfo: nil, repeats: true)
