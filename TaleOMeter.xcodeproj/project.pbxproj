@@ -380,13 +380,13 @@
 		630056EB27BEA0E7009CB2E2 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				63863DC727D776BA00EFF6E2 /* Constant */,
 				6358434327B7B8050055DE7E /* Delegate */,
 				6358434127B7B7DF0055DE7E /* Storyboard */,
 				6358434227B7B7E70055DE7E /* Controller */,
 				63863DC327D7747700EFF6E2 /* Model */,
 				63863DCA27D7820F00EFF6E2 /* APIClients */,
 				63F2AAAC27BB6A08007CAFC1 /* Common Lib */,
-				63863DC727D776BA00EFF6E2 /* Constant */,
 				6358435E27B7CF9C0055DE7E /* Assets */,
 			);
 			path = Source;
@@ -1816,8 +1816,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Durgesh Timbadiya (HNB65DR3K2)";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XLPSEH973Z;
 				ENABLE_APP_SANDBOX = NO;
@@ -1837,10 +1837,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_Trivia_Development;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1874,7 +1874,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = TaleOMeter_adhoc;

@@ -193,7 +193,9 @@ extension ContainerViewController : ScrollMenuViewDelegate {
         }
         
         self.currentIndex = index
-        self.delegate?.containerViewItem(self.currentIndex!, currentController: self.childControllers[self.currentIndex!] as! UIViewController)
+        if  self.childControllers.count > self.currentIndex {
+            self.delegate?.containerViewItem(self.currentIndex!, currentController: self.childControllers[self.currentIndex!] as! UIViewController)
+        }
     }
 }
 
