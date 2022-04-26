@@ -23,7 +23,10 @@ struct Preference {
         Id = json["id"].intValue
         Name = json["name"].stringValue
         Preference_category_id = json["preference_category_id"].intValue
-        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
+        //ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
+        if let urlString = json["image"].string {
+            ImageUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+        }
         //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue

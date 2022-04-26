@@ -13,6 +13,7 @@ target 'TaleOMeter' do
   pod 'SDWebImage', '~>5.12.3'
   pod 'UIScrollView-InfiniteScroll', '~>1.1.0'
   pod 'Popover', '~>1.3.0'
+  pod 'Firebase/Messaging'
   # Pods for TaleOMeter
 
   target 'TaleOMeterTests' do

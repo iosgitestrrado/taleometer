@@ -41,6 +41,7 @@ class LoginViewController: UIViewController {
 //        
 //        titleLabel1.attributedText = titleString
         
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
         if let player = AudioPlayManager.shared.playerAV, player.isPlaying {

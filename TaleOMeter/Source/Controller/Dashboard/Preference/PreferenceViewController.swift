@@ -151,7 +151,7 @@ class PreferenceViewController: UIViewController {
                     if let imgData = image?.jpegData(compressionQuality: 70.0), let downImage = UIImage(data: imgData) {
                         node.setImage(image: downImage, selectedImage: Core.combineImages(downImage, topImage: UIImage(named: "Default_sel_img")!))
                     }
-                    node.isSelected = selectedBubbles.contains(node.tag)
+                    node.isSelected = self.selectedBubbles.contains(node.tag)
                 }
             }
         }

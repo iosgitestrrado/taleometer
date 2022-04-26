@@ -455,8 +455,8 @@ extension TRFeedViewController : UITableViewDataSource {
         }
         if videoPlayIndex == indexPath.row, let videoURL = URL(string: postData[cellData.index].QuestionVideoURL) {
             self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: indexPath.row)
-            if let subTitle = cell.subTitle {
-                subTitle.frame.origin.x += 50.0
+            if let subTitle = cell.subTitleXConstraint {
+                subTitle.constant = 60.0
             }
         }
         return cell

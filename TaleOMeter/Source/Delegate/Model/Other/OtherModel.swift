@@ -26,7 +26,10 @@ struct NotificationModel {
         Id = json["id"].intValue
         Title = json["title"].stringValue
         Content = json["content"].stringValue
-        BannerUrl = Constants.baseURL.appending("/\(json["banner"].stringValue)")
+//        BannerUrl = Constants.baseURL.appending("/\(json["banner"].stringValue)")
+        if let urlString = json["banner"].string {
+            BannerUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+        }
         //Core.setImage(Constants.baseURL.appending("/\(json["banner"].stringValue)"), image: &Banner)
         Audio_story_id = json["audio_story_id"].intValue
         Is_active = json["is_active"].boolValue

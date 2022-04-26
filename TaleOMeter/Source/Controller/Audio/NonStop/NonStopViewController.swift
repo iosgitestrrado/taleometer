@@ -79,8 +79,8 @@ class NonStopViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable") {
-            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: AudioPlayManager.shared.audioList![AudioPlayManager.shared.nextIndex].ImageUrl)
+        if AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let audioList = AudioPlayManager.shared.audioList, audioList.count > AudioPlayManager.shared.nextIndex  {
+            PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: audioList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: audioList[AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }
     
@@ -134,6 +134,7 @@ class NonStopViewController: UIViewController {
         self.plotLabel.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
         self.narrotionLabel.setTitle("Narration: \(currentAudio.Narration.Name)", for: .normal)
         self.favButton.isSelected = currentAudio.Is_favorite
+        self.favButton.isHidden = currentAudio.IsLinkedAudio
     }
     
     // MARK: Set audio data and play

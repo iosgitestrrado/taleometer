@@ -12,8 +12,13 @@ struct Constants {
     
 //    static let baseURL = "https://dev-taleometer.estrradoweb.com"
 //    static let baseURL = "https://app.taleometer.com"
+//    static let baseURL = "https://live.taleometer.com"
     static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
 
+    // Trivia Live: com.app.taleometer
+    // Trivia UAT: com.estrrado.taleometer
+    // Taleometer v1: com.estrrado.v1.taleometer
+    
     static let loaderImage = UIImage.gif(name: "spinner1")
     
     struct Storyboard {
@@ -28,6 +33,7 @@ struct Constants {
     
     struct UserDefault {
         static let AuthTokenStr = "authenticateToken"
+        static let FCMTokenStr = "FCMNotificationToken"
         static let IsLogin = "isLogin"
         static let ProfileData = "ProfileData"
         static let StartUsageId = "StartUsageId"

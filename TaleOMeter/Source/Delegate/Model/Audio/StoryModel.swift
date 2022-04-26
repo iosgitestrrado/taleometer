@@ -21,7 +21,10 @@ struct StoryModel {
         Id = json["id"].intValue
         Name = json["name"].stringValue
         //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
-        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
+        //ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
+        if let urlString = json["image"].string {
+            ImageUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+        }
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue

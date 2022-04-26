@@ -33,6 +33,10 @@ class VerificationViewController: UIViewController {
         otp2TextField.backSpaceDelegate = self
         otp3TextField.backSpaceDelegate = self
         otp4TextField.backSpaceDelegate = self
+        
+        otp1TextField.textContentType = .oneTimeCode
+        otp1TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+
         titleLabel.addUnderline()
         
 //        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\n           Your Phone Number.")
@@ -65,6 +69,18 @@ class VerificationViewController: UIViewController {
         otp1TextField.becomeFirstResponder()
     }
     
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if textField.textContentType == UITextContentType.oneTimeCode {
+            //here split the text to your four text fields
+            if let otpCode = textField.text, otpCode.count > 3 {
+                otp1TextField.text = String(otpCode[otpCode.index(otpCode.startIndex, offsetBy: 0)])
+                otp2TextField.text = String(otpCode[otpCode.index(otpCode.startIndex, offsetBy: 1)])
+                otp3TextField.text = String(otpCode[otpCode.index(otpCode.startIndex, offsetBy: 2)])
+                otp4TextField.text = String(otpCode[otpCode.index(otpCode.startIndex, offsetBy: 3)])
+            }
+        }
+    }
+    
     @objc private func keyboardWillShowNotification (notification: Notification) {
         if self.view.frame.origin.y == 0.0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
@@ -89,7 +105,7 @@ class VerificationViewController: UIViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP...")
-        AuthClient.login(LoginRequest(mobile: self.mobileNumber)) { status in
+        AuthClient.login(LoginRequest(mobile: self.mobileNumber, isd_code: "\(self.iSDCode)", country_code: self.countryCode)) { status in
             Core.HideProgress(self)
         }
     }
@@ -114,20 +130,17 @@ class VerificationViewController: UIViewController {
                 if isNewRegister {
                     response.StoryBoardName = Constants.Storyboard.auth
                     response.StoryBoardId = "RegisterViewController"
-                    self.performSegue(withIdentifier: "register", sender: sender)
                 } else {
-                    if isOnlyTrivia {
-                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-                    } else {
+                    if !isOnlyTrivia {
                         response.StoryBoardName = Constants.Storyboard.dashboard
                         response.StoryBoardId = "PreferenceViewController"
-
-                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
                     }
                 }
                 Login.storeProfileData(response)
+                self.setNotificationToken(isNewRegister)
+            } else {
+                Core.HideProgress(self)
             }
-            Core.HideProgress(self)
         }
     }
     
@@ -139,6 +152,37 @@ class VerificationViewController: UIViewController {
         if segue.identifier == "register", let veryVC = segue.destination as? RegisterViewController {
             veryVC.countryCode = self.countryCode
             veryVC.iSDCode = self.iSDCode
+        }
+    }
+}
+
+// MARK: Set notification token
+extension VerificationViewController {
+    private func setNotificationToken(_ isNewRegister: Bool) {
+        if let nToken = UserDefaults.standard.string(forKey: Constants.UserDefault.FCMTokenStr) {
+            AuthClient.updateNotificationToken(NotificationRequest(token: nToken)) { status in
+                if isNewRegister {
+                    self.performSegue(withIdentifier: "register", sender: self)
+                } else {
+                    if isOnlyTrivia {
+                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                    } else {
+                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                    }
+                }
+                Core.HideProgress(self)
+            }
+        } else {
+            if isNewRegister {
+                self.performSegue(withIdentifier: "register", sender: self)
+            } else {
+                if isOnlyTrivia {
+                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                } else {
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                }
+            }
+            Core.HideProgress(self)
         }
     }
 }

@@ -44,8 +44,17 @@ struct Audio {
         Id = json["id"].intValue
         Title = json["title"].stringValue
         //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
-        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
-        File = Constants.baseURL.appending("/\(json["file"].stringValue)")
+        
+        if let urlString = json["image"].string {
+            ImageUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+        }
+        
+        if let urlString1 = json["file"].string {
+            File = Core.verifyUrl(urlString1) ? urlString1 :   Constants.baseURL.appending("/\(urlString1)")
+        }
+        
+//        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
+//        File = Constants.baseURL.appending("/\(json["file"].stringValue)")
         Genre_id = json["genre_id"].intValue
         Story_id = json["story_id"].intValue
         Plot_id = json["plot_id"].intValue

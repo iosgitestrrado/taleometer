@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -1172,6 +1172,7 @@
                                             <outlet property="bottomView" destination="I1p-BQ-TYB" id="3O4-IW-cTC"/>
                                             <outlet property="mainView" destination="lXl-Xg-Ygg" id="s7N-E4-LBR"/>
                                             <outlet property="subTitle" destination="PTA-Gs-vMg" id="qEh-rL-RVF"/>
+                                            <outlet property="subTitleXConstraint" destination="H51-3L-zUF" id="S5k-YM-Qqi"/>
                                             <outlet property="textField" destination="8Ei-a1-6xn" id="9JB-MG-gUS"/>
                                             <outlet property="titleLabel" destination="feM-Wn-Qdo" id="rGR-VM-9ns"/>
                                             <outlet property="videoButton" destination="n9v-Cy-xYH" id="FDY-CS-K0F"/>

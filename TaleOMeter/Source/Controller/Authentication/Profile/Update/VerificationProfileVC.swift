@@ -56,7 +56,8 @@ class VerificationProfileVC: UIViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
-        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileNumber)) { status in
+        
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileNumber, isd_code: "\(self.iSDCode)", country_code: self.countryCode)) { status in
             Core.HideProgress(self)
         }
     }

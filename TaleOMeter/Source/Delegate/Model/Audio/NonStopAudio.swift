@@ -36,6 +36,7 @@ struct NonStopAudio {
             Audio_story = Audio(JSON(audio_story))
         } else if let link_audio = json["link_audio"].dictionaryObject {
             Audio_story = Audio(JSON(link_audio))
+            Audio_story.Is_active = true
             Audio_story.IsLinkedAudio = true
         }
     }
@@ -67,7 +68,10 @@ struct LinkAudio {
     init(_ json: JSON) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
-        File = Constants.baseURL.appending("/\(json["file"].stringValue)")
+       // File = Constants.baseURL.appending("/\(json["file"].stringValue)")
+        if let urlString1 = json["file"].string {
+            File = Core.verifyUrl(urlString1) ? urlString1 :   Constants.baseURL.appending("/\(urlString1)")
+        }
         Added_to_nonstop = json["added_to_nonstop"].boolValue
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue
