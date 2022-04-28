@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import AVFoundation
 
 struct FeedCellIdentifier {
     static let image = "imageCell"
@@ -24,6 +25,7 @@ struct FeedCellIdentifier {
 struct CellData {
     var imageUrl = String()
     var profilePic: UIImage?
+    var videoThumbnail = String()
     var title = String()
     var description = String()
     var time = String()
@@ -31,6 +33,7 @@ struct CellData {
     var commentIndex = Int()
     var replyIndex = Int()
 }
+var videoThumnailImages = [UIImage?]()
 
 class FeedCellView: UITableViewCell {
     @IBOutlet weak var coverImage: UIImageView!
@@ -45,6 +48,7 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var videoButton: UIButton!
+    @IBOutlet weak var videoButton1: UIButton!
 
 //    @IBOutlet weak var postStackView: UIStackView!
 //    @IBOutlet weak var pSProfileImage: UIImageView!
@@ -90,6 +94,9 @@ class FeedCellView: UITableViewCell {
     }
     
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
+        if videoThumnailImages.count <= cellData.index {
+            videoThumnailImages.append(nil)
+        }
         if let cImage = self.coverImage {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
                 cImage.image = cellData.profilePic ?? (cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage)
@@ -171,13 +178,65 @@ class FeedCellView: UITableViewCell {
             answerBtn.layer.setValue(row, forKey: "RowIndex")
             answerBtn.addTarget(target, action: selectors[5], for: .touchUpInside)
         }
-        if let videoBtn = self.videoButton {
+        if let videoBtn = self.videoButton, let videoBtn1 = self.videoButton1 {
             if !videoUrl.isBlank {
                 videoBtn.tag = cellData.index
                 videoBtn.layer.setValue(row, forKey: "RowIndex")
                 videoBtn.addTarget(target, action: selectors[6], for: .touchUpInside)
+                videoBtn1.tag = cellData.index
+                videoBtn1.layer.setValue(row, forKey: "RowIndex")
+                videoBtn1.addTarget(target, action: selectors[6], for: .touchUpInside)
             }
-            videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
+            //if !cellData.videoThumbnail.isBlank {
+            if let thumImg = videoThumnailImages[cellData.index] {
+                videoBtn.setBackgroundImage(thumImg, for: .normal)
+            } else {
+                videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImage, options: []) { [self] imgg, error, typrr, url in
+                    if error != nil {
+                        if let medieURL = URL(string: cellData.imageUrl) {
+                            self.getThumbnailImage(forUrl: medieURL) { imageis in
+                                DispatchQueue.main.async {
+                                    if let imageiss = imageis {
+                                        videoBtn.setBackgroundImage(imageiss, for: .normal)
+                                        videoThumnailImages[cellData.index] = imageiss
+                                    } else {
+                                        videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
+                                        videoBtn1.isHidden = true
+                                        videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
+                                    }
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
+                                videoBtn1.isHidden = true
+                                videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
+                            }
+                        }
+                    } else {
+                        videoThumnailImages[cellData.index] = imgg
+                    }
+                }
+            }
+            
+//            } else {
+//                videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
+//                videoBtn1.isHidden = true
+//            }
+        }
+    }
+    
+    private func getThumbnailImage(forUrl url: URL, completion: @escaping(UIImage?) -> Void) {
+        DispatchQueue.global(qos: .background).async {
+            let asset: AVAsset = AVAsset(url: url)
+            let imageGenerator = AVAssetImageGenerator(asset: asset)
+            do {
+                let thumbnailImage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+                completion(UIImage(cgImage: thumbnailImage))
+            } catch let error {
+                print(error)
+                completion(nil)
+            }
         }
     }
     

@@ -53,14 +53,6 @@ class AuthClient {
     static func logout(_ message: String = "", moveToLogin: Bool = true) {
         DispatchQueue.main.async {
             if moveToLogin, let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController, !(cont.viewControllers.last is LoginViewController) {
-                
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.synchronize()
-                AudioPlayManager.shared.isMiniPlayerActive = false
-                AudioPlayManager.shared.isNonStop = false
-                Login.setGusetData()
-                
 //                var contStacks = [UIViewController]()
 //                if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: "LaunchViewController") as? LaunchViewController {
 //                    contStacks.append(myobject)
@@ -71,28 +63,18 @@ class AuthClient {
 //                cont.viewControllers = contStacks
                 let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
                 cont.pushViewController(myobject, animated: true)
-                if !message.isBlank {
-                    Toast.show(message)
-                }
-                DispatchQueue.global(qos: .background).async {
-                    APIClient.shared.getJson("", feed: .Logout) { result in
-                    }
-                }
-            } else {
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.synchronize()
-                AudioPlayManager.shared.isMiniPlayerActive = false
-                AudioPlayManager.shared.isNonStop = false
-                
-                Login.setGusetData()
-                
-                if !message.isBlank {
-                    Toast.show(message)
-                }
-                DispatchQueue.global(qos: .background).async {
-                    APIClient.shared.getJson("", feed: .Logout) { result in
-                    }
+            }
+            if !message.isBlank {
+                Toast.show(message)
+            }
+            DispatchQueue.global(qos: .background).async {
+                APIClient.shared.getJson("", feed: .Logout) { result in
+                    let domain = Bundle.main.bundleIdentifier!
+                    UserDefaults.standard.removePersistentDomain(forName: domain)
+                    UserDefaults.standard.synchronize()
+                    AudioPlayManager.shared.isMiniPlayerActive = false
+                    AudioPlayManager.shared.isNonStop = false
+                    Login.setGusetData()
                 }
             }
         }

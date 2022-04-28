@@ -7,6 +7,7 @@
 
 import SwiftyJSON
 import UIKit
+import AVFoundation
 
 struct TriviaPost {
     var Post_id = Int()
@@ -20,10 +21,12 @@ struct TriviaPost {
     var Question_type = String()
     //var Question_media = UIImage()
     var Question_media_url = String()
+    var Question_video_thum = UIImage(named: "")
     var QuestionVideoURL = String()
     var User_opened = Bool()
     var User_opened_status = Int()
-    
+    var Thumbnail = String()
+
     var Date = String()
     var User_answered = Bool()
     var User_answer_status = Bool()
@@ -44,7 +47,7 @@ struct TriviaPost {
         User_answered = json["user_answered"].boolValue
         User_answer_status = json["user_answer_status"].boolValue
         
-        if let trivia_comments = json["comments"].array {
+        if let trivia_comments = json["comments"].array, trivia_comments.count > 0 {
             trivia_comments.forEach { (object) in
                 Comments.append(TriviaComment(object))
             }
@@ -55,7 +58,16 @@ struct TriviaPost {
             //Core.setImage(Question_media_url, image: &Question_media)
         } else {
             QuestionVideoURL = json["question_media"].stringValue
+            Question_media_url = json["question_media"].stringValue
+//            if let medieURL = URL(string: json["question_media"].stringValue), let videoThumnail = self.getThumbnailImage(forUrl: medieURL) {
+//                Question_video_thum = videoThumnail
+//            }
             //Question_media = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
         }
+        if let thumString = json["thumbnail"].string {
+            Thumbnail = thumString
+        }
     }
+    
+    
 }

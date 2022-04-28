@@ -97,7 +97,7 @@ class RightViewController: UIViewController {
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
-        [.profile, .profile, .logout]
+        [.profile, .profile, .preference, .logout]
     ]
     
     private var profileData: ProfileData?
@@ -116,6 +116,7 @@ class RightViewController: UIViewController {
         if isOnlyTrivia {
             sections = triviaSections
         }
+        
         // Set notification center for audio playing completed
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
     }
@@ -123,6 +124,12 @@ class RightViewController: UIViewController {
     @objc private func updateUserData(_ notification: Notification) {
         if let pfData = Login.getProfileData() {
             profileData = pfData
+        }
+        if let pfData = Login.getProfileData() {
+            profileData = pfData
+        }
+        if isOnlyTrivia {
+            sections = triviaSections
         }
         self.tableView.reloadData()
     }

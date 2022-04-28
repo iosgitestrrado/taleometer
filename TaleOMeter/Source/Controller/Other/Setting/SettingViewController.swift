@@ -12,13 +12,15 @@ class SettingViewController: UIViewController {
     // MARK: - Weak Property -
     @IBOutlet weak var notificationSwitch: UISwitch!
     @IBOutlet weak var autoPlaySwitch: UISwitch!
-    
+    @IBOutlet weak var autoPlayView: UIView!
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         notificationSwitch.isOn = true
         autoPlaySwitch.isOn = UserDefaults.standard.bool(forKey: "AutoplayEnable")
+        autoPlayView.isHidden = isOnlyTrivia
     }
     
     override func viewWillAppear(_ animated: Bool) {

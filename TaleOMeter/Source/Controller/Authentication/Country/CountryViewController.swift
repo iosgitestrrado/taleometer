@@ -33,6 +33,8 @@ class CountryViewController: UIViewController {
         self.hideKeyboard()
         configuration()
         self.searchBar.searchTextField.textColor = .white
+        searchBar.searchTextField.leftView?.tintColor = .white
+
         viewOriHeight = self.view.frame.size.height
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)

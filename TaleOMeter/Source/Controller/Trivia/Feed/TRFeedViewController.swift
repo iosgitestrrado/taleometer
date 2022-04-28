@@ -249,6 +249,7 @@ class TRFeedViewController: UIViewController {
                 playerViewController.view.removeFromSuperview()
             }
             playerViewController = AVPlayerViewController()
+            playerViewController.view.tag = 9898998
             let player = AVPlayer(url: videoURL)
             playerViewController.player = player
             playerViewController.view.frame.size.height = videoView.frame.size.height
@@ -353,10 +354,10 @@ extension TRFeedViewController {
             
             if feed.User_answer_status {
                 /// Add Image / Video and question title cell with view answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(imageUrl: feed.Question_media_url, title: feed.Question, description: feed.Date, time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index)))
             } else {
                 /// Add Image / Video and question title cell with submit answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(imageUrl: feed.Question_media_url, title: feed.Question, description: feed.Date, time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index)))
             }
             
             /// Check comment
@@ -445,18 +446,37 @@ extension TRFeedViewController : UITableViewDataSource {
                            messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row, target: self,
                            selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:))])
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question || cellDataArray[indexPath.row].cellId == FeedCellIdentifier.questionVideo, let textField = cell.textField {
+            textField.text = postData[cellData.index].Value
             postData[cellData.index].TextField = textField
         }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.post, let textView = cell.descText {
+            textView.text = postData[cellData.index].Value
             postData[cellData.index].CommTextView = textView
         }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.replyPost, let textView = cell.descText {
+            textView.text = postData[cellData.index].Value
             postData[cellData.index].RepTextView = textView
+        }
+        if let videoBtn = cell.videoButton, let videoBtn1 = cell.videoButton1, videoBtn.backgroundImage(for: .normal) != UIImage(named: "acastro_180403_1777_youtube_0001") {
+            videoBtn1.isHidden = false
         }
         if videoPlayIndex == indexPath.row, let videoURL = URL(string: postData[cellData.index].QuestionVideoURL) {
             self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: indexPath.row)
             if let subTitle = cell.subTitleXConstraint {
                 subTitle.constant = 60.0
+            }
+            if let videoBtn1 = cell.videoButton1 {
+                videoBtn1.isHidden = true
+            }
+        } else if let videoBtn = cell.videoButton {
+            if let platerView = videoBtn.viewWithTag(9898998) {
+                platerView.removeFromSuperview()
+            }
+            if let subTitle = cell.subTitleXConstraint {
+                subTitle.constant = 10.0
+            }
+            if let videoThum = cellData.profilePic {
+                videoBtn.setBackgroundImage(videoThum, for: .normal)
             }
         }
         return cell
