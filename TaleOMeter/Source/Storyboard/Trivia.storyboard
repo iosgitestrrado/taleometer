@@ -1054,7 +1054,7 @@
                                                                         <constraint firstAttribute="height" constant="60" id="AK3-h6-KeA"/>
                                                                     </constraints>
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                    <state key="normal" backgroundImage="play"/>
+                                                                    <state key="normal" backgroundImage="videoicn"/>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1225,7 +1225,7 @@
                                                                         <constraint firstAttribute="width" constant="60" id="Z5O-uc-T3K"/>
                                                                     </constraints>
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                    <state key="normal" backgroundImage="play"/>
+                                                                    <state key="normal" backgroundImage="videoicn"/>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1900,7 +1900,7 @@
         <image name="menu_white" width="25" height="16.666666030883789"/>
         <image name="person" width="170.66667175292969" height="170.66667175292969"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="play" width="41.333332061767578" height="41.333332061767578"/>
+        <image name="videoicn" width="42.666667938232422" height="42.666667938232422"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

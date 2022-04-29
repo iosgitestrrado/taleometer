@@ -20,7 +20,8 @@ struct Constants {
     // Taleometer v1: com.estrrado.v1.taleometer
     
     static let loaderImage = UIImage.gif(name: "spinner1")
-    
+    static let loaderImage1 = UIImage.gif(name: "spinner11")
+
     struct Storyboard {
         static let dashboard = "Main"
         static let sideMenu = "SideMenu"

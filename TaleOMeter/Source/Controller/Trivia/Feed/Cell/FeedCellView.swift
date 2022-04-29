@@ -33,7 +33,7 @@ struct CellData {
     var commentIndex = Int()
     var replyIndex = Int()
 }
-var videoThumnailImages = [UIImage?]()
+//var videoThumnailImages = [UIImage?]()
 
 class FeedCellView: UITableViewCell {
     @IBOutlet weak var coverImage: UIImageView!
@@ -94,14 +94,14 @@ class FeedCellView: UITableViewCell {
     }
     
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
-        if videoThumnailImages.count <= cellData.index {
-            videoThumnailImages.append(nil)
-        }
+//        if videoThumnailImages.count <= cellData.index {
+//            videoThumnailImages.append(nil)
+//        }
         if let cImage = self.coverImage {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
                 cImage.image = cellData.profilePic ?? (cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage)
             } else {
-                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImage, options: []) { imgg, error, typrr, url in
+                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImage1, options: []) { imgg, error, typrr, url in
                     if error != nil {
                         cImage.image = cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage
                     }
@@ -188,35 +188,35 @@ class FeedCellView: UITableViewCell {
                 videoBtn1.addTarget(target, action: selectors[6], for: .touchUpInside)
             }
             //if !cellData.videoThumbnail.isBlank {
-            if let thumImg = videoThumnailImages[cellData.index] {
-                videoBtn.setBackgroundImage(thumImg, for: .normal)
-            } else {
-                videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImage, options: []) { [self] imgg, error, typrr, url in
+//            if let thumImg = videoThumnailImages[cellData.index] {
+//                videoBtn.setBackgroundImage(thumImg, for: .normal)
+//            } else {
+                videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImage1, options: []) { imgg, error, typrr, url in
                     if error != nil {
-                        if let medieURL = URL(string: cellData.imageUrl) {
-                            self.getThumbnailImage(forUrl: medieURL) { imageis in
-                                DispatchQueue.main.async {
-                                    if let imageiss = imageis {
-                                        videoBtn.setBackgroundImage(imageiss, for: .normal)
-                                        videoThumnailImages[cellData.index] = imageiss
-                                    } else {
-                                        videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
-                                        videoBtn1.isHidden = true
-                                        videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
-                                    }
-                                }
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
-                                videoBtn1.isHidden = true
-                                videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
-                            }
-                        }
-                    } else {
-                        videoThumnailImages[cellData.index] = imgg
+//                        if let medieURL = URL(string: cellData.imageUrl) {
+//                            self.getThumbnailImage(forUrl: medieURL) { imageis in
+//                                DispatchQueue.main.async {
+//                                    if let imageiss = imageis {
+//                                        videoBtn.setBackgroundImage(imageiss, for: .normal)
+//                                        videoThumnailImages[cellData.index] = imageiss
+//                                    } else {
+//                                        videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
+//                                        videoBtn1.isHidden = true
+//                                        videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
+//                                    }
+//                                }
+//                            }
+//                        } else {
+//                            DispatchQueue.main.async {
+                            videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
+//                            videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
+//                            }
+//                        }
                     }
-                }
+//                    else {
+//                        videoThumnailImages[cellData.index] = imgg
+//                    }
+//                }
             }
             
 //            } else {

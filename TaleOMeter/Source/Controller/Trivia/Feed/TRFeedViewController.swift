@@ -457,7 +457,7 @@ extension TRFeedViewController : UITableViewDataSource {
             textView.text = postData[cellData.index].Value
             postData[cellData.index].RepTextView = textView
         }
-        if let videoBtn = cell.videoButton, let videoBtn1 = cell.videoButton1, videoBtn.backgroundImage(for: .normal) != UIImage(named: "acastro_180403_1777_youtube_0001") {
+        if let videoBtn1 = cell.videoButton1 {
             videoBtn1.isHidden = false
         }
         if videoPlayIndex == indexPath.row, let videoURL = URL(string: postData[cellData.index].QuestionVideoURL) {
