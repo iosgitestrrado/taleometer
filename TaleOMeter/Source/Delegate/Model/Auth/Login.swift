@@ -49,8 +49,6 @@ struct Login {
             // Write/Set Data
             UserDefaults.standard.set(data, forKey: Constants.UserDefault.ProfileData)
             UserDefaults.standard.synchronize()
-            
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
         } catch {
             UserDefaults.standard.synchronize()
             print("Unable to Encode (\(error))")

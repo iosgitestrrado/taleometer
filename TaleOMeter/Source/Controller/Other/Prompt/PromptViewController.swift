@@ -22,6 +22,9 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var remainSecondLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var favButton: UIButton!
+    @IBOutlet weak var expandButton: UIButton!
+    @IBOutlet weak var imageExpandView: UIScrollView!
+    @IBOutlet weak var imageExpView: UIImageView!
 
     @IBOutlet weak var verifyPromptView: UIView!
     @IBOutlet weak var verifyImage: UIImageView!
@@ -33,6 +36,7 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var answerTitle: UILabel!
     @IBOutlet weak var answerMessage: UILabel!
     @IBOutlet weak var answerImage: UIImageView!
+    @IBOutlet weak var answerImageView: UIView!
 
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var delegate: PromptViewDelegate? = nil
@@ -56,7 +60,10 @@ class PromptViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         closeButton.isHidden = isCloseBtnHide
+        imageExpandView.maximumZoomScale = 4
+        imageExpandView.minimumZoomScale = 1
         self.favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
+//        self.imageExpView.enableZoom()
         if isAudioPrompt {
             //You Just listened to "Track To Relax"
             let titleString = NSMutableAttributedString(string: "You Just listened to \n\"\(songTitle)\"")
@@ -127,6 +134,12 @@ class PromptViewController: UIViewController {
         remainingSecond -= 1
     }
     
+    @IBAction func tapOnExpand(_ sender: UIButton) {
+        self.imageExpView.image = self.answerImage.image
+        self.imageExpandView.isHidden = false
+        closeButton.isHidden = false
+    }
+    
     // 0 - tag
     @IBAction func tapOnAddToFav(_ sender: UIButton) {
         if sender.isSelected {
@@ -166,6 +179,11 @@ class PromptViewController: UIViewController {
     }
     
     @IBAction func tapOnClose(_ sender: Any) {
+        if !self.imageExpandView.isHidden {
+            self.imageExpandView.isHidden = true
+            closeButton.isHidden = true
+            return
+        }
         if timer.isValid {
             timer.invalidate()
         }
@@ -173,6 +191,36 @@ class PromptViewController: UIViewController {
             delegate.didActionOnPromptButton(3)
         }
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension PromptViewController: UIScrollViewDelegate {
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageExpView
+    }
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if scrollView.zoomScale > 1 {
+         if let image = imageExpView.image {
+             let ratioW = imageExpView.frame.width / image.size.width
+             let ratioH = imageExpView.frame.height / image.size.height
+             
+             let ratio = ratioW < ratioH ? ratioW : ratioH
+             let newWidth = image.size.width * ratio
+             let newHeight = image.size.height * ratio
+             let conditionLeft = newWidth*scrollView.zoomScale > imageExpView.frame.width
+             let left = 0.5 * (conditionLeft ? newWidth - imageExpView.frame.width : (scrollView.frame.width - scrollView.contentSize.width))
+             let conditioTop = newHeight*scrollView.zoomScale > imageExpView.frame.height
+             
+             let top = 0.5 * (conditioTop ? newHeight - imageExpView.frame.height : (scrollView.frame.height - scrollView.contentSize.height))
+             
+             scrollView.contentInset = UIEdgeInsets(top: top, left: left, bottom: top, right: left)
+             
+         }
+     } else {
+         scrollView.contentInset = .zero
+     }
     }
 }
 

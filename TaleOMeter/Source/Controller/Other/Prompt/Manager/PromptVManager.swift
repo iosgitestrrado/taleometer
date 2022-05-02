@@ -30,6 +30,8 @@ class PromptVManager: NSObject {
                 myobject.audioPromptView.isHidden = !isAudioView
                 myobject.verifyPromptView.isHidden = !isUserStory
                 myobject.answerPromptView.isHidden = !isQuestion
+                myobject.expandButton.isHidden = !isQuestion
+                myobject.imageExpandView.isHidden = true
                 if isAudioView {
                     myobject.audioImageView.sd_setImage(with: URL(string: audioImage), placeholderImage: defaultImage, options: [], context: nil)
                     myobject.audioImageView.cornerRadius = myobject.audioImageView.frame.size.height / 2.0
@@ -39,10 +41,11 @@ class PromptVManager: NSObject {
                     //myobject.answerMessage.text = verifyMessage
                     myobject.answerMessage.text = "Answer:"
                     if !ansImage.isBlank {
+                        myobject.answerImageView.isHidden = false
                         myobject.answerImage.sd_setImage(with: URL(string: ansImage), placeholderImage: defaultImage, options: [], context: nil)
                         myobject.answerTitle.isHidden = true
                     } else {
-                        myobject.answerImage.isHidden = true
+                        myobject.answerImageView.isHidden = true
                         myobject.answerMessage.isHidden = false
                     }
                     myobject.questionImage.isHidden = true

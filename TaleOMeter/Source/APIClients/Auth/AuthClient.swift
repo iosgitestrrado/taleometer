@@ -166,7 +166,6 @@ class AuthClient {
 //                    } catch _ {
 //                        //completionHandler([:], [:], error)
 //                    }
-                    
                     do {
                         let genericModel = try JSONDecoder().decode(ResponseModelJSON.self, from: data!)
                         completion(.success(genericModel))

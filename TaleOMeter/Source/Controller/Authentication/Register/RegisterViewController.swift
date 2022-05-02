@@ -105,6 +105,7 @@ class RegisterViewController: UIViewController {
                     Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
                 }
                 Login.storeProfileData(response)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
             }
             Core.HideProgress(self)
         }

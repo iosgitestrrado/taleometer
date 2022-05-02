@@ -80,6 +80,7 @@ class ProfileEditViewController: UIViewController {
             AuthClient.updateProfile(ProfileRequest(name: titleString == "Change Name" ? self.textField.text! : prof.User_code, display_name: titleString == "Change Display Name" ? self.textField.text! : prof.Fname, email: titleString == "Change Email ID" ? self.textField.text! : prof.Email)) { [self] result in
                 if let response = result {
                     Login.storeProfileData(response)//Change Name
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
                     PromptVManager.present(self, verifyMessage: titleString == "Change Display Name" ? "Your display name is successfully changed" : (titleString == "Change Name" ? "Your name is successfully changed" : "Your email id is successfully changed"), isUserStory: true)
                 }
                 Core.HideProgress(self)
