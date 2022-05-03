@@ -95,7 +95,7 @@ class LoginViewController: UIViewController {
         AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!, isd_code: countryModel.extensionCode ?? "91", country_code: countryModel.countryCode ?? "IN")) { status in
             Core.HideProgress(self)
             if status {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
                 self.performSegue(withIdentifier: "verification", sender: sender)
             }
         }

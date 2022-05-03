@@ -85,7 +85,7 @@ class VerificationProfileVC: UIViewController {
         AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp, isd_code: "\(iSDCode)", country_code: countryCode)) { result in
             if let response = result {
                 Login.storeProfileData(response)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
                 PromptVManager.present(self, verifyMessage: "Your mobile number is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)

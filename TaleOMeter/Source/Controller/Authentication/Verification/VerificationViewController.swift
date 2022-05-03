@@ -136,7 +136,7 @@ class VerificationViewController: UIViewController {
                     }
                 }
                 Login.storeProfileData(response)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
                 self.setNotificationToken(isNewRegister)
             } else {
                 Core.HideProgress(self)
