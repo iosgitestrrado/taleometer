@@ -45,9 +45,6 @@ class StoryViewController: UIViewController {
         //setStoryData()
         self.hideKeyboard()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         /* Popover tableview */
         tableViewPO = UITableView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width - 50.0, height: 320.0))
         tableViewPO.delegate = self
@@ -59,6 +56,9 @@ class StoryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

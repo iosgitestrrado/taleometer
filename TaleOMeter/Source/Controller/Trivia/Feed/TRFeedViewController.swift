@@ -10,6 +10,8 @@ import AVKit
 import SwiftyJSON
 import NVActivityIndicatorView
 
+var profilePic: UIImage?
+
 class TRFeedViewController: UIViewController {
     
     // MARK: - Weak Properties -
@@ -28,7 +30,6 @@ class TRFeedViewController: UIViewController {
     private var postData = [TriviaPost]()
     private var cellDataArray: [CellItem] = [CellItem]()
     private let messageString = "Write A Comment..."
-    private var profilePic: UIImage?
     private var keyboardHeight: CGFloat = 0
     
     private var footerView = UIView()
@@ -50,14 +51,22 @@ class TRFeedViewController: UIViewController {
             profilePic = UIImage(data: profData.ImageData)
         }
         self.getTriviaPosts()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
+    }
+    
+    @objc private func updateUserData(_ notification: Notification) {
+        if let profData = Login.getProfileData() {
+            profilePic = UIImage(data: profData.ImageData)
+        }
+        self.setTableViewCells()
     }
     
 //    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -122,8 +131,8 @@ class TRFeedViewController: UIViewController {
                 }
                 Core.ShowProgress(self, detailLbl: "Submitting Answer...")
                 TriviaClient.submitAnswer(SubmitAnswerRequest(post_id: postData[sender.tag].Post_id, answer: postData[sender.tag].Value)) { [self] status in
-                    
                     if let st = status, st {
+                        postData[sender.tag].Value = ""
                         self.getComments(postId: postData[sender.tag].Post_id, postIndex: sender.tag)
                     } else {
                         Core.HideProgress(self)
@@ -451,10 +460,20 @@ extension TRFeedViewController : UITableViewDataSource {
         }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.post, let textView = cell.descText {
             textView.text = postData[cellData.index].Value
+            if textView.text.isBlank {
+                textView.text = messageString
+                textView.textColor = darkBlueT
+                textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+            }
             postData[cellData.index].CommTextView = textView
         }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.replyPost, let textView = cell.descText {
             textView.text = postData[cellData.index].Value
+            if textView.text.isBlank {
+                textView.text = messageString
+                textView.textColor = darkBlueT
+                textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+            }
             postData[cellData.index].RepTextView = textView
         }
         if let videoBtn1 = cell.videoButton1 {
@@ -532,12 +551,9 @@ extension TRFeedViewController: UITextViewDelegate {
         // If updated text view will be empty, add the placeholder
         // and set the cursor to the beginning of the text view
         if updatedText.isEmpty {
-
             textView.text = messageString
             textView.textColor = darkBlueT
-
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
-            
         }
 
         // Else if the text view's placeholder is showing and the

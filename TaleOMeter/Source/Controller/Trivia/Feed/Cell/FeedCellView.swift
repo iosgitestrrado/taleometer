@@ -101,10 +101,14 @@ class FeedCellView: UITableViewCell {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
                 cImage.image = cellData.profilePic ?? (cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage)
             } else {
+                if let image = profilePic, (cellData.title == "You" && (cellId == FeedCellIdentifier.comment || cellId == FeedCellIdentifier.reply)) {
+                    cImage.image = image
+                } else {
                 cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImage1, options: []) { imgg, error, typrr, url in
                     if error != nil {
                         cImage.image = cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage
                     }
+                }
                 }
             }
             if cellId == FeedCellIdentifier.question {

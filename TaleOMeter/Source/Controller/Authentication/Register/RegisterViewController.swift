@@ -26,8 +26,6 @@ class RegisterViewController: UIViewController {
         self.hideKeyboard()
         //self.navigationItem.hidesBackButton = true
         //titleLabel.addUnderline()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +35,8 @@ class RegisterViewController: UIViewController {
         if let childVies = self.navigationController?.viewControllers, childVies.count > 1 {
             self.navigationController?.viewControllers.remove(at: childVies.count - 2)
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

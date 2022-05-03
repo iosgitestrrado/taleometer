@@ -313,7 +313,7 @@ extension ProfileViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = image
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
                 PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
@@ -331,7 +331,7 @@ extension ProfileViewController {
                 self.profileData = response
                 Login.storeProfileData(response)
                 self.profileImage.image = Login.defaultProfileImage
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
                 PromptVManager.present(self, verifyMessage: "Your profile image is successfully changed", isUserStory: true)
             }
             Core.HideProgress(self)
