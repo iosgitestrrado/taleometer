@@ -216,7 +216,6 @@ extension PromptViewController: UIScrollViewDelegate {
              let top = 0.5 * (conditioTop ? newHeight - imageExpView.frame.height : (scrollView.frame.height - scrollView.contentSize.height))
              
              scrollView.contentInset = UIEdgeInsets(top: top, left: left, bottom: top, right: left)
-             
          }
      } else {
          scrollView.contentInset = .zero

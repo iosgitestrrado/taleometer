@@ -160,16 +160,18 @@ class AuthClient {
                 if error != nil {
                     completion(.failure(.invalidData))
                 } else {
-//                    do {
-//                        let mutableResponse = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
-//                        //completionHandler(mutableResponse as? NSDictionary, (response as! HTTPURLResponse).allHeaderFields as NSDictionary, error)
-//                    } catch _ {
-//                        //completionHandler([:], [:], error)
-//                    }
+                    do {
+                        let mutableResponse = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                        print(mutableResponse)
+                        //completionHandler(mutableResponse as? NSDictionary, (response as! HTTPURLResponse).allHeaderFields as NSDictionary, error)
+                    } catch let error {
+                        print(error)
+                        //completionHandler([:], [:], error)
+                    }
                     do {
                         let genericModel = try JSONDecoder().decode(ResponseModelJSON.self, from: data!)
                         completion(.success(genericModel))
-                    } catch {
+                    } catch  let error1 {
                         completion(.failure(.invalidData))
                     }
                 }
