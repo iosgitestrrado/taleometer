@@ -108,17 +108,17 @@ class LoginViewController: UIViewController {
     // MARK: - Country
     private func setDefaultCountry() {
         //let carrier = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?.first?.value, let code = carrier.isoCountryCode
-        if let code = NSLocale.current.regionCode  {
-            let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
-            let name = NSLocale(localeIdentifier: "en_US").displayName(forKey: NSLocale.Key.identifier, value: id)
+        //if let code = NSLocale.current.regionCode  {
+            //let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
+            //let name = NSLocale(localeIdentifier: "en_US").displayName(forKey: NSLocale.Key.identifier, value: id)
             
-            let locale = NSLocale.init(localeIdentifier: id)
-            let countryCode = locale.object(forKey: NSLocale.Key.countryCode)
+            //let locale = NSLocale.init(localeIdentifier: id)
+            //let countryCode = "IN"//locale.object(forKey: NSLocale.Key.countryCode)
             
-            if name != nil {
+            //if name != nil {
                 let model = Country()
-                model.name = name
-                model.countryCode = countryCode as? String
+                model.name = "India"
+                model.countryCode = "IN"
                // model.currencyCode = currencyCode as? String
                // model.currencySymbol = currencySymbol as? String
                //model.flag = String.flag(for: code)
@@ -127,8 +127,8 @@ class LoginViewController: UIViewController {
                 }
                 countryModel = model
                 self.countryCodeLbl.text = model.extensionCode!
-            }
-        }
+            //}
+        //}
     }
     
     @IBAction func tapOnCountry(_ sender: Any) {

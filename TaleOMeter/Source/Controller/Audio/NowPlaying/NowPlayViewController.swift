@@ -34,6 +34,7 @@ class NowPlayViewController: UIViewController {
     @IBOutlet weak var endTimeLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var favButton: UIButton!
+    @IBOutlet weak var backBarButton: UIButton!
 
     // MARK: - Public Properties -
     var existingAudio = false
@@ -42,6 +43,7 @@ class NowPlayViewController: UIViewController {
     var myAudioList = [Audio]()
     var currentAudioIndex = -1
     var currentPlayDuration = -1
+    var storyIdis = -1
 
     // MARK: - Private Properties -
     private var totalTimeDuration: Float = 0.0
@@ -56,16 +58,17 @@ class NowPlayViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
-        
+        self.backBarButton.isHidden = storyId == -1
         if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
             currentAudio = audList[AudioPlayManager.shared.currentIndex]
             AudioPlayManager.shared.audioHistoryId = -1
             // Configure audio data
             setupAudioDataPlay(isPlaying)
+        } else if storyId != -1 {
+            self.getAudios(storyIdis)
         } else {
             Toast.show("Selected Audio not found!")
         }
-        
         
         // Pan gesture for scrubbing support.
 //        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -101,6 +104,10 @@ class NowPlayViewController: UIViewController {
 //        visualizationWave.pause()
     }
     
+    @IBAction func tapOnBack(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     // MARK: - Call funcation when audio controller press in background
     @objc private func remoteCommandHandler(_ notification: Notification) {
         // Check audio is playing
@@ -110,6 +117,17 @@ class NowPlayViewController: UIViewController {
         } else if let isNext = notification.userInfo?["isNext"] as? Bool {
             // Seek audio
             seekAudio(isNext)
+        } else if let notificationStoryId = notification.userInfo?["NotificationStoryId"] as? Int, notificationStoryId != -1 {
+            if let playCurrent = notification.userInfo?["PlayCurrent"] as? Bool {
+                if playCurrent, let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
+                    currentAudio = audList[AudioPlayManager.shared.currentIndex]
+                    AudioPlayManager.shared.audioHistoryId = -1
+                    // Configure audio data
+                    setupAudioDataPlay(isPlaying)
+                } else {
+                    self.getAudios(notificationStoryId)
+                }
+            }
         }
     }
     
@@ -130,6 +148,9 @@ class NowPlayViewController: UIViewController {
         
         self.cuncurrentUserLbl.text = "Concurrent Users: \(currentAudio.Views_count.formatPoints())"
         self.favButton.isSelected = currentAudio.Is_favorite
+        
+        self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
+        self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
     }
     
     // MARK: Set audio data and play audio
@@ -597,6 +618,32 @@ extension NowPlayViewController {
                 }
                 completion(status)
             }
+        }
+    }
+    
+    func getAudios(_ storyIdCurrent: Int = -1) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            //completionHandler?()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AudioClient.getAudios(AudioRequest(page: "all", limit: 20)) { [self] response in
+            if let data = response {
+                myAudioList = data
+                AudioPlayManager.shared.audioList = myAudioList
+                if let currAudioIdx = myAudioList.firstIndex(where: { $0.Id == storyIdCurrent }) {
+                    currentAudioIndex = currAudioIdx
+                } else {
+                    currentAudioIndex = 0
+                }
+                AudioPlayManager.shared.setAudioIndex(currentAudioIndex, isNext: false)
+                currentAudio = myAudioList[currentAudioIndex]
+                AudioPlayManager.shared.audioHistoryId = -1
+                // Configure audio data
+                setupAudioDataPlay(isPlaying)
+            }
+            Core.HideProgress(self)
         }
     }
 }

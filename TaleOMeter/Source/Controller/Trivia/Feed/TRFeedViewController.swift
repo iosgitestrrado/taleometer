@@ -20,6 +20,7 @@ class TRFeedViewController: UIViewController {
     
     // MARK: - Public Properties
     var categoryId = -1
+    var redirectToPostId = -1
         
     // MARK: - Private Properties -
     private let viewMoreText = "--------------------  View More  --------------------"
@@ -50,7 +51,9 @@ class TRFeedViewController: UIViewController {
         if let profData = Login.getProfileData() {
             profilePic = UIImage(data: profData.ImageData)
         }
-        self.getTriviaPosts()
+        if categoryId != -2 {
+            self.getTriviaPosts()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +63,7 @@ class TRFeedViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(tapOnNotification(_:)), name: Notification.Name(rawValue: "tapOnNotification"), object: nil)
     }
     
     @objc private func updateUserData(_ notification: Notification) {
@@ -67,6 +71,17 @@ class TRFeedViewController: UIViewController {
             profilePic = UIImage(data: profData.ImageData)
         }
         self.setTableViewCells()
+    }
+    
+    @objc private func tapOnNotification(_ notification: Notification) {
+        if let catId = notification.userInfo?["NotificationCategoryId"] as? Int, catId != -2 {
+            if let psId = notification.userInfo?["NotificationPostId"] as? Int {
+                redirectToPostId = psId
+            }
+            pageNumber = 1
+            categoryId = catId
+            self.getTriviaPosts()
+        }
     }
     
 //    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -306,6 +321,14 @@ extension TRFeedViewController {
                 if !showProgress {
                     Core.HideProgress(self)
                 }
+                if redirectToPostId != -1 && postData.first(where: { $0.Post_id == redirectToPostId }) == nil {
+                    pageNumber += 1
+                    tableView.tableFooterView = footerView
+                    if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
+                        indicator.startAnimating()
+                    }
+                    DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTriviaPosts(showProgress: true) } }
+                }
             }
         } else {
             // MARK: - Get trivia daily posts
@@ -316,9 +339,18 @@ extension TRFeedViewController {
                 }
                 showNoData = 1
                 setTableViewCells(replyExpanded)
+                
                 tableView.tableFooterView = UIView()
                 if !showProgress {
                     Core.HideProgress(self)
+                }
+                if redirectToPostId != -1 && postData.first(where: { $0.Post_id == redirectToPostId }) == nil {
+                    pageNumber += 1
+                    tableView.tableFooterView = footerView
+                    if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
+                        indicator.startAnimating()
+                    }
+                    DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTriviaPosts(showProgress: true) } }
                 }
             }
         }
@@ -354,7 +386,7 @@ extension TRFeedViewController {
     // MARK: - Set cell for tableview
     private func setTableViewCells(_ replyExpanded: Bool = false) {
         cellDataArray = [CellItem]()
-        
+        var scrollToIndex = -1
         // each for index of post
         for index in 0..<postData.count {
             
@@ -368,7 +400,9 @@ extension TRFeedViewController {
                 /// Add Image / Video and question title cell with submit answer
                 cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index)))
             }
-            
+            if feed.Post_id == redirectToPostId {
+                scrollToIndex = cellDataArray.count - 1
+            }
             /// Check comment
             if feed.Comments.count > 0 {
                 
@@ -426,6 +460,10 @@ extension TRFeedViewController {
             }
         }// 360 x 185 // 1280 x 660
         self.tableView.reloadData()
+        if scrollToIndex > 0 {
+            redirectToPostId = -1
+            self.tableView.scrollToRow(at: IndexPath(row: scrollToIndex, section: 0), at: .top, animated: true)
+        }
         //self.tableView.reloadSections(IndexSet(integer: 0), with: .bottom)
     }
 }

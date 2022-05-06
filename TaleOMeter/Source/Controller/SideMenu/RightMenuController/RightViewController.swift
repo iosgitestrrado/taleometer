@@ -47,7 +47,7 @@ class RightViewController: UIViewController {
             case .aboutUs:
                 return "About us"
             case .feedback:
-                return "Feedback"
+                return "Contact Us"
             case .logout:
                 return "Logout"
             }

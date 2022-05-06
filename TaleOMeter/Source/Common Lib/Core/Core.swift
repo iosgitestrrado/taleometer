@@ -92,19 +92,35 @@ class Core: NSObject {
         }
 
         if !setNavigationBarHidden && cont.navigationController?.children[(cont.navigationController?.children.count)! - 2] is LaunchViewController {
-            cont.navigationItem.hidesBackButton = true
+            if storyId != -1 {
+                if let dash = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: DashboardViewController().className) as? DashboardViewController, var navViewControllers = cont.navigationController?.viewControllers {
+                    navViewControllers.insert(dash, at: navViewControllers.count - 1)
+                    cont.navigationController?.viewControllers = navViewControllers
+                }
+            } else if categorId != -1 {
+                if let dashTrivia = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: TriviaViewController().className) as? TriviaViewController, var navViewControllers = cont.navigationController?.viewControllers {
+                    navViewControllers.insert(dashTrivia, at: navViewControllers.count - 1)
+                    cont.navigationController?.viewControllers = navViewControllers
+                }
+            } else {
+                cont.navigationItem.hidesBackButton = true
+            }
             if cont is RegisterViewController || cont is PreferenceViewController {
                 cont.navigationController?.setNavigationBarHidden(true, animated: true)
             }
         }
         cont.navigationController?.navigationBar.tintColor = .red
+        if storyId != -1 {
+            cont.navigationController?.navigationBar.tintColor = .clear
+            storyId = -2
+        }
 //        var backImageI = UIImage(systemName: "chevron.backward")
 //        if backImage {
 //            backImageI =  UIImage(named: "back_red")
 //        }
         cont.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back_red")
         cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back_red")
-        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: self, action: nil)
+        let backButton = UIBarButtonItem(title: " ", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
         
         if titleInLeft, let titleStr = cont.navigationItem.title {

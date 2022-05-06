@@ -14,7 +14,7 @@ class FeedbackViewController: UIViewController {
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     // MARK: - Private Property -
-    private let messageString = "Describe your feedback"
+    private let messageString = "I would like to ask you..."
     private var isRightViewEnable = false
     
     // MARK: - Lifecycle -
@@ -56,14 +56,14 @@ class FeedbackViewController: UIViewController {
             return
         }
         if textView.text == messageString || textView.text.isBlank {
-            Toast.show(messageString)
+            Toast.show("Please fill the form.")
             return
         }
         Core.ShowProgress(self, detailLbl: "")
         OtherClient.submitFeedback(FeedbackRequest(content: textView.text!)) { status in
             Core.HideProgress(self)
             if let st = status, st {
-                PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For Your Valuable Feedback", verifyImage: UIImage(named: "thank"), isUserStory: true)
+                PromptVManager.present(self, verifyTitle: "Thank You", verifyMessage: "For filling out our form", verifyImage: UIImage(named: "thank"), isUserStory: true)
             }
         }
     }

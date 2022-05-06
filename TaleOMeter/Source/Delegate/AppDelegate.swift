@@ -8,8 +8,12 @@
 import UIKit
 import Firebase
 
+var storyId = -1
+var categorId = -2//9
+var postId = -1//81
+
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -60,26 +64,101 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-   
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-      print("Firebase registration token: \(String(describing: fcmToken))")
-
-        UserDefaults.standard.set(fcmToken ?? "", forKey: Constants.UserDefault.FCMTokenStr)
-//      let dataDict: [String: String] = ["token": fcmToken ?? ""]
-//      NotificationCenter.default.post(
-//        name: Notification.Name("FCMToken"),
-//        object: nil,
-//        userInfo: dataDict
-//      )
-      // TODO: If necessary send token to application server.
-      // Note: This callback is fired at each app startup and whenever a new token is generated.
-    }
     
     internal func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
     }
 
+    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
+        // Print notification payload data
+        print("Push notification received: \(data)")
+        
+        let aps = data[AnyHashable("aps")]!
+        
+        print(aps)
+    }
 }
 
+
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
+        UserDefaults.standard.set(fcmToken ?? "", forKey: Constants.UserDefault.FCMTokenStr)
+    }
+    
+//    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+//        print(remoteMessage.appData)
+//    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if let storyIdn = userInfo["gcm.notification.audio_story_id"] as? String {
+            storyId = Int(storyIdn) ?? -1
+        }
+        if let postIdn = userInfo["gcm.notification.post_id"] as? String {
+            postId = Int(postIdn) ?? -1
+        }
+        if let categoryn = userInfo["gcm.notification.category_id"] as? String {
+            categorId = Int(categoryn) ?? -2
+        }
+
+        if storyId != -1 {
+            if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
+                if (cont.children.last is NowPlayViewController) {
+                    if let audioListNow = AudioPlayManager.shared.audioList, let audioIndex = audioListNow.firstIndex(where: { $0.Id == storyId }) {
+                        AudioPlayManager.shared.setAudioIndex(audioIndex, isNext: false)
+                        NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["NotificationStoryId": storyId, "PlayCurrent": true])
+                    } else {
+                        NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["NotificationStoryId": storyId, "PlayCurrent": false])
+                    }
+                } else {
+                    if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+                        if AudioPlayManager.shared.isNonStop {
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                        }
+                        if let audioListNow = AudioPlayManager.shared.audioList, let audioIndex = audioListNow.firstIndex(where: { $0.Id == storyId }) {
+                            AudioPlayManager.shared.setAudioIndex(audioIndex, isNext: false)
+                        }
+                        myobject.storyIdis = storyId
+                        cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
+                    }
+                }
+                storyId = -2
+            }
+        } else if categorId != -2 {
+            if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
+                if (cont.children.last is TRFeedViewController) {
+                    NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["NotificationCategoryId": storyId, "NotificationPostId": storyId])
+                } else {
+                    if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
+                        myobject.categoryId = categorId
+                        myobject.redirectToPostId = postId
+                        cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+      // If you are receiving a notification message while your app is in the background,
+      // this callback will not be fired till the user taps on the notification launching the application.
+      // TODO: Handle data of notification
+
+      // With swizzling disabled you must let Messaging know about the message, for Analytics
+      // Messaging.messaging().appDidReceiveMessage(userInfo)
+
+      // Print message ID.
+//      if let messageID = userInfo[gcmMessageIDKey] {
+//        print("Message ID: \(messageID)")
+//      }
+
+      // Print full message.
+//      print(userInfo)
+//print(Int(userInfo["gcm.notification.audio_story_id"] as! String)!)
+      completionHandler(UIBackgroundFetchResult.newData)
+
+    }
+}
