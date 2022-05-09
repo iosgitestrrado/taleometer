@@ -40,7 +40,7 @@ class OtherClient {
     
     static func submitFeedback(_ req: FeedbackRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(parameters: req, feed: .Feedback) { result in
-            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
+            ResponseAPI.getResponseJsonBool(result) { status in
                 completion(status)
             }
         }
