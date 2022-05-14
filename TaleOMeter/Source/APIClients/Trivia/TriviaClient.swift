@@ -98,4 +98,12 @@ class TriviaClient {
             }
         }
     }
+    
+    static func viewPost(_ req: PostIdRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .TriviaPostView) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
+            }
+        }
+    }
 }

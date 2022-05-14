@@ -53,7 +53,6 @@ struct TriviaComment {
                 Reply.append(TriviaComment(object))
             }
         }
-        
     }
 }
 

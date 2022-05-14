@@ -48,6 +48,7 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var videoButton: UIButton!
+    @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var videoButton1: UIButton!
 
 //    @IBOutlet weak var postStackView: UIStackView!
@@ -170,7 +171,7 @@ class FeedCellView: UITableViewCell {
         }
         
         if let replyBtn = self.replyButton {
-            replyBtn.isHidden = cellId == FeedCellIdentifier.reply
+            //replyBtn.isHidden = cellId == FeedCellIdentifier.reply
             replyBtn.tag = row
             replyBtn.layer.setValue(cellData.index, forKey: "CellIndex")
             replyBtn.layer.setValue(cellData.commentIndex, forKey: "CommentIndex")
@@ -182,6 +183,11 @@ class FeedCellView: UITableViewCell {
             answerBtn.layer.setValue(row, forKey: "RowIndex")
             answerBtn.addTarget(target, action: selectors[5], for: .touchUpInside)
         }
+        if let imgBtn = self.imageButton {
+            imgBtn.tag = cellData.index
+            imgBtn.addTarget(target, action: selectors[7], for: .touchUpInside)
+        }
+        
         if let videoBtn = self.videoButton, let videoBtn1 = self.videoButton1 {
             if !videoUrl.isBlank {
                 videoBtn.tag = cellData.index

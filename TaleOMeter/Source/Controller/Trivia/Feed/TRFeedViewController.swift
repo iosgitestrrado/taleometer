@@ -110,6 +110,10 @@ class TRFeedViewController: UIViewController {
        
     // MARK: - Side Menu button action -
     @IBAction func ClickOnMenu(_ sender: Any) {
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
         self.sideMenuController!.toggleRightView(animated: true)
     }
     
@@ -143,6 +147,9 @@ class TRFeedViewController: UIViewController {
                         Validator.showRequiredError(textFlield)
                     }
                     return
+                }
+                if !postData[sender.tag].User_opened {
+                    self.viewPost(sender.tag)
                 }
                 Core.ShowProgress(self, detailLbl: "Submitting Answer...")
                 TriviaClient.submitAnswer(SubmitAnswerRequest(post_id: postData[sender.tag].Post_id, answer: postData[sender.tag].Value)) { [self] status in
@@ -244,6 +251,13 @@ class TRFeedViewController: UIViewController {
         }
     }
     
+    // MARK: Tap on image Button
+    @objc private func tapOnQuestionImage(_ sender: UIButton) {
+        if !postData[sender.tag].User_opened {
+            self.viewPost(sender.tag)
+        }
+    }
+    
     private var playerViewController = AVPlayerViewController()
     private var videoPlayIndex = -1
     private var videoPlayingIndex = -1
@@ -251,6 +265,10 @@ class TRFeedViewController: UIViewController {
     // MARK: Tap on video Button
     @objc private func tapOnVideo(_ sender: UIButton) {
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
+            if !postData[sender.tag].User_opened {
+                self.viewPost(sender.tag)
+                postData[sender.tag].User_opened = true
+            }
             videoPlayIndex = rowIndex
             self.tableView.reloadData()
             //self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: rowIndex)
@@ -376,11 +394,26 @@ extension TRFeedViewController {
     
     // MARK: - Add Commnet -
     private func addComment(_ postId: Int, commentId: Int?, comment: String, completion: @escaping(Bool?) -> Void) {
-//        DispatchQueue.global(qos: .background).async {
-            TriviaClient.addComments(AddCommentRequest(post_id: postId, comment_id: commentId, comment: comment)) { status in
-                completion(status)
+        //        DispatchQueue.global(qos: .background).async {
+        TriviaClient.addComments(AddCommentRequest(post_id: postId, comment_id: commentId, comment: comment)) { status in
+            completion(status)
+        }
+        //        }
+    }
+    
+    // MARK: View post
+    private func viewPost(_ postIndex: Int) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        DispatchQueue.global(qos: .background).async { [self] in
+            TriviaClient.viewPost(PostIdRequest(post_id: postData[postIndex].Post_id)) { [self] status in
+                if let st = status, st {
+                    postData[postIndex].User_opened = true
+                }
             }
-//        }
+        }
     }
     
     // MARK: - Set cell for tableview
@@ -395,10 +428,10 @@ extension TRFeedViewController {
             
             if feed.User_answer_status {
                 /// Add Image / Video and question title cell with view answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.image : FeedCellIdentifier.video, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index, commentIndex: feed.Post_id)))
             } else {
                 /// Add Image / Video and question title cell with submit answer
-                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index)))
+                cellDataArray.append(CellItem(cellId: feed.QuestionVideoURL.isBlank ? FeedCellIdentifier.question : FeedCellIdentifier.questionVideo, data: CellData(imageUrl: feed.Question_media_url, videoThumbnail: feed.Thumbnail, title: feed.Question, description: feed.Date, time: "", index: index, commentIndex: feed.Post_id)))
             }
             if feed.Post_id == redirectToPostId {
                 scrollToIndex = cellDataArray.count - 1
@@ -439,11 +472,17 @@ extension TRFeedViewController {
                             /// Check Comment expanded
                             if !comment.IsExpanded && repIndex == 0 && comment.Reply_count > 1 {
                                 
+                                /// Get reply model
+                                var lastReply = reply
+                                if let lsRep = comment.Reply.last {
+                                    lastReply = lsRep
+                                }
+                              
                                 /// Add view previous reply cell
                                 cellDataArray.append(CellItem(cellId: FeedCellIdentifier.moreReply, data: CellData(imageUrl: "", title: "View previous \(comment.Reply_count - 1) replies", description: "", time: "", index: index, commentIndex: comIndex)))
                                 
                                 /// Add reply cell
-                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(imageUrl: reply.Profile_image_url, title: reply.User_name, description: reply.Comment, time: reply.Time_ago, index: index, commentIndex: comIndex, replyIndex: repIndex)))
+                                cellDataArray.append(CellItem(cellId: FeedCellIdentifier.reply, data: CellData(imageUrl: lastReply.Profile_image_url, title: lastReply.User_name, description: lastReply.Comment, time: lastReply.Time_ago, index: index, commentIndex: comIndex, replyIndex: comment.Reply.count - 1)))
                                 break
                             }
                             
@@ -491,7 +530,7 @@ extension TRFeedViewController : UITableViewDataSource {
         cell.configureCell(cellData,
                            cellId: cellDataArray[indexPath.row].cellId,
                            messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row, target: self,
-                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:))])
+                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:)), #selector(tapOnQuestionImage(_:))])
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question || cellDataArray[indexPath.row].cellId == FeedCellIdentifier.questionVideo, let textField = cell.textField {
             textField.text = postData[cellData.index].Value
             postData[cellData.index].TextField = textField

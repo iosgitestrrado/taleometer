@@ -213,6 +213,7 @@ enum Feed {
     case TriviaViewAnswer
     case TriviaViewCommnets
     case TriviaAddCommennt
+    case TriviaPostView
 }
 
 protocol CodeEnd {
@@ -294,6 +295,7 @@ extension Feed: Endpoint {
         case .TriviaViewAnswer:         return "/api/trivia/view-answer"
         case .TriviaViewCommnets:       return "/api/trivia/view-comments"
         case .TriviaAddCommennt:        return "/api/trivia/add-comment"
+        case .TriviaPostView:           return "/api/trivia/posts/view"
         }
     }
 }
