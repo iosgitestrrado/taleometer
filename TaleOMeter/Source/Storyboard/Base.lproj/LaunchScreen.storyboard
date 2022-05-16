@@ -20,16 +20,96 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" red="0.1451125741" green="0.1442503929" blue="0.235509634" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4kK-JA-4Um">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m16-Fn-0v0">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="809"/>
+                                    </scrollView>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Zr-5X-yQn">
+                                        <rect key="frame" x="8" y="821" width="55" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="55" id="3iH-q3-E4h"/>
+                                        </constraints>
+                                        <state key="normal" title="SKIP">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDb-yx-wMV">
+                                        <rect key="frame" x="351" y="821" width="55" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="55" id="GOU-ae-zP5"/>
+                                        </constraints>
+                                        <state key="normal" title="NEXT">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="DBd-3D-KaB">
+                                        <rect key="frame" x="88" y="823" width="238" height="26"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="238" id="1ST-IO-wv9"/>
+                                        </constraints>
+                                        <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </pageControl>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Okk-eG-Db9" customClass="TransitionButton" customModule="TransitionButton">
+                                        <rect key="frame" x="103.5" y="817" width="207" height="37"/>
+                                        <color key="backgroundColor" red="0.083116047080000005" green="0.58515703679999997" blue="0.97413903469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="207" id="cNY-os-cpL"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                        <state key="normal" title="LET'S START NOW!">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="m16-Fn-0v0" firstAttribute="leading" secondItem="4kK-JA-4Um" secondAttribute="leading" id="6BZ-wX-Idz"/>
+                                    <constraint firstAttribute="trailing" secondItem="m16-Fn-0v0" secondAttribute="trailing" id="CCh-io-77o"/>
+                                    <constraint firstItem="8Zr-5X-yQn" firstAttribute="leading" secondItem="4kK-JA-4Um" secondAttribute="leading" constant="8" id="Dos-rJ-l1h"/>
+                                    <constraint firstItem="8Zr-5X-yQn" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="12" id="IbF-hO-Ps8"/>
+                                    <constraint firstItem="DBd-3D-KaB" firstAttribute="leading" secondItem="8Zr-5X-yQn" secondAttribute="trailing" constant="25" id="KUc-Cq-VoR"/>
+                                    <constraint firstAttribute="bottom" secondItem="Okk-eG-Db9" secondAttribute="bottom" constant="42" id="LYC-rp-XAh"/>
+                                    <constraint firstItem="m16-Fn-0v0" firstAttribute="top" secondItem="4kK-JA-4Um" secondAttribute="top" id="Ols-UV-lSt"/>
+                                    <constraint firstAttribute="bottom" secondItem="LDb-yx-wMV" secondAttribute="bottom" constant="45" id="Yab-0Z-ibg"/>
+                                    <constraint firstItem="Okk-eG-Db9" firstAttribute="centerX" secondItem="4kK-JA-4Um" secondAttribute="centerX" id="Z4Y-2g-n8F"/>
+                                    <constraint firstAttribute="trailing" secondItem="LDb-yx-wMV" secondAttribute="trailing" constant="8" id="d7X-pt-lJM"/>
+                                    <constraint firstItem="LDb-yx-wMV" firstAttribute="leading" secondItem="DBd-3D-KaB" secondAttribute="trailing" constant="25" id="ju7-QV-4UA"/>
+                                    <constraint firstAttribute="bottom" secondItem="DBd-3D-KaB" secondAttribute="bottom" constant="47" id="mti-tv-mnt"/>
+                                    <constraint firstAttribute="bottom" secondItem="8Zr-5X-yQn" secondAttribute="bottom" constant="45" id="pr7-f5-0sp"/>
+                                    <constraint firstItem="LDb-yx-wMV" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="12" id="u0o-1h-i9W"/>
+                                    <constraint firstItem="DBd-3D-KaB" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="14" id="xcv-Ps-Rlw"/>
+                                    <constraint firstItem="Okk-eG-Db9" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="8" symbolic="YES" id="xrI-JW-aNQ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="4kK-JA-4Um" secondAttribute="bottom" id="Bci-YN-fHt"/>
                             <constraint firstAttribute="bottom" secondItem="ThL-to-mWe" secondAttribute="bottom" id="EEc-wT-SoD"/>
+                            <constraint firstItem="4kK-JA-4Um" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Iyb-Zh-eU5"/>
                             <constraint firstItem="ThL-to-mWe" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MXg-Ac-Uq4"/>
                             <constraint firstItem="ThL-to-mWe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NYV-Lr-3ss"/>
                             <constraint firstItem="ThL-to-mWe" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="TkQ-Ue-YsI"/>
+                            <constraint firstItem="4kK-JA-4Um" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Z0k-Cn-3Aa"/>
+                            <constraint firstItem="4kK-JA-4Um" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="mSg-EB-clt"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="AGLetsStart" destination="Okk-eG-Db9" id="aUE-Me-Rrd"/>
+                        <outlet property="AGNextButton" destination="LDb-yx-wMV" id="tkE-ez-Dx2"/>
+                        <outlet property="AGskipButton" destination="8Zr-5X-yQn" id="Dvx-V1-ueT"/>
+                        <outlet property="appGuideView" destination="4kK-JA-4Um" id="NrU-oN-b0y"/>
+                        <outlet property="guideScrollView" destination="m16-Fn-0v0" id="xYG-pm-kng"/>
+                        <outlet property="pageController" destination="DBd-3D-KaB" id="njl-Ue-VBP"/>
                         <outlet property="splashImage" destination="ThL-to-mWe" id="MYj-vD-QOM"/>
                     </connections>
                 </viewController>

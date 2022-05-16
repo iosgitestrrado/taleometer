@@ -13,6 +13,17 @@ class LaunchViewController: UIViewController {
     // MARK: - Weak Properties -
     @IBOutlet weak var splashImage: UIImageView!
     
+    @IBOutlet weak var appGuideView: UIView! {
+        didSet {
+            self.appGuideView.isHidden = true
+        }
+    }
+    @IBOutlet weak var guideScrollView: UIScrollView!
+    @IBOutlet weak var AGskipButton: UIButton!
+    @IBOutlet weak var AGNextButton: UIButton!
+    @IBOutlet weak var AGLetsStart: UIButton!
+    @IBOutlet weak var pageController: UIPageControl!
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()

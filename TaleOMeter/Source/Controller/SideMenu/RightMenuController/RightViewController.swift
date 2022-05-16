@@ -11,7 +11,7 @@ class RightViewController: UIViewController {
     
     // MARK: - Weak Property -
     @IBOutlet weak var tableView: UITableView!
-    
+
     // MARK: - Privare Property -
     private let cellProfileIdentifier = "profileCell"
     private let cellIdentifier = "cell"
@@ -47,7 +47,7 @@ class RightViewController: UIViewController {
             case .aboutUs:
                 return "About Us"
             case .feedback:
-                return "Contact Us"
+                return "Reach Us"
             case .logout:
                 return "Logout"
             }
@@ -139,6 +139,12 @@ class RightViewController: UIViewController {
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .fade
+    }
+    
+    @IBAction func tapOnInvite(_ sender: UIButton) {
+        Core.shareContent(self) { status in
+            
+        }
     }
     
     // MARK: - Logging -

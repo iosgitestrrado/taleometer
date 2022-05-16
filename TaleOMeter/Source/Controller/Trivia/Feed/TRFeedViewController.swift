@@ -21,7 +21,8 @@ class TRFeedViewController: UIViewController {
     // MARK: - Public Properties
     var categoryId = -1
     var redirectToPostId = -1
-        
+    var redirectToCommId = -1
+
     // MARK: - Private Properties -
     private let viewMoreText = "--------------------  View More  --------------------"
     private struct CellItem {
@@ -51,6 +52,7 @@ class TRFeedViewController: UIViewController {
         if let profData = Login.getProfileData() {
             profilePic = UIImage(data: profData.ImageData)
         }
+        pageNumber = 1
         if categoryId != -2 {
             self.getTriviaPosts()
         }
@@ -77,6 +79,9 @@ class TRFeedViewController: UIViewController {
         if let catId = notification.userInfo?["NotificationCategoryId"] as? Int, catId != -2 {
             if let psId = notification.userInfo?["NotificationPostId"] as? Int {
                 redirectToPostId = psId
+            }
+            if let comId = notification.userInfo?["NotificationCommentId"] as? Int {
+                redirectToCommId = comId
             }
             pageNumber = 1
             categoryId = catId
@@ -330,7 +335,7 @@ extension TRFeedViewController {
             // MARK: - Get trivia posts by category
             TriviaClient.getCategoryPosts(pageNumber, req: TriviaCategoryRequest(category: categoryId)) { [self] response in
                 if let data = response {
-                    postData = postData + data
+                    postData = pageNumber == 1 ? data : postData + data
                     morePage = data.count > 0
                 }
                 showNoData = 1
@@ -352,7 +357,7 @@ extension TRFeedViewController {
             // MARK: - Get trivia daily posts
             TriviaClient.getTriviaDailyPost(pageNumber) { [self] response in
                 if let data = response {
-                    postData = postData + data
+                    postData = pageNumber == 1 ? data : postData + data
                     morePage = data.count > 0
                 }
                 showNoData = 1
@@ -444,7 +449,9 @@ extension TRFeedViewController {
                     
                     /// Get comment model
                     var comment = feed.Comments[comIndex]
-                    
+                    if comment.Comment_id == redirectToCommId {
+                        scrollToIndex = cellDataArray.count - 1
+                    }
                     /// Check is explanded or not
                     if !feed.IsExpanded && comIndex == 3 {
                         /// Add view more text cell
@@ -501,6 +508,7 @@ extension TRFeedViewController {
         self.tableView.reloadData()
         if scrollToIndex > 0 {
             redirectToPostId = -1
+            redirectToCommId = -1
             self.tableView.scrollToRow(at: IndexPath(row: scrollToIndex, section: 0), at: .top, animated: true)
         }
         //self.tableView.reloadSections(IndexSet(integer: 0), with: .bottom)

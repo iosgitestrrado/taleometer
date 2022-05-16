@@ -38,6 +38,7 @@ struct Constants {
         static let IsLogin = "isLogin"
         static let ProfileData = "ProfileData"
         static let StartUsageId = "StartUsageId"
+        static let GuideCompleted = "GuideCompleted"
     }
     
     public struct DateFormate {
