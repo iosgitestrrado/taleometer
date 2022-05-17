@@ -69,9 +69,15 @@ class AuthClient {
             }
             DispatchQueue.global(qos: .background).async {
                 APIClient.shared.getJson("", feed: .Logout) { result in
+                    let isGuideCompleted = UserDefaults.standard.bool(forKey: Constants.UserDefault.GuideCompleted)
+                    
                     let domain = Bundle.main.bundleIdentifier!
                     UserDefaults.standard.removePersistentDomain(forName: domain)
                     UserDefaults.standard.synchronize()
+                    
+                    UserDefaults.standard.set(isGuideCompleted, forKey: Constants.UserDefault.GuideCompleted)
+                    UserDefaults.standard.synchronize()
+                    
                     AudioPlayManager.shared.isMiniPlayerActive = false
                     AudioPlayManager.shared.isNonStop = false
                     Login.setGusetData()

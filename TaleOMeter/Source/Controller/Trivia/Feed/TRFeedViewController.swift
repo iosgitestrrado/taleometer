@@ -344,7 +344,7 @@ extension TRFeedViewController {
                 if !showProgress {
                     Core.HideProgress(self)
                 }
-                if redirectToPostId != -1 && postData.first(where: { $0.Post_id == redirectToPostId }) == nil {
+                if redirectToPostId != -1 && pageNumber <= 3 && postData.first(where: { $0.Post_id == redirectToPostId }) == nil {
                     pageNumber += 1
                     tableView.tableFooterView = footerView
                     if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
@@ -367,7 +367,7 @@ extension TRFeedViewController {
                 if !showProgress {
                     Core.HideProgress(self)
                 }
-                if redirectToPostId != -1 && postData.first(where: { $0.Post_id == redirectToPostId }) == nil {
+                if redirectToPostId != -1 && pageNumber <= 3 && postData.first(where: { $0.Post_id == redirectToPostId }) == nil {
                     pageNumber += 1
                     tableView.tableFooterView = footerView
                     if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {

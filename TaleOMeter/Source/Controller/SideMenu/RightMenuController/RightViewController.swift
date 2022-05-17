@@ -142,7 +142,7 @@ class RightViewController: UIViewController {
     }
     
     @IBAction func tapOnInvite(_ sender: UIButton) {
-        Core.shareContent(self) { status in
+        Core.shareContent(self, displayName: profileData?.Fname ?? "Guest") { status in
             
         }
     }

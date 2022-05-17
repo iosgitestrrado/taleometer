@@ -321,9 +321,10 @@ class Core: NSObject {
     }
     
     // MARK: - Share to social -
-    static func shareContent(_ target: UIViewController, completion: @escaping(Bool?) -> Void) {
+    static func shareContent(_ target: UIViewController, displayName: String, completion: @escaping(Bool?) -> Void) {
 //        let content = "Introducing tale'o'meter, An App that simplifies for Every One. \nClick here to download application http://onelink.to/gaypyh"
-        let content = "Take a pause! Breathe a little! Challenge yourself!\nTale’o’meter…. The audio OTT… Original Tamil Tales Signup for free.\nLet’s take the daily break we deserve. I play this daily as <displayname>"
+        let content = "Take a pause! Breathe a little! Challenge yourself!\nTale’o’meter…. The audio OTT… Original Tamil Tales Signup for free.\nLet’s take the daily break we deserve. I play this daily as \"\(displayName)\""
+        
         let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
         controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
         controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
