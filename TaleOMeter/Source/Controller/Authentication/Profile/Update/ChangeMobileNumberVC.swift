@@ -87,7 +87,7 @@ class ChangeMobileNumberVC: UIViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "Sending OTP")
-        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!, isd_code: self.countryModel.extensionCode ?? "91", country_code: self.countryModel.countryCode ?? "IN")) { status in
+        AuthClient.sendProfileOtp(LoginRequest(mobile: self.mobileTextField.text!, isd_code: self.countryModel.extensionCode ?? "+91", country_code: self.countryModel.countryCode ?? "IN")) { status in
             if status {
                 self.performSegue(withIdentifier: "verification", sender: self)
             }

@@ -253,6 +253,11 @@ class TRFeedViewController: UIViewController {
             }
             cellDataArray.insert(CellItem(cellId: FeedCellIdentifier.replyPost, data: CellData(imageUrl: "", profilePic: profilePic, title: "", description: "", time: "", index: cellIndex, commentIndex: commentIndex, replyIndex: replyIndex)), at: sender.tag + 1)
             self.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+                if let replyPostIndex = cellDataArray.firstIndex(where: { $0.cellId == FeedCellIdentifier.replyPost }), let cell = tableView.cellForRow(at: IndexPath(row: replyPostIndex, section: 0)) as? FeedCellView, let textView = cell.descText {
+                    textView.becomeFirstResponder()
+                }
+            }
         }
     }
     
