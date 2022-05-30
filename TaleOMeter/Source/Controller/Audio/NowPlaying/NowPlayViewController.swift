@@ -10,7 +10,6 @@ import SoundWave
 import CoreMedia
 import AVFoundation
 import MediaPlayer
-import CallKit
 
 class NowPlayViewController: UIViewController {
 
@@ -416,14 +415,14 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    func checkForActiveCall() -> Bool {
-        for call in CXCallObserver().calls {
-            if call.hasEnded == false {
-                return true
-            }
-        }
-        return false
-    }
+//    func checkForActiveCall() -> Bool {
+//        for call in CXCallObserver().calls {
+//            if call.hasEnded == false {
+//                return true
+//            }
+//        }
+//        return false
+//    }
     
     // MARK: - Handle play pause audio
     private func playPauseAudio(_ playing: Bool) {
@@ -531,22 +530,22 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    @objc private func checkActiveCall() {
-        if !self.checkForActiveCall() {
-            audioTimer.invalidate()
-            self.playPauseAudio(true)
-        }
-    }
+//    @objc private func checkActiveCall() {
+//        if !self.checkForActiveCall() {
+//            audioTimer.invalidate()
+//            self.playPauseAudio(true)
+//        }
+//    }
     
     // MARK: - Update time as per playing audio
     @objc private func udpateTime() {
-        if self.checkForActiveCall() {
-            self.playPauseAudio(false)
-            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.checkActiveCall), userInfo: nil, repeats: true)
-            RunLoop.main.add(self.audioTimer, forMode: .default)
-            audioTimer.fire()
-            return
-        }
+//        if self.checkForActiveCall() {
+//            self.playPauseAudio(false)
+//            audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(NowPlayViewController.checkActiveCall), userInfo: nil, repeats: true)
+//            RunLoop.main.add(self.audioTimer, forMode: .default)
+//            audioTimer.fire()
+//            return
+//        }
         if let player = AudioPlayManager.shared.playerAV, let currentItem = player.currentItem {
             DispatchQueue.main.async { [self] in
                 // Get the current time in seconds

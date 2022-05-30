@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0B3058CF28181837004DC370 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B3058CE28181837004DC370 /* GoogleService-Info.plist */; };
+		0B6A90B8283CCE9900FED2CD /* logoshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B6A90B7283CCE9900FED2CD /* logoshare.png */; };
 		0BA7AE1B281BEF76006FB00E /* spinner11.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0BA7AE1A281BEF75006FB00E /* spinner11.gif */; };
+		0BB759822841EFFD0025AF44 /* shareimg.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0BB759812841EFFC0025AF44 /* shareimg.jpeg */; };
 		0BFE6BC1281FB66900A0B54D /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */; };
 		1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */; };
 		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
@@ -187,7 +189,9 @@
 /* Begin PBXFileReference section */
 		0B3058CE28181837004DC370 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0B3058D028181979004DC370 /* TaleOMeter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaleOMeter.entitlements; sourceTree = "<group>"; };
+		0B6A90B7283CCE9900FED2CD /* logoshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoshare.png; sourceTree = "<group>"; };
 		0BA7AE1A281BEF75006FB00E /* spinner11.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner11.gif; sourceTree = "<group>"; };
+		0BB759812841EFFC0025AF44 /* shareimg.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shareimg.jpeg; sourceTree = "<group>"; };
 		0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -670,6 +674,8 @@
 		6358435E27B7CF9C0055DE7E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				0B6A90B7283CCE9900FED2CD /* logoshare.png */,
+				0BB759812841EFFC0025AF44 /* shareimg.jpeg */,
 				639103D727FEEC8500DA214E /* spinner1.gif */,
 				0BA7AE1A281BEF75006FB00E /* spinner11.gif */,
 				630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */,
@@ -1383,10 +1389,12 @@
 				633DF8B127FDB17400F3E177 /* CommutersSans-ExtraBoldItalic.ttf in Resources */,
 				633DF8A927FDB17300F3E177 /* CommutersSans-Thin.ttf in Resources */,
 				630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */,
+				0BB759822841EFFD0025AF44 /* shareimg.jpeg in Resources */,
 				6358431927B7AEDB0055DE7E /* LaunchScreen.storyboard in Resources */,
 				0BA7AE1B281BEF76006FB00E /* spinner11.gif in Resources */,
 				633DF8B327FDB17400F3E177 /* CommutersSans-Regular.ttf in Resources */,
 				633DF8AF27FDB17400F3E177 /* CommutersSans-ExtraBold.ttf in Resources */,
+				0B6A90B8283CCE9900FED2CD /* logoshare.png in Resources */,
 				639103D827FEEC8500DA214E /* spinner1.gif in Resources */,
 				633DF8B527FDB17400F3E177 /* CommutersSans-Italic.ttf in Resources */,
 				63D27C6227BD07FA0074EA7F /* Audio.storyboard in Resources */,
@@ -1826,7 +1834,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XLPSEH973Z;
+				DEVELOPMENT_TEAM = YY3AAYF9VF;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
@@ -1844,8 +1852,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
+				MARKETING_VERSION = 1.2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1861,10 +1869,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TaleOMeter/TaleOMeter.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Aries Estrrado Technologies Private Limited (XLPSEH973Z)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TALE-O-METER INDIA PRIVATE LIMITED (YY3AAYF9VF)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XLPSEH973Z;
+				DEVELOPMENT_TEAM = YY3AAYF9VF;
 				ENABLE_APP_SANDBOX = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
@@ -1882,10 +1890,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.estrrado.v1.taleometer;
+				MARKETING_VERSION = 1.2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = TaleOMeterV1_appstore;
+				PROVISIONING_PROFILE_SPECIFIER = Taleometer_appstore;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

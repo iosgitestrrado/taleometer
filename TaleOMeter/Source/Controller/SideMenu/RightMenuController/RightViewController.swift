@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LinkPresentation
 
 class RightViewController: UIViewController {
     
@@ -29,6 +30,7 @@ class RightViewController: UIViewController {
         case aboutUs
         case feedback
         case logout
+        case appVersion
 
         var description: String {
             switch self {
@@ -50,6 +52,8 @@ class RightViewController: UIViewController {
                 return "Reach Us"
             case .logout:
                 return "Logout"
+            case .appVersion:
+                return "V"
             }
         }
         
@@ -65,6 +69,8 @@ class RightViewController: UIViewController {
                 return Constants.Storyboard.audio
             case .logout:
                 return Constants.Storyboard.auth
+            case .appVersion:
+                return ""
             }
         }
         
@@ -88,16 +94,18 @@ class RightViewController: UIViewController {
                 return "FeedbackViewController"
             case .logout:
                 return "LoginViewController"
+            case .appVersion:
+                return ""
             }
         }
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .triviaQuiz/*, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .triviaQuiz/*, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
-        [.profile, .profile, .preference, .aboutUs, .feedback, .logout]
+        [.profile, .profile, .preference, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private var profileData: ProfileData?
@@ -245,6 +253,9 @@ extension RightViewController: UITableViewDelegate {
     }
     
     private func pushToView(_ storyBoardName: String, storyBoradId: String) {
+        if storyBoardName.isBlank {
+            return
+        }
         guard let sideMenuController = sideMenuController else { return }
         if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last, navLastChild.className != storyBoradId {
             for controller in cont.children {
@@ -313,7 +324,7 @@ extension RightViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RightViewCell
         let item = sections[indexPath.section][indexPath.row]
 
-        cell.titleLabel.text = item.description
+        cell.titleLabel.text = item == .appVersion ? "UAT V\(Core.GetAppVersion())" : item.description
         cell.isFirst = (indexPath.row == 0)
         cell.isLast = (indexPath.row == sections[indexPath.section].count - 1)
         cell.selectionStyle = .none

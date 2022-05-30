@@ -102,8 +102,8 @@ extension AppDelegate: MessagingDelegate {
         if let postIdn = userInfo["gcm.notification.post_id"] as? String {
             postId = Int(postIdn) ?? -1
         }
-        if let categoryn = userInfo["gcm.notification.category_id"] as? String {
-            categorId = Int(categoryn) ?? -2
+        if userInfo["gcm.notification.category_id"] is String {
+            categorId = -1//Int(categoryn) ?? -2
         }
         if let commId = userInfo["gcm.notification.comment_id"] as? String {
             commentId = Int(commId) ?? -1
@@ -132,8 +132,8 @@ extension AppDelegate: MessagingDelegate {
         if let postIdn = userInfo["gcm.notification.post_id"] as? String {
             postId = Int(postIdn) ?? -1
         }
-        if let categoryn = userInfo["gcm.notification.category_id"] as? String {
-            categorId = Int(categoryn) ?? -2
+        if userInfo["gcm.notification.category_id"] is String {
+            categorId = -1//Int(categoryn) ?? -2
         }
         if let commId = userInfo["gcm.notification.comment_id"] as? String {
             commentId = Int(commId) ?? -1

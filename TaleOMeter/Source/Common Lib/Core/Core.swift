@@ -97,7 +97,7 @@ class Core: NSObject {
                     navViewControllers.insert(dash, at: navViewControllers.count - 1)
                     cont.navigationController?.viewControllers = navViewControllers
                 }
-            } else if categorId != -1 {
+            } else if categorId != -2 {
                 if let dashTrivia = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: TriviaViewController().className) as? TriviaViewController, var navViewControllers = cont.navigationController?.viewControllers {
                     navViewControllers.insert(dashTrivia, at: navViewControllers.count - 1)
                     cont.navigationController?.viewControllers = navViewControllers
@@ -323,16 +323,23 @@ class Core: NSObject {
     // MARK: - Share to social -
     static func shareContent(_ target: UIViewController, displayName: String, completion: @escaping(Bool?) -> Void) {
 //        let content = "Introducing tale'o'meter, An App that simplifies for Every One. \nClick here to download application http://onelink.to/gaypyh"
-        let content = "Take a pause! Breathe a little! Challenge yourself!\nTale’o’meter…. The audio OTT… Original Tamil Tales Signup for free.\nLet’s take the daily break we deserve. I play this daily as \(displayName)"
-        
-        let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
-        controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
-        controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
-            completion(completed)
-         }
-        target.present(controller, animated: true) {
-            
+        //https://apps.apple.com/us/app/pocket-chess/id1580054076  http://onelink.to/38pfnx
+        if let url = URL(string: "https://apps.apple.com/us/app/taleometer/id1621063908") {
+            let content = "Time to relax, refresh and reset with Tale’o’meter trivia - The audio OTT (Original Tamil Tales).\n\nSignup for FREE. "
+            let content2 = "\n\nLet’s take the daily break we deserve. I play this daily as \(displayName)"
+            let logoImage = UIImage(named: "shareimg.jpeg")
+            let controller = UIActivityViewController(activityItems: [logoImage!, content, url, content2], applicationActivities: nil)
+    //        controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
+            controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+                completion(completed)
+            }
+            target.present(controller, animated: true) { }
         }
+        
        // target.present(controller, animated: true, completion: nil)
+    }
+    
+    static func GetAppVersion() -> String {
+        return Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
     }
 }
