@@ -11,6 +11,7 @@
 		0B6A90B8283CCE9900FED2CD /* logoshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B6A90B7283CCE9900FED2CD /* logoshare.png */; };
 		0BA7AE1B281BEF76006FB00E /* spinner11.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0BA7AE1A281BEF75006FB00E /* spinner11.gif */; };
 		0BB759822841EFFD0025AF44 /* shareimg.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0BB759812841EFFC0025AF44 /* shareimg.jpeg */; };
+		0BE58674285C640700AC06CF /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE58673285C640700AC06CF /* UIDevice+Extension.swift */; };
 		0BFE6BC1281FB66900A0B54D /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */; };
 		1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */; };
 		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
@@ -192,6 +193,7 @@
 		0B6A90B7283CCE9900FED2CD /* logoshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoshare.png; sourceTree = "<group>"; };
 		0BA7AE1A281BEF75006FB00E /* spinner11.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner11.gif; sourceTree = "<group>"; };
 		0BB759812841EFFC0025AF44 /* shareimg.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shareimg.jpeg; sourceTree = "<group>"; };
+		0BE58673285C640700AC06CF /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -711,6 +713,7 @@
 				63E6E2E527E0B1EC00B82B08 /* UITextField+Extenstion.swift */,
 				633B82C827D9E1E400236CA2 /* Int+Extenstion.swift */,
 				633B82CA27D9E2F300236CA2 /* AVPlayer+Extension.swift */,
+				0BE58673285C640700AC06CF /* UIDevice+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1643,6 +1646,7 @@
 				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
 				63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
+				0BE58674285C640700AC06CF /* UIDevice+Extension.swift in Sources */,
 				6350D42627EC6B4C00631978 /* NonStopAudio.swift in Sources */,
 				638FD58F27E20B810053CD79 /* SearchAudioClient.swift in Sources */,
 				6361179727BA5814000C1749 /* Country.swift in Sources */,
@@ -1852,7 +1856,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1890,7 +1894,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Taleometer_appstore;

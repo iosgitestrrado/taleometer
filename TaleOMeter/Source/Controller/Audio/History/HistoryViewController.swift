@@ -186,8 +186,8 @@ class HistoryViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 // For update row set selected index
                 if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
-                    selectedIndex = rowIndex
-                    selectedSection = section
+                    self.selectedIndex = rowIndex
+                    self.selectedSection = section
                 }
                 self.tableView.reloadData()
             }
@@ -335,8 +335,8 @@ extension HistoryViewController {
             // Scroll to perticuler row
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                if pageNumber == 1 && selectedIndex >= 0 && selectedSection >= 0 {
-                    let indexPath = IndexPath(row: selectedIndex, section: selectedSection)
+                if self.pageNumber == 1 && self.selectedIndex >= 0 && self.selectedSection >= 0 {
+                    let indexPath = IndexPath(row: self.selectedIndex, section: self.selectedSection)
                     self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                 }
             }

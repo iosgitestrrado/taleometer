@@ -100,6 +100,20 @@ struct VerificationRequest: Encodable {
     var otp = Int()
     var isd_code = String()
     var country_code = String()
+    var model = Core.GetDeviceModel()
+    var osversion = Core.GetDeviceOSVersion()
+    var appversion = Core.GetAppVersion()
+    var os = Core.GetDeviceOS()
+    var uuid = Core.GetDeviceId()
+    var manufacturer = "Apple"
+    var device_name = "ios"
+}
+
+struct VerificationUpdateRequest: Encodable {
+    var mobile = String()
+    var otp = Int()
+    var isd_code = String()
+    var country_code = String()
 }
 /*{
  "id": 26,

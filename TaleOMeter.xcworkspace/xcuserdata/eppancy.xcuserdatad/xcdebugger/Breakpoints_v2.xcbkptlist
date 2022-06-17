@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2F32AD38-162A-4241-AEA8-17BFF1769B0F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "remoteCommandHandler(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "A885D4B4-5C25-4EE1-92B9-A71E92E50F9E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -30,8 +14,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "631"
-            endingLineNumber = "631"
+            startingLineNumber = "632"
+            endingLineNumber = "632"
             landmarkName = "getAudios(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,13 +30,13 @@
             filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
             landmarkName = "getAudios(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b9689248"
+                  uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b968926b"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -62,12 +46,12 @@
                   urlString = "file:///Users/eppancy/Documents/Projects/TaleOMeter/TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "632"
-                  endingLineNumber = "632"
+                  startingLineNumber = "633"
+                  endingLineNumber = "633"
                   offsetFromSymbolStart = "88">
                </Location>
                <Location
-                  uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b9689248"
+                  uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b968926b"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -77,8 +61,8 @@
                   urlString = "file:///Users/eppancy/Documents/Projects/TaleOMeter/TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "632"
-                  endingLineNumber = "632"
+                  startingLineNumber = "633"
+                  endingLineNumber = "633"
                   offsetFromSymbolStart = "116">
                </Location>
             </Locations>
@@ -87,15 +71,31 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3F043AD0-2718-45CF-AC04-ACCF3ABE4E6A"
+            uuid = "A1ABA336-F124-4B38-A143-CB077F7DF93D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2DA81CFF-E02A-4A14-8313-EDDAECB0B7CB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "application(_:didReceiveRemoteNotification:)"
             landmarkType = "7">
          </BreakpointContent>

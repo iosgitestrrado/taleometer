@@ -11,6 +11,7 @@ import AVFoundation
 import SystemConfiguration
 import UIKit
 import NVActivityIndicatorView
+import LinkPresentation
 
 class Core: NSObject {
     static var activityIndicator: NVActivityIndicatorView = NVActivityIndicatorView(frame: CGRect.zero)
@@ -339,7 +340,125 @@ class Core: NSObject {
        // target.present(controller, animated: true, completion: nil)
     }
     
+    static func shareImageViaWhatsapp(image: UIImage, onViewController: UIViewController) {
+        var documentInteractionController: UIDocumentInteractionController!
+        
+        let urlWhats = "whatsapp://app"
+        if let urlString = urlWhats.addingPercentEncoding(withAllowedCharacters:CharacterSet.urlQueryAllowed) {
+            if let whatsappURL = URL(string: urlString) {
+                if UIApplication.shared.canOpenURL(whatsappURL as URL) {
+                    guard let imageData = image.pngData() else { debugPrint("Cannot convert image to data!"); return }
+                    
+                    let tempFile = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Documents/whatsAppTmp.jpeg")
+                    do {
+                        try imageData.write(to: tempFile, options: .atomic)
+                        documentInteractionController = UIDocumentInteractionController(url: tempFile)
+                        documentInteractionController.uti = "net.whatsapp.image"
+                        documentInteractionController.presentOpenInMenu(from: CGRect.zero, in: onViewController.view, animated: true)
+                        
+                    } catch {
+                        Toast.show("There was an error while processing, please contact our support team.")
+                        return
+                    }
+                } else {
+                    Toast.show("Cannot open Whatsapp, be sure Whatsapp is installed on your device.")
+                }
+            }
+        }
+    }
+    
+    static func share(with navigationCont: UINavigationController, image: UIImage?, content: String) {
+        var activityItems = [Any]()
+        if let img = image {
+            activityItems.append(ImageActivityItemSource(image: img, text: content))
+        }
+        activityItems.append(OptionalTextActivityItemSource(text: content))
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        navigationCont.present(activityViewController, animated: true, completion: nil)
+    }
+    
     static func GetAppVersion() -> String {
         return Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+    }
+    
+    static func GetDeviceId() -> String {
+        if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+            return uuid
+        }
+        return ""
+    }
+    
+    static func GetDeviceModel() -> String {
+        return UIDevice.modelName
+    }
+    
+    static func GetDeviceOS() -> String {
+        return UIDevice.current.systemName
+    }
+    
+    static func GetDeviceOSVersion() -> String {
+        return UIDevice.current.systemVersion
+    }
+}
+
+class OptionalTextActivityItemSource: NSObject, UIActivityItemSource {
+    let text: String
+    weak var viewController: UIViewController?
+    
+    init(text: String) {
+        self.text = text
+    }
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return text
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        if activityType?.rawValue == "net.whatsapp.WhatsApp.ShareExtension" {
+            // WhatsApp doesn't support both image and text, so return nil and thus only sharing an image. Also alert user about this on the first time.
+            let alertedAboutWhatsAppDefaultsKey = "DidAlertAboutWhatsAppLimitation"
+            
+            if !UserDefaults.standard.bool(forKey: alertedAboutWhatsAppDefaultsKey) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    guard let presentedViewController = activityViewController.presentedViewController else { return }
+                    UserDefaults.standard.set(true, forKey: alertedAboutWhatsAppDefaultsKey)
+                    
+                    let alert = UIAlertController(title: "WhatsApp Doesn't Support Text + Image", message: "Unfortunately WhatsApp doesn’t support sharing both text and an image at the same time. As a result, only the image will be shared.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    presentedViewController.present(alert, animated: true, completion: nil)
+                }
+            }
+            return text
+        } else {
+            return text
+        }
+    }
+}
+
+class ImageActivityItemSource: NSObject, UIActivityItemSource {
+    let image: UIImage
+    let text: String
+
+    init(image: UIImage, text: String) {
+        self.image = image
+        self.text = text
+    }
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return image
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return image
+    }
+    
+    @available(iOS 13.0, *)
+    internal func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let imageProvider = NSItemProvider(object: image)
+        
+        let metadata = LPLinkMetadata()
+        metadata.imageProvider = imageProvider
+        metadata.title = text
+        return metadata
     }
 }

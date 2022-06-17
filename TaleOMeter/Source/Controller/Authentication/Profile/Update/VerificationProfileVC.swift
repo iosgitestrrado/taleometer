@@ -82,7 +82,7 @@ class VerificationProfileVC: UIViewController {
     
     private func verifyOTP(_ otp: Int) {
         Core.ShowProgress(self, detailLbl: "Verifying OTP")
-        AuthClient.verifyProfileOtp(VerificationRequest(mobile: mobileNumber, otp: otp, isd_code: "\(iSDCode)", country_code: countryCode)) { result in
+        AuthClient.verifyProfileOtp(VerificationUpdateRequest(mobile: mobileNumber, otp: otp, isd_code: "\(iSDCode)", country_code: countryCode)) { result in
             if let response = result {
                 Login.storeProfileData(response)
 //                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)

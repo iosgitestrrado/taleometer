@@ -248,7 +248,7 @@ class AudioListViewController: UITableViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 // For update row set selected index
                 if let player = AudioPlayManager.shared.playerAV, player.isPlaying {
-                    selectedIndex = AudioPlayManager.shared.currentIndex
+                    self.selectedIndex = AudioPlayManager.shared.currentIndex
                 }
                 self.tableView.reloadData()
             }
@@ -363,12 +363,12 @@ extension AudioListViewController {
                 }
             }
             DispatchQueue.main.async {
-                if selectedIndex >= 0 {
-                    let indexPath = IndexPath(row: selectedIndex, section: 0)
+                if self.selectedIndex >= 0 {
+                    let indexPath = IndexPath(row: self.selectedIndex, section: 0)
                     self.tableView.reloadData()
                     self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                 } else {
-                    tableView.reloadData()
+                    self.tableView.reloadData()
                 }
             }
             tableView.tableFooterView = UIView()
@@ -449,12 +449,12 @@ extension AudioListViewController {
                     }
                 }
                 DispatchQueue.main.async {
-                    if selectedIndex >= 0 {
-                        let indexPath = IndexPath(row: selectedIndex, section: 0)
+                    if self.selectedIndex >= 0 {
+                        let indexPath = IndexPath(row: self.selectedIndex, section: 0)
                         self.tableView.reloadData()
                         self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                     } else {
-                        tableView.reloadData()
+                        self.tableView.reloadData()
                     }
                 }
                 tableView.tableFooterView = UIView()
@@ -496,12 +496,12 @@ extension AudioListViewController {
                     }
                 }
                 DispatchQueue.main.async {
-                    if selectedIndex >= 0 {
-                        let indexPath = IndexPath(row: selectedIndex, section: 0)
+                    if self.selectedIndex >= 0 {
+                        let indexPath = IndexPath(row: self.selectedIndex, section: 0)
                         self.tableView.reloadData()
                         self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                     } else {
-                        tableView.reloadData()
+                        self.tableView.reloadData()
                     }
                 }
                 tableView.tableFooterView = UIView()
@@ -543,12 +543,12 @@ extension AudioListViewController {
                     }
                 }
                 DispatchQueue.main.async {
-                    if selectedIndex >= 0 {
-                        let indexPath = IndexPath(row: selectedIndex, section: 0)
+                    if self.selectedIndex >= 0 {
+                        let indexPath = IndexPath(row: self.selectedIndex, section: 0)
                         self.tableView.reloadData()
                         self.tableView.scrollToRow(at: indexPath, at: .none, animated: true)
                     } else {
-                        tableView.reloadData()
+                        self.tableView.reloadData()
                     }
                 }
                 tableView.tableFooterView = UIView()

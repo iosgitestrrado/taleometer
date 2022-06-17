@@ -736,7 +736,7 @@ extension AudioPlayManager {
             if let currentItem = playerAV?.currentItem {
                 HistoryAudioClient.update(HistoryUpdateRequest(audio_history_id: audioHistoryId, time: getCurrentSecond(currentItem))) { status in
                     if let st = status, st {
-                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: audioHistoryId, action: AudioAction.pause.description)) { status in }
+                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: self.audioHistoryId, action: AudioAction.pause.description)) { status in }
                     }
                 }
             }

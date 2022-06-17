@@ -150,9 +150,18 @@ class RightViewController: UIViewController {
     }
     
     @IBAction func tapOnInvite(_ sender: UIButton) {
-        Core.shareContent(self, displayName: profileData?.Fname ?? "Guest") { status in
-            
+//        if let shareImg = UIImage(named: "shareimg.jpeg") {
+//            Core.shareImageViaWhatsapp(image: shareImg, onViewController: self)
+//        }
+        
+        if let navCont = sideMenuController?.rootViewController as? UINavigationController, let url = URL(string: "https://apps.apple.com/us/app/taleometer/id1621063908"), let shareImg = UIImage(named: "shareimg.jpeg") {
+            let text = "Time to relax, refresh and reset with Tale’o’meter trivia - The audio OTT (Original Tamil Tales).\n\nSignup for FREE. \(url)\n\nLet’s take the daily break we deserve. I play this daily as \(profileData?.Fname ?? "Guest")"
+            Core.share(with: navCont, image: shareImg, content: text)
         }
+//        Core.sharePicture(with: self)
+//        Core.shareContent(self, displayName: profileData?.Fname ?? "Guest") { status in
+//            
+//        }
     }
     
     // MARK: - Logging -

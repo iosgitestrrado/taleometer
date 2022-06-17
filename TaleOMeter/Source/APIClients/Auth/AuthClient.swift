@@ -38,7 +38,7 @@ class AuthClient {
         }
     }
     
-    static func verifyProfileOtp(_ veriReq: VerificationRequest, completion: @escaping(ProfileData?) -> Void) {
+    static func verifyProfileOtp(_ veriReq: VerificationUpdateRequest, completion: @escaping(ProfileData?) -> Void) {
         APIClient.shared.postJson(parameters: veriReq, feed: .VerifyOtpProfile) { (result) in
             ResponseAPI.getResponseJson(result, completion: { responseJson in
                 var verification: ProfileData?
@@ -177,7 +177,7 @@ class AuthClient {
                     do {
                         let genericModel = try JSONDecoder().decode(ResponseModelJSON.self, from: data!)
                         completion(.success(genericModel))
-                    } catch  let error1 {
+                    } catch  _ {
                         completion(.failure(.invalidData))
                     }
                 }
