@@ -112,6 +112,8 @@ class PreferenceViewController: UIViewController {
                     timer = Timer(timeInterval: 0.5, target: self, selector: #selector(addNode), userInfo: nil, repeats: true)
                     RunLoop.main.add(timer, forMode: .default)
                     timer.fire()
+                } else {
+                    self.tapOnSkipButton(self)
                 }
                 Core.HideProgress(self)
             }
@@ -128,9 +130,9 @@ class PreferenceViewController: UIViewController {
         }
         Core.ShowProgress(self, detailLbl: "Moving To Home Page")
         PreferenceClient.setUserBubbles(PreferenceRequest(preference_bubble_ids: selectedBubbles)) { status in
-                Core.HideProgress(self)
-                Login.removeStoryBoardData()
-                Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+            Core.HideProgress(self)
+            Login.removeStoryBoardData()
+            Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
         }
     }
     

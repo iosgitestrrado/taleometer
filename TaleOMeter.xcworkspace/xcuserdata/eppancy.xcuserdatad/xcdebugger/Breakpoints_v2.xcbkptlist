@@ -48,7 +48,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "633"
                   endingLineNumber = "633"
-                  offsetFromSymbolStart = "88">
+                  offsetFromSymbolStart = "150">
                </Location>
                <Location
                   uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b968926b"
@@ -63,7 +63,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "633"
                   endingLineNumber = "633"
-                  offsetFromSymbolStart = "116">
+                  offsetFromSymbolStart = "198">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -71,32 +71,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A1ABA336-F124-4B38-A143-CB077F7DF93D"
-            shouldBeEnabled = "Yes"
+            uuid = "E07964C3-99E7-4915-852F-2E8E6103D0A5"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
+            filePath = "TaleOMeter/Source/APIClients/API/APIClient.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2DA81CFF-E02A-4A14-8313-EDDAECB0B7CB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "application(_:didReceiveRemoteNotification:)"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "postJson(_:parameters:feed:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

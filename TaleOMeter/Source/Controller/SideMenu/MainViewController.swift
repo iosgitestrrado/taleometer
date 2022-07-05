@@ -18,7 +18,7 @@ class MainViewController: LGSideMenuController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.rightViewBackgroundColor = UIColor(red: 237.0 / 255.0, green: 44.0 / 255.0, blue: 61.0 / 255.0, alpha: 1.0)// ED2C3D 237, 44, 61
+        //self.rightViewBackgroundColor = UIColor(red: 237.0 / 255.0, green: 44.0 / 255.0, blue: 61.0 / 255.0, alpha: 1.0)// ED2C3D 237, 44, 61
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: menuIconImage, style: .plain, target: self, action: #selector(showRightViewAction(sender:)))
     }
 
@@ -29,6 +29,7 @@ class MainViewController: LGSideMenuController {
         
         let statusBarHeight = getStatusBarFrame().height
         rightView!.frame = CGRect(x: 0.0, y: statusBarHeight, width: rightView!.bounds.width, height: view.bounds.height - statusBarHeight)
+        self.rightViewBackgroundAlpha = 0.0
     }
 
     // MARK: - Other -

@@ -7,14 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1ABB0F2873E97D007FBD46 /* ActivityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1ABB0E2873E97D007FBD46 /* ActivityClient.swift */; };
+		0B1ABB132873EA7D007FBD46 /* ActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1ABB122873EA7D007FBD46 /* ActivityModel.swift */; };
 		0B3058CF28181837004DC370 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B3058CE28181837004DC370 /* GoogleService-Info.plist */; };
 		0B6A90B8283CCE9900FED2CD /* logoshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B6A90B7283CCE9900FED2CD /* logoshare.png */; };
+		0B7A9FA828740EFF009DC7C8 /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A9FA728740EFF009DC7C8 /* LeaderboardViewController.swift */; };
 		0BA7AE1B281BEF76006FB00E /* spinner11.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0BA7AE1A281BEF75006FB00E /* spinner11.gif */; };
+		0BB11CEB285C926B00FDC1F5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB11CEA285C926B00FDC1F5 /* FirebaseAnalytics */; };
+		0BB11CED285C926B00FDC1F5 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB11CEC285C926B00FDC1F5 /* FirebaseAnalyticsSwift */; };
+		0BB11CEF285C926B00FDC1F5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB11CEE285C926B00FDC1F5 /* FirebaseAuth */; };
+		0BB11CF1285C926B00FDC1F5 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB11CF0285C926B00FDC1F5 /* FirebaseCrashlytics */; };
+		0BB11CF3285C926B00FDC1F5 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB11CF2285C926B00FDC1F5 /* FirebaseMessaging */; };
+		0BB11CF5285C927C00FDC1F5 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB11CF4285C927C00FDC1F5 /* AdSupport.framework */; };
 		0BB759822841EFFD0025AF44 /* shareimg.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0BB759812841EFFC0025AF44 /* shareimg.jpeg */; };
 		0BE58674285C640700AC06CF /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE58673285C640700AC06CF /* UIDevice+Extension.swift */; };
 		0BFE6BC1281FB66900A0B54D /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */; };
-		1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */; };
-		60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
 		630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */; };
 		63006BD027E9A04A00E2F26D /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63006BCF27E9A04A00E2F26D /* Throttler.swift */; };
 		630CEFDE27C4DCA60042DBBA /* AudioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630CEFDD27C4DCA60042DBBA /* AudioListViewController.swift */; };
@@ -167,7 +174,9 @@
 		63F2AAAB27BB68FF007CAFC1 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F2AAAA27BB68FF007CAFC1 /* Reachability.swift */; };
 		63FA7E7027BBB80000AD6C97 /* TermsAndConditionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA7E6F27BBB80000AD6C97 /* TermsAndConditionVC.swift */; };
 		63FA7E7327BBC90C00AD6C97 /* FooterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA7E7227BBC90C00AD6C97 /* FooterViewController.swift */; };
-		76AD30E196281466F1D06E7F /* Pods_TaleOMeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */; };
+		A9840B631CCD006B25AD77B6 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90C8812C4B157C97DC84D3E4 /* Pods_TaleOMeter_TaleOMeterUITests.framework */; };
+		C53F96388270C0FCAD41FB5F /* Pods_TaleOMeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05FCB8D7D2EF4A7104B66CD /* Pods_TaleOMeter.framework */; };
+		FA59C7373CF15FD5DA4F23AA /* Pods_TaleOMeterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547CE3624ACE3676BE1A736A /* Pods_TaleOMeterTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,15 +197,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B1ABB0E2873E97D007FBD46 /* ActivityClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityClient.swift; sourceTree = "<group>"; };
+		0B1ABB122873EA7D007FBD46 /* ActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityModel.swift; sourceTree = "<group>"; };
 		0B3058CE28181837004DC370 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0B3058D028181979004DC370 /* TaleOMeter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaleOMeter.entitlements; sourceTree = "<group>"; };
 		0B6A90B7283CCE9900FED2CD /* logoshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoshare.png; sourceTree = "<group>"; };
+		0B7A9FA728740EFF009DC7C8 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		0BA7AE1A281BEF75006FB00E /* spinner11.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner11.gif; sourceTree = "<group>"; };
+		0BB11CF4285C927C00FDC1F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		0BB759812841EFFC0025AF44 /* shareimg.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shareimg.jpeg; sourceTree = "<group>"; };
 		0BE58673285C640700AC06CF /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
-		1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
-		385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BB71181883F7E0FC02F27C2 /* Pods-TaleOMeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.debug.xcconfig"; sourceTree = "<group>"; };
+		32B95E85D563F4A65475311B /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; sourceTree = "<group>"; };
+		547CE3624ACE3676BE1A736A /* Pods_TaleOMeterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = splash_anim_new.gif; sourceTree = "<group>"; };
 		63006BCF27E9A04A00E2F26D /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		6308ADB027E87103004D91BF /* CommutersSans-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CommutersSans-Heavy.ttf"; sourceTree = "<group>"; };
@@ -341,7 +355,6 @@
 		63D27C9C27BD12AC0074EA7F /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
 		63D27CA027BD18160074EA7F /* MiniAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniAudioViewController.swift; sourceTree = "<group>"; };
 		63D27CA227BD1BAD0074EA7F /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
-		63D5A6E5D579EC195493DA50 /* Pods-TaleOMeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.debug.xcconfig"; sourceTree = "<group>"; };
 		63DFB4A827BCAF3500B08216 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		63DFB4AA27BCB03D00B08216 /* ScrollMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollMenuView.swift; sourceTree = "<group>"; };
 		63DFB4AC27BCB20400B08216 /* ContainerConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerConstant.swift; sourceTree = "<group>"; };
@@ -354,12 +367,12 @@
 		63F2AAAA27BB68FF007CAFC1 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		63FA7E6F27BBB80000AD6C97 /* TermsAndConditionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionVC.swift; sourceTree = "<group>"; };
 		63FA7E7227BBC90C00AD6C97 /* FooterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterViewController.swift; sourceTree = "<group>"; };
-		6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter_TaleOMeterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7533486D34A0D1A1D22E1D4A /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		7B3467242CC591929269E9FF /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; sourceTree = "<group>"; };
-		BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D44923C42A208A3FEB114148 /* Pods-TaleOMeterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.release.xcconfig"; sourceTree = "<group>"; };
-		FE5130D6420ECD01FF34E3AE /* Pods-TaleOMeter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.release.xcconfig"; sourceTree = "<group>"; };
+		90C8812C4B157C97DC84D3E4 /* Pods_TaleOMeter_TaleOMeterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter_TaleOMeterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADA136F8DD1AE179838091A0 /* Pods-TaleOMeter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.release.xcconfig"; sourceTree = "<group>"; };
+		B05FCB8D7D2EF4A7104B66CD /* Pods_TaleOMeter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaleOMeter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD35003CEB9BA67F3D274A9D /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D4FADD58C98A5C3DE6C80DFC /* Pods-TaleOMeterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.release.xcconfig"; sourceTree = "<group>"; };
+		E8FDF6E4BA95355000086D0B /* Pods-TaleOMeterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeterTests.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeterTests/Pods-TaleOMeterTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -367,7 +380,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76AD30E196281466F1D06E7F /* Pods_TaleOMeter.framework in Frameworks */,
+				0BB11CF5285C927C00FDC1F5 /* AdSupport.framework in Frameworks */,
+				0BB11CF3285C926B00FDC1F5 /* FirebaseMessaging in Frameworks */,
+				0BB11CED285C926B00FDC1F5 /* FirebaseAnalyticsSwift in Frameworks */,
+				0BB11CEB285C926B00FDC1F5 /* FirebaseAnalytics in Frameworks */,
+				0BB11CF1285C926B00FDC1F5 /* FirebaseCrashlytics in Frameworks */,
+				C53F96388270C0FCAD41FB5F /* Pods_TaleOMeter.framework in Frameworks */,
+				0BB11CEF285C926B00FDC1F5 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,7 +394,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EB7394245B5AE4F8F90D710 /* Pods_TaleOMeterTests.framework in Frameworks */,
+				FA59C7373CF15FD5DA4F23AA /* Pods_TaleOMeterTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,13 +402,48 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60120E3812776E7A28A059E0 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */,
+				A9840B631CCD006B25AD77B6 /* Pods_TaleOMeter_TaleOMeterUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05354AC023DB047C57BDD458 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0BB11CF4285C927C00FDC1F5 /* AdSupport.framework */,
+				B05FCB8D7D2EF4A7104B66CD /* Pods_TaleOMeter.framework */,
+				90C8812C4B157C97DC84D3E4 /* Pods_TaleOMeter_TaleOMeterUITests.framework */,
+				547CE3624ACE3676BE1A736A /* Pods_TaleOMeterTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0B1ABB0D2873E965007FBD46 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				0B1ABB0E2873E97D007FBD46 /* ActivityClient.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		0B1ABB102873EA62007FBD46 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				0B1ABB122873EA7D007FBD46 /* ActivityModel.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		0B7A9FA628740DF1009DC7C8 /* Leaderboard */ = {
+			isa = PBXGroup;
+			children = (
+				0B7A9FA728740EFF009DC7C8 /* LeaderboardViewController.swift */,
+			);
+			path = Leaderboard;
+			sourceTree = "<group>";
+		};
 		630056EB27BEA0E7009CB2E2 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -553,7 +607,7 @@
 				6358432C27B7AEDB0055DE7E /* TaleOMeterUITests */,
 				6358430A27B7AED90055DE7E /* Products */,
 				A9C969C7DE9055AD58F074B4 /* Pods */,
-				75062CC8DCEEDB60118FBB8B /* Frameworks */,
+				05354AC023DB047C57BDD458 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -791,6 +845,7 @@
 				63863DDD27D7833400EFF6E2 /* Audio */,
 				63863DDE27D7833A00EFF6E2 /* Other */,
 				631E6D6F27DEF19D006DC031 /* Trivia */,
+				0B1ABB102873EA62007FBD46 /* Activity */,
 				63863DC427D7748D00EFF6E2 /* Response */,
 			);
 			name = Model;
@@ -823,6 +878,7 @@
 				63863DCD27D7822800EFF6E2 /* Genre */,
 				63863DCE27D7823100EFF6E2 /* Audio */,
 				63863DCF27D7823800EFF6E2 /* Other */,
+				0B1ABB0D2873E965007FBD46 /* Activity */,
 			);
 			path = APIClients;
 			sourceTree = "<group>";
@@ -950,6 +1006,7 @@
 				63C4F62C27D0F09600CEC0B9 /* Dashboard */,
 				63C4F62D27D0F0B800CEC0B9 /* Post */,
 				63C4F62E27D0F0C700CEC0B9 /* Feed */,
+				0B7A9FA628740DF1009DC7C8 /* Leaderboard */,
 			);
 			path = Trivia;
 			sourceTree = "<group>";
@@ -1243,25 +1300,15 @@
 			path = Footer;
 			sourceTree = "<group>";
 		};
-		75062CC8DCEEDB60118FBB8B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				385B567CEA63B2BFA522B333 /* Pods_TaleOMeter.framework */,
-				6D82862AB4C1990C0D8AF1C1 /* Pods_TaleOMeter_TaleOMeterUITests.framework */,
-				BDFE8EB0EFC0C053C31AA93D /* Pods_TaleOMeterTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		A9C969C7DE9055AD58F074B4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				63D5A6E5D579EC195493DA50 /* Pods-TaleOMeter.debug.xcconfig */,
-				FE5130D6420ECD01FF34E3AE /* Pods-TaleOMeter.release.xcconfig */,
-				7533486D34A0D1A1D22E1D4A /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */,
-				7B3467242CC591929269E9FF /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */,
-				1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */,
-				D44923C42A208A3FEB114148 /* Pods-TaleOMeterTests.release.xcconfig */,
+				2BB71181883F7E0FC02F27C2 /* Pods-TaleOMeter.debug.xcconfig */,
+				ADA136F8DD1AE179838091A0 /* Pods-TaleOMeter.release.xcconfig */,
+				CD35003CEB9BA67F3D274A9D /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */,
+				32B95E85D563F4A65475311B /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */,
+				E8FDF6E4BA95355000086D0B /* Pods-TaleOMeterTests.debug.xcconfig */,
+				D4FADD58C98A5C3DE6C80DFC /* Pods-TaleOMeterTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1273,17 +1320,24 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6358433327B7AEDB0055DE7E /* Build configuration list for PBXNativeTarget "TaleOMeter" */;
 			buildPhases = (
-				8017CE1E22B68ED12C3960D4 /* [CP] Check Pods Manifest.lock */,
+				612D21AE9DA2B6960DA4FA8B /* [CP] Check Pods Manifest.lock */,
 				6358430527B7AED90055DE7E /* Sources */,
 				6358430627B7AED90055DE7E /* Frameworks */,
 				6358430727B7AED90055DE7E /* Resources */,
-				598CCD83B12CFB9173AE0A09 /* [CP] Embed Pods Frameworks */,
+				5010A479ABF046C5BA5614FD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TaleOMeter;
+			packageProductDependencies = (
+				0BB11CEA285C926B00FDC1F5 /* FirebaseAnalytics */,
+				0BB11CEC285C926B00FDC1F5 /* FirebaseAnalyticsSwift */,
+				0BB11CEE285C926B00FDC1F5 /* FirebaseAuth */,
+				0BB11CF0285C926B00FDC1F5 /* FirebaseCrashlytics */,
+				0BB11CF2285C926B00FDC1F5 /* FirebaseMessaging */,
+			);
 			productName = TaleOMeter;
 			productReference = 6358430927B7AED90055DE7E /* TaleOMeter.app */;
 			productType = "com.apple.product-type.application";
@@ -1292,7 +1346,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6358433627B7AEDB0055DE7E /* Build configuration list for PBXNativeTarget "TaleOMeterTests" */;
 			buildPhases = (
-				DE3E4B54FB84C9F5E5186BF7 /* [CP] Check Pods Manifest.lock */,
+				DB9D0A311EAD04D3BA2F9C23 /* [CP] Check Pods Manifest.lock */,
 				6358431B27B7AEDB0055DE7E /* Sources */,
 				6358431C27B7AEDB0055DE7E /* Frameworks */,
 				6358431D27B7AEDB0055DE7E /* Resources */,
@@ -1311,11 +1365,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6358433927B7AEDB0055DE7E /* Build configuration list for PBXNativeTarget "TaleOMeterUITests" */;
 			buildPhases = (
-				9253D64CD0941C3E80F14E3D /* [CP] Check Pods Manifest.lock */,
+				0CDB0E125848767C56A07DA5 /* [CP] Check Pods Manifest.lock */,
 				6358432527B7AEDB0055DE7E /* Sources */,
 				6358432627B7AEDB0055DE7E /* Frameworks */,
 				6358432727B7AEDB0055DE7E /* Resources */,
-				47AD0C2AA026C124994953E7 /* [CP] Embed Pods Frameworks */,
+				0D987959CC44CAB0417D8B28 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1359,6 +1413,9 @@
 				Base,
 			);
 			mainGroup = 6358430027B7AED90055DE7E;
+			packageReferences = (
+				0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 6358430A27B7AED90055DE7E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1427,63 +1484,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		47AD0C2AA026C124994953E7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		598CCD83B12CFB9173AE0A09 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8017CE1E22B68ED12C3960D4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TaleOMeter-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9253D64CD0941C3E80F14E3D /* [CP] Check Pods Manifest.lock */ = {
+		0CDB0E125848767C56A07DA5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1505,7 +1506,63 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DE3E4B54FB84C9F5E5186BF7 /* [CP] Check Pods Manifest.lock */ = {
+		0D987959CC44CAB0417D8B28 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5010A479ABF046C5BA5614FD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		612D21AE9DA2B6960DA4FA8B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TaleOMeter-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB9D0A311EAD04D3BA2F9C23 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1553,6 +1610,7 @@
 				63C4F63227D0F0FC00CEC0B9 /* TRPostViewController.swift in Sources */,
 				636ED8E027BB7B7B0030D2F0 /* ImageNode.swift in Sources */,
 				6358434F27B7BA980055DE7E /* RightViewController.swift in Sources */,
+				0B1ABB0F2873E97D007FBD46 /* ActivityClient.swift in Sources */,
 				63DFB4B027BCC39600B08216 /* SegmentViewController.swift in Sources */,
 				6358430D27B7AED90055DE7E /* AppDelegate.swift in Sources */,
 				63863DD727D782B200EFF6E2 /* AudioClient.swift in Sources */,
@@ -1643,7 +1701,9 @@
 				6310939B27EAD24500A9C08A /* HistoryAudioClient.swift in Sources */,
 				63DFB4A927BCAF3500B08216 /* ContainerViewController.swift in Sources */,
 				631F9C7C27C49B0700F1B069 /* CommingViewController.swift in Sources */,
+				0B1ABB132873EA7D007FBD46 /* ActivityModel.swift in Sources */,
 				6361179427BA553B000C1749 /* CountryViewController.swift in Sources */,
+				0B7A9FA828740EFF009DC7C8 /* LeaderboardViewController.swift in Sources */,
 				63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
 				0BE58674285C640700AC06CF /* UIDevice+Extension.swift in Sources */,
@@ -1830,7 +1890,7 @@
 		};
 		6358433427B7AEDB0055DE7E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 63D5A6E5D579EC195493DA50 /* Pods-TaleOMeter.debug.xcconfig */;
+			baseConfigurationReference = 2BB71181883F7E0FC02F27C2 /* Pods-TaleOMeter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1868,7 +1928,7 @@
 		};
 		6358433527B7AEDB0055DE7E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE5130D6420ECD01FF34E3AE /* Pods-TaleOMeter.release.xcconfig */;
+			baseConfigurationReference = ADA136F8DD1AE179838091A0 /* Pods-TaleOMeter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1906,7 +1966,7 @@
 		};
 		6358433727B7AEDB0055DE7E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1BD58E8CF381A51C9E217D0F /* Pods-TaleOMeterTests.debug.xcconfig */;
+			baseConfigurationReference = E8FDF6E4BA95355000086D0B /* Pods-TaleOMeterTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1926,7 +1986,7 @@
 		};
 		6358433827B7AEDB0055DE7E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D44923C42A208A3FEB114148 /* Pods-TaleOMeterTests.release.xcconfig */;
+			baseConfigurationReference = D4FADD58C98A5C3DE6C80DFC /* Pods-TaleOMeterTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1946,7 +2006,7 @@
 		};
 		6358433A27B7AEDB0055DE7E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7533486D34A0D1A1D22E1D4A /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */;
+			baseConfigurationReference = CD35003CEB9BA67F3D274A9D /* Pods-TaleOMeter-TaleOMeterUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1964,7 +2024,7 @@
 		};
 		6358433B27B7AEDB0055DE7E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B3467242CC591929269E9FF /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */;
+			baseConfigurationReference = 32B95E85D563F4A65475311B /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -2020,6 +2080,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0BB11CEA285C926B00FDC1F5 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		0BB11CEC285C926B00FDC1F5 /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
+		0BB11CEE285C926B00FDC1F5 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		0BB11CF0285C926B00FDC1F5 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		0BB11CF2285C926B00FDC1F5 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB11CE9285C926B00FDC1F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6358430127B7AED90055DE7E /* Project object */;
 }

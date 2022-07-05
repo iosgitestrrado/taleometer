@@ -39,6 +39,13 @@ class TRFeedViewController: UIViewController {
     private var pageNumber = 1
     private var showNoData = 0
     private let darkBlueT = UIColor(displayP3Red: 84.0 / 255.0, green: 85.0 / 255.0, blue: 135.0 / 255.0, alpha: 1.0)
+    private var isFromNotifPostId = -1
+    private var videoPostId = -1
+    private var lastVideoPostId = -1
+
+    private var myPlayerViewController = AVPlayerViewController()
+    private var videoPlayIndex = -1
+    private var videoPlayingIndex = -1
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -68,6 +75,25 @@ class TRFeedViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(tapOnNotification(_:)), name: Notification.Name(rawValue: "tapOnNotification"), object: nil)
     }
     
+    // MARK: Add into activity log
+    private func addActivityLog(_ isDaily: Bool = false) {
+        DispatchQueue.global(qos: .background).async { [self] in
+            ActivityClient.userActivityLog(UserActivityRequest(post_id: redirectToPostId >= 0 ? "\(redirectToPostId)" : "", category_id: categoryId >= 0 ? "\(categoryId)" : "", screen_name: isDaily ? Constants.ActivityScreenName.triviaDaily : Constants.ActivityScreenName.triviaCategory, type: Constants.ActivityType.trivia)) { status in
+            }
+        }
+    }
+    
+    // MARK: Add into activity log for comment
+    private func addCommentActivityLog(_ postId: Int) {
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async { [self] in
+            ActivityClient.userActivityLog(UserActivityRequest(post_id: postId >= 0 ? "\(postId)" : "", category_id: categoryId >= 0 ? "\(categoryId)" : "", screen_name: Constants.ActivityScreenName.triviaComment, type: Constants.ActivityType.trivia)) { status in
+            }
+        }
+    }
+    
     @objc private func updateUserData(_ notification: Notification) {
         if let profData = Login.getProfileData() {
             profilePic = UIImage(data: profData.ImageData)
@@ -79,6 +105,7 @@ class TRFeedViewController: UIViewController {
         if let catId = notification.userInfo?["NotificationCategoryId"] as? Int, catId != -2 {
             if let psId = notification.userInfo?["NotificationPostId"] as? Int {
                 redirectToPostId = psId
+                redirectToPostId = 1
             }
             if let comId = notification.userInfo?["NotificationCommentId"] as? Int {
                 redirectToCommId = comId
@@ -161,6 +188,7 @@ class TRFeedViewController: UIViewController {
                     if let st = status, st {
                         postData[sender.tag].Value = ""
                         self.getComments(postId: postData[sender.tag].Post_id, postIndex: sender.tag)
+                        addCommentActivityLog(postData[sender.tag].Post_id)
                     } else {
                         Core.HideProgress(self)
                     }
@@ -268,10 +296,6 @@ class TRFeedViewController: UIViewController {
         }
     }
     
-    private var playerViewController = AVPlayerViewController()
-    private var videoPlayIndex = -1
-    private var videoPlayingIndex = -1
-
     // MARK: Tap on video Button
     @objc private func tapOnVideo(_ sender: UIButton) {
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
@@ -279,6 +303,10 @@ class TRFeedViewController: UIViewController {
                 self.viewPost(sender.tag)
                 postData[sender.tag].User_opened = true
             }
+            if videoPostId != -1 {
+                lastVideoPostId = videoPostId
+            }
+            videoPostId = postData[sender.tag].Post_id
             videoPlayIndex = rowIndex
             self.tableView.reloadData()
             //self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: rowIndex)
@@ -294,24 +322,61 @@ class TRFeedViewController: UIViewController {
     // MARK: - Adding video player into view
     private func addVideoPlayer(_ videoView: UIButton, videoURL: URL, rowIndex: Int) {
         if videoPlayingIndex == rowIndex {
-            videoView.addSubview(playerViewController.view)
+            videoView.addSubview(myPlayerViewController.view)
         } else {
-            if let playerV = playerViewController.player {
+            if let playerV = myPlayerViewController.player {
                 playerV.pause()
-                playerViewController.view.removeFromSuperview()
+                if lastVideoPostId != -1, let playhead = playerV.currentItem?.currentTime().seconds, let duration = playerV.currentItem?.duration.seconds {
+                    addVideoActivity(lastVideoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead), status: "stop")
+                }
+                myPlayerViewController.view.removeFromSuperview()
             }
-            playerViewController = AVPlayerViewController()
-            playerViewController.view.tag = 9898998
+            myPlayerViewController = AVPlayerViewController()
+            myPlayerViewController.view.tag = 9898998
             let player = AVPlayer(url: videoURL)
-            playerViewController.player = player
-            playerViewController.view.frame.size.height = videoView.frame.size.height
-            playerViewController.view.frame.size.width = videoView.frame.size.width
-            videoView.addSubview(playerViewController.view)
-            playerViewController.showsPlaybackControls = true
+            myPlayerViewController.player = player
+            myPlayerViewController.view.frame.size.height = videoView.frame.size.height
+            myPlayerViewController.view.frame.size.width = videoView.frame.size.width
+            videoView.addSubview(myPlayerViewController.view)
+            myPlayerViewController.showsPlaybackControls = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
-                playerViewController.player?.play()
+                myPlayerViewController.player?.play()
+                myPlayerViewController.player?.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
             }
+            
             videoPlayingIndex = rowIndex
+        }
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "rate" {
+            if lastVideoPostId == -1, let player = self.myPlayerViewController.player, let playhead = player.currentItem?.currentTime().seconds, let duration = player.currentItem?.duration.seconds {
+                if !player.isPlaying {
+                    addVideoActivity(videoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead), status: "pause")
+                }
+//                print(player.isPlaying)
+//                print(playhead)
+//                print(AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration))
+//                print(AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead))
+            }
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+    
+    private func addVideoActivity(_ postId: Int, duration: String, currentTime: String, status: String) {
+        if videoPostId == -1 {
+            return
+        }
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async { [self] in
+            ActivityClient.videoActivityLog(TriviaVideoActivityRequest(post_id: postId, duration: duration, time: currentTime, status: status, is_notification: videoPostId == isFromNotifPostId ? 1 : 0)) { [self] status in
+                if lastVideoPostId != -1 {
+                    lastVideoPostId = -1
+                }
+            }
         }
     }
     
@@ -335,6 +400,9 @@ extension TRFeedViewController {
         }
         if !showProgress {
             Core.ShowProgress(self, detailLbl: "")
+        }
+        if pageNumber == 1 {
+            addActivityLog(categoryId < 0)
         }
         if categoryId >= 0 {
             // MARK: - Get trivia posts by category
@@ -408,6 +476,7 @@ extension TRFeedViewController {
         TriviaClient.addComments(AddCommentRequest(post_id: postId, comment_id: commentId, comment: comment)) { status in
             completion(status)
         }
+        addCommentActivityLog(postId)
         //        }
     }
     

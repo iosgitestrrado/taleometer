@@ -26,6 +26,16 @@ struct TriviaHome {
     }
 }
 
+struct TriviaHomeRequest: Encodable {
+    var model = Core.GetDeviceModel()
+    var osversion = Core.GetDeviceOSVersion()
+    var appversion = Core.GetAppVersion()
+    var os = Core.GetDeviceOS()
+    var uuid = Core.GetDeviceId()
+    var manufacturer = "Apple"
+    var device_name = "ios"
+}
+
 /*{
  "trivia_daily": {
      "title": "Daily",

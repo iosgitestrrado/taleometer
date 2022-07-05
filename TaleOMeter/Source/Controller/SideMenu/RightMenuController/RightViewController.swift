@@ -23,6 +23,7 @@ class RightViewController: UIViewController {
     private enum SideViewCellItem: Equatable {
         case profile
         case triviaQuiz
+        case leaderboard
 //        case triviaComments
         case shareStory
         case history
@@ -38,6 +39,8 @@ class RightViewController: UIViewController {
                 return "My Account"
             case .triviaQuiz:
                 return "Trivia"
+            case .leaderboard:
+                return "Leaderboard"
 //            case .triviaComments:
 //                return "Trivia Comments"
             case .shareStory:
@@ -61,7 +64,7 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return Constants.Storyboard.auth
-            case .triviaQuiz/*, .triviaComments*/:
+            case .triviaQuiz, .leaderboard/*, .triviaComments*/:
                 return Constants.Storyboard.trivia
             case .shareStory, .preference, .aboutUs, .feedback:
                 return Constants.Storyboard.other
@@ -80,6 +83,8 @@ class RightViewController: UIViewController {
                 return "ProfileViewController"
             case .triviaQuiz:
                 return "TriviaViewController"
+            case .leaderboard:
+                return "LeaderboardViewController"
 //            case .triviaComments:
 //                return "TRFeedViewController"
             case .shareStory:
@@ -101,11 +106,11 @@ class RightViewController: UIViewController {
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .triviaQuiz/*, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout, .appVersion]
+        [.profile, .triviaQuiz, .leaderboard/*, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
-        [.profile, .profile, .preference, .aboutUs, .feedback, .logout, .appVersion]
+        [.profile, .profile, .leaderboard, .preference, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private var profileData: ProfileData?
@@ -158,10 +163,23 @@ class RightViewController: UIViewController {
             let text = "Time to relax, refresh and reset with Tale’o’meter trivia - The audio OTT (Original Tamil Tales).\n\nSignup for FREE. \(url)\n\nLet’s take the daily break we deserve. I play this daily as \(profileData?.Fname ?? "Guest")"
             Core.share(with: navCont, image: shareImg, content: text)
         }
+        addShareActivityLog() 
 //        Core.sharePicture(with: self)
 //        Core.shareContent(self, displayName: profileData?.Fname ?? "Guest") { status in
 //            
 //        }
+    }
+    
+    // MARK: Add into activity log
+    private func addShareActivityLog() {
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            ActivityClient.shareActivityLog { status in
+                print("shareActivityLog: \(status ?? false)")
+            }
+        }
     }
     
     // MARK: - Logging -
@@ -206,6 +224,12 @@ class RightViewController: UIViewController {
         super.viewWillLayoutSubviews()
         struct Counter { static var count = 0 }
         Counter.count += 1
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        self.view.clipsToBounds = true
     }
 }
 
@@ -333,7 +357,7 @@ extension RightViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RightViewCell
         let item = sections[indexPath.section][indexPath.row]
 
-        cell.titleLabel.text = item == .appVersion ? "UAT V\(Core.GetAppVersion())" : item.description
+        cell.titleLabel.text = item == .appVersion ? (Constants.baseURL == "https://dev-taleometer.estrradoweb.com/qa" ? "UAT" : "Live") + " V\(Core.GetAppVersion())" : item.description
         cell.isFirst = (indexPath.row == 0)
         cell.isLast = (indexPath.row == sections[indexPath.section].count - 1)
         cell.selectionStyle = .none

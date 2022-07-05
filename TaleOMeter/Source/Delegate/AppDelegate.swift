@@ -76,7 +76,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Push notification received: \(data)")
         
         let aps = data[AnyHashable("aps")]!
-        
         print(aps)
     }
 }
@@ -96,19 +95,21 @@ extension AppDelegate: MessagingDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         print(userInfo)
+        var catId = -2
         if let storyIdn = userInfo["gcm.notification.audio_story_id"] as? String {
             storyId = Int(storyIdn) ?? -1
         }
         if let postIdn = userInfo["gcm.notification.post_id"] as? String {
             postId = Int(postIdn) ?? -1
         }
-        if userInfo["gcm.notification.category_id"] is String {
+        if let categoryn = userInfo["gcm.notification.category_id"] as? String {
             categorId = -1//Int(categoryn) ?? -2
+            catId = Int(categoryn) ?? -2
         }
         if let commId = userInfo["gcm.notification.comment_id"] as? String {
             commentId = Int(commId) ?? -1
         }
-        self.redirectedToNotification()
+        self.redirectedToNotification(catId)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -126,14 +127,16 @@ extension AppDelegate: MessagingDelegate {
 
       // Print full message.
         print("Here: \(userInfo)")
+        var catId = -2
         if let storyIdn = userInfo["gcm.notification.audio_story_id"] as? String {
             storyId = Int(storyIdn) ?? -1
         }
         if let postIdn = userInfo["gcm.notification.post_id"] as? String {
             postId = Int(postIdn) ?? -1
         }
-        if userInfo["gcm.notification.category_id"] is String {
+        if let categoryn = userInfo["gcm.notification.category_id"] as? String {
             categorId = -1//Int(categoryn) ?? -2
+            catId = Int(categoryn) ?? -2
         }
         if let commId = userInfo["gcm.notification.comment_id"] as? String {
             commentId = Int(commId) ?? -1
@@ -141,12 +144,12 @@ extension AppDelegate: MessagingDelegate {
         if let aps = userInfo["aps"] as? [AnyHashable : AnyObject], let alert = aps["alert"] as? [AnyHashable: AnyObject], let title = alert["title"] as? String {
             Toast.show(title)
         }
-        self.redirectedToNotification()
+        self.redirectedToNotification(catId)
 //print(Int(userInfo["gcm.notification.audio_story_id"] as! String)!)
       completionHandler(UIBackgroundFetchResult.newData)
     }
     
-    private func redirectedToNotification() {
+    private func redirectedToNotification(_ catId: Int = -2) {
         if storyId != -1 && !isOnlyTrivia {
             if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
                 if (cont.children.last is NowPlayViewController) {
@@ -179,9 +182,22 @@ extension AppDelegate: MessagingDelegate {
                         myobject.categoryId = categorId
                         myobject.redirectToPostId = postId
                         myobject.redirectToCommId = commentId
+                        addNotificationActivityLog(postId, categoryIdd: catId, screenName: Constants.ActivityScreenName.triviaCategory, type: Constants.ActivityType.trivia)
                         cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
                     }
                 }
+            }
+        }
+    }
+    
+    // MARK: Add into activity log
+    private func addNotificationActivityLog(_ postIdd: Int, categoryIdd: Int, screenName: String, type: String) {
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            ActivityClient.notificationActivityLog(NotificationActivityRequest(post_id: postIdd, category_id: categoryIdd, screen_name: screenName, is_open: 1, type: type)) { status in
+                print("notificationActivityLog: \(status ?? false)")
             }
         }
     }

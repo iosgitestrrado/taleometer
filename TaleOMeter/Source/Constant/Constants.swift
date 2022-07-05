@@ -10,10 +10,10 @@ import UIKit
 
 struct Constants {
     
-//    static let baseURL = "https://dev-taleometer.estrradoweb.com"
+    static let baseURL = "https://dev-taleometer.estrradoweb.com"
 //    static let baseURL = "https://app.taleometer.com"
 //    static let baseURL = "https://live.taleometer.com"
-    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
+//    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
 
     // Trivia Live: com.app.taleometer
     // Trivia UAT: com.estrrado.taleometer
@@ -48,5 +48,19 @@ struct Constants {
         static let serverDate = "yyyy-MM-dd"
         static let serverWithTime = "yyyy-MM-dd'T'HH:mm:ss"
         static let aPIWithTime = "yyyy-MM-dd HH:mm:ss"
+    }
+    
+    public struct ActivityScreenName {
+        static let triviaHome = "homepage"
+        static let triviaDaily = "daily"
+        static let triviaCategory = "category"
+        static let triviaPost = "post"
+        static let triviaComment = "comment"
+        static let leaderboard = "leaderboard"
+    }
+    
+    public struct ActivityType {
+        static let trivia = "trivia"
+        static let story = "story"
     }
 }

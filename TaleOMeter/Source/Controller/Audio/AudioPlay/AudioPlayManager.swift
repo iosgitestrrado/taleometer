@@ -838,6 +838,26 @@ extension AudioPlayManager {
     }
     
     /*
+     *  Fotmat time using seconds
+     */
+    static func formatTimeHMSFor(seconds: Double) -> String {
+        let result = getHoursMinutesSecondsFrom(seconds: seconds)
+        var hoursString = "\(result.hours)"
+        if hoursString.utf8.count == 1 {
+            hoursString = "0\(result.hours)"
+        }
+        var minutesString = "\(result.minutes)"
+        if minutesString.utf8.count == 1 {
+            minutesString = "0\(result.minutes)"
+        }
+        var secondsString = "\(result.seconds)"
+        if secondsString.utf8.count == 1 {
+            secondsString = "0\(result.seconds)"
+        }
+        return "\(hoursString):\(minutesString):\(secondsString)"
+    }
+    
+    /*
      *  Calculate audio metering
      */
     static func getAudioMeters(_ audioFileURL: URL, forChannel channelNumber: Int, completionHandler: @escaping(_ success: [Float]) -> ()) {

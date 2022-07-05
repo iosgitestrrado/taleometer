@@ -56,6 +56,7 @@ class TriviaViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
         self.navigationItem.hidesBackButton = !fromSideMenu
         getTrivia()
+        addActivityLog()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -64,6 +65,17 @@ class TriviaViewController: UIViewController {
             self.sideMenuController!.toggleRightView(animated: false)
         }
         
+    }
+    
+    // MARK: Add into activity log
+    private func addActivityLog() {
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            ActivityClient.userActivityLog(UserActivityRequest(post_id: "", category_id: "", screen_name: Constants.ActivityScreenName.triviaHome, type: Constants.ActivityType.trivia)) { status in
+            }
+        }
     }
     
     // MARK: - Get trivia home data from server -

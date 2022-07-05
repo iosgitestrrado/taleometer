@@ -214,6 +214,12 @@ enum Feed {
     case TriviaViewCommnets
     case TriviaAddCommennt
     case TriviaPostView
+    
+    //Activities
+    case ShareActivity
+    case UserActivity
+    case NotificationActivity
+    case UserVideoActivity
 }
 
 protocol CodeEnd {
@@ -296,6 +302,12 @@ extension Feed: Endpoint {
         case .TriviaViewCommnets:       return "/api/trivia/view-comments"
         case .TriviaAddCommennt:        return "/api/trivia/add-comment"
         case .TriviaPostView:           return "/api/trivia/posts/view"
+            
+        //Activity
+        case .ShareActivity:            return "/api/trivia/users/share/activity"
+        case .UserActivity:             return "/api/trivia/users/activity"
+        case .NotificationActivity:     return "/api/trivia/users/notification/activity"
+        case .UserVideoActivity:        return "/api/trivia/users/video/activity"
         }
     }
 }

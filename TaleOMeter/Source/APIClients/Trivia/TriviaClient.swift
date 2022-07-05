@@ -12,7 +12,7 @@ import UIKit
 class TriviaClient {
     
     static func getTriviaHome(_ completion: @escaping(TriviaHome?) -> Void) {
-        APIClient.shared.postJson(parameters: EmptyRequest(), feed: .TriviaHome) { result in
+        APIClient.shared.postJson(parameters: TriviaHomeRequest(), feed: .TriviaHome) { result in
             ResponseAPI.getResponseJson(result) { response in
                 var home = TriviaHome()
                 if let data = response {
