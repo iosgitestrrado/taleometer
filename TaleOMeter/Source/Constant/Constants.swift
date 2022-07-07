@@ -57,6 +57,7 @@ struct Constants {
         static let triviaPost = "post"
         static let triviaComment = "comment"
         static let leaderboard = "leaderboard"
+        static let notification = "notification"
     }
     
     public struct ActivityType {

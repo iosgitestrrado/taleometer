@@ -161,9 +161,14 @@ class RightViewController: UIViewController {
         
         if let navCont = sideMenuController?.rootViewController as? UINavigationController, let url = URL(string: "https://apps.apple.com/us/app/taleometer/id1621063908"), let shareImg = UIImage(named: "shareimg.jpeg") {
             let text = "Time to relax, refresh and reset with Tale’o’meter trivia - The audio OTT (Original Tamil Tales).\n\nSignup for FREE. \(url)\n\nLet’s take the daily break we deserve. I play this daily as \(profileData?.Fname ?? "Guest")"
-            Core.share(with: navCont, image: shareImg, content: text)
+            Core.share(with: navCont, image: shareImg, content: text) { status in
+                if let st = status, st {
+                    self.addShareActivityLog()
+                }
+            }
+          //  Core.share(with: navCont, image: shareImg, content: text)
         }
-        addShareActivityLog() 
+       
 //        Core.sharePicture(with: self)
 //        Core.shareContent(self, displayName: profileData?.Fname ?? "Guest") { status in
 //            
@@ -177,7 +182,7 @@ class RightViewController: UIViewController {
         }
         DispatchQueue.global(qos: .background).async {
             ActivityClient.shareActivityLog { status in
-                print("shareActivityLog: \(status ?? false)")
+                //print("shareActivityLog: \(status ?? false)")
             }
         }
     }
@@ -357,7 +362,7 @@ extension RightViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RightViewCell
         let item = sections[indexPath.section][indexPath.row]
 
-        cell.titleLabel.text = item == .appVersion ? (Constants.baseURL == "https://dev-taleometer.estrradoweb.com/qa" ? "UAT" : "Live") + " V\(Core.GetAppVersion())" : item.description
+        cell.titleLabel.text = item == .appVersion ? (Constants.baseURL == "https://app.taleometer.com" ? "Live" : "UAT") + " V\(Core.GetAppVersion())" : item.description
         cell.isFirst = (indexPath.row == 0)
         cell.isLast = (indexPath.row == sections[indexPath.section].count - 1)
         cell.selectionStyle = .none

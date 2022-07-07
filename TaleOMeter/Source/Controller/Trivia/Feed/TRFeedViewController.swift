@@ -22,6 +22,7 @@ class TRFeedViewController: UIViewController {
     var categoryId = -1
     var redirectToPostId = -1
     var redirectToCommId = -1
+    var isFromNotifPostId = -1
 
     // MARK: - Private Properties -
     private let viewMoreText = "--------------------  View More  --------------------"
@@ -39,7 +40,6 @@ class TRFeedViewController: UIViewController {
     private var pageNumber = 1
     private var showNoData = 0
     private let darkBlueT = UIColor(displayP3Red: 84.0 / 255.0, green: 85.0 / 255.0, blue: 135.0 / 255.0, alpha: 1.0)
-    private var isFromNotifPostId = -1
     private var videoPostId = -1
     private var lastVideoPostId = -1
 
@@ -105,7 +105,8 @@ class TRFeedViewController: UIViewController {
         if let catId = notification.userInfo?["NotificationCategoryId"] as? Int, catId != -2 {
             if let psId = notification.userInfo?["NotificationPostId"] as? Int {
                 redirectToPostId = psId
-                redirectToPostId = 1
+                isFromNotifPostId = psId
+               // redirectToPostId = 1
             }
             if let comId = notification.userInfo?["NotificationCommentId"] as? Int {
                 redirectToCommId = comId

@@ -44,7 +44,7 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var descText: UITextView!
-   // @IBOutlet weak var mainVStackView: UIStackView!
+    @IBOutlet weak var mainVStackView: UIStackView!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var videoButton: UIButton!
@@ -86,11 +86,26 @@ class FeedCellView: UITableViewCell {
             btmView.layer.masksToBounds = true
             btmView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
+        
+        if let mainSView = self.mainVStackView {
+            mainSView.layer.cornerRadius = 20
+            mainSView.layer.masksToBounds = true
+            mainSView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        }
             
         if let mView = self.mainView {
             mView.layer.cornerRadius = 20
             mView.layer.masksToBounds = true
             mView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+    }
+    
+    func configureLeaderboard(with cellData: LeaderboardModel) {
+        if self.coverImage != nil {
+            self.coverImage.sd_setImage(with: URL(string: cellData.Image), placeholderImage: defaultImage)
+        }
+        if self.titleLabel != nil {
+            self.titleLabel.text = cellData.Title
         }
     }
     

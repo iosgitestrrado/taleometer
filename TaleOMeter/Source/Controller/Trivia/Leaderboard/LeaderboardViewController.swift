@@ -12,6 +12,8 @@ class LeaderboardViewController: UIViewController {
     // MARK: - Weak Properties -
     @IBOutlet weak var tableView: UITableView!
     
+    private var leaderboardList = [LeaderboardModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,6 +27,16 @@ class LeaderboardViewController: UIViewController {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
         getLeaderboardData()
+        addActivityLog()
+    }
+    
+    // MARK: - Side Menu button action -
+    @IBAction func ClickOnMenu(_ sender: Any) {
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
+        self.sideMenuController!.toggleRightView(animated: true)
     }
 
     /*
@@ -39,7 +51,7 @@ class LeaderboardViewController: UIViewController {
 
 }
 
-extension TRFeedViewController {
+extension LeaderboardViewController {
     // MARK: - Get trivia posts
     @objc func getLeaderboardData() {
         if !Reachability.isConnectedToNetwork() {
@@ -47,23 +59,44 @@ extension TRFeedViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "")
+        TriviaClient.getLeaderboards { [self] response in
+            if let data = response, data.count > 0 {
+                leaderboardList = data
+            }
+            self.tableView.reloadData()
+            Core.HideProgress(self)
+        }
     }
+    
+    // MARK: Add into activity log
+    private func addActivityLog() {
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            ActivityClient.userActivityLog(UserActivityRequest(post_id: "", category_id: "", screen_name: Constants.ActivityScreenName.leaderboard, type: Constants.ActivityType.trivia)) { status in
+            }
+        }
+    }
+    
 }
 
 // MARK: - UITableViewDataSource -
 extension LeaderboardViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return leaderboardList.count > 0 ? leaderboardList.count : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-//        if self.cellDataArray.count <= 0 {
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
-//            return cell
-//        }
-        
+        if self.leaderboardList.count <= 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
+            return cell
+        }
+        if let cell = tableView.dequeueReusableCell(withIdentifier: FeedCellIdentifier.question, for: indexPath) as? FeedCellView {
+            cell.configureLeaderboard(with: leaderboardList[indexPath.row])
+            return cell
+        }
        
         return UITableViewCell()
     }
@@ -73,7 +106,7 @@ extension LeaderboardViewController : UITableViewDataSource {
 extension LeaderboardViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return  self.leaderboardList.count > 0 ? UITableView.automaticDimension : 30.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

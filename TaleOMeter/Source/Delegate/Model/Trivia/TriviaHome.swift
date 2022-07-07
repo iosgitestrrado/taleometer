@@ -36,6 +36,20 @@ struct TriviaHomeRequest: Encodable {
     var device_name = "ios"
 }
 
+struct LeaderboardModel {
+
+    var Title = String()
+    var Image = String()
+    
+    init() { }
+    init(_ json: JSON) {
+        Title = json["title"].stringValue
+        if let urlString = json["image"].string {
+            Image = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
+        }
+    }
+}
+
 /*{
  "trivia_daily": {
      "title": "Daily",

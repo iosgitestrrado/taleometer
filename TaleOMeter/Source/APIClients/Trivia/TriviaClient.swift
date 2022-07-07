@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 class TriviaClient {
     
@@ -105,5 +106,23 @@ class TriviaClient {
                 completion(status)
             }
         }
+    }
+    
+    static func getLeaderboards(_ completion: @escaping([LeaderboardModel]?) -> Void) {
+        APIClient.shared.postJson(parameters: EmptyRequest(), feed: .Leaderboard) { result in
+            ResponseAPI.getResponseJson(result) { response in
+                var leaderList = [LeaderboardModel]()
+                if let data = response, let list = data["leaderboard"].array {
+                    list.forEach { object in
+                        leaderList.append(LeaderboardModel(object))
+                    }
+                } else if let data = response, let object = data["leaderboard"].dictionaryObject {
+                    leaderList.append(LeaderboardModel(JSON(object)))
+                    leaderList.append(LeaderboardModel(JSON(object)))
+                }
+                completion(leaderList)
+            }
+        }
+        
     }
 }

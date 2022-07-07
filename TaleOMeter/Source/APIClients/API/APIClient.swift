@@ -214,6 +214,7 @@ enum Feed {
     case TriviaViewCommnets
     case TriviaAddCommennt
     case TriviaPostView
+    case Leaderboard
     
     //Activities
     case ShareActivity
@@ -302,7 +303,8 @@ extension Feed: Endpoint {
         case .TriviaViewCommnets:       return "/api/trivia/view-comments"
         case .TriviaAddCommennt:        return "/api/trivia/add-comment"
         case .TriviaPostView:           return "/api/trivia/posts/view"
-            
+        case .Leaderboard:              return "/api/trivia-leader"
+
         //Activity
         case .ShareActivity:            return "/api/trivia/users/share/activity"
         case .UserActivity:             return "/api/trivia/users/activity"

@@ -176,13 +176,15 @@ extension AppDelegate: MessagingDelegate {
         } else if categorId != -2 {
             if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
                 if (cont.children.last is TRFeedViewController) {
+                    addNotificationActivityLog(postId, categoryIdd: catId, type: Constants.ActivityType.trivia)
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "tapOnNotification"), object: nil, userInfo: ["NotificationCategoryId": categorId, "NotificationPostId": postId, "NotificationCommentId": commentId])
                 } else {
                     if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
                         myobject.categoryId = categorId
                         myobject.redirectToPostId = postId
                         myobject.redirectToCommId = commentId
-                        addNotificationActivityLog(postId, categoryIdd: catId, screenName: Constants.ActivityScreenName.triviaCategory, type: Constants.ActivityType.trivia)
+                        myobject.isFromNotifPostId = postId
+                        addNotificationActivityLog(postId, categoryIdd: catId, type: Constants.ActivityType.trivia)
                         cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
                     }
                 }
@@ -191,12 +193,12 @@ extension AppDelegate: MessagingDelegate {
     }
     
     // MARK: Add into activity log
-    private func addNotificationActivityLog(_ postIdd: Int, categoryIdd: Int, screenName: String, type: String) {
+    private func addNotificationActivityLog(_ postIdd: Int, categoryIdd: Int, type: String) {
         if !Reachability.isConnectedToNetwork() {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            ActivityClient.notificationActivityLog(NotificationActivityRequest(post_id: postIdd, category_id: categoryIdd, screen_name: screenName, is_open: 1, type: type)) { status in
+            ActivityClient.notificationActivityLog(NotificationActivityRequest(post_id: postIdd, category_id: categoryIdd, screen_name: Constants.ActivityScreenName.notification, is_open: 1, type: type)) { status in
                 print("notificationActivityLog: \(status ?? false)")
             }
         }

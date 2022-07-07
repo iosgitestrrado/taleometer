@@ -367,13 +367,21 @@ class Core: NSObject {
         }
     }
     
-    static func share(with navigationCont: UINavigationController, image: UIImage?, content: String) {
+    static func share(with navigationCont: UINavigationController, image: UIImage?, content: String, completion: @escaping(Bool?) -> Void) {
         var activityItems = [Any]()
         if let img = image {
             activityItems.append(ImageActivityItemSource(image: img, text: content))
         }
         activityItems.append(OptionalTextActivityItemSource(text: content))
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = { activity, success, items, error in
+            if !success {
+                print("cancelled")
+                completion(false)
+                return
+            }
+            completion(true)
+        }
         navigationCont.present(activityViewController, animated: true, completion: nil)
     }
     
