@@ -66,10 +66,10 @@ class RegisterViewController: UIViewController {
             Core.noInternet(self)
             return
         }
-//        if nameTextField.text!.isBlank {
-//            Validator.showRequiredError(nameTextField)
-//            return
-//        }
+        if nameTextField.text!.isBlank {
+            Validator.showRequiredError(nameTextField)
+            return
+        }
         if displayNameText.text!.isBlank {
             Validator.showRequiredError(displayNameText)
             return
@@ -147,7 +147,7 @@ extension RegisterViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == displayNameText && textField.text!.isBlank {
+        if (textField == displayNameText || textField == nameTextField) && textField.text!.isBlank {
             Validator.showRequiredError(textField)
             return
         }

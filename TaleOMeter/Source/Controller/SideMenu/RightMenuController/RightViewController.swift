@@ -362,7 +362,7 @@ extension RightViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RightViewCell
         let item = sections[indexPath.section][indexPath.row]
 
-        cell.titleLabel.text = item == .appVersion ? (Constants.baseURL == "https://app.taleometer.com" ? "Live" : "UAT") + " V\(Core.GetAppVersion())" : item.description
+        cell.titleLabel.text = item == .appVersion ? (Constants.baseURL == "https://live.taleometer.com" ? "Live" : "UAT") + " V\(Core.GetAppVersion())" : item.description
         cell.isFirst = (indexPath.row == 0)
         cell.isLast = (indexPath.row == sections[indexPath.section].count - 1)
         cell.selectionStyle = .none

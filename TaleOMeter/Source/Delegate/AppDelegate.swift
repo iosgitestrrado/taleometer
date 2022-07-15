@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
           } else if let token = token {
             print("FCM registration token: \(token)")
 //            self.fcmRegTokenMessage.text  = "Remote FCM registration token: \(token)"
+              UserDefaults.standard.set(token, forKey: Constants.UserDefault.FCMTokenStr)
           }
         }
         return true
@@ -88,13 +89,20 @@ extension AppDelegate: MessagingDelegate {
         UserDefaults.standard.set(fcmToken ?? "", forKey: Constants.UserDefault.FCMTokenStr)
     }
     
+    private func updateNotificationToken(_ fcmToken: String) {
+        DispatchQueue.global(qos: .background).async {
+            AuthClient.updateNotificationToken(NotificationRequest(token: fcmToken)) { status in
+            }
+        }
+    }
+    
 //    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
 //        print(remoteMessage.appData)
 //    }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        print(userInfo)
+       // print(userInfo)
         var catId = -2
         if let storyIdn = userInfo["gcm.notification.audio_story_id"] as? String {
             storyId = Int(storyIdn) ?? -1
@@ -126,7 +134,7 @@ extension AppDelegate: MessagingDelegate {
 //      }
 
       // Print full message.
-        print("Here: \(userInfo)")
+        //print("Here: \(userInfo)")
         var catId = -2
         if let storyIdn = userInfo["gcm.notification.audio_story_id"] as? String {
             storyId = Int(storyIdn) ?? -1
@@ -199,7 +207,6 @@ extension AppDelegate: MessagingDelegate {
         }
         DispatchQueue.global(qos: .background).async {
             ActivityClient.notificationActivityLog(NotificationActivityRequest(post_id: postIdd, category_id: categoryIdd, screen_name: Constants.ActivityScreenName.notification, is_open: 1, type: type)) { status in
-                print("notificationActivityLog: \(status ?? false)")
             }
         }
     }

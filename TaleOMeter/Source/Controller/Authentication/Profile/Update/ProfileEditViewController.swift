@@ -97,7 +97,7 @@ class ProfileEditViewController: UIViewController {
             return
         }
         if titleString == "Change Display Name" || titleString == "Change Name" {
-            if textField.text!.isBlank && titleString == "Change Display Name" {
+            if textField.text!.isBlank {
                 Validator.showRequiredError(textField)
                 return
             }
@@ -155,7 +155,7 @@ extension ProfileEditViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.text!.isBlank && titleString == "Change Display Name" {
+        if textField.text!.isBlank && (titleString == "Change Display Name" || titleString == "Change Name") {
             Validator.showRequiredError(textField)
             return
         }

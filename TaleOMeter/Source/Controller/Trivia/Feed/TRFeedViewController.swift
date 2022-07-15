@@ -343,8 +343,13 @@ class TRFeedViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
                 myPlayerViewController.player?.play()
                 myPlayerViewController.player?.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
+                    if let player = self.myPlayerViewController.player, let duration = player.currentItem?.duration.seconds {
+                        addVideoActivity(videoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: 0), status: "start")
+                    }
+                }
             }
-            
             videoPlayingIndex = rowIndex
         }
     }
@@ -353,7 +358,9 @@ class TRFeedViewController: UIViewController {
         if keyPath == "rate" {
             if lastVideoPostId == -1, let player = self.myPlayerViewController.player, let playhead = player.currentItem?.currentTime().seconds, let duration = player.currentItem?.duration.seconds {
                 if !player.isPlaying {
-                    addVideoActivity(videoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead), status: "pause")
+                    addVideoActivity(videoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead), status: !playhead.isNaN && duration == playhead ? "stop" : "pause")
+                } else {
+                   //addVideoActivity(videoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead), status: "start")
                 }
 //                print(player.isPlaying)
 //                print(playhead)
