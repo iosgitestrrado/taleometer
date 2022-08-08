@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftGifOrigin
+import Firebase
 
 class LaunchViewController: UIViewController {
     
@@ -55,6 +56,11 @@ class LaunchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+        Analytics.logEvent(AnalyticsEventAppOpen, parameters: [
+          AnalyticsParameterItemID: "id-AppStart",
+          AnalyticsParameterItemName: "AppStart",
+          AnalyticsParameterContentType: "cont",
+        ])
     }
     
     private func showHideView(_ viewd: UIView, isHidden: Bool) {

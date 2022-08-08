@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class RegisterViewController: UIViewController {
     
@@ -18,7 +19,8 @@ class RegisterViewController: UIViewController {
     // MARK: - Public Properties -
     var countryCode = "IN"
     var iSDCode = 91
-    
+    var mobileNumber = ""
+
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,10 @@ class RegisterViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
     }
     
     @objc private func keyboardWillShowNotification (notification: Notification) {
@@ -95,6 +101,11 @@ class RegisterViewController: UIViewController {
         Core.ShowProgress(self, detailLbl: "")
         AuthClient.updateProfile(profileReq, showSuccMessage: true) { [self] result in
             if var response = result {
+                Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+                  AnalyticsParameterItemID: "id-PhoneNumber",
+                  AnalyticsParameterItemName: mobileNumber,
+                  AnalyticsParameterContentType: "cont",
+                ])
                 if isOnlyTrivia {
                     response.StoryBoardName = ""
                     response.StoryBoardId = ""

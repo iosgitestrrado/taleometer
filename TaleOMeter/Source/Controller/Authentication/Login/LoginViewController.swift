@@ -47,7 +47,7 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: isOnlyTrivia, isRightViewEnabled: false)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -56,6 +56,10 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
             self.sideMenuController!.toggleRightView(animated: false)
+        }
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
         }
     }
     

@@ -11,7 +11,8 @@ class LeaderboardViewController: UIViewController {
 
     // MARK: - Weak Properties -
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var leaderImg: UIImageView!
+    @IBOutlet weak var noDatalabel: UILabel!
     private var leaderboardList = [LeaderboardModel]()
     
     override func viewDidLoad() {
@@ -61,9 +62,15 @@ extension LeaderboardViewController {
         Core.ShowProgress(self, detailLbl: "")
         TriviaClient.getLeaderboards { [self] response in
             if let data = response, data.count > 0 {
-                leaderboardList = data
+                //leaderboardList = data
+                self.leaderImg.sd_setImage(with: URL(string: data[0].Image), placeholderImage: defaultImage)
+                noDatalabel.isHidden = true
+                leaderImg.isHidden = false
+            } else {
+                noDatalabel.isHidden = false
+                leaderImg.isHidden = true
             }
-            self.tableView.reloadData()
+            //self.tableView.reloadData()
             Core.HideProgress(self)
         }
     }

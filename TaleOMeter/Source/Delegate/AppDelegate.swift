@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
+        Analytics.setAnalyticsCollectionEnabled(true)
         
         if #available(iOS 10.0, *) {
           // For iOS 10 display notification (sent via APNS)

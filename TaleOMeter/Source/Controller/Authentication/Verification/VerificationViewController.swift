@@ -5,8 +5,8 @@
 //  Created by Durgesh on 14/02/22.
 //
 
-
 import UIKit
+import Firebase
 
 class VerificationViewController: UIViewController {
     
@@ -66,6 +66,10 @@ class VerificationViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         otp1TextField.becomeFirstResponder()
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -122,8 +126,13 @@ class VerificationViewController: UIViewController {
         
         let otp = "\(self.otp1TextField.text!)\(self.otp2TextField.text!)\(self.otp3TextField.text!)\(self.otp4TextField.text!)"
         Core.ShowProgress(self, detailLbl: "Verification OTP...")
-        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0, isd_code: "\(iSDCode)", country_code: countryCode)) { result, status, token, isNewRegister in
+        AuthClient.verifyOtp(VerificationRequest(mobile: mobileNumber, otp: Int(otp) ?? 0, isd_code: "\(iSDCode)", country_code: countryCode)) { [self] result, status, token, isNewRegister in
             if var response = result, !token.isBlank {
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                  AnalyticsParameterItemID: "id-PhoneNumber",
+                  AnalyticsParameterItemName: mobileNumber,
+                  AnalyticsParameterContentType: "cont",
+                ])
                 UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
                 UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
                 if isNewRegister {
@@ -152,6 +161,7 @@ class VerificationViewController: UIViewController {
         if segue.identifier == "register", let veryVC = segue.destination as? RegisterViewController {
             veryVC.countryCode = self.countryCode
             veryVC.iSDCode = self.iSDCode
+            veryVC.mobileNumber = self.mobileNumber
         }
     }
 }

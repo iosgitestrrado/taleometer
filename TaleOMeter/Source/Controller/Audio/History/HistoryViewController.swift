@@ -445,7 +445,7 @@ extension HistoryViewController : UITableViewDataSource {
         cell.favButton.isSelected = cellData.Audio_story.Is_favorite
         
         // Set progres bar progress
-        cell.progressBar.progress = cellData.Audio_story.Duration > 0 ? Float(cellData.Time / cellData.Audio_story.Duration) : 0.0
+        cell.progressBar.progress = cellData.Audio_story.Duration > 0 ? Float(cellData.Time) / Float(cellData.Audio_story.Duration) : 0.0
         
         // Set audio title
         cell.titleLabel.text = cellData.Audio_story.Title

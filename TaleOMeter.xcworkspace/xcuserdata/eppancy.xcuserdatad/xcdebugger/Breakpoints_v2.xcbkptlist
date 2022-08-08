@@ -7,81 +7,97 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A885D4B4-5C25-4EE1-92B9-A71E92E50F9E"
+            uuid = "FEC1232E-BD8C-461F-8AA2-5FDE9CC20F31"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
+            filePath = "TaleOMeter/Source/APIClients/Audio/HistoryAudioClient.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
-            landmarkName = "getAudios(_:)"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "update(_:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1"
+            uuid = "FEF93377-891B-41DC-A90C-73F49FF13564"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/APIClients/Audio/HistoryAudioClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "update(_:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A99EE2EA-BC7A-42D8-ABCB-F1FAB65E5ADE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "633"
-            endingLineNumber = "633"
-            landmarkName = "getAudios(_:)"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
+            landmarkName = "addToFav(_:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B5D00DF2-A9BB-4D6F-A808-68714EC50A39"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "589"
+            endingLineNumber = "589"
+            landmarkName = "addToFav(_:completion:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b968926b"
+                  uuid = "B5D00DF2-A9BB-4D6F-A808-68714EC50A39 - c2bb001dd59c1747"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;TaleOMeter.Audio&gt;&gt;) -&gt; () in TaleOMeter.NowPlayViewController.getAudios(Swift.Int) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Bool&gt;) -&gt; () in closure #1 () -&gt; () in TaleOMeter.NowPlayViewController.addToFav(_: Swift.Int, completion: (Swift.Optional&lt;Swift.Bool&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "TaleOMeter"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/eppancy/Documents/Projects/TaleOMeter/TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "633"
-                  endingLineNumber = "633"
-                  offsetFromSymbolStart = "88">
+                  startingLineNumber = "589"
+                  endingLineNumber = "589"
+                  offsetFromSymbolStart = "128">
                </Location>
                <Location
-                  uuid = "42477DE5-660E-4808-A90B-544F3F4F07E1 - 49054ba4b968926b"
+                  uuid = "B5D00DF2-A9BB-4D6F-A808-68714EC50A39 - c2bb001dd59c1747"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;TaleOMeter.Audio&gt;&gt;) -&gt; () in TaleOMeter.NowPlayViewController.getAudios(Swift.Int) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Bool&gt;) -&gt; () in closure #1 () -&gt; () in TaleOMeter.NowPlayViewController.addToFav(_: Swift.Int, completion: (Swift.Optional&lt;Swift.Bool&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "TaleOMeter"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/eppancy/Documents/Projects/TaleOMeter/TaleOMeter/Source/Controller/Audio/NowPlaying/NowPlayViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "633"
-                  endingLineNumber = "633"
-                  offsetFromSymbolStart = "116">
+                  startingLineNumber = "589"
+                  endingLineNumber = "589"
+                  offsetFromSymbolStart = "156">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9561E7D8-3128-4D8F-B27B-A53A26BC3781"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Trivia/Feed/TRFeedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "383"
-            endingLineNumber = "383"
-            landmarkName = "addVideoActivity(_:duration:currentTime:status:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

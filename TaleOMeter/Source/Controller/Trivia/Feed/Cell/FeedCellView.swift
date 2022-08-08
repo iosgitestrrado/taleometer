@@ -120,7 +120,7 @@ class FeedCellView: UITableViewCell {
                 if let image = profilePic, (cellData.title == "You" && (cellId == FeedCellIdentifier.comment || cellId == FeedCellIdentifier.reply)) {
                     cImage.image = image
                 } else {
-                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImage1, options: []) { imgg, error, typrr, url in
+                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
                     if error != nil {
                         cImage.image = cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage
                     }
@@ -216,7 +216,7 @@ class FeedCellView: UITableViewCell {
 //            if let thumImg = videoThumnailImages[cellData.index] {
 //                videoBtn.setBackgroundImage(thumImg, for: .normal)
 //            } else {
-                videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImage1, options: []) { imgg, error, typrr, url in
+                videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
                     if error != nil {
 //                        if let medieURL = URL(string: cellData.imageUrl) {
 //                            self.getThumbnailImage(forUrl: medieURL) { imageis in

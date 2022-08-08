@@ -440,6 +440,14 @@ extension AudioPlayManager {
                 } else {
                     miniVController.playButton.isSelected = true
                 }
+                // Update current controller as per footer view action
+                bottomConstraint.constant = UIScreen.main.bounds.size.height - miniVController.view.frame.origin.y
+                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+                    bottomConstraint.constant = UIScreen.main.bounds.size.height -  (miniVController.view.frame.origin.y + window.safeAreaInsets.bottom)
+                }
+                
+                // Set audio player bottom constraint
+                self.bottomConstraint = bottomConstraint
                 return
             }
             
@@ -497,11 +505,11 @@ extension AudioPlayManager {
                 bottomConstraint.constant = UIScreen.main.bounds.size.height -  (miniVController.view.frame.origin.y + window.safeAreaInsets.bottom)
             }
             
-            // Add to mini player view to current controller
-            controller.view.addSubview(miniVController.view)
-            
             // Set audio player bottom constraint
             self.bottomConstraint = bottomConstraint
+            
+            // Add to mini player view to current controller
+            controller.view.addSubview(miniVController.view)
             
             // Set audio player current controller
             currVController = controller

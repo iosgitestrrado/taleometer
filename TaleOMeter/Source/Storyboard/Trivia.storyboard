@@ -1922,7 +1922,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="hoo-83-cXe">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="E3Y-Kg-5Uq">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="E3Y-Kg-5Uq">
                                 <rect key="frame" x="15" y="88" width="360" height="756"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -2019,19 +2019,40 @@
                                     <outlet property="delegate" destination="UbQ-YT-6qa" id="SpR-h8-NXZ"/>
                                 </connections>
                             </tableView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8pF-FO-CWI">
+                                <rect key="frame" x="16" y="88" width="358" height="714"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data found!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="nfT-Xu-Dml">
+                                <rect key="frame" x="15" y="112" width="360" height="20.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Vkk-XU-TU1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Vkk-XU-TU1" firstAttribute="trailing" secondItem="nfT-Xu-Dml" secondAttribute="trailing" constant="15" id="0hY-0P-C2T"/>
                             <constraint firstItem="hoo-83-cXe" firstAttribute="leading" secondItem="Vkk-XU-TU1" secondAttribute="leading" id="5XP-H6-zkN"/>
                             <constraint firstItem="E3Y-Kg-5Uq" firstAttribute="top" secondItem="Vkk-XU-TU1" secondAttribute="top" id="7hR-HF-dh6"/>
                             <constraint firstAttribute="bottom" secondItem="E3Y-Kg-5Uq" secondAttribute="bottom" id="84b-Bq-ECt"/>
+                            <constraint firstItem="nfT-Xu-Dml" firstAttribute="top" secondItem="Vkk-XU-TU1" secondAttribute="top" constant="24" id="AzT-E4-WMB"/>
+                            <constraint firstItem="8pF-FO-CWI" firstAttribute="leading" secondItem="Vkk-XU-TU1" secondAttribute="leading" constant="16" id="CVP-lb-hQO"/>
                             <constraint firstAttribute="bottom" secondItem="hoo-83-cXe" secondAttribute="bottom" id="JYo-vQ-ETL"/>
                             <constraint firstItem="E3Y-Kg-5Uq" firstAttribute="top" secondItem="Vkk-XU-TU1" secondAttribute="top" id="NnT-cO-ONq"/>
+                            <constraint firstItem="nfT-Xu-Dml" firstAttribute="leading" secondItem="Vkk-XU-TU1" secondAttribute="leading" constant="15" id="X57-Kl-IFb"/>
                             <constraint firstItem="E3Y-Kg-5Uq" firstAttribute="leading" secondItem="Vkk-XU-TU1" secondAttribute="leading" constant="15" id="XOW-7W-0ph"/>
                             <constraint firstItem="hoo-83-cXe" firstAttribute="trailing" secondItem="Vkk-XU-TU1" secondAttribute="trailing" id="Xg3-lY-Rjj"/>
+                            <constraint firstItem="Vkk-XU-TU1" firstAttribute="trailing" secondItem="8pF-FO-CWI" secondAttribute="trailing" constant="16" id="dsI-qn-Tuk"/>
                             <constraint firstItem="Vkk-XU-TU1" firstAttribute="trailing" secondItem="E3Y-Kg-5Uq" secondAttribute="trailing" constant="15" id="eBZ-eg-2AV"/>
+                            <constraint firstItem="Vkk-XU-TU1" firstAttribute="bottom" secondItem="8pF-FO-CWI" secondAttribute="bottom" constant="8" id="jGA-Wo-f2m"/>
                             <constraint firstItem="hoo-83-cXe" firstAttribute="top" secondItem="PDU-ad-uJC" secondAttribute="top" id="ksP-NC-Osa"/>
+                            <constraint firstItem="8pF-FO-CWI" firstAttribute="top" secondItem="Vkk-XU-TU1" secondAttribute="top" id="zoy-AB-JC7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="tale'o'meter trivia" id="xNX-fq-fWq">
@@ -2049,12 +2070,14 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="leaderImg" destination="8pF-FO-CWI" id="B4r-pS-lpO"/>
+                        <outlet property="noDatalabel" destination="nfT-Xu-Dml" id="Hvr-e5-wKA"/>
                         <outlet property="tableView" destination="E3Y-Kg-5Uq" id="9po-kn-ULp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZpN-GD-ZUR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1937.6923076923076" y="70.426540284360186"/>
+            <point key="canvasLocation" x="2776.9230769230767" y="53.317535545023695"/>
         </scene>
     </scenes>
     <resources>

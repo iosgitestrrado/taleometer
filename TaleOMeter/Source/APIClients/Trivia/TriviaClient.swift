@@ -118,7 +118,6 @@ class TriviaClient {
                     }
                 } else if let data = response, let object = data["leaderboard"].dictionaryObject {
                     leaderList.append(LeaderboardModel(JSON(object)))
-                    leaderList.append(LeaderboardModel(JSON(object)))
                 }
                 completion(leaderList)
             }

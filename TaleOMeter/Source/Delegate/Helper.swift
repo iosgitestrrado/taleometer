@@ -11,7 +11,7 @@ import UIKit
 let remoteCommandName = NSNotification.Name(rawValue: "RemoteCommandHandler")
 let supportedAudioExtenstion = ["mp3", "mp4", "m4a", "wav", "aac", "adts", "ac3", "aif", "aiff", "aifc", "caf", "snd", "au", "sd2"]
 let defaultImage = UIImage(named: "logo")!
-let isOnlyTrivia = false
+let isOnlyTrivia = true
 
 // MARK: - Side menubar properties -
 let menuIconImage: UIImage = {
@@ -33,7 +33,7 @@ let menuIconImage: UIImage = {
 
         ctx.move(to: CGPoint(x: lineHeight, y: size.height / 2.0))
         ctx.addLine(to: CGPoint(x: size.width - lineHeight, y: size.height / 2.0))
-
+	
         ctx.move(to: CGPoint(x: lineHeight, y: size.height - lineHeight / 2.0))
         ctx.addLine(to: CGPoint(x: size.width - lineHeight, y: size.height - lineHeight / 2.0))
 

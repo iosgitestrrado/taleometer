@@ -175,8 +175,6 @@ class PreferenceViewController: UIViewController {
         magnetic.addChild(node)
         node.position = CGPoint(x: Int.random(in: 0..<Int(UIScreen.main.bounds.width)), y: -150)
         totalNodes += 1
-        
-        
     }
 }
 

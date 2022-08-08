@@ -416,15 +416,6 @@ class NowPlayViewController: UIViewController {
         }
     }
     
-    func checkForActiveCall() -> Bool {
-        for call in CXCallObserver().calls {
-            if call.hasEnded == false {
-                return true
-            }
-        }
-        return false
-    }
-    
     // MARK: - Handle play pause audio
     private func playPauseAudio(_ playing: Bool) {
        // if let player = AudioPlayManager.shared.playerAV {
@@ -529,6 +520,15 @@ class NowPlayViewController: UIViewController {
             chronometer.timerCurrentValue = currentTime
             chronometer.timerDidUpdate?(currentTime)
         }
+    }
+    
+    func checkForActiveCall() -> Bool {
+        for call in CXCallObserver().calls {
+            if call.hasEnded == false {
+                return true
+            }
+        }
+        return false
     }
     
     @objc private func checkActiveCall() {
@@ -664,8 +664,10 @@ extension NowPlayViewController: PromptViewDelegate {
         case 1, 3:
             //1 - Once more //3 - Close mini player //4 - Share audio
             DispatchQueue.main.async { [self] in
-                currentAudio = AudioPlayManager.shared.currentAudio
-                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                if myAudioList.count > currentAudioIndex {
+                    currentAudio = AudioPlayManager.shared.currentAudio
+                    myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                }
                 favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
                 if let player = AudioPlayManager.shared.playerAV {
                     player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
@@ -677,6 +679,7 @@ extension NowPlayViewController: PromptViewDelegate {
                 self.existingAudio = true
                 if tag == 1 {
                     AudioPlayManager.shared.audioHistoryId = -1
+                    currentPlayDuration = 0
                 }
                 self.setupAudioDataPlay(tag == 1)
 //                if tag == 4 {

@@ -360,8 +360,10 @@ extension RightViewController: UITableViewDataSource {
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RightViewCell
-        let item = sections[indexPath.section][indexPath.row]
-
+        var item = sections[indexPath.section][indexPath.row]
+        if item == .logout && !UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            item = sections[indexPath.section].last!
+        }
         cell.titleLabel.text = item == .appVersion ? (Constants.baseURL == "https://live.taleometer.com" ? "Live" : "UAT") + " V\(Core.GetAppVersion())" : item.description
         cell.isFirst = (indexPath.row == 0)
         cell.isLast = (indexPath.row == sections[indexPath.section].count - 1)

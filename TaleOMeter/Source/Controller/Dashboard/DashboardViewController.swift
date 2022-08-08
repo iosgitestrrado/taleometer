@@ -38,6 +38,7 @@ class DashboardViewController: UIViewController {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(closeMiniPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,7 +50,12 @@ class DashboardViewController: UIViewController {
         let heightt = self.view.safeAreaInsets.bottom == 0 ? -34.0 : self.view.safeAreaInsets.bottom
         self.containerView.frame.size.width = CGFloat((350.0 * UIScreen.main.bounds.width) / 390.0)
         self.containerView.frame.size.height = CGFloat(((469.0 + heightt) * UIScreen.main.bounds.height) / 844.0)
-        segmentController.parentFrame = self.containerView.frame
+        segmentController.parentFrame = self.containerView.frame    
+    
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
+        if let textContainer = window.viewWithTag(9998) {
+            textContainer.removeFromSuperview()
+        }
     }
     
     // MARK: Close Audio Mini player
