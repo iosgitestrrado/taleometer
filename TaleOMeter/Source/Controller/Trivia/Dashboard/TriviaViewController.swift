@@ -13,6 +13,7 @@ class TriviaViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     var fromSideMenu = false
+    @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     
     // MARK: - Private Properties -
     private var gridWidth: CGFloat = 187.0
@@ -55,6 +56,9 @@ class TriviaViewController: UIViewController {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
         self.navigationItem.hidesBackButton = !fromSideMenu
+        if AudioPlayManager.shared.isMiniPlayerActive {
+            AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
+        }
         getTrivia()
         addActivityLog()
     }

@@ -39,4 +39,12 @@ class ActivityClient {
             }
         }
     }
+    
+    static func audioActivityLog(_ req: TriviaVideoActivityRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .TriviaAudioActivity) { result in
+            ResponseAPI.getResponseJsonBool(result, showAlert: false) { status in
+                completion(status)
+            }
+        }
+    }
 }

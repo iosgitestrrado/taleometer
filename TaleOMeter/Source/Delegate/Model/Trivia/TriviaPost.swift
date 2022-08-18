@@ -31,6 +31,7 @@ struct TriviaPost {
     var User_answered = Bool()
     var User_answer_status = Bool()
     var Comments = [TriviaComment]()
+    var AudioStory = Audio()
 
     var IsExpanded = false
 
@@ -56,9 +57,15 @@ struct TriviaPost {
         if let urlString = json["question_media"].string, Question_type.lowercased() == "image" {
             Question_media_url = Core.verifyUrl(urlString) ? urlString :  Constants.baseURL.appending("/\(urlString)")
             //Core.setImage(Question_media_url, image: &Question_media)
+        } else if Question_type.lowercased() == "audio" {
+            QuestionVideoURL = json["question_media"].stringValue
+            Question_media_url = QuestionVideoURL
+            AudioStory.Id = Post_id
+            AudioStory.Title = Question
+            AudioStory.File = QuestionVideoURL
         } else {
             QuestionVideoURL = json["question_media"].stringValue
-            Question_media_url = json["question_media"].stringValue
+            Question_media_url = QuestionVideoURL
 //            if let medieURL = URL(string: json["question_media"].stringValue), let videoThumnail = self.getThumbnailImage(forUrl: medieURL) {
 //                Question_video_thum = videoThumnail
 //            }

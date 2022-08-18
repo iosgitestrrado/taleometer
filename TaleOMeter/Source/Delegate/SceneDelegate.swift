@@ -86,7 +86,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 OtherClient.startUsage(StartUsageRequest(time: dateFormat.string(from: Date()))) { response in
                     if let data = response {
                         UserDefaults.standard.set(data.Id, forKey: Constants.UserDefault.StartUsageId)
-
                     }
                 }
             }

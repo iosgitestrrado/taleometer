@@ -221,6 +221,7 @@ enum Feed {
     case UserActivity
     case NotificationActivity
     case UserVideoActivity
+    case TriviaAudioActivity
 }
 
 protocol CodeEnd {
@@ -310,6 +311,7 @@ extension Feed: Endpoint {
         case .UserActivity:             return "/api/trivia/users/activity"
         case .NotificationActivity:     return "/api/trivia/users/notification/activity"
         case .UserVideoActivity:        return "/api/trivia/users/video/activity"
+        case .TriviaAudioActivity:      return "/api/trivia/users/audio/activity"
         }
     }
 }

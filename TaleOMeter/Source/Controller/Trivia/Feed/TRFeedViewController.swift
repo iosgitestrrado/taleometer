@@ -42,11 +42,19 @@ class TRFeedViewController: UIViewController {
     private let darkBlueT = UIColor(displayP3Red: 84.0 / 255.0, green: 85.0 / 255.0, blue: 135.0 / 255.0, alpha: 1.0)
     private var videoPostId = -1
     private var lastVideoPostId = -1
+    
+    private var audioPostId = -1
+    private var lastaudioPostId = -1
 
     private var myPlayerViewController = AVPlayerViewController()
     private var videoPlayIndex = -1
     private var videoPlayingIndex = -1
+    private var audioPlayIndex = -1
+    private var audioPlayingIndex = -1
 
+    private var audioList = [Audio]()
+    private var audioTimer = Timer()
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -300,28 +308,31 @@ class TRFeedViewController: UIViewController {
     // MARK: Tap on video Button
     @objc private func tapOnVideo(_ sender: UIButton) {
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
+            videoPlayIndex = rowIndex
             if !postData[sender.tag].User_opened {
                 self.viewPost(sender.tag)
                 postData[sender.tag].User_opened = true
             }
-            if videoPostId != -1 {
-                lastVideoPostId = videoPostId
+            if postData[sender.tag].Question_type.lowercased() == "audio" {
+                if audioPostId != -1 {
+                    lastaudioPostId = audioPostId
+                }
+                audioPostId = postData[sender.tag].Post_id
+            } else {
+                if videoPostId != -1 {
+                    lastVideoPostId = videoPostId
+                }
+                videoPostId = postData[sender.tag].Post_id
             }
-            videoPostId = postData[sender.tag].Post_id
-            videoPlayIndex = rowIndex
+            
             self.tableView.reloadData()
-            //self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: rowIndex)
-//            self.present(playerViewController, animated: true) {
-//                playerViewController.player?.play()
-//            }
-            //let cell = self.tableView.cellForRow(at: IndexPath(row: rowIndex, section: 0)) as? FeedCellView
         } else {
             Toast.show("No video found!")
         }
     }
     
     // MARK: - Adding video player into view
-    private func addVideoPlayer(_ videoView: UIButton, videoURL: URL, rowIndex: Int) {
+    private func addVideoPlayer(_ videoView: UIButton, videoURL: URL, rowIndex: Int, postType: String) {
         if videoPlayingIndex == rowIndex {
             videoView.addSubview(myPlayerViewController.view)
         } else {
@@ -353,6 +364,102 @@ class TRFeedViewController: UIViewController {
             videoPlayingIndex = rowIndex
         }
     }
+    
+    // MARK: - Adding audio player into view
+    private func addAudioPlayer(_ postId: Int, rowIndex: Int, isPlayNow: Bool = true) {
+        if audioPlayingIndex == rowIndex {
+        } else {
+            audioPlayingIndex = rowIndex
+            if AudioPlayManager.shared.isMiniPlayerActive, let audioPlay = AudioPlayManager.shared.playerAV {
+                playPauseAudio(audioPlay.isPlaying, rowIndex: rowIndex)
+                if (!audioPlay.isPlaying) {
+                    self.tableView.reloadData()
+                    if audioTimer.isValid {
+                        self.audioTimer.invalidate()
+                    }
+                }
+            } else {
+                // Start progress
+                Core.ShowProgress(self, detailLbl: "Streaming Audio")
+                AudioPlayManager.shared.audioList = audioList
+                if let index = audioList.firstIndex(where: { $0.Id == postId }) {
+                    AudioPlayManager.shared.setAudioIndex(index, isNext: false)
+                }
+                // Initialize audio play in audio player manager
+                AudioPlayManager.shared.initPlayerManager(getMeters: false, completionHandler: { [self] success in
+                    // Config audio in current view
+                    AudioPlayManager.shared.playPauseAudioOnly(isPlayNow, addToHistory: false)
+                    playPauseAudio(isPlayNow, rowIndex: rowIndex)
+                    // Hide progress
+                    Core.HideProgress(self)
+                })
+            }
+        }
+    }
+    
+    @objc func tapOnAudioPlay(_ sender: UIButton) {
+        guard AudioPlayManager.shared.playerAV != nil else { return }
+        AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
+        self.playPauseAudio(sender.isSelected, rowIndex: sender.tag)
+        sender.isSelected = !sender.isSelected
+    }
+    
+    // MARK: Play pause audio with mini player update
+    func playPauseAudio(_ isPlay: Bool, rowIndex: Int) {
+        DispatchQueue.main.async { [self] in
+            guard let player = AudioPlayManager.shared.playerAV else { return }
+//            if let miniPlayBtn = miniVController.playButton {
+//                miniPlayBtn.isSelected = !isPlay
+//            }
+            if isPlay {
+                if !AudioPlayManager.shared.isAudioPlaying {
+                    player.play()
+                }
+                if audioTimer.isValid {
+                    self.audioTimer.invalidate()
+                }
+                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(TRFeedViewController.updateAudioPlayerTime), userInfo: nil, repeats: true)
+                RunLoop.main.add(self.audioTimer, forMode: .default)
+                audioTimer.fire()
+            } else {
+                if player.isPlaying {
+                    player.pause()
+                }
+                if audioTimer.isValid {
+                    self.audioTimer.invalidate()
+                }
+            }
+            if let currentItem = AudioPlayManager.shared.playerAV?.currentItem {
+                let playhead = currentItem.currentTime().seconds
+                let duration = currentItem.duration.seconds
+                addAudioActivity(self.postData[rowIndex].Post_id, duration: duration.isNaN ? "0" : "\(duration)", currentTime: "\(playhead)", status: isPlay ? "start" : "pause")
+            }
+        }
+    }
+    
+    // MARK: - Add mini player time and progress bar
+    @objc func updateAudioPlayerTime() {
+        self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
+
+//        if let currentItem = AudioPlayManager.shared.playerAV?.currentItem {
+//            // Get the current time in seconds
+//            let playhead = currentItem.currentTime().seconds
+//            let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
+            // Format seconds for human readable string
+            /*if !playhead.isNaN {
+                miniVController.startTimeLabel.text = playhead > 0 ? AudioPlayManager.formatTimeFor(seconds: playhead + 1) : AudioPlayManager.formatTimeFor(seconds: playhead)
+            }
+            if !duration.isNaN {
+                miniVController.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+            }
+            if !playhead.isNaN && !currentItem.duration.seconds.isNaN {
+                miniVController.progressBar.progress = Float(playhead / currentItem.duration.seconds)
+            }
+            miniVController.progressBar.setNeedsDisplay()*/
+//            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playhead
+//            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+//        }
+    }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "rate" {
@@ -383,6 +490,22 @@ class TRFeedViewController: UIViewController {
             ActivityClient.videoActivityLog(TriviaVideoActivityRequest(post_id: postId, duration: duration, time: currentTime, status: status, is_notification: videoPostId == isFromNotifPostId ? 1 : 0)) { [self] status in
                 if lastVideoPostId != -1 {
                     lastVideoPostId = -1
+                }
+            }
+        }
+    }
+    
+    private func addAudioActivity(_ postId: Int, duration: String, currentTime: String, status: String) {
+        if audioPostId == -1 {
+            return
+        }
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async { [self] in
+            ActivityClient.audioActivityLog(TriviaVideoActivityRequest(post_id: postId, duration: duration, time: currentTime, status: status, is_notification: audioPostId == isFromNotifPostId ? 1 : 0)) { [self] status in
+                if lastaudioPostId != -1 {
+                    lastaudioPostId = -1
                 }
             }
         }
@@ -440,6 +563,17 @@ extension TRFeedViewController {
                 if let data = response {
                     postData = pageNumber == 1 ? data : postData + data
                     morePage = data.count > 0
+                    postData.forEach { post in
+                        if post.Question_type.lowercased() == "audio" {
+                            audioList.append(post.AudioStory)
+                        }
+                    }
+                    if audioList.count > 0 {
+                        if AudioPlayManager.shared.isMiniPlayerActive, AudioPlayManager.shared.playerAV != nil, let rowIndex = postData.firstIndex(where: { $0.Post_id == audioList[AudioPlayManager.shared.currentIndex].Id }) {
+                            videoPlayIndex = rowIndex
+                            //self.addAudioPlayer(audioList[AudioPlayManager.shared.currentIndex].Id, rowIndex: rowIndex, isPlayNow: player.isPlaying)
+                        }
+                    }
                 }
                 showNoData = 1
                 setTableViewCells(replyExpanded)
@@ -620,7 +754,7 @@ extension TRFeedViewController : UITableViewDataSource {
         cell.configureCell(cellData,
                            cellId: cellDataArray[indexPath.row].cellId,
                            messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row, target: self,
-                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:)), #selector(tapOnQuestionImage(_:))])
+                           selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:)), #selector(tapOnQuestionImage(_:)), #selector(tapOnAudioPlay(_:))], questionType: postData[cellData.index].Question_type)
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question || cellDataArray[indexPath.row].cellId == FeedCellIdentifier.questionVideo, let textField = cell.textField {
             textField.text = postData[cellData.index].Value
             postData[cellData.index].TextField = textField
@@ -646,17 +780,48 @@ extension TRFeedViewController : UITableViewDataSource {
         if let videoBtn1 = cell.videoButton1 {
             videoBtn1.isHidden = false
         }
+        if audioPlayingIndex != -1, cell.audioView != nil, let audioPlayer = AudioPlayManager.shared.playerAV, let currentItem = audioPlayer.currentItem {
+            if cell.playButton != nil {
+                cell.playButton.isSelected = !audioPlayer.isPlaying
+            }
+            if cell.songTitle != nil {
+                cell.songTitle.text = postData[cellData.index].Question
+            }
+            // Get the current time in seconds
+            let playhead = currentItem.currentTime().seconds
+            let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
+            if !playhead.isNaN && cell.startTimeLabel != nil {
+                cell.startTimeLabel.text = playhead > 0 ? AudioPlayManager.formatTimeFor(seconds: playhead + 1) : AudioPlayManager.formatTimeFor(seconds: playhead)
+            }
+            if !duration.isNaN && cell.endTimeLabel != nil {
+                cell.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+            }
+            if !playhead.isNaN && !currentItem.duration.seconds.isNaN && cell.progressBar != nil {
+                cell.progressBar.progress = Float(playhead / currentItem.duration.seconds)
+            }
+        }
         if videoPlayIndex == indexPath.row, let videoURL = URL(string: postData[cellData.index].QuestionVideoURL) {
-            self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: indexPath.row)
-            if let subTitle = cell.subTitleXConstraint {
-                subTitle.constant = 60.0
+            if postData[cellData.index].Question_type.lowercased() == "audio" {
+                self.addAudioPlayer(postData[cellData.index].Post_id, rowIndex: indexPath.row)
+                if let audioView = cell.audioView {
+                    audioView.isHidden = false
+                }
+            } else {
+                if AudioPlayManager.shared.isMiniPlayerActive {
+                    AudioPlayManager.shared.removeMiniPlayer()
+                }
+                self.addVideoPlayer(cell.videoButton, videoURL: videoURL, rowIndex: indexPath.row, postType: postData[cellData.index].Question_type)
+                if let subTitle = cell.subTitleXConstraint {
+                    subTitle.constant = 60.0
+                }
             }
             if let videoBtn1 = cell.videoButton1 {
                 videoBtn1.isHidden = true
             }
+            
         } else if let videoBtn = cell.videoButton {
-            if let platerView = videoBtn.viewWithTag(9898998) {
-                platerView.removeFromSuperview()
+            if let playerView = videoBtn.viewWithTag(9898998) {
+                playerView.removeFromSuperview()
             }
             if let subTitle = cell.subTitleXConstraint {
                 subTitle.constant = 10.0

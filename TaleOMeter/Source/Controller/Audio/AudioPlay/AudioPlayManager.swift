@@ -26,6 +26,7 @@ class AudioPlayManager: NSObject {
     var isMiniPlayerActive = false
     var isNonStop = false
     var isAudioPlaying = false
+    var isTrivia = false
     var isFavourite = false
     var isFromFavourite = false
     var isHistory = false
@@ -47,13 +48,14 @@ class AudioPlayManager: NSObject {
     private var miniVController = MiniAudioViewController()
 
     // MARK: - Configure audio as per pass url -
-    public func initPlayerManager(_ isFavourite: Bool = false, isNonStop: Bool = false, getMeters: Bool = true, isHistory: Bool = false, completionHandler: @escaping(_ success: [Float]) -> ()) {
+    public func initPlayerManager(_ isFavourite: Bool = false, isNonStop: Bool = false, getMeters: Bool = true, isHistory: Bool = false, isTrivia: Bool = false, completionHandler: @escaping(_ success: [Float]) -> ()) {
         
         guard let audList = audioList else {
             Toast.show("No audio found!")
             return
         }
         self.isNonStop = isNonStop
+        self.isTrivia = isTrivia
         self.isFavourite = isFavourite
         self.isHistory = isHistory
         currentAudio = audList[currentIndex]
@@ -224,7 +226,7 @@ class AudioPlayManager: NSObject {
         DispatchQueue.main.async { [self] in
             guard let player = playerAV else { return }
             //Add update history
-            if addToHistory {
+            if addToHistory && !isTrivia {
                 addUpdateAudioActionHistory(isPlay)
             }
             if let miniPlayBtn = miniVController.playButton {
@@ -260,7 +262,7 @@ class AudioPlayManager: NSObject {
     // MARK: Play pause audio only
     func playPauseAudioOnly(_ isPlay: Bool, addToHistory: Bool = true) {
         guard let player = playerAV else { return }
-        if addToHistory {
+        if addToHistory && !isTrivia {
             addUpdateAudioActionHistory(isPlay)
         }
         isAudioPlaying = isPlay
@@ -298,7 +300,7 @@ class AudioPlayManager: NSObject {
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             
-            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && isMiniPlayerActive {
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && isMiniPlayerActive && !isTrivia {
                 PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl, isFavourite: isFromFavourite)
             }
         }
@@ -411,7 +413,10 @@ extension AudioPlayManager {
         currentIndex = tempCurrentIdx
         nextIndex = audioList.count - 1 > tempCurrentIdx ? tempCurrentIdx + 1 : 0
         prevIndex = tempCurrentIdx > 0 ? tempCurrentIdx - 1 : audioList.count - 1
-        currentAudio = audioList[currentIndex]
+        if (currentIndex > audioList.count) {
+            currentAudio = audioList[currentIndex]
+        }
+        
         
 //        if !isSupported {
 //            self.setAudioIndex(currentIndex, isNext: isNext)

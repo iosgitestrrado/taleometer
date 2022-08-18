@@ -97,7 +97,7 @@ class DashboardViewController: UIViewController {
     @IBAction func tapOnSurprise(_ sender: Any) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             Core.ShowProgress(self, detailLbl: "")
-            AudioClient.getSurpriseAudio(AudioRequest(page: "all", limit: 10)) { response in
+            AudioClient.getSurpriseAudio(AudioRequest(page: "all", limit: 100)) { response in
                 if let data = response, data.count > 0 {
                     if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
                         if AudioPlayManager.shared.isNonStop {

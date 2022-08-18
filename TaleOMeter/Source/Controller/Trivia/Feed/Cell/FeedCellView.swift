@@ -50,6 +50,16 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var videoButton1: UIButton!
+    
+    @IBOutlet weak var audioView: UIView!
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var songTitle: MarqueeLabel!
+    @IBOutlet weak var songImage: UIImageView!
+    @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var startTimeLabel: UILabel!
+    @IBOutlet weak var endTimeLabel: UILabel!
+
 
 //    @IBOutlet weak var postStackView: UIStackView!
 //    @IBOutlet weak var pSProfileImage: UIImageView!
@@ -74,6 +84,7 @@ class FeedCellView: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        
 //        if cellId == FeedCellIdentifier.image || cellId == FeedCellIdentifier.video || cellId == FeedCellIdentifier.question || cellId == FeedCellIdentifier.questionVideo {
         if let videoBtn = self.videoButton {
             videoBtn.layer.cornerRadius = 20
@@ -109,10 +120,13 @@ class FeedCellView: UITableViewCell {
         }
     }
     
-    func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector]) {
+    func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector], questionType: String) {
 //        if videoThumnailImages.count <= cellData.index {
 //            videoThumnailImages.append(nil)
 //        }
+        if audioView != nil {
+            audioView.isHidden = true//questionType.lowercased() != "audio"
+        }
         if let cImage = self.coverImage {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
                 cImage.image = cellData.profilePic ?? (cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage)
@@ -120,11 +134,11 @@ class FeedCellView: UITableViewCell {
                 if let image = profilePic, (cellData.title == "You" && (cellId == FeedCellIdentifier.comment || cellId == FeedCellIdentifier.reply)) {
                     cImage.image = image
                 } else {
-                cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
-                    if error != nil {
-                        cImage.image = cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage
+                    cImage.sd_setImage(with: URL(string: cellData.imageUrl), placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
+                        if error != nil {
+                            cImage.image = cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost ? Login.defaultProfileImage : defaultImage
+                        }
                     }
-                }
                 }
             }
             if cellId == FeedCellIdentifier.question {
@@ -203,6 +217,11 @@ class FeedCellView: UITableViewCell {
             imgBtn.addTarget(target, action: selectors[7], for: .touchUpInside)
         }
         
+        if let audioPlayBtn = self.playButton {
+            audioPlayBtn.tag = row
+            audioPlayBtn.addTarget(target, action: selectors[8], for: .touchUpInside)
+        }
+        
         if let videoBtn = self.videoButton, let videoBtn1 = self.videoButton1 {
             if !videoUrl.isBlank {
                 videoBtn.tag = cellData.index
@@ -216,38 +235,15 @@ class FeedCellView: UITableViewCell {
 //            if let thumImg = videoThumnailImages[cellData.index] {
 //                videoBtn.setBackgroundImage(thumImg, for: .normal)
 //            } else {
+            if questionType.lowercased() == "audio" {
+                videoBtn.setBackgroundImage(defaultImage, for: .normal)
+            } else {
                 videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
                     if error != nil {
-//                        if let medieURL = URL(string: cellData.imageUrl) {
-//                            self.getThumbnailImage(forUrl: medieURL) { imageis in
-//                                DispatchQueue.main.async {
-//                                    if let imageiss = imageis {
-//                                        videoBtn.setBackgroundImage(imageiss, for: .normal)
-//                                        videoThumnailImages[cellData.index] = imageiss
-//                                    } else {
-//                                        videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
-//                                        videoBtn1.isHidden = true
-//                                        videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            DispatchQueue.main.async {
-                            videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
-//                            videoThumnailImages[cellData.index] = UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage
-//                            }
-//                        }
+                        videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
                     }
-//                    else {
-//                        videoThumnailImages[cellData.index] = imgg
-//                    }
-//                }
+                }
             }
-            
-//            } else {
-//                videoBtn.setBackgroundImage(UIImage(named: "acastro_180403_1777_youtube_0001") ?? defaultImage, for: .normal)
-//                videoBtn1.isHidden = true
-//            }
         }
     }
     

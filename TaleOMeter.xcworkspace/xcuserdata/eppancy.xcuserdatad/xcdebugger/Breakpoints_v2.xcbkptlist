@@ -80,7 +80,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "589"
                   endingLineNumber = "589"
-                  offsetFromSymbolStart = "128">
+                  offsetFromSymbolStart = "149">
                </Location>
                <Location
                   uuid = "B5D00DF2-A9BB-4D6F-A808-68714EC50A39 - c2bb001dd59c1747"
@@ -95,9 +95,105 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "589"
                   endingLineNumber = "589"
-                  offsetFromSymbolStart = "156">
+                  offsetFromSymbolStart = "167">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B900AE4A-0712-4B5A-8D9B-87DDD53F8DD5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/List/AudioListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "itemDidFinishedPlaying(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "55DE8866-67ED-47ED-9D54-080374EDF216"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/APIClients/Audio/AudioClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "getSurpriseAudio(_:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "55DE8866-67ED-47ED-9D54-080374EDF216 - 929c82739131f86d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;SwiftyJSON.JSON&gt;&gt;) -&gt; () in closure #1 (TaleOMeter.Result&lt;Swift.Optional&lt;TaleOMeter.ResponseModel&gt;, TaleOMeter.APIError&gt;) -&gt; () in static TaleOMeter.AudioClient.getSurpriseAudio(_: TaleOMeter.AudioRequest, completion: (Swift.Optional&lt;Swift.Array&lt;TaleOMeter.Audio&gt;&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eppancy/Documents/Projects/TaleOMeter/TaleOMeter/Source/APIClients/Audio/AudioClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "77"
+                  endingLineNumber = "77"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "55DE8866-67ED-47ED-9D54-080374EDF216 - 929c82739131f86d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;SwiftyJSON.JSON&gt;&gt;) -&gt; () in closure #1 (TaleOMeter.Result&lt;Swift.Optional&lt;TaleOMeter.ResponseModel&gt;, TaleOMeter.APIError&gt;) -&gt; () in static TaleOMeter.AudioClient.getSurpriseAudio(_: TaleOMeter.AudioRequest, completion: (Swift.Optional&lt;Swift.Array&lt;TaleOMeter.Audio&gt;&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eppancy/Documents/Projects/TaleOMeter/TaleOMeter/Source/APIClients/Audio/AudioClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "77"
+                  endingLineNumber = "77"
+                  offsetFromSymbolStart = "129">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BE13AD28-93C8-4496-A1F7-51F38F1DC776"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "stramingAudio(_:getMeters:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7F362018-54D2-4E65-96EA-CC037A0754F3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "stramingAudio(_:getMeters:completionHandler:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
