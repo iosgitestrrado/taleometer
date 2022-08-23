@@ -465,6 +465,10 @@ extension AudioPlayManager {
             // Set mini player view frame
             miniVController.view.frame = CGRect.init(x: 0, y: UIScreen.main.bounds.size.height - 80.0, width: UIScreen.main.bounds.size.width, height: 60.0)
             
+            if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first {
+                miniVController.view.frame = CGRect.init(x: 0, y: UIScreen.main.bounds.size.height - 80.0, width: UIScreen.main.bounds.size.width, height: 60.0 + window.safeAreaInsets.bottom)
+            }
+            
             // If footer view active update footer view frame
             if FooterManager.shared.isActive {
                 if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {

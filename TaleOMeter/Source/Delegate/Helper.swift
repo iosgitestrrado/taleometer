@@ -41,16 +41,6 @@ let menuIconImage: UIImage = {
     }
 }()
 
-func isLightTheme() -> Bool {
-    if #available(iOS 13.0, *) {
-        let currentStyle = UITraitCollection.current.userInterfaceStyle
-        return currentStyle == .light || currentStyle == .unspecified
-    }
-    else {
-        return true
-    }
-}
-
 func getKeyWindow() -> UIWindow? {
     if #available(iOS 13.0, *) {
         return (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first

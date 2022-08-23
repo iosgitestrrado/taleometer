@@ -134,7 +134,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if !AudioPlayManager.shared.isHistory, !AudioPlayManager.shared.isFavourite, !AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
+        if /*!AudioPlayManager.shared.isTrivia,*/ !AudioPlayManager.shared.isHistory, !AudioPlayManager.shared.isFavourite, !AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
             PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: aList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: aList[AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }

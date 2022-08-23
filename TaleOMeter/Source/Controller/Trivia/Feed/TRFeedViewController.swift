@@ -367,8 +367,7 @@ class TRFeedViewController: UIViewController {
     
     // MARK: - Adding audio player into view
     private func addAudioPlayer(_ postId: Int, rowIndex: Int, isPlayNow: Bool = true) {
-        if audioPlayingIndex == rowIndex {
-        } else {
+        if audioPlayingIndex != rowIndex {
             audioPlayingIndex = rowIndex
             if AudioPlayManager.shared.isMiniPlayerActive, let audioPlay = AudioPlayManager.shared.playerAV {
                 playPauseAudio(audioPlay.isPlaying, rowIndex: rowIndex)
@@ -386,7 +385,7 @@ class TRFeedViewController: UIViewController {
                     AudioPlayManager.shared.setAudioIndex(index, isNext: false)
                 }
                 // Initialize audio play in audio player manager
-                AudioPlayManager.shared.initPlayerManager(getMeters: false, completionHandler: { [self] success in
+                AudioPlayManager.shared.initPlayerManager(getMeters: false, isTrivia: true, completionHandler: { [self] success in
                     // Config audio in current view
                     AudioPlayManager.shared.playPauseAudioOnly(isPlayNow, addToHistory: false)
                     playPauseAudio(isPlayNow, rowIndex: rowIndex)
@@ -398,10 +397,26 @@ class TRFeedViewController: UIViewController {
     }
     
     @objc func tapOnAudioPlay(_ sender: UIButton) {
-        guard AudioPlayManager.shared.playerAV != nil else { return }
-        AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
-        self.playPauseAudio(sender.isSelected, rowIndex: sender.tag)
-        sender.isSelected = !sender.isSelected
+        if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
+            if AudioPlayManager.shared.playerAV == nil || !AudioPlayManager.shared.isTrivia {
+                videoPlayIndex = rowIndex
+                if !postData[sender.tag].User_opened {
+                    self.viewPost(sender.tag)
+                    postData[sender.tag].User_opened = true
+                }
+                if audioPostId != -1 {
+                    lastaudioPostId = audioPostId
+                }
+                audioPostId = postData[sender.tag].Post_id
+                self.tableView.reloadData()
+            } else {
+                AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
+                self.playPauseAudio(sender.isSelected, rowIndex: rowIndex)
+                sender.isSelected = !sender.isSelected
+            }
+        } else {
+            Toast.show("No audio found!")
+        }
     }
     
     // MARK: Play pause audio with mini player update
@@ -541,6 +556,17 @@ extension TRFeedViewController {
                 if let data = response {
                     postData = pageNumber == 1 ? data : postData + data
                     morePage = data.count > 0
+                    postData.forEach { post in
+                        if post.Question_type.lowercased() == "audio" {
+                            audioList.append(post.AudioStory)
+                        }
+                    }
+                    if audioList.count > 0 {
+                        if AudioPlayManager.shared.isMiniPlayerActive, AudioPlayManager.shared.playerAV != nil, let rowIndex = postData.firstIndex(where: { $0.Post_id == audioList[AudioPlayManager.shared.currentIndex].Id }) {
+                            videoPlayIndex = rowIndex
+                            //self.addAudioPlayer(audioList[AudioPlayManager.shared.currentIndex].Id, rowIndex: rowIndex, isPlayNow: player.isPlaying)
+                        }
+                    }
                 }
                 showNoData = 1
                 setTableViewCells(replyExpanded)
@@ -777,7 +803,7 @@ extension TRFeedViewController : UITableViewDataSource {
             }
             postData[cellData.index].RepTextView = textView
         }
-        if let videoBtn1 = cell.videoButton1 {
+        if postData[cellData.index].Question_type.lowercased() != "audio", let videoBtn1 = cell.videoButton1 {
             videoBtn1.isHidden = false
         }
         if audioPlayingIndex != -1, cell.audioView != nil, let audioPlayer = AudioPlayManager.shared.playerAV, let currentItem = audioPlayer.currentItem {

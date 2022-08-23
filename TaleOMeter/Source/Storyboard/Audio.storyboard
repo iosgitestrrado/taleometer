@@ -462,8 +462,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Cj8-A0-SlX" firstAttribute="leading" secondItem="hGz-Ub-mXK" secondAttribute="leading" constant="20" symbolic="YES" id="80M-ZT-DWG"/>
-                                    <constraint firstItem="Cj8-A0-SlX" firstAttribute="centerY" secondItem="hGz-Ub-mXK" secondAttribute="centerY" id="Ekb-tC-Plx"/>
                                     <constraint firstAttribute="height" constant="60" id="Fdi-87-58L"/>
+                                    <constraint firstItem="Cj8-A0-SlX" firstAttribute="top" secondItem="hGz-Ub-mXK" secondAttribute="top" constant="10" id="LOT-SZ-mIq"/>
                                     <constraint firstAttribute="trailing" secondItem="Cj8-A0-SlX" secondAttribute="trailing" constant="20" symbolic="YES" id="PVa-b4-ryM"/>
                                 </constraints>
                             </view>

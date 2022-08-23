@@ -40,6 +40,7 @@ class FeedCellView: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitle: UILabel!
     @IBOutlet weak var subTitleXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var videoBtnBottomConst: NSLayoutConstraint!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -125,7 +126,13 @@ class FeedCellView: UITableViewCell {
 //            videoThumnailImages.append(nil)
 //        }
         if audioView != nil {
-            audioView.isHidden = true//questionType.lowercased() != "audio"
+            audioView.isHidden = questionType.lowercased() != "audio"
+        }
+        if videoBtnBottomConst != nil {
+            videoBtnBottomConst.constant = 0.0
+            if questionType.lowercased() == "audio" {
+                videoBtnBottomConst.constant = 60.0
+            }
         }
         if let cImage = self.coverImage {
             if cellId == FeedCellIdentifier.post || cellId == FeedCellIdentifier.replyPost {
@@ -218,7 +225,8 @@ class FeedCellView: UITableViewCell {
         }
         
         if let audioPlayBtn = self.playButton {
-            audioPlayBtn.tag = row
+            audioPlayBtn.tag = cellData.index
+            audioPlayBtn.layer.setValue(row, forKey: "RowIndex")
             audioPlayBtn.addTarget(target, action: selectors[8], for: .touchUpInside)
         }
         
@@ -235,8 +243,10 @@ class FeedCellView: UITableViewCell {
 //            if let thumImg = videoThumnailImages[cellData.index] {
 //                videoBtn.setBackgroundImage(thumImg, for: .normal)
 //            } else {
+            videoBtn1.isHidden = false
             if questionType.lowercased() == "audio" {
-                videoBtn.setBackgroundImage(defaultImage, for: .normal)
+                videoBtn.setBackgroundImage(UIImage(named: "bannerimage"), for: .normal)
+                videoBtn1.isHidden = true
             } else {
                 videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
                     if error != nil {

@@ -81,7 +81,7 @@ class NonStopViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let audioList = AudioPlayManager.shared.audioList, audioList.count > AudioPlayManager.shared.nextIndex  {
+        if /*!AudioPlayManager.shared.isTrivia,*/ AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let audioList = AudioPlayManager.shared.audioList, audioList.count > AudioPlayManager.shared.nextIndex  {
             PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: audioList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: audioList[AudioPlayManager.shared.nextIndex].ImageUrl)
         }
     }
@@ -101,7 +101,7 @@ class NonStopViewController: UIViewController {
             }
             Core.ShowProgress(self, detailLbl: "")
             AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 10)) { [self] result in
-                if let response = result {
+                if let response = result, response.count > 0 {
                     AudioPlayManager.shared.audioList = response
                     myAudioList = response
                     currentAudioIndex = 0
