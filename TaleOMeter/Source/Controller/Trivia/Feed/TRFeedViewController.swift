@@ -71,16 +71,26 @@ class TRFeedViewController: UIViewController {
         if categoryId != -2 {
             self.getTriviaPosts()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tapOnNotification(_:)), name: Notification.Name(rawValue: "tapOnNotification"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
+        if audioTimer.isValid {
+            self.audioTimer.invalidate()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if audioTimer.isValid {
+            self.audioTimer.invalidate()
+        }
     }
     
     // MARK: Add into activity log
@@ -398,8 +408,8 @@ class TRFeedViewController: UIViewController {
     
     @objc func tapOnAudioPlay(_ sender: UIButton) {
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
+            videoPlayIndex = rowIndex
             if AudioPlayManager.shared.playerAV == nil || !AudioPlayManager.shared.isTrivia {
-                videoPlayIndex = rowIndex
                 if !postData[sender.tag].User_opened {
                     self.viewPost(sender.tag)
                     postData[sender.tag].User_opened = true
@@ -408,12 +418,13 @@ class TRFeedViewController: UIViewController {
                     lastaudioPostId = audioPostId
                 }
                 audioPostId = postData[sender.tag].Post_id
-                self.tableView.reloadData()
             } else {
                 AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
+                print("RowInde: \(rowIndex)")
                 self.playPauseAudio(sender.isSelected, rowIndex: rowIndex)
                 sender.isSelected = !sender.isSelected
             }
+            self.tableView.reloadData()
         } else {
             Toast.show("No audio found!")
         }
@@ -421,7 +432,7 @@ class TRFeedViewController: UIViewController {
     
     // MARK: Play pause audio with mini player update
     func playPauseAudio(_ isPlay: Bool, rowIndex: Int) {
-        DispatchQueue.main.async { [self] in
+//        DispatchQueue.main.async { [self] in
             guard let player = AudioPlayManager.shared.playerAV else { return }
 //            if let miniPlayBtn = miniVController.playButton {
 //                miniPlayBtn.isSelected = !isPlay
@@ -433,9 +444,11 @@ class TRFeedViewController: UIViewController {
                 if audioTimer.isValid {
                     self.audioTimer.invalidate()
                 }
-                audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(TRFeedViewController.updateAudioPlayerTime), userInfo: nil, repeats: true)
-                RunLoop.main.add(self.audioTimer, forMode: .default)
-                audioTimer.fire()
+                DispatchQueue.main.async { [self] in
+                    audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(TRFeedViewController.updateAudioPlayerTime), userInfo: nil, repeats: true)
+                    RunLoop.main.add(self.audioTimer, forMode: .default)
+                    audioTimer.fire()
+                }
             } else {
                 if player.isPlaying {
                     player.pause()
@@ -449,13 +462,14 @@ class TRFeedViewController: UIViewController {
                 let duration = currentItem.duration.seconds
                 addAudioActivity(self.postData[rowIndex].Post_id, duration: duration.isNaN ? "0" : "\(duration)", currentTime: "\(playhead)", status: isPlay ? "start" : "pause")
             }
-        }
+//        }
     }
     
     // MARK: - Add mini player time and progress bar
     @objc func updateAudioPlayerTime() {
-        self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
-
+        if audioPlayingIndex > -1 {
+            self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
+        }
 //        if let currentItem = AudioPlayManager.shared.playerAV?.currentItem {
 //            // Get the current time in seconds
 //            let playhead = currentItem.currentTime().seconds
@@ -832,7 +846,7 @@ extension TRFeedViewController : UITableViewDataSource {
                 if let audioView = cell.audioView {
                     audioView.isHidden = false
                 }
-            } else {
+            } else if postData[cellData.index].Question_type.lowercased() == "video" {
                 if AudioPlayManager.shared.isMiniPlayerActive {
                     AudioPlayManager.shared.removeMiniPlayer()
                 }

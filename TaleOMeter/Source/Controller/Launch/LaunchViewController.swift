@@ -27,30 +27,15 @@ class LaunchViewController: UIViewController {
     
     private var totalImages = 5
     
+    enum VersionError: Error {
+        case invalidResponse, invalidBundleInfo
+    }
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [self] in
-            if !UserDefaults.standard.bool(forKey: Constants.UserDefault.GuideCompleted) {
-                var originX = 0.0
-                for i in 0..<totalImages {
-                    let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
-                    imgView.contentMode = .scaleToFill
-                    imgView.image = UIImage(named: "tutor\(i+1)")
-                    guideScrollView.addSubview(imgView)
-                    originX += guideScrollView.frame.size.width
-                }
-                guideScrollView.contentSize = CGSize(width: guideScrollView.frame.size.width * CGFloat(totalImages), height: guideScrollView.frame.size.height)
-                pageController.numberOfPages = totalImages
-                pageController.addTarget(self, action: #selector(self.changeBanner(_:)), for: .valueChanged)
-                self.showHideView(self.appGuideView, isHidden: false)
-                AGLetsStart.isHidden = true
-                return
-            }
-            moveToScreen()
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +46,69 @@ class LaunchViewController: UIViewController {
           AnalyticsParameterItemName: "AppStart",
           AnalyticsParameterContentType: "cont",
         ])
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [self] in
+            do {
+                if Constants.enableForceUpdate {
+                    let update = try self.isUpdateAvailable()
+                    if update {
+                        // show alert
+                        let alert = UIAlertController(title: "App Update", message: "New app update is available now in Appstore.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { action in
+                            UIApplication.shared.open(URL(string: "https://apps.apple.com/us/app/taleometer/id1621063908")!)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                exit(0)
+                            }
+                        }))
+    //                    alert.addAction(UIAlertAction(title: "Do it later", style: .destructive, handler: { [self] action in
+    //                        redirectToApp()
+    //                    }))
+                        self.present(alert, animated: true)
+                        return
+                    }
+                }
+                redirectToApp()
+            } catch {
+                redirectToApp()
+            }
+        }
+    }
+    
+    func redirectToApp() {
+        if !UserDefaults.standard.bool(forKey: Constants.UserDefault.GuideCompleted) {
+            var originX = 0.0
+            for i in 0..<totalImages {
+                let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
+                imgView.contentMode = .scaleToFill
+                imgView.image = UIImage(named: "tutor\(i+1)")
+                guideScrollView.addSubview(imgView)
+                originX += guideScrollView.frame.size.width
+            }
+            guideScrollView.contentSize = CGSize(width: guideScrollView.frame.size.width * CGFloat(totalImages), height: guideScrollView.frame.size.height)
+            pageController.numberOfPages = totalImages
+            pageController.addTarget(self, action: #selector(self.changeBanner(_:)), for: .valueChanged)
+            self.showHideView(self.appGuideView, isHidden: false)
+            AGLetsStart.isHidden = true
+            return
+        }
+        moveToScreen()
+    }
+    
+    func isUpdateAvailable() throws -> Bool {
+        guard let info = Bundle.main.infoDictionary,
+//            let currentVersion = info["CFBundleShortVersionString"] as? String,
+            let identifier = info["CFBundleIdentifier"] as? String,
+            let url = URL(string: "https://itunes.apple.com/lookup?bundleId=\(identifier)") else {
+            throw VersionError.invalidBundleInfo
+        }
+        let data = try Data(contentsOf: url)
+        guard let json = try JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any] else {
+            throw VersionError.invalidResponse
+        }
+        if let result = (json["results"] as? [Any])?.first as? [String: Any], let version = result["version"] as? String {
+            return Double(version) != Constants.appVersion
+        }
+        throw VersionError.invalidResponse
     }
     
     private func showHideView(_ viewd: UIView, isHidden: Bool) {

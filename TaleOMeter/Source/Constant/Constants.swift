@@ -11,9 +11,9 @@ import UIKit
 struct Constants {
     
 //    static let baseURL = "https://dev-taleometer.estrradoweb.com"
-    static let baseURL = "https://app.taleometer.com"
+//    static let baseURL = "https://app.taleometer.com"
 //    static let baseURL = "https://live.taleometer.com"
-//    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
+    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
 
     // Trivia Live: com.app.taleometer
     // Trivia UAT: com.estrrado.taleometer
@@ -21,6 +21,8 @@ struct Constants {
     
     static let loaderImage = UIImage.gif(name: "spinner1")
     static let loaderImageBig = UIImage.gif(name: "spinner11")
+    static let appVersion = 1.03
+    static let enableForceUpdate = false
 
     struct Storyboard {
         static let dashboard = "Main"
