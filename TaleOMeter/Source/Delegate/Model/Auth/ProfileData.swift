@@ -44,6 +44,7 @@ struct ProfileData: Codable {
     var StoryBoardName = String()
     var StoryBoardId = String()
     var ImageData = Data()
+    var Has_preference = false
     
     init() { }
     init(_ json: JSON) {
@@ -92,6 +93,7 @@ struct ProfileData: Codable {
         Is_deleted = json["is_deleted"].boolValue
         Autoplay = json["autoplay"].stringValue
         Push_notify = json["push_notify"].boolValue
+        Has_preference = json["has_preference"].boolValue
     }
 }
 

@@ -146,7 +146,7 @@ class VerificationViewController: UIViewController {
                 }
                 Login.storeProfileData(response)
 //                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
-                self.setNotificationToken(isNewRegister)
+                self.setNotificationToken(isNewRegister, hasPreference: response.Has_preference)
             } else {
                 Core.HideProgress(self)
             }
@@ -168,7 +168,7 @@ class VerificationViewController: UIViewController {
 
 // MARK: Set notification token
 extension VerificationViewController {
-    private func setNotificationToken(_ isNewRegister: Bool) {
+    private func setNotificationToken(_ isNewRegister: Bool, hasPreference: Bool) {
         if let nToken = UserDefaults.standard.string(forKey: Constants.UserDefault.FCMTokenStr) {
             AuthClient.updateNotificationToken(NotificationRequest(token: nToken)) { status in
                 if isNewRegister {
@@ -176,8 +176,10 @@ extension VerificationViewController {
                 } else {
                     if isOnlyTrivia {
                         Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-                    } else {
+                    } else if !hasPreference {
                         Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                    } else {
+                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
                     }
                 }
                 Core.HideProgress(self)
@@ -188,8 +190,10 @@ extension VerificationViewController {
             } else {
                 if isOnlyTrivia {
                     Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-                } else {
+                } else if !hasPreference {
                     Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                } else {
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
                 }
             }
             Core.HideProgress(self)

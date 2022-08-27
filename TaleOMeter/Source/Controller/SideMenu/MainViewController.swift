@@ -27,8 +27,8 @@ class MainViewController: LGSideMenuController {
         struct Counter { static var count = 0 }
         Counter.count += 1
         
-        let statusBarHeight = getStatusBarFrame().height
-        rightView!.frame = CGRect(x: 0.0, y: statusBarHeight, width: rightView!.bounds.width, height: view.bounds.height - statusBarHeight)
+//        let statusBarHeight = getStatusBarFrame().height
+        rightView!.frame = CGRect(x: 0.0, y: 0.0, width: rightView!.bounds.width, height: view.bounds.height)
         self.rightViewBackgroundAlpha = 0.0
     }
 

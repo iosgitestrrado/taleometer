@@ -143,7 +143,7 @@ class RightViewController: UIViewController {
 
     // MARK: - Status Bar -
     override var prefersStatusBarHidden: Bool {
-        return false
+        return true
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
