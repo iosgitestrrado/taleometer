@@ -246,8 +246,12 @@ class FeedCellView: UITableViewCell {
 //            } else {
             videoBtn1.isHidden = false
             if questionType.lowercased() == "audio" {
-                videoBtn.setBackgroundImage(UIImage(named: "bannerimage"), for: .normal)
                 videoBtn1.isHidden = true
+                videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: UIImage(named: "bannerimage"), options: []) { imgg, error, typrr, url in
+                    if error != nil {
+                        videoBtn.setBackgroundImage(UIImage(named: "bannerimage") ?? defaultImage, for: .normal)
+                    }
+                }
             } else {
                 videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: Constants.loaderImageBig, options: []) { imgg, error, typrr, url in
                     if error != nil {

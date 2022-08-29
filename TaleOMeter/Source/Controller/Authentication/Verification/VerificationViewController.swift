@@ -138,11 +138,9 @@ class VerificationViewController: UIViewController {
                 if isNewRegister {
                     response.StoryBoardName = Constants.Storyboard.auth
                     response.StoryBoardId = "RegisterViewController"
-                } else {
-                    if !isOnlyTrivia {
-                        response.StoryBoardName = Constants.Storyboard.dashboard
-                        response.StoryBoardId = "PreferenceViewController"
-                    }
+                } else if !isOnlyTrivia && !response.Has_preference {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
                 }
                 Login.storeProfileData(response)
 //                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
