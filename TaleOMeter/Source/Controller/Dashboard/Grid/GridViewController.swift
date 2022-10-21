@@ -141,7 +141,6 @@ extension GridViewController: UITableViewDataSource {
             }
             return cell
         }
-        
         return UITableViewCell()
     }
     

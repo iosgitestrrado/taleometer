@@ -59,18 +59,17 @@ extension LeaderboardViewController {
             Core.noInternet(self, methodName: "getLeaderboardData")
             return
         }
+        noDatalabel.isHidden = true
         Core.ShowProgress(self, detailLbl: "")
         TriviaClient.getLeaderboards { [self] response in
             if let data = response, data.count > 0 {
-                //leaderboardList = data
-                self.leaderImg.sd_setImage(with: URL(string: data[0].Image), placeholderImage: defaultImage)
-                noDatalabel.isHidden = true
-                leaderImg.isHidden = false
-            } else {
-                noDatalabel.isHidden = false
-                leaderImg.isHidden = true
+                leaderboardList = data
+//                self.leaderImg.sd_setImage(with: URL(string: data[0].Image), placeholderImage: defaultImage)
+//                noDatalabel.isHidden = true
+//                leaderImg.isHidden = false
             }
-            //self.tableView.reloadData()
+            noDatalabel.isHidden = leaderboardList.count > 0
+            self.tableView.reloadData()
             Core.HideProgress(self)
         }
     }
@@ -100,12 +99,15 @@ extension LeaderboardViewController : UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
             return cell
         }
-        if let cell = tableView.dequeueReusableCell(withIdentifier: FeedCellIdentifier.question, for: indexPath) as? FeedCellView {
-            cell.configureLeaderboard(with: leaderboardList[indexPath.row])
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "leaderboardCell", for: indexPath)
+        if let imageView = cell.viewWithTag(1) as? UIImageView {
+            imageView.sd_setImage(with: URL(string: leaderboardList[indexPath.row].Image), placeholderImage: defaultImage)
         }
-       
-        return UITableViewCell()
+        return cell
+//        if let cell = tableView.dequeueReusableCell(withIdentifier: FeedCellIdentifier.question, for: indexPath) as? FeedCellView {
+//            cell.configureLeaderboard(with: leaderboardList[indexPath.row])
+//            return cell
+//        }
     }
 }
 
@@ -113,7 +115,7 @@ extension LeaderboardViewController : UITableViewDataSource {
 extension LeaderboardViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return  self.leaderboardList.count > 0 ? UITableView.automaticDimension : 30.0
+        return tableView.frame.size.height - 44.0 //self.leaderboardList.count > 0 ? UITableView.automaticDimension : 30.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

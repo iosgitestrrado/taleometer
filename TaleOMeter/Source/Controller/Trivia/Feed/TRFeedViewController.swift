@@ -343,6 +343,11 @@ class TRFeedViewController: UIViewController {
     
     // MARK: - Adding video player into view
     private func addVideoPlayer(_ videoView: UIButton, videoURL: URL, rowIndex: Int, postType: String) {
+        if audioPlayingIndex != -1 {
+            playPauseAudio(false, rowIndex: audioPlayingIndex)
+            AudioPlayManager.shared.isMiniPlayerActive = false
+            audioPlayingIndex = -1
+        }
         if videoPlayingIndex == rowIndex {
             videoView.addSubview(myPlayerViewController.view)
         } else {
@@ -377,6 +382,16 @@ class TRFeedViewController: UIViewController {
     
     // MARK: - Adding audio player into view
     private func addAudioPlayer(_ postId: Int, rowIndex: Int, isPlayNow: Bool = true) {
+        if videoPlayingIndex != -1 {
+            if let playerV = myPlayerViewController.player {
+                playerV.pause()
+                if lastVideoPostId != -1, let playhead = playerV.currentItem?.currentTime().seconds, let duration = playerV.currentItem?.duration.seconds {
+                    addVideoActivity(lastVideoPostId, duration: AudioPlayManager.formatTimeHMSFor(seconds: duration.isNaN ? 0 : duration), currentTime: AudioPlayManager.formatTimeHMSFor(seconds: playhead.isNaN ? 0 : playhead), status: "stop")
+                }
+                myPlayerViewController.view.removeFromSuperview()
+            }
+            videoPlayingIndex = -1
+        }
         if audioPlayingIndex != rowIndex {
             if AudioPlayManager.shared.isMiniPlayerActive, let audioPlay = AudioPlayManager.shared.playerAV, AudioPlayManager.shared.currentAudio.Id == postId {
                 audioPlayingIndex = rowIndex
@@ -401,8 +416,6 @@ class TRFeedViewController: UIViewController {
                     audioPlayingIndex = rowIndex
                 })
             }
-        } else {
-            print("Now: \(rowIndex)")
         }
     }
     
@@ -464,7 +477,6 @@ class TRFeedViewController: UIViewController {
     // MARK: - Add mini player time and progress bar
     @objc func updateAudioPlayerTime() {
         if audioPlayingIndex > -1 {
-            print("updateAudioPlayerTime: \(audioPlayingIndex)")
             self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
         }
 //        if let currentItem = AudioPlayManager.shared.playerAV?.currentItem {
@@ -842,6 +854,9 @@ extension TRFeedViewController : UITableViewDataSource {
                 self.addAudioPlayer(postData[cellData.index].Post_id, rowIndex: indexPath.row)
                 if let audioView = cell.audioView {
                     audioView.isHidden = false
+                }
+                if let subTitle = cell.subTitleXConstraint {
+                    subTitle.constant = 10.0
                 }
             } else if postData[cellData.index].Question_type.lowercased() == "video" {
                 if AudioPlayManager.shared.isMiniPlayerActive {

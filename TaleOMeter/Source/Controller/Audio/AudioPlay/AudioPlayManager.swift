@@ -413,11 +413,9 @@ extension AudioPlayManager {
         currentIndex = tempCurrentIdx
         nextIndex = audioList.count - 1 > tempCurrentIdx ? tempCurrentIdx + 1 : 0
         prevIndex = tempCurrentIdx > 0 ? tempCurrentIdx - 1 : audioList.count - 1
-        if (currentIndex > audioList.count) {
+        if (audioList.count > currentIndex) {
             currentAudio = audioList[currentIndex]
         }
-        
-        
 //        if !isSupported {
 //            self.setAudioIndex(currentIndex, isNext: isNext)
 //        }
@@ -498,7 +496,8 @@ extension AudioPlayManager {
             miniVController.playButton.addTarget(self, action: #selector(tapOnPlayMini(_:)), for: .touchUpInside)
             miniVController.closeButton.addTarget(self, action: #selector(tapOnCloseMini(_:)), for: .touchUpInside)
             miniVController.fullViewButton.addTarget(self, action: #selector(tapOnMiniPlayer(_:)), for: .touchUpInside)
-            
+            miniVController.songImageBtn.addTarget(self, action: #selector(tapOnMiniPlayer(_:)), for: .touchUpInside)
+
             // Set progressbar tap recognizer
             let tapRecognizer = UITapGestureRecognizer()
             tapRecognizer.numberOfTapsRequired = 1
@@ -587,7 +586,8 @@ extension AudioPlayManager {
     
     // MARK: - Share current audio -
     static func shareAudio(_ target: UIViewController, completion: @escaping(Bool?) -> Void) {
-        let content = "Introducing tale'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
+//        let content = "Introducing tale'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
+        let content = "I am loving the '\(AudioPlayManager.shared.currentAudio.File)' story on taleometer."
         let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
         controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
         controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in

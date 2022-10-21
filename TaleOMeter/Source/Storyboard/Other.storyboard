@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -558,7 +559,7 @@ Cg
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXX-ei-Kyb">
-                                <rect key="frame" x="334" y="44" width="40" height="40"/>
+                                <rect key="frame" x="334" y="47" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="3mp-BL-Sgh"/>
                                     <constraint firstAttribute="width" constant="40" id="XIh-P9-BPe"/>
@@ -638,7 +639,7 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq1-YL-6mn">
-                                <rect key="frame" x="0.0" y="88" width="390" height="722"/>
+                                <rect key="frame" x="0.0" y="91" width="390" height="719"/>
                                 <connections>
                                     <segue destination="Hpj-qA-fcb" kind="embed" identifier="segment" id="wb9-FH-Shr"/>
                                 </connections>
@@ -683,7 +684,7 @@ Cg
             <objects>
                 <viewController storyboardIdentifier="StorySegmentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Hpj-qA-fcb" customClass="StorySegmentViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="D2g-pe-ukn">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="722"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="719"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="wOo-CB-dWJ"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -706,7 +707,7 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHV-Od-G8e">
-                                <rect key="frame" x="20" y="128" width="350" height="50"/>
+                                <rect key="frame" x="20" y="131" width="350" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Yv-dd-tpE">
                                         <rect key="frame" x="8" y="0.0" width="96" height="50"/>
@@ -740,7 +741,7 @@ Cg
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Ng-Cj-Tt1">
-                                <rect key="frame" x="20" y="188" width="350" height="50"/>
+                                <rect key="frame" x="20" y="191" width="350" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autoplay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQn-dB-Lqs">
                                         <rect key="frame" x="8" y="0.0" width="67" height="50"/>
@@ -827,10 +828,10 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLm-ch-xwB">
-                                <rect key="frame" x="20" y="98" width="350" height="642"/>
+                                <rect key="frame" x="20" y="101" width="350" height="639"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yVc-CE-8b0">
-                                        <rect key="frame" x="8" y="8" width="334" height="626"/>
+                                        <rect key="frame" x="8" y="8" width="334" height="623"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -921,7 +922,7 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to tale'o'meter" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3k-gS-1c6">
-                                <rect key="frame" x="20" y="88" width="131" height="75"/>
+                                <rect key="frame" x="20" y="91" width="131" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="Ezk-e8-VxV"/>
                                 </constraints>
@@ -930,7 +931,7 @@ Cg
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rIX-Sp-b9b">
-                                <rect key="frame" x="16" y="163" width="358" height="647"/>
+                                <rect key="frame" x="16" y="166" width="358" height="644"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -996,7 +997,7 @@ Cg
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="textFieldCell" rowHeight="83" id="sFw-Wf-NAN" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.666666030883789" width="390" height="83"/>
+                                        <rect key="frame" x="0.0" y="50" width="390" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sFw-Wf-NAN" id="YEs-Nq-i1C">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="83"/>
@@ -1052,7 +1053,7 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="textViewCell" rowHeight="170" id="6n7-Ie-sAS" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="127.66666603088379" width="390" height="170"/>
+                                        <rect key="frame" x="0.0" y="133" width="390" height="170"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6n7-Ie-sAS" id="gKa-kq-ecB">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="170"/>
@@ -1111,7 +1112,7 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="radioCell" rowHeight="63" id="Qg4-Hs-orW" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="297.66666603088379" width="390" height="63"/>
+                                        <rect key="frame" x="0.0" y="303" width="390" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qg4-Hs-orW" id="cBN-6Z-bBY">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="63"/>
@@ -1187,7 +1188,7 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="termsCell" rowHeight="40" id="eUi-jd-YTm" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="360.66666603088379" width="390" height="40"/>
+                                        <rect key="frame" x="0.0" y="366" width="390" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eUi-jd-YTm" id="SaX-6b-j3B">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="40"/>
@@ -1237,7 +1238,7 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonCell" rowHeight="50" id="nhr-Qd-YG2" userLabel="buttonCell" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="400.66666603088379" width="390" height="50"/>
+                                        <rect key="frame" x="0.0" y="406" width="390" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nhr-Qd-YG2" id="yT0-Ix-6lF">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>
@@ -1406,7 +1407,7 @@ Cg
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="textViewCell" id="ZOQ-rJ-6DK" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.666666030883789" width="390" height="120"/>
+                                        <rect key="frame" x="0.0" y="50" width="390" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZOQ-rJ-6DK" id="SRU-lT-DHu">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="120"/>
@@ -1465,14 +1466,14 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="radioCell" id="aBe-WB-xGO" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="164.66666603088379" width="390" height="73"/>
+                                        <rect key="frame" x="0.0" y="170" width="390" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aBe-WB-xGO" id="HrX-UD-qLQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="73"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="83"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dGh-VW-ciz">
-                                                    <rect key="frame" x="0.0" y="0.0" width="390" height="73"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="390" height="83"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Who is this story about?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YB1-Ow-wtJ">
                                                             <rect key="frame" x="10" y="10" width="165" height="18"/>
@@ -1480,29 +1481,75 @@ Cg
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="aDr-Ue-6qN">
-                                                            <rect key="frame" x="10" y="33" width="87.333333333333329" height="30"/>
-                                                            <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zhk-C2-7Uq">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="30" id="jsa-KV-YWN"/>
-                                                                        <constraint firstAttribute="width" constant="30" id="qZs-r0-FPf"/>
-                                                                    </constraints>
-                                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                    <state key="normal" image="circle" catalog="system"/>
-                                                                    <state key="selected" image="circle.fill" catalog="system"/>
-                                                                </button>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MySelf" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HgL-TV-Dat">
-                                                                    <rect key="frame" x="40" y="6" width="47.333333333333343" height="18"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
+                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R1s-vG-9yq">
+                                                            <rect key="frame" x="10" y="33" width="370" height="40"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="40" id="YEC-L3-bdJ"/>
+                                                            </constraints>
+                                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="exg-6s-qz7">
+                                                                <size key="itemSize" width="128" height="128"/>
+                                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                            </collectionViewFlowLayout>
+                                                            <cells>
+                                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="radioCollectionCell" id="HSR-qb-lCC" userLabel="radioCollectionCell" customClass="RadioCollectionViewCell" customModule="TaleOMeter" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="97.333333333333329" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Uwl-DK-cV3">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="97.333333333333329" height="40"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <subviews>
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="aDr-Ue-6qN">
+                                                                                <rect key="frame" x="5" y="5" width="87.333333333333329" height="30"/>
+                                                                                <subviews>
+                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zhk-C2-7Uq">
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="height" constant="30" id="jsa-KV-YWN"/>
+                                                                                            <constraint firstAttribute="width" constant="30" id="qZs-r0-FPf"/>
+                                                                                        </constraints>
+                                                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                        <state key="normal" image="circle" catalog="system"/>
+                                                                                        <state key="selected" image="circle.dashed.inset.filled" catalog="system"/>
+                                                                                    </button>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MySelf" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HgL-TV-Dat">
+                                                                                        <rect key="frame" x="40" y="6" width="47.333333333333343" height="18"/>
+                                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                        <nil key="highlightedColor"/>
+                                                                                    </label>
+                                                                                </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="30" id="0j5-Aa-Ohp"/>
+                                                                                </constraints>
+                                                                            </stackView>
+                                                                        </subviews>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="trailing" secondItem="aDr-Ue-6qN" secondAttribute="trailing" constant="5" id="JCQ-Hz-sqv"/>
+                                                                            <constraint firstItem="aDr-Ue-6qN" firstAttribute="leading" secondItem="Uwl-DK-cV3" secondAttribute="leading" constant="5" id="O5Z-q3-ySg"/>
+                                                                            <constraint firstItem="aDr-Ue-6qN" firstAttribute="top" secondItem="Uwl-DK-cV3" secondAttribute="top" constant="5" id="XTp-Wi-Qji"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="aDr-Ue-6qN" secondAttribute="bottom" constant="5" id="ZZj-Zn-aX2"/>
+                                                                        </constraints>
+                                                                    </collectionViewCellContentView>
+                                                                    <connections>
+                                                                        <outlet property="radioButton" destination="zhk-C2-7Uq" id="00o-xA-Ga1"/>
+                                                                        <outlet property="radioTitleLbl" destination="HgL-TV-Dat" id="fdF-FU-0Xe"/>
+                                                                    </connections>
+                                                                </collectionViewCell>
+                                                            </cells>
+                                                            <connections>
+                                                                <outlet property="dataSource" destination="aBe-WB-xGO" id="uyQ-kg-Kq0"/>
+                                                                <outlet property="delegate" destination="aBe-WB-xGO" id="h4m-VP-pvv"/>
+                                                            </connections>
+                                                        </collectionView>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="R1s-vG-9yq" firstAttribute="leading" secondItem="dGh-VW-ciz" secondAttribute="leading" constant="10" id="YzF-ZJ-HKM"/>
+                                                        <constraint firstAttribute="trailing" secondItem="R1s-vG-9yq" secondAttribute="trailing" constant="10" id="hIW-A7-UAL"/>
+                                                    </constraints>
                                                     <directionalEdgeInsets key="directionalLayoutMargins" top="10" leading="10" bottom="10" trailing="10"/>
                                                 </stackView>
                                             </subviews>
@@ -1516,15 +1563,13 @@ Cg
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="collectionView" destination="R1s-vG-9yq" id="uaI-ej-jNx"/>
                                             <outlet property="mainStackView" destination="dGh-VW-ciz" id="uXr-t1-YMq"/>
-                                            <outlet property="radioButton" destination="zhk-C2-7Uq" id="skp-HO-0ob"/>
-                                            <outlet property="radioLabel" destination="HgL-TV-Dat" id="qu4-y7-1Of"/>
-                                            <outlet property="radioStackView" destination="aDr-Ue-6qN" id="GfV-kj-1gv"/>
                                             <outlet property="titleLabel" destination="YB1-Ow-wtJ" id="9X6-PZ-iO0"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="optionCell" id="oyi-ju-ghk" userLabel="optionCell" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="237.66666603088379" width="390" height="42"/>
+                                        <rect key="frame" x="0.0" y="253" width="390" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oyi-ju-ghk" id="lBC-ZM-luw">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="42"/>
@@ -1586,7 +1631,7 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="termsCell" rowHeight="40" id="jqF-Lc-x0G" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="279.66666603088379" width="390" height="40"/>
+                                        <rect key="frame" x="0.0" y="295" width="390" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jqF-Lc-x0G" id="bYq-gl-FR9">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="40"/>
@@ -1636,7 +1681,7 @@ Cg
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonCell" rowHeight="50" id="evT-fI-xwO" userLabel="buttonCell" customClass="UserStoryCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="319.66666603088379" width="390" height="50"/>
+                                        <rect key="frame" x="0.0" y="335" width="390" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="evT-fI-xwO" id="ZJ7-HM-Qwh">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>
@@ -1702,18 +1747,19 @@ Cg
     </scenes>
     <resources>
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
-        <image name="arrowtriangle.down.circle" catalog="system" width="128" height="121"/>
+        <image name="arrowtriangle.down.circle" catalog="system" width="128" height="123"/>
         <image name="background" width="360" height="640"/>
         <image name="btn" width="43.333332061767578" height="43.333332061767578"/>
-        <image name="circle" catalog="system" width="128" height="121"/>
-        <image name="circle.fill" catalog="system" width="128" height="121"/>
+        <image name="circle" catalog="system" width="128" height="123"/>
+        <image name="circle.dashed.inset.filled" catalog="system" width="128" height="123"/>
+        <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="close" width="20" height="20"/>
         <image name="enlarge" width="85.333335876464844" height="85.333335876464844"/>
-        <image name="heart" catalog="system" width="128" height="109"/>
-        <image name="heart.fill" catalog="system" width="128" height="109"/>
+        <image name="heart" catalog="system" width="128" height="107"/>
+        <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="menu" width="25" height="16.666666030883789"/>
         <image name="no_internet" width="83.333335876464844" height="81"/>
-        <image name="play" catalog="system" width="120" height="128"/>
+        <image name="play" catalog="system" width="117" height="128"/>
         <image name="refresh" width="23" height="23"/>
         <image name="share-1" width="23" height="23"/>
         <image name="verified" width="96.666664123535156" height="96.666664123535156"/>

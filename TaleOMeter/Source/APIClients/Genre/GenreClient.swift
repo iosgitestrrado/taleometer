@@ -6,7 +6,7 @@
 //
 
 class GenreClient {
-    static func get(_ completion: @escaping([Genre]?) -> Void) {
+    static func getData(_ completion: @escaping([Genre]?) -> Void) {
         APIClient.shared.get("", feed: .Genres, completion: { result in
             ResponseAPI.getResponseArray(result, showAlert: false) { response in
                 var genres = [Genre]()

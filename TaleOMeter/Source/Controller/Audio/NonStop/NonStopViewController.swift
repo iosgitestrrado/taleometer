@@ -54,7 +54,6 @@ class NonStopViewController: UIViewController {
         AudioPlayManager.shared.audioHistoryId = -1
         getAudioList()
         
-        
         // Pan gesture for scrubbing support.
 //        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
 //        panGestureRecognizer.cancelsTouchesInView = false
@@ -63,7 +62,7 @@ class NonStopViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, isBackWhite: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)

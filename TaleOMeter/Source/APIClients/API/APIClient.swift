@@ -228,7 +228,6 @@ protocol CodeEnd {
     var code: Int { get }
 }
 
-
 extension Feed: Endpoint {
 
     var base: String {

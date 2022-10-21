@@ -51,6 +51,8 @@ class StoryViewController: UIViewController {
         tableViewPO.dataSource = self
         
         self.tableView.panGestureRecognizer.cancelsTouchesInView = false
+        NotificationCenter.default.addObserver(self, selector: #selector(updatedRadioButton(_:)), name: NSNotification.Name(rawValue: "UpdateRadioButton"), object: nil)
+
         getUserStory()
     }
     
@@ -59,6 +61,7 @@ class StoryViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +73,13 @@ class StoryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    // MARK: - Call funcation when audio controller press in background
+    @objc private func updatedRadioButton(_ notification: Notification) {
+       if let rowIndex = notification.userInfo?["rowIndexInt"] as? Int, rowIndex >= 0, let selectedAnswer = notification.userInfo?["selectedAnswer"] as? String {
+           self.storyDataList[rowIndex].Value = selectedAnswer
+       }
     }
     
     // MARK: - Click on done button of keyborad toolbar
@@ -86,7 +96,7 @@ class StoryViewController: UIViewController {
             self.popover.dismiss()
         }
         self.tableViewPO.frame.size.height = 320.0
-        self.popupArray = storyDataList[sender.tag].Options
+        self.popupArray = self.title == "English" ? storyDataList[sender.tag].Options : storyDataList[sender.tag].Options_tamil
         if popupArray.count > 0 && popupArray.count < 8 {
             self.tableViewPO.frame.size.height = CGFloat(40.0 * Double(popupArray.count))
         }
@@ -98,7 +108,6 @@ class StoryViewController: UIViewController {
     
     // MARK: - Click on next button of keyboard toolbar
     @objc private func nextToolbar(_ sender: UIBarButtonItem) {
-        
         //var nextCellId = ""
         var nextIntIdx = 0
         for idx in (sender.tag + 1)..<storyDataList.count {
@@ -118,7 +127,7 @@ class StoryViewController: UIViewController {
             }
         }
     }
-    
+
     // MARK: Click on submit button
     @objc private func tapOnSubmit(_ sender: UIButton) {
         userStoryIds = [Int]()
@@ -144,7 +153,8 @@ class StoryViewController: UIViewController {
                 userStoryValues.append(story.Value)
             }
         }
-        self.postUserStory()
+        print("Post")
+//        self.postUserStory()
     }
     
     // MARK: Click on terms and condition
@@ -247,7 +257,7 @@ extension StoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: storyDataList[indexPath.row].CellId, for: indexPath) as? UserStoryCell else {
             return UITableViewCell()
         }
-        cell.configuration(self.title ?? "", cellData: storyDataList[indexPath.row], tamilTermsString: tamilTermsString, row: indexPath.row, target: self, selectors: [#selector(tapOnTerms(_:)), #selector(self.tapOnSubmit(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:)), #selector(self.tapOnOptionBtn(_:))])
+        cell.configuration(self.title ?? "", cellData: storyDataList[indexPath.row], tamilTermsString: tamilTermsString, row: indexPath.row, target: self, selectors: [#selector(tapOnTerms(_:)), #selector(self.tapOnSubmit(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:)), #selector(self.tapOnOptionBtn(_:))], options: storyDataList[indexPath.row].Options, options_tamil: storyDataList[indexPath.row].Options_tamil)
         if let textView = cell.textView {
             textView.text = storyDataList[indexPath.row].Value
             storyDataList[indexPath.row].TextView = textView

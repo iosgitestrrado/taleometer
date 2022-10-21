@@ -44,7 +44,7 @@ class SegmentViewController: UIViewController {
             return
         }
         Core.ShowProgress(parentController!, detailLbl: "")
-        GenreClient.get { result in
+        GenreClient.getData { result in
             if let response = result {
                 self.genreList = response
                 self.addContainerViews()

@@ -16,6 +16,8 @@ class MiniAudioViewController: UIViewController {
     @IBOutlet weak var fullViewButton: UIButton!
     @IBOutlet weak var songTitle: MarqueeLabel!
     @IBOutlet weak var songImage: UIImageView!
+    @IBOutlet weak var songImageBtn: UIButton!
+    @IBOutlet weak var titleBtn: UIButton!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var endTimeLabel: UILabel!

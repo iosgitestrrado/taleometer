@@ -58,7 +58,7 @@ class Core: NSObject {
      * Swap menu option enable/disable.
      * From UIController
      */
-    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white, bigfont: Bool = false) {
+    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white, bigfont: Bool = false, isBackWhite: Bool = false) {
         guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
         if let textContainer = window.viewWithTag(9998) {
             textContainer.removeFromSuperview()
@@ -110,7 +110,7 @@ class Core: NSObject {
                 cont.navigationController?.setNavigationBarHidden(true, animated: true)
             }
         }
-        cont.navigationController?.navigationBar.tintColor = .red
+        cont.navigationController?.navigationBar.tintColor = !isBackWhite ? .red : .white
         if storyId != -1 {
             cont.navigationController?.navigationBar.tintColor = .clear
             storyId = -2
@@ -119,8 +119,8 @@ class Core: NSObject {
 //        if backImage {
 //            backImageI =  UIImage(named: "back_red")
 //        }
-        cont.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back_red")
-        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back_red")
+        cont.navigationController?.navigationBar.backIndicatorImage = UIImage(named: !isBackWhite ? "back_red" : "back-arrow")
+        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: !isBackWhite ? "back_red" : "back-arrow")
         let backButton = UIBarButtonItem(title: " ", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
         
@@ -130,7 +130,7 @@ class Core: NSObject {
     }
     
     static func setLeftAlignTitleView(controller: UIViewController, text: String, textColor: UIColor) {
-        guard let navFrame = controller.navigationController?.navigationBar.frame else{
+        guard let navFrame = controller.navigationController?.navigationBar.frame else {
             return
         }
         

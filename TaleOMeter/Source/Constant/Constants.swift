@@ -21,7 +21,7 @@ struct Constants {
     
     static let loaderImage = UIImage.gif(name: "spinner1")
     static let loaderImageBig = UIImage.gif(name: "spinner11")
-    static let appVersion = 1.03
+    static let appVersion = 1.04
     static let enableForceUpdate = false
 
     struct Storyboard {

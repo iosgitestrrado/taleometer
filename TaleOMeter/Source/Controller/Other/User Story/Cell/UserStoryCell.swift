@@ -143,18 +143,27 @@ class UserStoryCell: UITableViewCell {
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var radioButton: UIButton!
     @IBOutlet weak var radioLabel: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
+
+    private struct collectionCellData {
+        var title = String()
+        var isSelected = false
+    }
     
+    private var optionsData = [collectionCellData]()
+    private var collectionRow = -1
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
     
-    func configuration(_ viewTitle: String, cellData: UserStoryModel, tamilTermsString: String, row: Int, target: Any, selectors: [Selector]) {
+    func configuration(_ viewTitle: String, cellData: UserStoryModel, tamilTermsString: String, row: Int, target: Any, selectors: [Selector], options: [String] = [String](), options_tamil: [String] = [String]()) {
         
         // Selector: 0 - Terms and Condition, 1 - Submit button, 2 - Done tool bar, 3 - Next Tool bar, 4 - Option button
         
         if let titleLbl = self.titleLabel {
-            titleLbl.text = cellData.Title
+            titleLbl.text = viewTitle == "English" ? cellData.Title : cellData.Title_tamil
 //            if viewTitle != "English" {
 //                titleLbl.text = cellData.titleTamil
 //            }
@@ -219,6 +228,20 @@ class UserStoryCell: UITableViewCell {
             }
             textView.addInputAccessoryView(cellData.IsLast ? doneString : nextString, target: target, selector: cellData.IsLast ? selectors[2] : selectors[3], tag: row)
             textView.delegate = target as? UITextViewDelegate
+        }
+        
+        if self.collectionView != nil {
+            collectionRow = row
+            if viewTitle == "English" {
+                for i in 0..<options.count {
+                    self.optionsData.append(collectionCellData(title: options[i], isSelected: i == 0))
+                }
+            } else {
+                for i in 0..<options_tamil.count {
+                    self.optionsData.append(collectionCellData(title: options_tamil[i], isSelected: i == 0))
+                }
+            }
+            self.collectionView.reloadData()
         }
     }
     
@@ -290,5 +313,32 @@ class UserStoryCell: UITableViewCell {
             }
             textView.delegate = target as? UITextViewDelegate
         }
+//        if self.collectionView != nil {
+//            self.optionsData = options
+//            self.collectionView.reloadData()
+//        }
+    }
+    
+    @objc func tapOnRadio(_ sender: UIButton) {
+        for i in 0..<optionsData.count {
+            optionsData[i].isSelected = false
+        }
+        optionsData[sender.tag].isSelected = true
+        self.collectionView.reloadData()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateRadioButton"), object: nil, userInfo: ["rowIndexInt": collectionRow, "selectedAnswer": optionsData[sender.tag].title])
+    }
+}
+
+extension UserStoryCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return optionsData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "radioCollectionCell", for: indexPath) as? RadioCollectionViewCell {
+            cell.configure(optionsData[indexPath.row].title, isSelected: optionsData[indexPath.row].isSelected, target: self, selector: #selector(tapOnRadio(_ : )), row: indexPath.row)
+            return cell
+        }
+        return UICollectionViewCell()
     }
 }

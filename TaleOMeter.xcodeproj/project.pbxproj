@@ -10,6 +10,7 @@
 		0B1ABB0F2873E97D007FBD46 /* ActivityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1ABB0E2873E97D007FBD46 /* ActivityClient.swift */; };
 		0B1ABB132873EA7D007FBD46 /* ActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1ABB122873EA7D007FBD46 /* ActivityModel.swift */; };
 		0B3058CF28181837004DC370 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B3058CE28181837004DC370 /* GoogleService-Info.plist */; };
+		0B3D13C328E6FD1200BB6501 /* RadioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3D13C228E6FD1200BB6501 /* RadioCollectionViewCell.swift */; };
 		0B6A90B8283CCE9900FED2CD /* logoshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B6A90B7283CCE9900FED2CD /* logoshare.png */; };
 		0B7A9FA828740EFF009DC7C8 /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A9FA728740EFF009DC7C8 /* LeaderboardViewController.swift */; };
 		0BA7AE1B281BEF76006FB00E /* spinner11.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0BA7AE1A281BEF75006FB00E /* spinner11.gif */; };
@@ -201,6 +202,7 @@
 		0B1ABB122873EA7D007FBD46 /* ActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityModel.swift; sourceTree = "<group>"; };
 		0B3058CE28181837004DC370 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0B3058D028181979004DC370 /* TaleOMeter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaleOMeter.entitlements; sourceTree = "<group>"; };
+		0B3D13C228E6FD1200BB6501 /* RadioCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioCollectionViewCell.swift; sourceTree = "<group>"; };
 		0B6A90B7283CCE9900FED2CD /* logoshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoshare.png; sourceTree = "<group>"; };
 		0B7A9FA728740EFF009DC7C8 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		0BA7AE1A281BEF75006FB00E /* spinner11.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spinner11.gif; sourceTree = "<group>"; };
@@ -809,6 +811,7 @@
 			isa = PBXGroup;
 			children = (
 				638150B527C64E0E003E6DE4 /* UserStoryCell.swift */,
+				0B3D13C228E6FD1200BB6501 /* RadioCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1593,6 +1596,7 @@
 			files = (
 				63A4F57527BFDCBF00FDBB03 /* PromptVManager.swift in Sources */,
 				63D27C9827BD0C2F0074EA7F /* PromptViewController.swift in Sources */,
+				0B3D13C328E6FD1200BB6501 /* RadioCollectionViewCell.swift in Sources */,
 				63863DBC27D7735C00EFF6E2 /* Result.swift in Sources */,
 				63863DC127D7736300EFF6E2 /* APIClient.swift in Sources */,
 				0BFE6BC1281FB66900A0B54D /* UIImageView+Extension.swift in Sources */,
@@ -1908,6 +1912,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -1916,7 +1921,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1946,6 +1951,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -1954,7 +1960,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Taleometer_appstore;

@@ -530,7 +530,7 @@ class NowPlayViewController: UIViewController {
         }
         return false
     }
-    
+
     @objc private func checkActiveCall() {
         if !self.checkForActiveCall() {
             audioTimer.invalidate()

@@ -235,7 +235,7 @@ class FeedCellView: UITableViewCell {
                 videoBtn.tag = cellData.index
                 videoBtn.layer.setValue(row, forKey: "RowIndex")
                 videoBtn.addTarget(target, action: selectors[6], for: .touchUpInside)
-                videoBtn.isUserInteractionEnabled = false
+                videoBtn.isUserInteractionEnabled = questionType.lowercased() != "audio"
                 videoBtn1.tag = cellData.index
                 videoBtn1.layer.setValue(row, forKey: "RowIndex")
                 videoBtn1.addTarget(target, action: selectors[6], for: .touchUpInside)
