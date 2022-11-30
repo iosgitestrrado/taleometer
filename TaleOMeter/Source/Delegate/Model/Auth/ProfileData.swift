@@ -23,8 +23,8 @@ struct ProfileData: Codable {
 //    var State = String()
 //    var Country = String()
 //    var Role_id = Int()
-//    var Fb_id = String()
-//    var Google_id = String()
+    var Fb_id = String()
+    var Google_id = String()
 //    var Apple_id = String()
     var Avatar = String()
     var Thumb = String()
@@ -45,6 +45,10 @@ struct ProfileData: Codable {
     var StoryBoardId = String()
     var ImageData = Data()
     var Has_preference = false
+    var AppVersion = String()
+    var OsVersion = String()
+    var Uuid = String()
+    var Points = Int()
     
     init() { }
     init(_ json: JSON) {
@@ -63,8 +67,8 @@ struct ProfileData: Codable {
 //        State = json["state"].stringValue
 //        Country = json["country"].stringValue
 //        Role_id = json["role_id"].intValue
-//        Fb_id = json["fb_id"].stringValue
-//        Google_id = json["google_id"].stringValue
+        Fb_id = json["fb_id"].stringValue
+        Google_id = json["google_id"].stringValue
 //        Apple_id = json["apple_id"].stringValue
        // Avatar = Constants.baseURL.appending("/\(json["avatar"].stringValue)")
         if let urlString = json["avatar"].string {
@@ -94,8 +98,48 @@ struct ProfileData: Codable {
         Autoplay = json["autoplay"].stringValue
         Push_notify = json["push_notify"].boolValue
         Has_preference = json["has_preference"].boolValue
+        AppVersion = json["appversion"].stringValue
+        OsVersion = json["osversion"].stringValue
+        Uuid = json["uuid"].stringValue
+        Points = json["points"].intValue
     }
 }
+
+/*
+ {
+   "state" : null,
+   "is_active" : 1,
+   "phone" : 9624542749,
+   "otp_verified" : 1,
+   "manufacturer" : "Apple",
+   "notify" : 0,
+   "role_id" : 2,
+   "apple_id" : null,
+   "active_link" : null,
+   "isd_code" : 91,
+   "id" : 459,
+   "user_code" : null,
+   "os" : "iOS",
+   "is_deleted" : 0,
+   "model" : "Simulator iPhone15,3",
+   "lname" : null,
+   "is_login" : 1,
+   "country_code" : "IN",
+   "address1" : null,
+   "autoplay" : "Enable",
+   "push_notify" : 1,
+   "avatar" : null,
+   "updated_at" : "2022-11-29T11:46:21.000000Z",
+   "deviceToken" : "cLOVozEPC0BBsjg3myvQqN:APA91bFSCvjKlM66ZkKgJ4zoKHNgaO5Tg3hB6JR3V9oaXgW030QdCKuOKgBAoN7R5pbqOO32d3nV7VHtZAvfIUOMLwrWUg260AN8gzfuqPEq_iywP1AB0cwhKuBNf8sH3pjuuhm0WSUp",
+   "fname" : "Durgesh",
+   "email" : null,
+   "country" : null,
+   "address2" : null,
+   "points" : 0,
+   "device_name" : "ios"
+ }
+ 
+ */
 
 struct VerificationRequest: Encodable {
     var mobile = String()

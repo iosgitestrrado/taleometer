@@ -25,7 +25,7 @@ class FooterManager: NSObject {
      *  Custom Footer tabbar for application
      *  Add custom Footer to view
      */
-    static func addFooter(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint(), isFavorite: Bool = false, isSearch: Bool = false) {
+    static func addFooter(_ controller: UIViewController, bottomConstraint: NSLayoutConstraint = NSLayoutConstraint(), isProfile: Bool = false, isSearch: Bool = false) {
         if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: "FooterViewController") as? FooterViewController {
             if let footerView = controller.view.viewWithTag(FooterManager.viewTag) {
                 footerView.removeFromSuperview()
@@ -40,8 +40,23 @@ class FooterManager: NSObject {
             
             myobject.homeButton.addTarget(FooterManager.shared.self, action: #selector(tapOnHome(_:)), for: .touchUpInside)
             myobject.searchButton.addTarget(FooterManager.shared.self, action: #selector(tapOnSearch(_:)), for: .touchUpInside)
-            myobject.favStackView.isHidden = !isFavorite
-            myobject.searchStackView.isHidden = !isSearch
+            myobject.favButton.setTitleColor(.white, for: .normal)
+            myobject.favButton.setImage(UIImage(named: "pro-inactive"), for: .normal)
+            if isProfile {
+                myobject.favButton.setTitleColor(UIColor(displayP3Red: 233.0 / 255.0, green: 67.0 / 255.0, blue: 65.0 / 255.0, alpha: 1.0), for: .normal)
+                myobject.favButton.setImage(UIImage(named: "pro-active"), for: .normal)
+            }
+            
+            myobject.searchButton.setTitleColor(.white, for: .normal)
+            myobject.searchButton.setImage(UIImage(named: "search-inactive"), for: .normal)
+
+            if isSearch {
+                myobject.searchButton.setTitleColor(UIColor(displayP3Red: 233.0 / 255.0, green: 67.0 / 255.0, blue: 65.0 / 255.0, alpha: 1.0), for: .normal)
+                myobject.searchButton.setImage(UIImage(named: "search-active"), for: .normal)
+            }
+            
+//            myobject.favStackView.isHidden = !isFavorite
+//            myobject.searchStackView.isHidden = !isSearch
 //            FooterManager.shared.favDotStackView = myobject.favStackView
 //            FooterManager.shared.searchDotStackView = myobject.searchStackView
             myobject.favButton.addTarget(FooterManager.shared.self, action: #selector(tapOnFav(_:)), for: .touchUpInside)
@@ -76,13 +91,13 @@ class FooterManager: NSObject {
         if UserDefaults.standard.bool(forKey: "isLogin") {
             if let navControllers = curVController.navigationController?.children {
                 for controller in navControllers {
-                    if controller is FavouriteViewController {
+                    if controller is ProfileViewController {
                         curVController.navigationController?.popToViewController(controller, animated: true)
                         return
                     }
                 }
             }
-            Core.push(curVController, storyboard: Constants.Storyboard.audio, storyboardId: "FavouriteViewController")
+            Core.push(curVController, storyboard: Constants.Storyboard.auth, storyboardId: "ProfileViewController")
         } else {
             Core.push(curVController, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
         }

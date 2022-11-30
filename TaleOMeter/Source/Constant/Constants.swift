@@ -11,19 +11,20 @@ import UIKit
 struct Constants {
     
 //    static let baseURL = "https://dev-taleometer.estrradoweb.com"
-    static let baseURL = "https://app.taleometer.com"
+//    static let baseURL = "https://app.taleometer.com"
 //    static let baseURL = "https://live.taleometer.com"
-//    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
+    static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"
 
     // Trivia Live: com.app.taleometer
     // Trivia UAT: com.estrrado.taleometer
     // Taleometer v1: com.estrrado.v1.taleometer
+    static let GOOGLE_IOS_CLIENT_ID = "1018972893351-fspd9pnm1hgpknlb3mt2j896nfb999od.apps.googleusercontent.com"
     
     static let loaderImage = UIImage.gif(name: "spinner1")
     static let loaderImageBig = UIImage.gif(name: "spinner11")
     static let appVersion = 1.04
     static let enableForceUpdate = false
-
+    
     struct Storyboard {
         static let dashboard = "Main"
         static let sideMenu = "SideMenu"

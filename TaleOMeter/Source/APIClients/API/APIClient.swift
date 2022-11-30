@@ -149,6 +149,7 @@ class APIClient: GenericAPIClient {
 enum Feed {
      //Auth
     case SendOtp
+    case SocialLogin
     case VerifyOtp
     case Logout
     case SendOtpProfile
@@ -238,6 +239,7 @@ extension Feed: Endpoint {
         switch self {
         //Auth
         case .SendOtp:                  return "/api/sendOtp"
+        case .SocialLogin:              return "/api/social-login"
         case .VerifyOtp:                return "/api/verifyOtp"
         case .Logout:                   return "/api/logout"
         case .SendOtpProfile:           return "/api/update-profile/sendOtp"

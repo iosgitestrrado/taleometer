@@ -1,0 +1,6 @@
+framework module Pods_TaleOMeter {
+  umbrella header "Pods-TaleOMeter-umbrella.h"
+
+  export *
+  module * { export * }
+}

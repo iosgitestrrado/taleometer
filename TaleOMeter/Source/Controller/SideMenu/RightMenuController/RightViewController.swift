@@ -40,7 +40,7 @@ class RightViewController: UIViewController {
             case .triviaQuiz:
                 return "Trivia"
             case .leaderboard:
-                return "Leaderboard"
+                return "Trivia Leaderboard"
 //            case .triviaComments:
 //                return "Trivia Comments"
             case .shareStory:
@@ -54,7 +54,7 @@ class RightViewController: UIViewController {
             case .feedback:
                 return "Reach Us"
             case .logout:
-                return "Logout"
+                return "Log Out"
             case .appVersion:
                 return "V"
             }
@@ -106,7 +106,7 @@ class RightViewController: UIViewController {
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .triviaQuiz, .leaderboard/*, .triviaComments*/, .shareStory, .history, .preference, .aboutUs, .feedback, .logout, .appVersion]
+        [.profile, .triviaQuiz, .leaderboard/*, .triviaComments*/, .shareStory, .history, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [

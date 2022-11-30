@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 struct Login {
     
@@ -75,10 +76,53 @@ struct Login {
     }
 }
 
+struct FBLoginModel {
+    var Id = String()
+    var FirstName = String()
+    var Name = String()
+    var LastName = String()
+    var Email = String()
+    var ProfilePicture = String()
+    
+    init(_ json: JSON) {
+        Id = json["id"].stringValue
+        FirstName = json["first_name"].stringValue
+        Name = json["name"].stringValue
+        LastName = json["last_name"].stringValue
+        Email = json["email"].stringValue
+        if let picture = json["picture"].dictionaryObject {
+            let picD = JSON(picture)
+            if let pictureData = picD["data"].dictionaryObject {
+                let pictureD = JSON(pictureData)
+                if let pictureDataURL = pictureD["url"].string {
+                    ProfilePicture = pictureDataURL
+                }
+            }
+        }
+    }
+}
+
 struct LoginRequest: Encodable {
     var mobile = String()
     var isd_code = String()
     var country_code = String()
+}
+
+struct SocialLoginRequest: Encodable {
+    var social_media = String()
+    var login_id = String()
+    var fname = String()
+    var email = String()
+    var phone = String()
+    var country_code = String()
+    var avatar = String()
+
+    var model = Core.GetDeviceModel()
+    var osversion = Core.GetDeviceOSVersion()
+    var appversion = Core.GetAppVersion()
+    var os = Core.GetDeviceOS()
+    var manufacturer = "Apple"
+    var device_name = "ios"
 }
 
 struct NotificationRequest: Encodable {

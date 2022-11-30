@@ -8,6 +8,10 @@
 
 import UIKit
 import CoreTelephony
+import GoogleSignIn
+import FacebookLogin
+import FirebaseAnalytics
+import SwiftyJSON
 
 class LoginViewController: UIViewController {
     
@@ -27,6 +31,8 @@ class LoginViewController: UIViewController {
         self.hideKeyboard()
         //self.mobileNumberTxt.becomeFirstResponder()
         setDefaultCountry()
+        //loginButton.permissions = ["public_profile", "email"]
+
 //        titleLabel.addUnderline()
         
 //        let titleString = NSMutableAttributedString(string: "Welcome To tale'o'meter\nSign up To Keep Hearing Amazing")
@@ -81,27 +87,77 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @IBAction func tapOnSubmit(_ sender: Any) {
-        if !Reachability.isConnectedToNetwork() {
-            Core.noInternet(self)
-            return
-        }
-        if self.mobileNumberTxt.text!.isBlank {
-            Validator.showRequiredError(self.mobileNumberTxt)
-            return
-        }
-        if !self.mobileNumberTxt.text!.isPhoneNumber {
-            Validator.showError(self.mobileNumberTxt, message: "Invalid phone number")
-            return
-        }
-       // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
-        Core.ShowProgress(self, detailLbl: "Sending OTP...")
-        AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!, isd_code: countryModel.extensionCode ?? "+91", country_code: countryModel.countryCode ?? "IN")) { status in
-            Core.HideProgress(self)
-            if status {
-//                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
-                self.performSegue(withIdentifier: "verification", sender: sender)
+    @IBAction func tapOnSubmit(_ sender: UIButton) {
+        if sender.tag == 1 { //Custom Login
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
             }
+            if self.mobileNumberTxt.text!.isBlank {
+                Validator.showRequiredError(self.mobileNumberTxt)
+                return
+            }
+            if !self.mobileNumberTxt.text!.isPhoneNumber {
+                Validator.showError(self.mobileNumberTxt, message: "Invalid phone number")
+                return
+            }
+           // Core.push(self, storyboard: Storyboard.auth, storyboardId: "VerificationViewController")
+            Core.ShowProgress(self, detailLbl: "Sending OTP...")
+            AuthClient.login(LoginRequest(mobile: self.mobileNumberTxt.text!, isd_code: countryModel.extensionCode ?? "+91", country_code: countryModel.countryCode ?? "IN")) { status in
+                Core.HideProgress(self)
+                if status {
+    //                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
+                    self.performSegue(withIdentifier: "verification", sender: sender)
+                }
+            }
+        } else if sender.tag == 2 { //Facebook Login
+            Core.ShowProgress(self, detailLbl: "Google SignIn...")
+            let fbLoginManager : LoginManager = LoginManager()
+            fbLoginManager.logIn(permissions: ["email"], from: self) { result, error in
+                if error == nil {
+                    let fbloginresult : LoginManagerLoginResult = result!
+                    // if user cancel the login
+                    if (result?.isCancelled)! {
+                        self.showToast(message: "Cancelled by user")
+                        Core.HideProgress(self)
+                        return
+                    }
+                    if fbloginresult.grantedPermissions.contains("email") {
+                        self.getFBUserData()
+                    } else {
+                        self.showToast(message: "Facebook login failed")
+                        Core.HideProgress(self)
+                    }
+                }
+            }
+
+        } else if sender.tag == 3 { // Google Login
+            Core.ShowProgress(self, detailLbl: "Google SignIn...")
+            let signInConfig = GIDConfiguration(clientID: Constants.GOOGLE_IOS_CLIENT_ID)
+            GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: self) { user, error in
+                if error == nil, let signInUser = user {
+                    self.googleSiginAPI(signInUser)
+                } else if let message = error?.localizedDescription {
+                    Toast.show(message)
+                    Core.HideProgress(self)
+                } else {
+                    Core.HideProgress(self)
+                }
+            }
+        }
+    }
+    
+    func getFBUserData(){
+        if AccessToken.current != nil {
+            GraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
+                if error == nil, let dicObject = result as? Dictionary<String, Any> {
+                    //everything works print the user data
+                    self.facebookSiginAPI(FBLoginModel(JSON(dicObject)))
+                } else {
+                    self.showToast(message: "Facebook login failed")
+                    Core.HideProgress(self)
+                }
+            })
         }
     }
     
@@ -161,6 +217,98 @@ class LoginViewController: UIViewController {
 //            if let exCode = self.countryModel.extensionCode, let isdCode = Int(exCode.replacingOccurrences(of: "+", with: "")) {
 //                veryVC.iSDCode = isdCode
 //            }
+        }
+    }
+}
+
+// MARK: - API Calls
+extension LoginViewController {
+    
+    private func facebookSiginAPI(_ signInUser: FBLoginModel) {
+        AuthClient.socialLogin(SocialLoginRequest(social_media: "facebook", login_id: signInUser.Id, fname: signInUser.Name, email: signInUser.Email, avatar: signInUser.ProfilePicture)) { profileData, status, token, isNewRegister in
+            if var response = profileData, !token.isBlank {
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                  AnalyticsParameterItemID: "id-facebookemail",
+                  AnalyticsParameterItemName: signInUser.Email,
+                  AnalyticsParameterContentType: "cont",
+                ])
+                UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
+                UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
+                if isNewRegister {
+                    response.StoryBoardName = Constants.Storyboard.auth
+                    response.StoryBoardId = "RegisterViewController"
+                } else if !isOnlyTrivia && !response.Has_preference {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
+                }
+                Login.storeProfileData(response)
+                self.setNotificationToken(isNewRegister, hasPreference: response.Has_preference)
+            } else {
+                Core.HideProgress(self)
+            }
+        }
+    }
+    
+    private func googleSiginAPI(_ signInUser: GIDGoogleUser) {
+        var imageURLString = ""
+        if signInUser.profile?.hasImage ?? false {
+            let imageURL = signInUser.profile?.imageURL(withDimension: 200)
+            imageURLString = imageURL?.absoluteString ?? ""
+        }
+        
+        AuthClient.socialLogin(SocialLoginRequest(social_media: "google", login_id: signInUser.userID ?? "", fname: signInUser.profile?.name ?? "", email: signInUser.profile?.email ?? "", avatar: imageURLString)) { profileData, status, token, isNewRegister in
+            if var response = profileData, !token.isBlank {
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                  AnalyticsParameterItemID: "id-googleemail",
+                  AnalyticsParameterItemName: signInUser.profile?.email ?? "",
+                  AnalyticsParameterContentType: "cont",
+                ])
+                UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
+                UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
+                if isNewRegister {
+                    response.StoryBoardName = Constants.Storyboard.auth
+                    response.StoryBoardId = "RegisterViewController"
+                } else if !isOnlyTrivia && !response.Has_preference {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
+                }
+                Login.storeProfileData(response)
+                self.setNotificationToken(isNewRegister, hasPreference: response.Has_preference)
+            } else {
+                Core.HideProgress(self)
+            }
+        }
+    }
+    
+    private func setNotificationToken(_ isNewRegister: Bool, hasPreference: Bool) {
+        if let nToken = UserDefaults.standard.string(forKey: Constants.UserDefault.FCMTokenStr) {
+            AuthClient.updateNotificationToken(NotificationRequest(token: nToken)) { status in
+                if isNewRegister {
+                    self.performSegue(withIdentifier: "register", sender: self)
+                } else {
+                    if isOnlyTrivia {
+                        Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                    } else if !hasPreference {
+                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                    } else {
+                        Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+                    }
+                }
+                Core.HideProgress(self)
+            }
+        } else {
+            if isNewRegister {
+                self.performSegue(withIdentifier: "register", sender: self)
+            } else {
+                if isOnlyTrivia {
+                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
+                } else if !hasPreference {
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                } else {
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "DashboardViewController")
+                }
+            }
+            Core.HideProgress(self)
         }
     }
 }

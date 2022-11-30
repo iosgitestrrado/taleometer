@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import GoogleSignIn
+import FacebookCore
 
 var storyId = -1
 var categorId = -2//9
@@ -51,10 +53,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
               UserDefaults.standard.set(token, forKey: Constants.UserDefault.FCMTokenStr)
           }
         }
+        let signInConfig = GIDConfiguration(clientID: Constants.GOOGLE_IOS_CLIENT_ID)
+
+//        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+//            if error != nil || user == nil {
+//                // Show the app's signed-out state.
+//            } else {
+//                // Show the app's signed-in state.
+//            }
+//        }
+       
+        ApplicationDelegate.shared.application(
+                    application,
+                    didFinishLaunchingWithOptions: launchOptions
+                )
         return true
     }
 
     // MARK: UISceneSession Lifecycle
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        ApplicationDelegate.shared.application(
+                    app,
+                    open: url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                    annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+                )
+        
+        var handled: Bool
+        handled = GIDSignIn.sharedInstance.handle(url)
+        if handled {
+            return true
+        }
+        return false
+    }
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.

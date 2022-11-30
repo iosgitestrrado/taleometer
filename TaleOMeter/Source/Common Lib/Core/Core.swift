@@ -58,7 +58,7 @@ class Core: NSObject {
      * Swap menu option enable/disable.
      * From UIController
      */
-    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColor: UIColor = .white, bigfont: Bool = false, isBackWhite: Bool = false) {
+    static func showNavigationBar(cont: UIViewController, setNavigationBarHidden: Bool, isRightViewEnabled: Bool, titleInLeft: Bool = true, backImage: Bool = false, backImageColorWhite: Bool = true, bigfont: Bool = false) {
         guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
         if let textContainer = window.viewWithTag(9998) {
             textContainer.removeFromSuperview()
@@ -110,7 +110,7 @@ class Core: NSObject {
                 cont.navigationController?.setNavigationBarHidden(true, animated: true)
             }
         }
-        cont.navigationController?.navigationBar.tintColor = !isBackWhite ? .red : .white
+        cont.navigationController?.navigationBar.tintColor = !backImageColorWhite ? .red : .white
         if storyId != -1 {
             cont.navigationController?.navigationBar.tintColor = .clear
             storyId = -2
@@ -119,17 +119,25 @@ class Core: NSObject {
 //        if backImage {
 //            backImageI =  UIImage(named: "back_red")
 //        }
-        cont.navigationController?.navigationBar.backIndicatorImage = UIImage(named: !isBackWhite ? "back_red" : "back-arrow")
-        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: !isBackWhite ? "back_red" : "back-arrow")
+        
+        var backImage = UIImage(named: "back_red")?.withRenderingMode(.alwaysOriginal)
+        if backImageColorWhite {
+            backImage = UIImage(named: "back_white_icon")?.withRenderingMode(.alwaysOriginal)
+        }
+        UINavigationBar.appearance().backIndicatorImage = backImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
+//        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: -80.0), for: .default)
+//        cont.navigationController?.navigationBar.backIndicatorImage = UIImage(named: !backImageColorWhite ? "back_red" : "back_white_icon")
+//        cont.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: !backImageColorWhite ? "back_red" : "back_white_icon")
         let backButton = UIBarButtonItem(title: " ", style: UIBarButtonItem.Style.plain, target: self, action: nil)
         cont.navigationItem.backBarButtonItem = backButton
         
         if titleInLeft, let titleStr = cont.navigationItem.title {
-            Core.setLeftAlignTitleView(controller: cont, text: titleStr, textColor: .white)
+            Core.setLeftAlignTitleView(controller: cont, text: titleStr, textColor: .white, isBigfont: bigfont)
         }
     }
     
-    static func setLeftAlignTitleView(controller: UIViewController, text: String, textColor: UIColor) {
+    static func setLeftAlignTitleView(controller: UIViewController, text: String, textColor: UIColor, isBigfont: Bool = false) {
         guard let navFrame = controller.navigationController?.navigationBar.frame else {
             return
         }
@@ -144,7 +152,17 @@ class Core: NSObject {
         label.textColor = textColor
         label.text = text
         label.font = UIFont.boldSystemFont(ofSize: 17.0)
-        
+
+        if isBigfont {
+            guard let customFont = UIFont(name: "CommutersSans-Bold", size: 25.0) else {
+                fatalError("""
+                    Failed to load the "CommutersSans-Bold" font.
+                    Make sure the font file is included in the project and the font name is spelled correctly.
+                    """
+                )
+            }
+            label.font = customFont
+        }
         parentView.addSubview(label)
     }
     

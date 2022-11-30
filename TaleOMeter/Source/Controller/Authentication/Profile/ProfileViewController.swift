@@ -17,9 +17,14 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var mobileLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var pointsLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var imageOptionPopup: UIView!
     @IBOutlet weak var customActionSheet: UIView!
+    
+    @IBOutlet weak var notificationSwitch: UIButton!
+    @IBOutlet weak var autoPlaySwitch: UIButton!
+    @IBOutlet weak var autoPlayView: UIView!
 
     // MARK: - Private Property -
     private let imagePicker = UIImagePickerController()
@@ -31,19 +36,25 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.hideKeyboard()
+        
     }
         
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true, backImageColor: .red)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true, backImageColorWhite: false)
         
         if !isOnlyTrivia {
             //Add footer view and manager current view frame
-            FooterManager.addFooter(self)
+            FooterManager.addFooter(self, isProfile: true)
             if AudioPlayManager.shared.isMiniPlayerActive {
                 AudioPlayManager.shared.addMiniPlayer(self)
             }
         }
+        getProfileData()
+        notificationSwitch.isSelected = true
+        autoPlaySwitch.isSelected = UserDefaults.standard.bool(forKey: "AutoplayEnable")
+        autoPlayView.isHidden = isOnlyTrivia
+        
         Core.ShowProgress(self, detailLbl: "Getting Profile details...")
         setProfileData()
         self.profileImage.image = Login.defaultProfileImage
@@ -55,20 +66,52 @@ class ProfileViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if isMovingFromParent {
-            self.sideMenuController!.toggleRightView(animated: false)
-        }
+//        if isMovingFromParent {
+//            self.sideMenuController!.toggleRightView(animated: false)
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
+    @IBAction func changeNotification(_ sender: UIButton) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        sender.isSelected = !sender.isSelected
+        Core.ShowProgress(self, detailLbl: "")
+        OtherClient.setNotificationSetting(NotificationSetRequest(value: sender.isSelected ? 1 : 0)) { status in
+            Core.HideProgress(self)
+        }
+    }
+    
+    @IBAction func changeAutoplay(_ sender: UIButton) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        sender.isSelected = !sender.isSelected
+        Core.ShowProgress(self, detailLbl: "")
+        OtherClient.setAutoPlaySetting(AutoplaySetRequest(value: sender.isSelected ? "Enable" : "Disable")) { status in
+            if let st = status, st {
+                UserDefaults.standard.set(sender.isSelected, forKey: "AutoplayEnable")
+                UserDefaults.standard.synchronize()
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
     private func setProfileData() {
         
         if let pfData = Login.getProfileData() {
             profileData = pfData
+            notificationSwitch.isSelected = pfData.Push_notify
+            autoPlaySwitch.isSelected = pfData.Autoplay.lowercased().contains("enable")
         }
+        
+        self.pointsLabel.text = "\(profileData?.Points ?? 0)"
         
         let name = profileData?.User_code ?? ""
         let displayName = profileData?.Fname ?? ""
@@ -294,6 +337,28 @@ class ProfileViewController: UIViewController {
 
 // MARK: Call API's
 extension ProfileViewController {
+    
+    private func getProfileData() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AuthClient.getProfile { result in
+            if let response = result {
+                self.profileData = response
+                Login.storeProfileData(response)
+                
+                self.setProfileData()
+                self.profileImage.image = Login.defaultProfileImage
+                if let imgData = self.profileData?.ImageData, let img = UIImage(data: imgData) {
+                    self.profileImage.image = img
+                }
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
     private func uploadProfileImage(_ imageData: Data, image: UIImage) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)

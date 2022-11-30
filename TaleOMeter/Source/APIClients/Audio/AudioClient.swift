@@ -8,8 +8,8 @@
 import Foundation
 
 class AudioClient {
-    static func get(_ audioReq: AudioGenreRequest, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
-        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+    static func getGenre(_ audioReq: AudioGenreRequest, isNonStop: Bool = false, completion: @escaping([Audio]?) -> Void) {
+//        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             // Get All audio list and set refrence for Story, Plot and Narration
             APIClient.shared.post(parameters: audioReq, feed: .AudioStoriesGenre) { result in
                 ResponseAPI.getResponseArray(result, showAlert: false) { response in
@@ -23,19 +23,19 @@ class AudioClient {
                     completion(audios)
                 }
             }
-        } else {
-            APIClient.shared.get("", feed: .GuestAudioStories, completion: { result in
-                ResponseAPI.getResponseArray(result) { response in
-                    var audios = [Audio]()
-                    if let audio = response {
-                        audio.forEach({ (object) in
-                            audios.append(Audio(object))
-                        })
-                    }
-                    completion(audios)
-                }
-            })
-        }
+//        } else {
+//            APIClient.shared.get("", feed: .GuestAudioStories, completion: { result in
+//                ResponseAPI.getResponseArray(result) { response in
+//                    var audios = [Audio]()
+//                    if let audio = response {
+//                        audio.forEach({ (object) in
+//                            audios.append(Audio(object))
+//                        })
+//                    }
+//                    completion(audios)
+//                }
+//            })
+//        }
     }
     
     static func getAudios(_ audioReq: AudioRequest, completion: @escaping([Audio]?) -> Void) {

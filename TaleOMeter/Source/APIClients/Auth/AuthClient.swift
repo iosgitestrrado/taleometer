@@ -18,6 +18,18 @@ class AuthClient {
         }
     }
     
+    static func socialLogin(_ loginReq: SocialLoginRequest, completion: @escaping(ProfileData?, Bool, String, Bool) -> Void) {
+        APIClient.shared.postJson(parameters: loginReq, feed: .SocialLogin) { (result) in
+            ResponseAPI.getResponseJsonToken(result, showSuccMessage: true, completion: { responseJson, status, token, isNewRegister in
+                var verification: ProfileData?
+                if let response = responseJson {
+                    verification = ProfileData(response)
+                }
+                completion(verification, status, token, isNewRegister)
+            })
+        }
+    }
+    
     static func verifyOtp(_ veriReq: VerificationRequest, completion: @escaping(ProfileData?, Bool, String, Bool) -> Void) {
         APIClient.shared.postJson(parameters: veriReq, feed: .VerifyOtp) { (result) in
             ResponseAPI.getResponseJsonToken(result, showSuccMessage: true, completion: { responseJson, status, token, isNewRegister in

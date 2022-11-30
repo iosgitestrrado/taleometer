@@ -28,7 +28,7 @@ class FavouriteViewController: UIViewController {
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true)
         
         //Add footer view and manager current view frame
-        FooterManager.addFooter(self, bottomConstraint: self.containerBottomCons, isFavorite: true)
+//        FooterManager.addFooter(self, bottomConstraint: self.containerBottomCons, isFavorite: true)
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }

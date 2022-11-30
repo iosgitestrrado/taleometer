@@ -1,0 +1,52 @@
+PODS:
+  - LGSideMenuController (3.1.2)
+  - Magnetic (3.2.1)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
+  - Popover (1.3.0)
+  - SDWebImage (5.12.3):
+    - SDWebImage/Core (= 5.12.3)
+  - SDWebImage/Core (5.12.3)
+  - SoundWave (0.1.4)
+  - SwiftGifOrigin (1.7.0)
+  - SwiftyJSON (5.0.1)
+  - UIScrollView-InfiniteScroll (1.1.0)
+
+DEPENDENCIES:
+  - LGSideMenuController (~> 3.1.2)
+  - Magnetic (~> 3.2.1)
+  - NVActivityIndicatorView (~> 5.1.1)
+  - Popover (~> 1.3.0)
+  - SDWebImage (~> 5.12.3)
+  - SoundWave (~> 0.1.4)
+  - SwiftGifOrigin (~> 1.7.0)
+  - SwiftyJSON (~> 5.0.1)
+  - UIScrollView-InfiniteScroll (~> 1.1.0)
+
+SPEC REPOS:
+  trunk:
+    - LGSideMenuController
+    - Magnetic
+    - NVActivityIndicatorView
+    - Popover
+    - SDWebImage
+    - SoundWave
+    - SwiftGifOrigin
+    - SwiftyJSON
+    - UIScrollView-InfiniteScroll
+
+SPEC CHECKSUMS:
+  LGSideMenuController: 0c7b155b0dbdf14bf8b88d5ac363c5fe1584bb23
+  Magnetic: 02b9d6686160421cc4285140387419ec9ccab033
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
+  Popover: 10e1d9528f81d9504df984b7b3f491292bc1822d
+  SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
+  SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
+  SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
+  UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
+
+PODFILE CHECKSUM: 78c8b1518412486200cf9794efc19dc80f8c4ca0
+
+COCOAPODS: 1.11.3

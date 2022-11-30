@@ -36,16 +36,56 @@ struct TriviaHomeRequest: Encodable {
     var device_name = "ios"
 }
 
+struct LeaderboardData {
+    var CurrentUser = LeaderUserModel()
+    var TopTen = [LeaderboardModel]()
+    
+    init() {  }
+    init(_ json: JSON) {
+        if let currentUsr = json["current_user"].dictionary {
+            CurrentUser = LeaderUserModel(JSON(currentUsr))
+        }
+        if let topTens = json["top_ten"].array, topTens.count > 0 {
+            topTens.forEach { object in
+                TopTen.append(LeaderboardModel(object))
+            }
+        }
+    }
+}
+
+struct LeaderUserModel {
+    var TotalUsers = Int()
+    var Rank = String()
+    var Avatar = String()
+    var Points = Int()
+    var Name = String()
+    
+    init() {   }
+    init(_ json: JSON) {
+        TotalUsers = json["total_users"].intValue
+        Rank = json["rank"].stringValue
+        if let urlString = json["avatar"].string {
+            Avatar = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
+        }
+        Points = json["points"].intValue
+        Name = json["name"].stringValue
+    }
+}
+
 struct LeaderboardModel {
 
-    var Title = String()
-    var Image = String()
-    
+    var Avatar = String()
+    var Name = String()
+    var Points = String()
+    var Rank = Int()
+
     init() { }
     init(_ json: JSON) {
-        Title = json["title"].stringValue
-        if let urlString = json["image"].string {
-            Image = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
+        Name = json["name"].stringValue
+        Points = json["points"].stringValue
+        Rank = json["rank"].intValue
+        if let urlString = json["avatar"].string {
+            Avatar = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
         }
     }
 }

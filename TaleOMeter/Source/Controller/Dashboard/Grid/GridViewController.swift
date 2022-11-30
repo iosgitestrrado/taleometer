@@ -80,7 +80,7 @@ class GridViewController: UIViewController {
         if showProgress {
             Core.ShowProgress(parentController!, detailLbl: "")
         }
-        AudioClient.get(AudioGenreRequest(genre_id: genreId, shuffle: 0, page: "\(pageNumber)", limit: pageLimit), completion: { [self] response in
+        AudioClient.getGenre(AudioGenreRequest(genre_id: genreId, shuffle: 0, page: "\(pageNumber)", limit: pageLimit), completion: { [self] response in
             if let data = response {
                 morePage = data.count > 0
                 audioList = audioList + data
@@ -181,15 +181,25 @@ extension GridViewController: UITableViewDelegate {
     // MARK: - Tap on grid index
     @objc private func tapOnGrid(_ sender: UIButton) {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
-            if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
-                if AudioPlayManager.shared.isNonStop {
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+            if genreId == 100 {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
+                    if AudioPlayManager.shared.isNonStop {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                    }
+                    myobject.categoryId = audioList[sender.tag].Id
+                    parentController!.navigationController?.pushViewController(myobject, animated: true)
                 }
-                myobject.myAudioList = audioList
-                myobject.currentAudioIndex = sender.tag
-                AudioPlayManager.shared.audioList = audioList
-                AudioPlayManager.shared.setAudioIndex(sender.tag, isNext: false)
-                parentController!.navigationController?.pushViewController(myobject, animated: true)
+            } else {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+                    if AudioPlayManager.shared.isNonStop {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                    }
+                    myobject.myAudioList = audioList
+                    myobject.currentAudioIndex = sender.tag
+                    AudioPlayManager.shared.audioList = audioList
+                    AudioPlayManager.shared.setAudioIndex(sender.tag, isNext: false)
+                    parentController!.navigationController?.pushViewController(myobject, animated: true)
+                }
             }
         } else {
             Core.push(self.parentController!, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")

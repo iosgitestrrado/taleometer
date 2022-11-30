@@ -2,9 +2,36 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1018972893351-fspd9pnm1hgpknlb3mt2j896nfb999od</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb855965928770280</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>855965928770280</string>
+	<key>FacebookClientToken</key>
+	<string>96361371263d28b0daec073aed9bc4ef</string>
+	<key>FacebookDisplayName</key>
+	<string>tale'o'meter</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>whatsapp</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>

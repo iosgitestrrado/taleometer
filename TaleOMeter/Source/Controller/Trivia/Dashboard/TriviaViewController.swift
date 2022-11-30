@@ -9,6 +9,7 @@ import UIKit
 
 class TriviaViewController: UIViewController {
     
+    //1E1E30
     // MARK: - Weak Properties -
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -54,7 +55,7 @@ class TriviaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColorWhite: false, bigfont: true)
         self.navigationItem.hidesBackButton = !fromSideMenu
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)

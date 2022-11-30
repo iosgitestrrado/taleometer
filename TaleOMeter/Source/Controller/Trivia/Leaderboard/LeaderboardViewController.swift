@@ -13,6 +13,13 @@ class LeaderboardViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var leaderImg: UIImageView!
     @IBOutlet weak var noDatalabel: UILabel!
+    
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var triviaScoreLbl: UILabel!
+    @IBOutlet weak var rankTotalUserLbl: UILabel!
+
+    
     private var leaderboardList = [LeaderboardModel]()
     
     override func viewDidLoad() {
@@ -26,7 +33,7 @@ class LeaderboardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColor: .red, bigfont: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true, bigfont: true)
         getLeaderboardData()
         addActivityLog()
     }
@@ -59,16 +66,20 @@ extension LeaderboardViewController {
             Core.noInternet(self, methodName: "getLeaderboardData")
             return
         }
-        noDatalabel.isHidden = true
+//        noDatalabel.isHidden = true
         Core.ShowProgress(self, detailLbl: "")
         TriviaClient.getLeaderboards { [self] response in
-            if let data = response, data.count > 0 {
-                leaderboardList = data
+            if let data = response {
+                leaderboardList = data.TopTen
+                self.profileImage.sd_setImage(with: URL(string: data.CurrentUser.Avatar), placeholderImage: Login.defaultProfileImage, context: nil)
+                self.nameLabel.text = data.CurrentUser.Name
+                self.triviaScoreLbl.text = "\(data.CurrentUser.Points)"
+                self.rankTotalUserLbl.text = "\(data.CurrentUser.Rank)/\(data.CurrentUser.TotalUsers)"
 //                self.leaderImg.sd_setImage(with: URL(string: data[0].Image), placeholderImage: defaultImage)
 //                noDatalabel.isHidden = true
 //                leaderImg.isHidden = false
             }
-            noDatalabel.isHidden = leaderboardList.count > 0
+//            noDatalabel.isHidden = leaderboardList.count > 0
             self.tableView.reloadData()
             Core.HideProgress(self)
         }
@@ -99,11 +110,17 @@ extension LeaderboardViewController : UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoDataTableViewCell", for: indexPath) as? NoDataTableViewCell else { return UITableViewCell() }
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "leaderboardCell", for: indexPath)
-        if let imageView = cell.viewWithTag(1) as? UIImageView {
-            imageView.sd_setImage(with: URL(string: leaderboardList[indexPath.row].Image), placeholderImage: defaultImage)
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "leaderboardCell", for: indexPath) as? LeaderBoardTableViewCell {
+            cell.configure(leaderboardList[indexPath.row], row: indexPath.row)
+            return cell
         }
-        return cell
+        return UITableViewCell()
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "leaderboardCell", for: indexPath)
+//        if let imageView = cell.viewWithTag(1) as? UIImageView {
+//            imageView.sd_setImage(with: URL(string: leaderboardList[indexPath.row].Image), placeholderImage: defaultImage)
+//        }
+//        return cell
 //        if let cell = tableView.dequeueReusableCell(withIdentifier: FeedCellIdentifier.question, for: indexPath) as? FeedCellView {
 //            cell.configureLeaderboard(with: leaderboardList[indexPath.row])
 //            return cell
@@ -115,7 +132,7 @@ extension LeaderboardViewController : UITableViewDataSource {
 extension LeaderboardViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.size.height - 44.0 //self.leaderboardList.count > 0 ? UITableView.automaticDimension : 30.0
+        return self.leaderboardList.count > 0 ? UITableView.automaticDimension : 30.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

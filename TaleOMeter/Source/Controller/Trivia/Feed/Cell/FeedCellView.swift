@@ -112,14 +112,14 @@ class FeedCellView: UITableViewCell {
         }
     }
     
-    func configureLeaderboard(with cellData: LeaderboardModel) {
-        if self.coverImage != nil {
-            self.coverImage.sd_setImage(with: URL(string: cellData.Image), placeholderImage: defaultImage)
-        }
-        if self.titleLabel != nil {
-            self.titleLabel.text = cellData.Title
-        }
-    }
+//    func configureLeaderboard(with cellData: LeaderboardModel) {
+//        if self.coverImage != nil {
+//            self.coverImage.sd_setImage(with: URL(string: cellData.Image), placeholderImage: defaultImage)
+//        }
+//        if self.titleLabel != nil {
+//            self.titleLabel.text = cellData.Title
+//        }
+//    }
     
     func configureCell(_ cellData: CellData, cellId: String, messageString: String, videoUrl: String, row: Int, target: Any, selectors: [Selector], questionType: String) {
 //        if videoThumnailImages.count <= cellData.index {

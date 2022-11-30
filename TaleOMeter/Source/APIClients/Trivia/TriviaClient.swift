@@ -108,18 +108,14 @@ class TriviaClient {
         }
     }
     
-    static func getLeaderboards(_ completion: @escaping([LeaderboardModel]?) -> Void) {
+    static func getLeaderboards(_ completion: @escaping(LeaderboardData?) -> Void) {
         APIClient.shared.postJson(parameters: EmptyRequest(), feed: .Leaderboard) { result in
             ResponseAPI.getResponseJson(result) { response in
-                var leaderList = [LeaderboardModel]()
-                if let data = response, let list = data["leaderboard"].array {
-                    list.forEach { object in
-                        leaderList.append(LeaderboardModel(object))
-                    }
-                } else if let data = response, let object = data["leaderboard"].dictionaryObject {
-                    leaderList.append(LeaderboardModel(JSON(object)))
+                var leaderData: LeaderboardData?
+                if let data = response {
+                    leaderData = LeaderboardData(data)
                 }
-                completion(leaderList)
+                completion(leaderData)
             }
         }
         
