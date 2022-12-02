@@ -26,6 +26,7 @@ class LaunchViewController: UIViewController {
     @IBOutlet weak var pageController: UIPageControl!
     
     private var totalImages = 5
+    var showTutorial = false
     
     enum VersionError: Error {
         case invalidResponse, invalidBundleInfo
@@ -41,6 +42,26 @@ class LaunchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+        if showTutorial {
+            self.appGuideView.frame.size.height = UIScreen.main.bounds.size.height
+            self.guideScrollView.frame.size.height = UIScreen.main.bounds.size.height - 61.0
+            self.appGuideView.frame.size.width = UIScreen.main.bounds.size.width
+            self.guideScrollView.frame.size.width = UIScreen.main.bounds.size.width
+            var originX = 0.0
+            for i in 0..<totalImages {
+                let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
+                imgView.contentMode = .scaleToFill
+                imgView.image = UIImage(named: "tutor\(i+1)")
+                guideScrollView.addSubview(imgView)
+                originX += guideScrollView.frame.size.width
+            }
+            guideScrollView.contentSize = CGSize(width: guideScrollView.frame.size.width * CGFloat(totalImages), height: guideScrollView.frame.size.height)
+            pageController.numberOfPages = totalImages
+            pageController.addTarget(self, action: #selector(self.changeBanner(_:)), for: .valueChanged)
+            self.showHideView(self.appGuideView, isHidden: false)
+            AGLetsStart.isHidden = true
+            return
+        }
         Analytics.logEvent(AnalyticsEventAppOpen, parameters: [
           AnalyticsParameterItemID: "id-AppStart",
           AnalyticsParameterItemName: "AppStart",
@@ -133,10 +154,14 @@ class LaunchViewController: UIViewController {
                 self.AGskipButton.isHidden = !self.AGLetsStart.isHidden
             }
         } else {
-            UserDefaults.standard.set(sender.tag == 3, forKey: Constants.UserDefault.GuideCompleted)
-            UserDefaults.standard.synchronize()
             self.appGuideView.isHidden = true
-            self.moveToScreen()
+            if showTutorial {
+                self.navigationController?.popViewController(animated: false)
+            } else {
+                UserDefaults.standard.set(sender.tag == 3, forKey: Constants.UserDefault.GuideCompleted)
+                UserDefaults.standard.synchronize()
+                self.moveToScreen()
+            }
         }
     }
     

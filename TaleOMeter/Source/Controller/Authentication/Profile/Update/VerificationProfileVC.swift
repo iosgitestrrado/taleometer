@@ -42,7 +42,7 @@ class VerificationProfileVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false, titleInLeft: true, backImage: true, backImageColorWhite: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: false, titleInLeft: true, backImage: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

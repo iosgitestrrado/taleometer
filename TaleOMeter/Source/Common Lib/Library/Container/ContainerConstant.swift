@@ -15,7 +15,7 @@ open class ContainerConstant {
         let contaninerVC = ContainerViewController(controllers: containerControllers, topBarHeight: 0.0, parentViewController: viewController)
         contaninerVC.menuItemFont = font
         contaninerVC.menuBackGroudColor = menuBackGroudColor
-        contaninerVC.menuWidth = menuViewWidth / CGFloat(containerControllers.count)
+        contaninerVC.menuWidth = (menuViewWidth - 50.0) / CGFloat(containerControllers.count)
         contaninerVC.menuViewWidth = menuViewWidth
         
         if contaninerVC.menuWidth <= 80.0 {

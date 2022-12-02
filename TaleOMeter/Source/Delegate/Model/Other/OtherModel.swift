@@ -13,28 +13,34 @@ struct NotificationModel {
     var Content = String()
     //var Banner = UIImage()
     var BannerUrl = String()
-    var Audio_story_id = Int()
+    var Audio_story_id = -1
     var Is_active = Bool()
     var TypeType = String()
     var Created_at = String()
     var Updated_at = String()
     var Deleted_at = String()
     var Audio_story = Audio()
+    var Post_id = -1
     
     init() { }
     init(_ json: JSON) {
         Id = json["id"].intValue
         Title = json["title"].stringValue
         Content = json["content"].stringValue
+        if let postid =  json["post_id"].int {
+            Post_id = postid
+        }
 //        BannerUrl = Constants.baseURL.appending("/\(json["banner"].stringValue)")
         if let urlString = json["banner"].string {
             BannerUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
         }
         //Core.setImage(Constants.baseURL.appending("/\(json["banner"].stringValue)"), image: &Banner)
-        Audio_story_id = json["audio_story_id"].intValue
+        if let audioId =  json["audio_story_id"].int {
+            Audio_story_id = audioId
+        }
         Is_active = json["is_active"].boolValue
         TypeType = json["type"].stringValue
-        Created_at = json["created_at"].stringValue
+        Created_at = Core.convertDateFormate(json["created_at"].stringValue)
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
         

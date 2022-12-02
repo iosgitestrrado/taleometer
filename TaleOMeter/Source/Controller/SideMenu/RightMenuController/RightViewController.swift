@@ -32,6 +32,10 @@ class RightViewController: UIViewController {
         case feedback
         case logout
         case appVersion
+        case favorite
+        case notification
+        case fAQ
+        case tutorial
 
         var description: String {
             switch self {
@@ -51,12 +55,20 @@ class RightViewController: UIViewController {
                 return "Preference"
             case .aboutUs:
                 return "About Us"
+            case .favorite:
+                return "Favourites"
             case .feedback:
                 return "Reach Us"
             case .logout:
                 return "Log Out"
             case .appVersion:
                 return "V"
+            case .notification:
+                return "Notifications"
+            case .fAQ:
+                return "FAQ"
+            case .tutorial:
+                return "Tutorial"
             }
         }
         
@@ -66,39 +78,49 @@ class RightViewController: UIViewController {
                 return Constants.Storyboard.auth
             case .triviaQuiz, .leaderboard/*, .triviaComments*/:
                 return Constants.Storyboard.trivia
-            case .shareStory, .preference, .aboutUs, .feedback:
+            case .shareStory, .preference, .aboutUs, .feedback, .notification, .fAQ:
                 return Constants.Storyboard.other
-            case .history:
+            case .history, .favorite:
                 return Constants.Storyboard.audio
             case .logout:
                 return Constants.Storyboard.auth
+            case .tutorial:
+                return Constants.Storyboard.launch
             case .appVersion:
                 return ""
             }
         }
         
-        var storyboardName: String {
+        var controllerName: String {
             switch self {
             case .profile:
-                return "ProfileViewController"
+                return ProfileViewController().className
             case .triviaQuiz:
-                return "TriviaViewController"
+                return TriviaViewController().className
             case .leaderboard:
-                return "LeaderboardViewController"
+                return LeaderboardViewController().className
 //            case .triviaComments:
-//                return "TRFeedViewController"
+//                return TRFeedViewController().className
             case .shareStory:
-                return "MainUserStoryVC"
+                return MainUserStoryVC().className
             case .history:
-                return "HistoryViewController"
+                return HistoryViewController().className
             case .preference:
-                return "SettingViewController"
+                return SettingViewController().className
             case .aboutUs:
-                return "AboutUsViewController"
+                return AboutUsViewController().className
             case .feedback:
-                return "FeedbackViewController"
+                return FeedbackViewController().className
             case .logout:
-                return "LoginViewController"
+                return LoginViewController().className
+            case .favorite:
+                return FavouriteViewController().className
+            case .notification:
+                return NotificationViewController().className
+            case .fAQ:
+                return FAQViewController().className
+            case .tutorial:
+                return LaunchViewController().className
             case .appVersion:
                 return ""
             }
@@ -106,7 +128,7 @@ class RightViewController: UIViewController {
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .triviaQuiz, .leaderboard/*, .triviaComments*/, .shareStory, .history, .aboutUs, .feedback, .logout, .appVersion]
+        [.profile, .triviaQuiz, .leaderboard, .favorite/*, .triviaComments*/, .shareStory, .history, .fAQ, .tutorial, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
@@ -260,10 +282,10 @@ extension RightViewController: UITableViewDelegate {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
+                self.pushToView(item.storyboardId, controllerName: item.controllerName)
                 return
             default:
-                self.pushToView(item.storyboardId, storyBoradId: item.storyboardName)
+                self.pushToView(item.storyboardId, controllerName: item.controllerName)
 //                let domain = Bundle.main.bundleIdentifier!
 //                UserDefaults.standard.removePersistentDomain(forName: domain)
 //                UserDefaults.standard.synchronize()
@@ -286,23 +308,31 @@ extension RightViewController: UITableViewDelegate {
                 return
             }
         } else {
-            self.pushToView(Constants.Storyboard.auth, storyBoradId: "LoginViewController")
+            self.pushToView(Constants.Storyboard.auth, controllerName: "LoginViewController")
         }
     }
     
-    private func pushToView(_ storyBoardName: String, storyBoradId: String) {
-        if storyBoardName.isBlank {
+    private func pushToView(_ storyBoardId: String, controllerName: String) {
+        if storyBoardId.isBlank {
             return
         }
         guard let sideMenuController = sideMenuController else { return }
-        if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last, navLastChild.className != storyBoradId {
+        if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last, navLastChild.className != controllerName {
+            if controllerName == LaunchViewController().className {
+                let myobject = UIStoryboard(name: storyBoardId, bundle: nil).instantiateViewController(withIdentifier: controllerName)
+                if let trivia = myobject as? LaunchViewController {
+                    trivia.showTutorial = true
+                }
+                cont.pushViewController(myobject, animated: true)
+                return
+            }
             for controller in cont.children {
-                if controller.className == storyBoradId {
+                if controller.className == controllerName {
                     cont.popToViewController(controller, animated: true)
                     return
                 }
             }
-            let myobject = UIStoryboard(name: storyBoardName, bundle: nil).instantiateViewController(withIdentifier: storyBoradId)
+            let myobject = UIStoryboard(name: storyBoardId, bundle: nil).instantiateViewController(withIdentifier: controllerName)
             if let trivia = myobject as? TriviaViewController {
                 trivia.fromSideMenu = true
             }

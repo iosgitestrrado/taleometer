@@ -23,6 +23,13 @@
 		0BB759822841EFFD0025AF44 /* shareimg.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0BB759812841EFFC0025AF44 /* shareimg.jpeg */; };
 		0BE58674285C640700AC06CF /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE58673285C640700AC06CF /* UIDevice+Extension.swift */; };
 		0BFE6BC1281FB66900A0B54D /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */; };
+		1800F7ED2939E0E000436453 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800F7EC2939E0E000436453 /* FAQModel.swift */; };
+		1800F7F02939E20600436453 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800F7EF2939E20600436453 /* FAQViewController.swift */; };
+		1800F7F32939E60D00436453 /* FAQTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800F7F22939E60D00436453 /* FAQTableViewCell.swift */; };
+		183328762938D2CF00AF9176 /* NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183328752938D2CF00AF9176 /* NotificationClient.swift */; };
+		183328782938D2DD00AF9176 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183328772938D2DD00AF9176 /* ChatClient.swift */; };
+		1833287B2938D48B00AF9176 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1833287A2938D48B00AF9176 /* NotificationViewController.swift */; };
+		1833287E2938DA4300AF9176 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */; };
 		1836662D292B4A6600BC280C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1836662C292B4A6600BC280C /* GoogleSignIn */; };
 		18366630292BBD3700BC280C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 1836662F292BBD3700BC280C /* FacebookLogin */; };
 		184C38D62935D9250065C1AE /* LeaderBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184C38D52935D9250065C1AE /* LeaderBoardTableViewCell.swift */; };
@@ -213,6 +220,13 @@
 		0BB759812841EFFC0025AF44 /* shareimg.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shareimg.jpeg; sourceTree = "<group>"; };
 		0BE58673285C640700AC06CF /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		0BFE6BC0281FB66900A0B54D /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		1800F7EC2939E0E000436453 /* FAQModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
+		1800F7EF2939E20600436453 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
+		1800F7F22939E60D00436453 /* FAQTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQTableViewCell.swift; sourceTree = "<group>"; };
+		183328752938D2CF00AF9176 /* NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationClient.swift; sourceTree = "<group>"; };
+		183328772938D2DD00AF9176 /* ChatClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
+		1833287A2938D48B00AF9176 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		184C38D52935D9250065C1AE /* LeaderBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderBoardTableViewCell.swift; sourceTree = "<group>"; };
 		2BB71181883F7E0FC02F27C2 /* Pods-TaleOMeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.debug.xcconfig"; sourceTree = "<group>"; };
 		32B95E85D563F4A65475311B /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -453,6 +467,56 @@
 			path = Leaderboard;
 			sourceTree = "<group>";
 		};
+		1800F7EE2939E1F000436453 /* FAQ */ = {
+			isa = PBXGroup;
+			children = (
+				1800F7F12939E5FB00436453 /* Cell */,
+				1800F7EF2939E20600436453 /* FAQViewController.swift */,
+			);
+			path = FAQ;
+			sourceTree = "<group>";
+		};
+		1800F7F12939E5FB00436453 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				1800F7F22939E60D00436453 /* FAQTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		183328732938D2AF00AF9176 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				183328752938D2CF00AF9176 /* NotificationClient.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		183328742938D2B500AF9176 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				183328772938D2DD00AF9176 /* ChatClient.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		183328792938D47600AF9176 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				1833287C2938DA2C00AF9176 /* Cell */,
+				1833287A2938D48B00AF9176 /* NotificationViewController.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		1833287C2938DA2C00AF9176 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		184C38D42935D90A0065C1AE /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -575,6 +639,7 @@
 		633900DA27C8B6F2001473CD /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				1800F7EE2939E1F000436453 /* FAQ */,
 				6310939D27EB09EC00A9C08A /* NoInternet */,
 				63D27C8027BD0A360074EA7F /* User Story */,
 				63D27C9627BD0C1D0074EA7F /* Prompt */,
@@ -683,6 +748,7 @@
 		6358434227B7B7E70055DE7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				183328792938D47600AF9176 /* Notification */,
 				6358435827B7C5D60055DE7E /* Launch */,
 				6358434427B7B8130055DE7E /* SideMenu */,
 				6353708327BA26A2000A144E /* Authentication */,
@@ -896,6 +962,8 @@
 				63863DCD27D7822800EFF6E2 /* Genre */,
 				63863DCE27D7823100EFF6E2 /* Audio */,
 				63863DCF27D7823800EFF6E2 /* Other */,
+				183328742938D2B500AF9176 /* Chat */,
+				183328732938D2AF00AF9176 /* Notification */,
 				0B1ABB0D2873E965007FBD46 /* Activity */,
 			);
 			path = APIClients;
@@ -990,6 +1058,7 @@
 			children = (
 				6350D42327EC630E00631978 /* OtherModel.swift */,
 				63AE25AB27F4604C0029E367 /* UserStoryModel.swift */,
+				1800F7EC2939E0E000436453 /* FAQModel.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1651,6 +1720,7 @@
 				6361179127BA34CF000C1749 /* VerificationViewController.swift in Sources */,
 				636117A427BA75FB000C1749 /* UIViewController+Extension.swift in Sources */,
 				63D27CA127BD18160074EA7F /* MiniAudioViewController.swift in Sources */,
+				1800F7F32939E60D00436453 /* FAQTableViewCell.swift in Sources */,
 				63863DE027D7837D00EFF6E2 /* Login.swift in Sources */,
 				63863DFB27D784AF00EFF6E2 /* Audio.swift in Sources */,
 				63D27C6627BD087F0074EA7F /* NonStopViewController.swift in Sources */,
@@ -1662,12 +1732,14 @@
 				631E6D7527DEF219006DC031 /* TriviaCategory.swift in Sources */,
 				637E620727C4FF4100B31760 /* ChangeMobileNumberVC.swift in Sources */,
 				63006BD027E9A04A00E2F26D /* Throttler.swift in Sources */,
+				1833287B2938D48B00AF9176 /* NotificationViewController.swift in Sources */,
 				184C38D62935D9250065C1AE /* LeaderBoardTableViewCell.swift in Sources */,
 				63863DBE27D7735C00EFF6E2 /* HTTPMethods.swift in Sources */,
 				631E6D8127DF11F8006DC031 /* TriviaPost.swift in Sources */,
 				63D27C8527BD0A680074EA7F /* HistoryViewController.swift in Sources */,
 				637AD84427BF7381001D964A /* FooterManager.swift in Sources */,
 				634985DF27C50AFD00FB6A7C /* UILabel+Extension.swift in Sources */,
+				183328762938D2CF00AF9176 /* NotificationClient.swift in Sources */,
 				63430C8127C7516C00C08A2A /* StorySegmentViewController.swift in Sources */,
 				63D27C9527BD0BA20074EA7F /* FavouriteViewController.swift in Sources */,
 				63D27C8227BD0A470074EA7F /* UserStoryViewController.swift in Sources */,
@@ -1681,6 +1753,7 @@
 				63863DE827D783FF00EFF6E2 /* Genre.swift in Sources */,
 				63863DEC27D7843200EFF6E2 /* Profile.swift in Sources */,
 				63D27C6027BCF6030074EA7F /* GuestDashboardViewController.swift in Sources */,
+				1800F7ED2939E0E000436453 /* FAQModel.swift in Sources */,
 				63FA7E7327BBC90C00AD6C97 /* FooterViewController.swift in Sources */,
 				63D27C6C27BD08CB0074EA7F /* AuthorViewController.swift in Sources */,
 				636117A027BA68D6000C1749 /* String+Extension.swift in Sources */,
@@ -1689,6 +1762,7 @@
 				631E6D7327DEF206006DC031 /* TriviaDaily.swift in Sources */,
 				6310939927EACF7000A9C08A /* History.swift in Sources */,
 				63863DBA27D7735C00EFF6E2 /* APIError.swift in Sources */,
+				1800F7F02939E20600436453 /* FAQViewController.swift in Sources */,
 				63863DD127D7825D00EFF6E2 /* AuthClient.swift in Sources */,
 				631E6D7127DEF1C0006DC031 /* TriviaHome.swift in Sources */,
 				63863DF327D7847700EFF6E2 /* StoryModel.swift in Sources */,
@@ -1710,6 +1784,7 @@
 				63D27C8827BD0AC20074EA7F /* SettingViewController.swift in Sources */,
 				631E6D7827DEF74E006DC031 /* TriviaAnswer.swift in Sources */,
 				63863DC927D776D600EFF6E2 /* Constants.swift in Sources */,
+				183328782938D2DD00AF9176 /* ChatClient.swift in Sources */,
 				63DFB4AB27BCB03D00B08216 /* ScrollMenuView.swift in Sources */,
 				636ED8D827BB6B470030D2F0 /* Core.swift in Sources */,
 				6310939F27EB0A0900A9C08A /* NoInternetViewController.swift in Sources */,
@@ -1730,6 +1805,7 @@
 				0B7A9FA828740EFF009DC7C8 /* LeaderboardViewController.swift in Sources */,
 				63420B6527DB8A5A00C4CAF9 /* CustomInfiniteIndicator.swift in Sources */,
 				63D27C7A27BD098E0074EA7F /* ProfileViewController.swift in Sources */,
+				1833287E2938DA4300AF9176 /* NotificationTableViewCell.swift in Sources */,
 				0BE58674285C640700AC06CF /* UIDevice+Extension.swift in Sources */,
 				6350D42627EC6B4C00631978 /* NonStopAudio.swift in Sources */,
 				638FD58F27E20B810053CD79 /* SearchAudioClient.swift in Sources */,

@@ -204,6 +204,7 @@ enum Feed {
     case Notification
     case StartUsage
     case EndUsage
+    case FAQ
 
     //Trivia
     case TriviaHome
@@ -223,6 +224,11 @@ enum Feed {
     case NotificationActivity
     case UserVideoActivity
     case TriviaAudioActivity
+    
+    //Chat
+    case ChatMessage
+    case ChatList
+    case SendMessage
 }
 
 protocol CodeEnd {
@@ -294,7 +300,8 @@ extension Feed: Endpoint {
         case .AutoplaySetting:          return "/api/autoplay"
         case .StartUsage:               return "/api/usage/start"
         case .EndUsage:                 return "/api/usage/end"
-            
+        case .FAQ:                      return "/api/faq"
+
         //Trivia
         case .TriviaHome:               return "/api/trivia-home"
         case .TriviaDaily:              return "/api/trivia/daily"
@@ -313,6 +320,11 @@ extension Feed: Endpoint {
         case .NotificationActivity:     return "/api/trivia/users/notification/activity"
         case .UserVideoActivity:        return "/api/trivia/users/video/activity"
         case .TriviaAudioActivity:      return "/api/trivia/users/audio/activity"
+            
+        //Chat
+        case .ChatMessage:              return "/api/customer/chat/message"
+        case .ChatList:                 return "/api/customer/chat/list"
+        case .SendMessage:              return "/api/customer/chat/send"
         }
     }
 }

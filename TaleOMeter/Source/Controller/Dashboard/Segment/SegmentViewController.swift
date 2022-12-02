@@ -67,7 +67,7 @@ class SegmentViewController: UIViewController {
             viewsArray.append(gridView)
         }
         
-        self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .red, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? 320)
+        self.containerVC = ContainerConstant.addContainerTo(self, containerControllers: viewsArray as NSArray, menuIndicatorColor: .clear, menuItemTitleColor: .white, menuItemSelectedTitleColor: .red, menuBackGroudColor: .clear, font: UIFont.systemFont(ofSize: 14.0), menuViewWidth: self.parentFrame?.size.width ?? 320)
         self.containerVC?.view.frame.size.width = self.parentFrame!.size.width
         self.containerVC?.view.frame.size.height = self.parentFrame!.size.height
         self.containerVC?.delegate = self

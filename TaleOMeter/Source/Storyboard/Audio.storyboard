@@ -763,7 +763,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="AudioListViewController" id="BZ2-7S-NI9" customClass="AudioListViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="njp-Po-3Us">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="498"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="719"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
@@ -1248,7 +1248,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zKK-ic-yOT">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="menu"/>
+                                <state key="normal" image="menu_white"/>
                                 <connections>
                                     <action selector="ClickOnMenu:" destination="HM1-uG-HN2" eventType="touchUpInside" id="hfA-nf-hGP"/>
                                 </connections>
@@ -1879,7 +1879,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9TJ-DW-bYP">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="menu"/>
+                                <state key="normal" image="menu_white"/>
                                 <connections>
                                     <action selector="ClickOnMenu:" destination="7Jx-4B-RVR" eventType="touchUpInside" id="3bx-W1-JW6"/>
                                 </connections>
@@ -2140,7 +2140,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="W2Q-wH-ecf"/>
+        <segue reference="OsM-f0-nSp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
@@ -2148,14 +2148,14 @@
         <image name="active-favour" width="16.666666030883789" height="16.666666030883789"/>
         <image name="back-arrow" width="20" height="20"/>
         <image name="back_red" width="26.666666030883789" height="23"/>
-        <image name="background" width="360" height="640"/>
+        <image name="background" width="360" height="899.66668701171875"/>
         <image name="close" width="20" height="20"/>
         <image name="favourite" width="36.666667938232422" height="36.666667938232422"/>
         <image name="favourite-act" width="36.666667938232422" height="36.666667938232422"/>
         <image name="heart.circle.fill" catalog="system" width="128" height="123"/>
         <image name="inactive-fav" width="21.333333969116211" height="21.333333969116211"/>
         <image name="inactive-favour" width="16.666666030883789" height="16.666666030883789"/>
-        <image name="menu" width="25" height="16.666666030883789"/>
+        <image name="menu_white" width="25" height="16.666666030883789"/>
         <image name="next" width="162.66667175292969" height="162.33332824707031"/>
         <image name="ns_like" width="46" height="46"/>
         <image name="ns_next" width="46" height="46"/>

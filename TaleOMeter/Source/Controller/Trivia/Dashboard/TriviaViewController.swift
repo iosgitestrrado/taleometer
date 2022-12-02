@@ -55,7 +55,7 @@ class TriviaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, backImageColorWhite: false, bigfont: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, bigfont: true)
         self.navigationItem.hidesBackButton = !fromSideMenu
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
@@ -69,7 +69,6 @@ class TriviaViewController: UIViewController {
         if fromSideMenu && isMovingFromParent {
             self.sideMenuController!.toggleRightView(animated: false)
         }
-        
     }
     
     // MARK: Add into activity log

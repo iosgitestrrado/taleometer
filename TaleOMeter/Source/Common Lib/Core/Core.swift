@@ -425,6 +425,16 @@ class Core: NSObject {
     static func GetDeviceOSVersion() -> String {
         return UIDevice.current.systemVersion
     }
+    
+    static func convertDateFormate(_ date: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = Constants.DateFormate.server
+        if let dateNow = inputFormatter.date(from: date) {
+            inputFormatter.dateFormat = Constants.DateFormate.appWithTime
+            return inputFormatter.string(from: dateNow)
+        }
+        return ""
+    }
 }
 
 class OptionalTextActivityItemSource: NSObject, UIActivityItemSource {

@@ -46,7 +46,7 @@ struct Constants {
     
     public struct DateFormate {
         static let app = "dd/MM/yyyy"
-        static let appWithTime = "dd/MM/yyyy HH:mm:ss"
+        static let appWithTime = "dd/MM/yyyy    HH:mma"
         static let server = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         static let serverDate = "yyyy-MM-dd"
         static let serverWithTime = "yyyy-MM-dd'T'HH:mm:ss"

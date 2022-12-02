@@ -99,4 +99,18 @@ class OtherClient {
             }
         }
     }
+    
+    static func getFAQ(_ completion: @escaping([FAQModel]?) -> Void) {
+        APIClient.shared.get("", feed: .FAQ) { result in
+            ResponseAPI.getResponseArray(result) { response in
+                var faqs = [FAQModel]()
+                if let strs = response {
+                    strs.forEach { object in
+                        faqs.append(FAQModel(object))
+                    }
+                }
+                completion(faqs)
+            }
+        }
+    }
 }
