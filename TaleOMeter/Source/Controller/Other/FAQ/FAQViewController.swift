@@ -157,6 +157,10 @@ extension FAQViewController: UITableViewDelegate {
         }
         return UIView()
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return self.faqSectionList.count > 0 ? UITableView.automaticDimension : 30.0
+    }
 }
 
 // MARK: - Audio player

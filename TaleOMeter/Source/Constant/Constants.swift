@@ -33,6 +33,7 @@ struct Constants {
         static let audio = "Audio"
         static let other = "Other"
         static let trivia = "Trivia"
+        static let chat = "Chat"
     }
     
     struct UserDefault {

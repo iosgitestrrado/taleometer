@@ -36,6 +36,7 @@ class RightViewController: UIViewController {
         case notification
         case fAQ
         case tutorial
+        case chat
 
         var description: String {
             switch self {
@@ -69,6 +70,8 @@ class RightViewController: UIViewController {
                 return "FAQ"
             case .tutorial:
                 return "Tutorial"
+            case .chat:
+                return "Message"
             }
         }
         
@@ -86,6 +89,8 @@ class RightViewController: UIViewController {
                 return Constants.Storyboard.auth
             case .tutorial:
                 return Constants.Storyboard.launch
+            case .chat:
+                return Constants.Storyboard.chat
             case .appVersion:
                 return ""
             }
@@ -121,6 +126,8 @@ class RightViewController: UIViewController {
                 return FAQViewController().className
             case .tutorial:
                 return LaunchViewController().className
+            case .chat:
+                return ChatViewController().className
             case .appVersion:
                 return ""
             }
@@ -128,7 +135,7 @@ class RightViewController: UIViewController {
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .triviaQuiz, .leaderboard, .favorite/*, .triviaComments*/, .shareStory, .history, .fAQ, .tutorial, .aboutUs, .feedback, .logout, .appVersion]
+        [.profile, .chat, .triviaQuiz, .leaderboard, .favorite/*, .triviaComments*/, .shareStory, .history, .fAQ, .tutorial, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [
