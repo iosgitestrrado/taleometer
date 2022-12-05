@@ -135,7 +135,7 @@ class RightViewController: UIViewController {
     }
     
     private var sections: [[SideViewCellItem]] = [
-        [.profile, .chat, .triviaQuiz, .leaderboard, .favorite/*, .triviaComments*/, .shareStory, .history, .fAQ, .tutorial, .aboutUs, .feedback, .logout, .appVersion]
+        [.profile/*, .chat*/, .triviaQuiz, .leaderboard, .favorite/*, .triviaComments*/, .shareStory, .history, .fAQ, .tutorial, .aboutUs, .feedback, .logout, .appVersion]
     ]
     
     private let triviaSections: [[SideViewCellItem]] = [

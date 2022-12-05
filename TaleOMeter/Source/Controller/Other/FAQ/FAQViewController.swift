@@ -37,6 +37,7 @@ class FAQViewController: UIViewController {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
         getFAQData()
+        addActivityLog()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,6 +97,17 @@ extension FAQViewController {
             }
             self.tableView.reloadData()
             Core.HideProgress(self)
+        }
+    }
+    
+    // MARK: Add into activity log
+    private func addActivityLog() {
+        if !Reachability.isConnectedToNetwork() {
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            ActivityClient.userActivityLog(UserActivityRequest(post_id: "", category_id: "", screen_name: Constants.ActivityScreenName.faq, type: Constants.ActivityType.story)) { status in
+            }
         }
     }
 }

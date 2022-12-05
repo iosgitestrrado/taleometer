@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="91" width="390" height="719"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gku-sP-Vhc">
-                                        <rect key="frame" x="97.666666666666671" y="0.0" width="194.66666666666663" height="194.66666666666666"/>
+                                        <rect key="frame" x="97.666666666666686" y="0.0" width="194.66666666666663" height="194.66666666666666"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
                                                 <rect key="frame" x="0.0" y="0.0" width="194.66666666666666" height="194.66666666666666"/>
@@ -1036,7 +1036,7 @@
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="back-arrow"/>
+                                        <state key="normal" image="back_white_icon"/>
                                         <connections>
                                             <action selector="tapOnBack:" destination="BVW-ro-8og" eventType="touchUpInside" id="WdY-SP-nfm"/>
                                         </connections>
@@ -2146,8 +2146,8 @@
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
         <image name="active-fav" width="21.333333969116211" height="21.333333969116211"/>
         <image name="active-favour" width="16.666666030883789" height="16.666666030883789"/>
-        <image name="back-arrow" width="20" height="20"/>
         <image name="back_red" width="26.666666030883789" height="23"/>
+        <image name="back_white_icon" width="20" height="20"/>
         <image name="background" width="360" height="899.66668701171875"/>
         <image name="close" width="20" height="20"/>
         <image name="favourite" width="36.666667938232422" height="36.666667938232422"/>

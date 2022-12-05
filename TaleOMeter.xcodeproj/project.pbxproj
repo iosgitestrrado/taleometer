@@ -36,6 +36,7 @@
 		1833287E2938DA4300AF9176 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */; };
 		1836662D292B4A6600BC280C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1836662C292B4A6600BC280C /* GoogleSignIn */; };
 		18366630292BBD3700BC280C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 1836662F292BBD3700BC280C /* FacebookLogin */; };
+		1843ECBB293E23C100777B1A /* trivia_post_thumb20221101194503202.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1843ECBA293E23C000777B1A /* trivia_post_thumb20221101194503202.jpg */; };
 		184C38D62935D9250065C1AE /* LeaderBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184C38D52935D9250065C1AE /* LeaderBoardTableViewCell.swift */; };
 		630056ED27BEA23E009CB2E2 /* splash_anim_new.gif in Resources */ = {isa = PBXBuildFile; fileRef = 630056EC27BEA23E009CB2E2 /* splash_anim_new.gif */; };
 		63006BD027E9A04A00E2F26D /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63006BCF27E9A04A00E2F26D /* Throttler.swift */; };
@@ -235,6 +236,7 @@
 		183328772938D2DD00AF9176 /* ChatClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
 		1833287A2938D48B00AF9176 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		1843ECBA293E23C000777B1A /* trivia_post_thumb20221101194503202.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = trivia_post_thumb20221101194503202.jpg; sourceTree = "<group>"; };
 		184C38D52935D9250065C1AE /* LeaderBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderBoardTableViewCell.swift; sourceTree = "<group>"; };
 		2BB71181883F7E0FC02F27C2 /* Pods-TaleOMeter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter.debug.xcconfig"; path = "Target Support Files/Pods-TaleOMeter/Pods-TaleOMeter.debug.xcconfig"; sourceTree = "<group>"; };
 		32B95E85D563F4A65475311B /* Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; path = "Target Support Files/Pods-TaleOMeter-TaleOMeterUITests/Pods-TaleOMeter-TaleOMeterUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 			isa = PBXGroup;
 			children = (
 				0B3058CE28181837004DC370 /* GoogleService-Info.plist */,
+				1843ECBA293E23C000777B1A /* trivia_post_thumb20221101194503202.jpg */,
 				6358430B27B7AED90055DE7E /* TaleOMeter */,
 				6358432227B7AEDB0055DE7E /* TaleOMeterTests */,
 				6358432C27B7AEDB0055DE7E /* TaleOMeterUITests */,
@@ -1584,6 +1587,7 @@
 				633DF8AF27FDB17400F3E177 /* CommutersSans-ExtraBold.ttf in Resources */,
 				0B6A90B8283CCE9900FED2CD /* logoshare.png in Resources */,
 				639103D827FEEC8500DA214E /* spinner1.gif in Resources */,
+				1843ECBB293E23C100777B1A /* trivia_post_thumb20221101194503202.jpg in Resources */,
 				633DF8B527FDB17400F3E177 /* CommutersSans-Italic.ttf in Resources */,
 				63D27C6227BD07FA0074EA7F /* Audio.storyboard in Resources */,
 				6337E6AA27DF57B90039C370 /* NoDataTableViewCell.xib in Resources */,
