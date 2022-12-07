@@ -439,7 +439,7 @@
 		192AED2F9A4EE06A03EF08A7E0FB2994 /* NVActivityIndicatorAnimationBallSpinFadeLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NVActivityIndicatorAnimationBallSpinFadeLoader.swift; path = Sources/Base/Animations/NVActivityIndicatorAnimationBallSpinFadeLoader.swift; sourceTree = "<group>"; };
 		19386424A043A31D05ED8BA085BC18BA /* UIImage+Transform.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Transform.m"; path = "SDWebImage/Core/UIImage+Transform.m"; sourceTree = "<group>"; };
 		19830E9214A55D03B1D2E93EDFB70CD3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		1A30172AE9F0660847BC807A6F15A494 /* LGSideMenuController */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LGSideMenuController; path = LGSideMenuController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A30172AE9F0660847BC807A6F15A494 /* LGSideMenuController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LGSideMenuController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF3B705B711C9DD98E6A4FB16F292EE /* LGSideMenuController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = LGSideMenuController.modulemap; sourceTree = "<group>"; };
 		1B418D870F16245C2881A30414E96712 /* NVActivityIndicatorShape.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NVActivityIndicatorShape.swift; path = Sources/Base/NVActivityIndicatorShape.swift; sourceTree = "<group>"; };
 		1B5CD3B45C6035F599A2F0794609A621 /* SDWebImageDownloaderDecryptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloaderDecryptor.m; path = SDWebImage/Core/SDWebImageDownloaderDecryptor.m; sourceTree = "<group>"; };
@@ -605,7 +605,7 @@
 		9B8DC943144B45C5C061FE8C8B0E55D2 /* NVActivityIndicatorAnimationBlank.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NVActivityIndicatorAnimationBlank.swift; path = Sources/Base/Animations/NVActivityIndicatorAnimationBlank.swift; sourceTree = "<group>"; };
 		9C4AE502982CEBBB3F9EA12B183F631C /* SDWebImage-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SDWebImage-Info.plist"; sourceTree = "<group>"; };
 		9C79B7CD54632FB58896025D3B87DE6A /* SDWebImageOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageOperation.h; path = SDWebImage/Core/SDWebImageOperation.h; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E3FF1F72A550909E276C4DF5ED3FB7F /* SDWebImageError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageError.h; path = SDWebImage/Core/SDWebImageError.h; sourceTree = "<group>"; };
 		A1411957D6C5579E54CE429290C792BD /* SDAnimatedImageRep.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDAnimatedImageRep.m; path = SDWebImage/Core/SDAnimatedImageRep.m; sourceTree = "<group>"; };
 		A1B9F27862201CD82B398E0B35B14128 /* NVActivityIndicatorView */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = NVActivityIndicatorView; path = NVActivityIndicatorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1016,7 +1016,6 @@
 				E4E2F179DB6900A607B76220665035B8 /* Chronometer.swift */,
 				25D372298478DAFC8EA14E295B91461E /* Support Files */,
 			);
-			name = SoundWave;
 			path = SoundWave;
 			sourceTree = "<group>";
 		};
@@ -1160,7 +1159,6 @@
 				DEFCAF20878A366F399B95D45DC72A13 /* UIImage+Gif.swift */,
 				55B68A78A918A117835860B8CE741626 /* Support Files */,
 			);
-			name = SwiftGifOrigin;
 			path = SwiftGifOrigin;
 			sourceTree = "<group>";
 		};
@@ -1200,7 +1198,6 @@
 				0DF2740B9B892061B989C089210DAFDA /* Core */,
 				F500197903CC8B1E6887D87E3E97F507 /* Support Files */,
 			);
-			name = SDWebImage;
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
@@ -1211,7 +1208,6 @@
 				F9F4128D23418EA97F4253F97914B2A6 /* UIScrollView+InfiniteScroll.m */,
 				50D72A24A8B515CE3BB5E0AE583AAF95 /* Support Files */,
 			);
-			name = "UIScrollView-InfiniteScroll";
 			path = "UIScrollView-InfiniteScroll";
 			sourceTree = "<group>";
 		};
@@ -1264,7 +1260,6 @@
 				A90C31ACCF436D6B167A9235EA1EF206 /* SwiftyJSON.swift */,
 				0ADA86EF453194F48F282EE4A9B75E84 /* Support Files */,
 			);
-			name = SwiftyJSON;
 			path = SwiftyJSON;
 			sourceTree = "<group>";
 		};
@@ -1274,7 +1269,6 @@
 				7103CFA4A0D4C8A275EAE5AA962D8E32 /* Popover.swift */,
 				B75FB644C2CDCF54AB2D99EE2CACCE30 /* Support Files */,
 			);
-			name = Popover;
 			path = Popover;
 			sourceTree = "<group>";
 		};
@@ -1289,7 +1283,6 @@
 				F6114BB3F753C2035007388B687D1516 /* SKMultilineLabelNode.swift */,
 				8181EE4C3E7556E3C1C0F143E9E6B36B /* Support Files */,
 			);
-			name = Magnetic;
 			path = Magnetic;
 			sourceTree = "<group>";
 		};
@@ -1299,7 +1292,6 @@
 				432D9F94556238F51F4BDB312D32EE6D /* Base */,
 				3C304AF41BF6542E16FF13A7B59249CB /* Support Files */,
 			);
-			name = NVActivityIndicatorView;
 			path = NVActivityIndicatorView;
 			sourceTree = "<group>";
 		};
@@ -1372,7 +1364,6 @@
 				47BC2DEC4A2B74970B69F8A7B4F14C2E /* UIViewController+LGSideMenuController.swift */,
 				BA8256D8C55035A3D3258572A3DA77EC /* Support Files */,
 			);
-			name = LGSideMenuController;
 			path = LGSideMenuController;
 			sourceTree = "<group>";
 		};
@@ -1390,7 +1381,7 @@
 		D646170310C7C07C7D2D92A9FF15CC5B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1A30172AE9F0660847BC807A6F15A494 /* LGSideMenuController */,
+				1A30172AE9F0660847BC807A6F15A494 /* LGSideMenuController.framework */,
 				B269210218189FC5E2A1E8DBB6201AE9 /* Magnetic */,
 				A1B9F27862201CD82B398E0B35B14128 /* NVActivityIndicatorView */,
 				36008B48E80190C9EAE80D27EB3693AA /* Pods-TaleOMeter */,
@@ -1631,7 +1622,7 @@
 			);
 			name = LGSideMenuController;
 			productName = LGSideMenuController;
-			productReference = 1A30172AE9F0660847BC807A6F15A494 /* LGSideMenuController */;
+			productReference = 1A30172AE9F0660847BC807A6F15A494 /* LGSideMenuController.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		19AFB0A3758061A70ADF6F9509DC1BD7 /* Magnetic */ = {
@@ -2504,7 +2495,6 @@
 				GCC_PREFIX_HEADER = "Target Support Files/LGSideMenuController/LGSideMenuController-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/LGSideMenuController/LGSideMenuController-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2815,7 +2805,6 @@
 				GCC_PREFIX_HEADER = "Target Support Files/LGSideMenuController/LGSideMenuController-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/LGSideMenuController/LGSideMenuController-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

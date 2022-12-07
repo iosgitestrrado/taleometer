@@ -2044,6 +2044,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YY3AAYF9VF;
 				ENABLE_APP_SANDBOX = NO;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "tale'o'meter";
@@ -2085,6 +2086,7 @@
 				DEVELOPMENT_TEAM = YY3AAYF9VF;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YY3AAYF9VF;
 				ENABLE_APP_SANDBOX = NO;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaleOMeter/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "tale'o'meter";

@@ -79,7 +79,7 @@ class RightViewController: UIViewController {
             switch self {
             case .profile:
                 return Constants.Storyboard.auth
-            case .triviaQuiz, .leaderboard/*, .triviaComments*/:
+            case .leaderboard/*, .triviaComments*/:
                 return Constants.Storyboard.trivia
             case .shareStory, .preference, .aboutUs, .feedback, .notification, .fAQ:
                 return Constants.Storyboard.other
@@ -91,6 +91,8 @@ class RightViewController: UIViewController {
                 return Constants.Storyboard.launch
             case .chat:
                 return Constants.Storyboard.chat
+            case .triviaQuiz:
+                return Constants.Storyboard.dashboard
             case .appVersion:
                 return ""
             }
@@ -101,7 +103,7 @@ class RightViewController: UIViewController {
             case .profile:
                 return ProfileViewController().className
             case .triviaQuiz:
-                return TriviaViewController().className
+                return DashboardViewController().className
             case .leaderboard:
                 return LeaderboardViewController().className
 //            case .triviaComments:
@@ -324,7 +326,7 @@ extension RightViewController: UITableViewDelegate {
             return
         }
         guard let sideMenuController = sideMenuController else { return }
-        if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last, navLastChild.className != controllerName {
+        if let cont = sideMenuController.rootViewController as? UINavigationController, let navLastChild = cont.children.last {
             if controllerName == LaunchViewController().className {
                 let myobject = UIStoryboard(name: storyBoardId, bundle: nil).instantiateViewController(withIdentifier: controllerName)
                 if let trivia = myobject as? LaunchViewController {
@@ -333,17 +335,28 @@ extension RightViewController: UITableViewDelegate {
                 cont.pushViewController(myobject, animated: true)
                 return
             }
-            for controller in cont.children {
-                if controller.className == controllerName {
-                    cont.popToViewController(controller, animated: true)
-                    return
+            if navLastChild.className != controllerName  {
+                for controller in cont.children {
+                    if controller.className == controllerName {
+                        cont.popToViewController(controller, animated: true)
+                        if storyBoardId == Constants.Storyboard.dashboard && controllerName == DashboardViewController().className {
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ChangeSegmentNow"), object: nil, userInfo: nil)
+                        }
+                        return
+                    }
                 }
+                let myobject = UIStoryboard(name: storyBoardId, bundle: nil).instantiateViewController(withIdentifier: controllerName)
+                if let trivia = myobject as? TriviaViewController {
+                    trivia.fromSideMenu = true
+                }
+                cont.pushViewController(myobject, animated: true)
+                if storyBoardId == Constants.Storyboard.dashboard && controllerName == DashboardViewController().className {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ChangeSegmentNow"), object: nil, userInfo: nil)
+                }
+            } else if storyBoardId == Constants.Storyboard.dashboard && controllerName == DashboardViewController().className {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ChangeSegmentNow"), object: nil, userInfo: nil)
             }
-            let myobject = UIStoryboard(name: storyBoardId, bundle: nil).instantiateViewController(withIdentifier: controllerName)
-            if let trivia = myobject as? TriviaViewController {
-                trivia.fromSideMenu = true
-            }
-            cont.pushViewController(myobject, animated: true)
+            
         }
     }
 

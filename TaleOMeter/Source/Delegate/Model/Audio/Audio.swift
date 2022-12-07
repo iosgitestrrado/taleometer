@@ -34,7 +34,8 @@ struct Audio {
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
-    
+    var TypeT = String()
+
 //    var Stories: [Story]?
 //    var Plots: [Story]?
 //    var Narrations: [Story]?
@@ -79,6 +80,9 @@ struct Audio {
         if let audio_narration = json["narration"].dictionaryObject {
             Narration = StoryModel(JSON(audio_narration))
         }
+        
+        TypeT = json["type"].stringValue
+
                 
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story

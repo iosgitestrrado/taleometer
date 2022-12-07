@@ -14,19 +14,25 @@ class GridViewTableCell: UITableViewCell {
     @IBOutlet weak var numberOfCountLbl1: UILabel!
     @IBOutlet weak var titleLabe1: UILabel!
     @IBOutlet weak var rowButton1: UIButton!
+    @IBOutlet weak var highLightView1: UIView!
+    @IBOutlet weak var highLightLbl1: UILabel!
     
     @IBOutlet weak var imageView2: UIImageView!
     @IBOutlet weak var imgBackView2: UIView!
     @IBOutlet weak var numberOfCountLbl2: UILabel!
     @IBOutlet weak var titleLabe2: UILabel!
     @IBOutlet weak var rowButton2: UIButton!
+    @IBOutlet weak var highLightView2: UIView!
+    @IBOutlet weak var highLightLbl2: UILabel!
     
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imgBackView3: UIView!
     @IBOutlet weak var numberOfCountLbl3: UILabel!
     @IBOutlet weak var titleLabe3: UILabel!
     @IBOutlet weak var rowButton3: UIButton!
-    
+    @IBOutlet weak var highLightView3: UIView!
+    @IBOutlet weak var highLightLbl3: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         if imageView1 != nil {
@@ -46,6 +52,21 @@ class GridViewTableCell: UITableViewCell {
         }
         if imgBackView3 != nil {
             imgBackView3.layer.cornerRadius = imgBackView3.frame.size.height / 2.0
+        }
+        if highLightView1 != nil {
+            highLightView1.layer.masksToBounds = true
+            highLightView1.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            highLightView1.layer.cornerRadius = highLightView1.frame.size.width / 2.0
+        }
+        if highLightView2 != nil {
+            highLightView2.layer.masksToBounds = true
+            highLightView2.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            highLightView2.layer.cornerRadius = highLightView1.frame.size.width / 2.0
+        }
+        if highLightView3 != nil {
+            highLightView3.layer.masksToBounds = true
+            highLightView3.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            highLightView3.layer.cornerRadius = highLightView1.frame.size.width / 2.0
         }
     }
 }

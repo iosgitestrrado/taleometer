@@ -21,7 +21,9 @@ class SegmentViewController: UIViewController {
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(changeSegment(_:)), name: NSNotification.Name(rawValue: "ChangeSegmentNow"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +37,10 @@ class SegmentViewController: UIViewController {
         super.viewDidAppear(animated)
         self.containerVC?.view.frame.size.width = self.parentFrame!.size.width
         self.containerVC?.view.frame.size.height = self.parentFrame!.size.height
+    }
+    
+    @objc private func changeSegment(_ notification: Notification) {
+        self.containerVC?.scrollMenuViewSelectedIndex(genreList.count - 1)
     }
     
     // MARK: - Get Genres from API's -

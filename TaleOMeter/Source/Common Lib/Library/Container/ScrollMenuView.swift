@@ -68,7 +68,10 @@ class ScrollMenuView: UIView {
                 itemView.text = itemTitleArray![index] as String
                 itemView.isUserInteractionEnabled = true
                 itemView.backgroundColor = UIColor.clear
-                itemView.textAlignment = .left
+                itemView.textAlignment = .center
+                itemView.adjustsFontSizeToFitWidth = true
+                itemView.minimumScaleFactor = 0.7
+                itemView.numberOfLines = 2
                 itemView.font = self.itemfont
                 views.append(itemView)
                 
