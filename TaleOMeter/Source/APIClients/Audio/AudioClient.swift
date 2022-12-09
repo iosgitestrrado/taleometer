@@ -38,6 +38,24 @@ class AudioClient {
 //        }
     }
     
+    static func getNotificationCount(_ completion: @escaping(Int?, Int?) -> Void) {
+        APIClient.shared.getJson("", feed: .NotificationCount) { result in
+            ResponseAPI.getResponseJson(result) { response in
+                var notification_count = 0
+                var chat_count = 0
+                if let data = response {
+                    if let noti_count = data["notification_count"].int {
+                        notification_count = noti_count
+                    }
+                    if let ch_count = data["chat_count"].int {
+                        chat_count = ch_count
+                    }
+                }
+                completion(chat_count, notification_count)
+            }
+        }
+    }
+    
     static func getAudios(_ audioReq: AudioRequest, completion: @escaping([Audio]?) -> Void) {
         APIClient.shared.post(parameters: audioReq, feed: .AudioStories) { result in
             ResponseAPI.getResponseArray(result, showAlert: false) { response in

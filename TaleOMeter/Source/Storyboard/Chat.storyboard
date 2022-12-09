@@ -81,14 +81,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="leftCell" id="oXC-gB-TGV" customClass="ChatTableViewCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="110.33333206176758" width="390" height="249.33332824707031"/>
+                                        <rect key="frame" x="0.0" y="110.33333206176758" width="390" height="214.33332824707031"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oXC-gB-TGV" id="MTp-d7-ckn">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="249.33332824707031"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="214.33332824707031"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NDC-E9-TrJ">
-                                                    <rect key="frame" x="10" y="10" width="240" height="229.33333333333334"/>
+                                                    <rect key="frame" x="10" y="10" width="240" height="194.33333333333334"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TvB-C3-gFW">
                                                             <rect key="frame" x="0.0" y="0.0" width="240" height="169.33333333333334"/>
@@ -131,8 +131,11 @@
                                                             <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="8" bottom="8" trailing="8"/>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="aYP-yk-m4I">
-                                                            <rect key="frame" x="0.0" y="179.33333333333334" width="240" height="50"/>
-                                                            <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="10"/>
+                                                            <rect key="frame" x="0.0" y="179.33333333333334" width="240" height="15"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="15" id="Pnm-0i-Vz3"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="11"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -156,14 +159,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="rightCell" id="zSg-9M-rA1" customClass="ChatTableViewCell" customModule="TaleOMeter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="359.66666030883789" width="390" height="172.33332824707031"/>
+                                        <rect key="frame" x="0.0" y="324.66666030883789" width="390" height="137.33332824707031"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zSg-9M-rA1" id="hAZ-SU-9jn">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="172.33332824707031"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="137.33332824707031"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="EiE-t5-BYr">
-                                                    <rect key="frame" x="140" y="10" width="240" height="152.33333333333334"/>
+                                                    <rect key="frame" x="140" y="9.9999999999999929" width="240" height="117.33333333333331"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="tf2-2q-0zJ">
                                                             <rect key="frame" x="0.0" y="0.0" width="240" height="92.333333333333329"/>
@@ -202,8 +205,11 @@
                                                             <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="8" bottom="8" trailing="8"/>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="h4o-lQ-KD8">
-                                                            <rect key="frame" x="0.0" y="102.33333333333333" width="240" height="49.999999999999986"/>
-                                                            <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="10"/>
+                                                            <rect key="frame" x="0.0" y="102.33333333333333" width="240" height="15"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="15" id="4A2-wq-qhr"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="11"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>

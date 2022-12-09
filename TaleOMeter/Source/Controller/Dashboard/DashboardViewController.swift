@@ -16,7 +16,9 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var containerBottomCons: NSLayoutConstraint!
     @IBOutlet weak var surpriseButton: UIButton!
     @IBOutlet weak var nonStopBtn: UIButton!
-    
+    @IBOutlet weak var chatBarButton: BadgedButtonItem!
+    @IBOutlet weak var notiBarButton: BadgedButtonItem!
+
     // MARK: - Private Property -
     var segmentController = SegmentViewController()
 
@@ -25,6 +27,19 @@ class DashboardViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.surpriseButton.isHidden = true
+        chatBarButton.setup(image: UIImage(named: "msg"))
+        notiBarButton.setup(image: UIImage(named: "noti"))
+
+        chatBarButton.tapAction = {
+            if let myobject = UIStoryboard(name: Constants.Storyboard.chat, bundle: nil).instantiateViewController(withIdentifier: ChatViewController().className) as? ChatViewController {
+                self.navigationController?.pushViewController(myobject, animated: true)
+            }
+        }
+        notiBarButton.tapAction = {
+            if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: NotificationViewController().className) as? NotificationViewController {
+                self.navigationController?.pushViewController(myobject, animated: true)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,8 +52,7 @@ class DashboardViewController: UIViewController {
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(closeMiniPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
-        
+        getNotificationCount()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,6 +72,24 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    private func getNotificationCount() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "getNotificationCount")
+            //completionHandler?()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AudioClient.getNotificationCount { chatCount, notificationCount in
+            if let chat_c = chatCount, chat_c > 0 {
+                self.chatBarButton.setBadge(with: chat_c)
+            }
+            if let noti_c = notificationCount, noti_c > 0 {
+                self.notiBarButton.setBadge(with: noti_c)
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
     // MARK: Close Audio Mini player
     @objc private func closeMiniPlayer(_ notification: NSNotification) {
         UIView.transition(with: self.nonStopBtn as UIView, duration: 0.75, options: .transitionCrossDissolve) {
@@ -66,8 +98,10 @@ class DashboardViewController: UIViewController {
     }
     
     // MARK: - Side Menu button action -
-    @IBAction func ClickOnMenu(_ sender: Any) {
-        self.sideMenuController!.toggleRightView(animated: true)
+    @IBAction func ClickOnTopbarItem(_ sender: UIBarButtonItem) {
+        if sender.tag == 0 { // Menu
+            self.sideMenuController!.toggleRightView(animated: true)
+        }
     }
     
     // MARK: - tap on non stop button
@@ -137,5 +171,14 @@ class DashboardViewController: UIViewController {
 extension DashboardViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
         AudioPlayManager.shared.didActionOnPromptButton(tag)
+    }
+}
+
+// MARK: - NoInternetDelegate -
+extension DashboardViewController: NoInternetDelegate {
+    func connectedToNetwork(_ methodName: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.perform(Selector((methodName)))
+        }
     }
 }

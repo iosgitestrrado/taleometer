@@ -10,24 +10,38 @@ import UIKit
 class NotificationViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var segmentController: UISegmentedControl!
+    @IBOutlet weak var segmentController: CustomSegmentedControl!
     
     private var notifiTriviaList = [NotificationModel]()
     private var notifiTaleometerList = [NotificationModel]()
+    
+    private var footerView = UIView()
+    private var morePage = true
+    private var pageNumber = 1
+    
+    private var morePageTrivia = true
+    private var pageNumberTrivia = 1
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        Core.initFooterView(self, footerView: &footerView)
+
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = UITableView.automaticDimension
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        
+        self.segmentController.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16.0)], for: .selected)
+        self.segmentController.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16.0)], for: .normal)
+//        self.segmentController.layer.masksToBounds = true
+//        self.segmentController.layer.cornerRadius = 25.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
-        getNotifications()
+        getTriviaNotifications()
         addActivityLog()
     }
     
@@ -63,21 +77,33 @@ class NotificationViewController: UIViewController {
 
 extension NotificationViewController {
     // MARK: - Get Notification data
-    @objc func getNotifications() {
+    @objc func getTriviaNotifications() {
         if !Reachability.isConnectedToNetwork() {
-            Core.noInternet(self, methodName: "getNotifications")
+            Core.noInternet(self, methodName: "getTriviaNotifications")
             return
         }
         Core.ShowProgress(self, detailLbl: "")
-        OtherClient.getNotifications { response in
+        
+        OtherClient.getNotifications(pageNumberTrivia, limit: 20, noti_type: "trivia") { [self] response in
             if let data = response, data.count > 0 {
-                data.forEach { object in
-                    if object.Post_id == -1 {
-                        self.notifiTaleometerList.append(object)
-                    } else {
-                        self.notifiTriviaList.append(object)
-                    }
-                }
+                morePageTrivia = data.count > 0
+                notifiTriviaList = pageNumberTrivia == 1 ? data : notifiTriviaList + data
+            }
+            getTaleometerNotifications()
+        }
+    }
+    
+    @objc func getTaleometerNotifications() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "getTaleometerNotifications")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        
+        OtherClient.getNotifications(pageNumber, limit: 20, noti_type: "taleometer") { [self] response in
+            if let data = response, data.count > 0 {
+                morePage = data.count > 0
+                notifiTaleometerList = pageNumber == 1 ? data : notifiTaleometerList + data
             }
             self.tableView.reloadData()
             Core.HideProgress(self)
@@ -136,6 +162,31 @@ extension NotificationViewController: UITableViewDelegate {
             return self.notifiTriviaList.count > 0 ? UITableView.automaticDimension : 30.0
         }
         return self.notifiTaleometerList.count > 0 ? UITableView.automaticDimension : 30.0
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if segmentController.selectedSegmentIndex == 0 {
+            if notifiTriviaList.count > 5 && indexPath.row == notifiTriviaList.count - 1 && self.morePageTrivia {
+                //last cell load more
+                pageNumberTrivia += 1
+                tableView.tableFooterView = footerView
+                if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
+                    indicator.startAnimating()
+                }
+                DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTriviaNotifications() } }
+            }
+        } else {
+            if notifiTaleometerList.count > 5 && indexPath.row == notifiTaleometerList.count - 1 && self.morePage {
+                //last cell load more
+                pageNumber += 1
+                tableView.tableFooterView = footerView
+                if let indicator = footerView.viewWithTag(10) as? UIActivityIndicatorView {
+                    indicator.startAnimating()
+                }
+                DispatchQueue.global(qos: .background).async { DispatchQueue.main.async { self.getTaleometerNotifications() } }
+            }
+        }
+       
     }
 }
 

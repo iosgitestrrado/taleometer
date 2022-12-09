@@ -14,7 +14,7 @@ struct ResponseModel: Decodable {
     let status: Bool?
     let message: AnyObject?
     let data: [JSON]?
-    
+
     private enum CodingKeys : String, CodingKey { case status, message, data }
     init(from decoder : Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -34,6 +34,46 @@ struct ResponseModel: Decodable {
             self.data = try container.decode([JSON].self, forKey: .data)
         } catch {
             self.data = [JSON]()
+        }
+    }
+}
+
+struct ResponseModel1: Decodable {
+    let status: Bool?
+    let message: AnyObject?
+    let data: [JSON]?
+    let chat_count: Int?
+    let notification_count: Int?
+
+    private enum CodingKeys : String, CodingKey { case status, message, data, chat_count, notification_count }
+    init(from decoder : Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            self.status = try container.decode(Bool.self, forKey: .status)
+        } catch {
+            self.status = Bool()
+        }
+        do {
+            let type = try container.decode(String.self, forKey: .message)
+            self.message = type as AnyObject
+        } catch {
+            let type = try container.decode(JSON.self, forKey: .message)
+            self.message = type as AnyObject
+        }
+        do {
+            self.data = try container.decode([JSON].self, forKey: .data)
+        } catch {
+            self.data = [JSON]()
+        }
+        do {
+            self.chat_count = try container.decode(Int.self, forKey: .chat_count)
+        } catch {
+            self.chat_count = Int()
+        }
+        do {
+            self.notification_count = try container.decode(Int.self, forKey: .notification_count)
+        } catch {
+            self.notification_count = Int()
         }
     }
 }
@@ -113,6 +153,40 @@ struct ResponseAPI {
                 Toast.show(error.customDescription)
             }
             completion(nil)
+        }
+    }
+    
+    // MARK: check response and parse as per requirement
+    static func getResponseArray1(_ result: Result<ResponseModel1?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping ([JSON]?, Int?, Int?) -> ()) {
+        switch result {
+        case .success(let aPIResponse):
+            if let response = aPIResponse, let status = response.status, status, let responseData = response.data, let chat_count = response.chat_count, let noti_count = response.notification_count {
+                if showSuccMessage, let msg = response.message as? String {
+                    Toast.show(msg)
+                }
+                completion(responseData, chat_count, noti_count)
+            } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
+                let messageis = getMessageString(msg)
+                if messageis.lowercased().contains("unauthorized") {
+                    AuthClient.logout("Logged out successfully")
+                    completion(nil, nil, nil)
+                } else {
+                    if showAlert {
+                        Toast.show(messageis)
+                    }
+                    completion(nil, nil, nil)
+                }
+            } else {
+                if showAlert {
+                    Toast.show(errorMessage)
+                }
+                completion(nil, nil, nil)
+            }
+        case .failure(let error):
+            if showAlert {
+                Toast.show(error.customDescription)
+            }
+            completion(nil, nil, nil)
         }
     }
     

@@ -59,6 +59,19 @@ class APIClient: GenericAPIClient {
         }, completion: completion)
     }
 
+    func post1<T: Encodable>(_ query: String = "", parameters: T, feed: Feed, completion: @escaping (Result<ResponseModel1?, APIError>) -> Void) {
+        if !Reachability.isConnectedToNetwork() {
+            Toast.show()
+            return
+        }
+        guard let request = feed.postRequest(query, parameters: parameters) else { return }
+        fetch(with: request, decode: { (json) -> ResponseModel1? in
+            guard let apiResponse = json as? ResponseModel1 else { return  nil }
+            return apiResponse
+        }, completion: completion)
+    }
+
+    
     func postJson<T: Encodable>(_ query: String = "", parameters: T, feed: Feed, completion: @escaping (Result<ResponseModelJSON?, APIError>) -> Void) {
         if !Reachability.isConnectedToNetwork() {
             Toast.show()
@@ -201,6 +214,7 @@ enum Feed {
     case TermsAndConditions
     case AutoplaySetting
     case NotificationSetting
+    case NotificationCount
     case Notification
     case StartUsage
     case EndUsage
@@ -297,6 +311,7 @@ extension Feed: Endpoint {
         case .TermsAndConditions:       return "/api/terms-and-conditions"
         case .Notification:             return "/api/notifications"
         case .NotificationSetting:      return "/api/notification"
+        case .NotificationCount:        return "/api/notification-count"
         case .AutoplaySetting:          return "/api/autoplay"
         case .StartUsage:               return "/api/usage/start"
         case .EndUsage:                 return "/api/usage/end"

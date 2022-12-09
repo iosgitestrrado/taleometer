@@ -52,7 +52,7 @@ class ChatTableViewCell: UITableViewCell {
         }
         if mainStackView != nil {
             mainStackView.layer.masksToBounds = true
-            mainStackView.layer.maskedCorners = cellData.Align.lowercased() == "right" ? [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner] : [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            mainStackView.layer.maskedCorners = cellData.Align.lowercased() == "right" ? [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner] : [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
             mainStackView.layer.cornerRadius = 10.0
             mainStackView.sizeToFit()
         }
