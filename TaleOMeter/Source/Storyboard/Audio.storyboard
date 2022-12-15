@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="91" width="390" height="719"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gku-sP-Vhc">
-                                        <rect key="frame" x="97.666666666666686" y="0.0" width="194.66666666666663" height="194.66666666666666"/>
+                                        <rect key="frame" x="97.666666666666671" y="0.0" width="194.66666666666663" height="194.66666666666666"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="abr-mx-hzm">
                                                 <rect key="frame" x="0.0" y="0.0" width="194.66666666666666" height="194.66666666666666"/>
@@ -69,39 +69,14 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="QW7-Wf-nbE">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="QW7-Wf-nbE">
                                         <rect key="frame" x="10" y="244.66666666666669" width="370" height="30"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3x9-MB-ngF">
-                                                <rect key="frame" x="0.0" y="0.0" width="118" height="30"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="OPS-61-6jM">
-                                                        <rect key="frame" x="0.0" y="0.0" width="118" height="30"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="8iN-6L-cmH"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
-                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Story: Jane Do"/>
-                                                        <connections>
-                                                            <action selector="tapOnSPNButton:" destination="hrd-vA-2ET" eventType="touchUpInside" id="ZUk-Wg-pxg"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstItem="OPS-61-6jM" firstAttribute="top" secondItem="3x9-MB-ngF" secondAttribute="top" id="2sG-4G-bL7"/>
-                                                    <constraint firstItem="OPS-61-6jM" firstAttribute="leading" secondItem="3x9-MB-ngF" secondAttribute="leading" id="JT5-bh-JeB"/>
-                                                    <constraint firstAttribute="bottom" secondItem="OPS-61-6jM" secondAttribute="bottom" id="qxA-QT-Mdp"/>
-                                                    <constraint firstAttribute="trailing" secondItem="OPS-61-6jM" secondAttribute="trailing" id="z91-m2-O1Z"/>
-                                                </constraints>
-                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfP-Df-XrD">
-                                                <rect key="frame" x="118" y="0.0" width="134" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="30"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="kRI-wi-ZNk">
-                                                        <rect key="frame" x="0.0" y="0.0" width="134" height="30"/>
+                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="kRI-wi-ZNk">
+                                                        <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="xKO-F1-OlU"/>
                                                         </constraints>
@@ -122,11 +97,36 @@
                                                     <constraint firstAttribute="trailing" secondItem="kRI-wi-ZNk" secondAttribute="trailing" id="z3v-vh-d6J"/>
                                                 </constraints>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3x9-MB-ngF">
+                                                <rect key="frame" x="123.33333333333334" y="0.0" width="123.33333333333334" height="30"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="OPS-61-6jM">
+                                                        <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="8iN-6L-cmH"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Story: Jane Do"/>
+                                                        <connections>
+                                                            <action selector="tapOnSPNButton:" destination="hrd-vA-2ET" eventType="touchUpInside" id="ZUk-Wg-pxg"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="OPS-61-6jM" firstAttribute="top" secondItem="3x9-MB-ngF" secondAttribute="top" id="2sG-4G-bL7"/>
+                                                    <constraint firstItem="OPS-61-6jM" firstAttribute="leading" secondItem="3x9-MB-ngF" secondAttribute="leading" id="JT5-bh-JeB"/>
+                                                    <constraint firstAttribute="bottom" secondItem="OPS-61-6jM" secondAttribute="bottom" id="qxA-QT-Mdp"/>
+                                                    <constraint firstAttribute="trailing" secondItem="OPS-61-6jM" secondAttribute="trailing" id="z91-m2-O1Z"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TxK-PU-Qjq">
-                                                <rect key="frame" x="252" y="0.0" width="118" height="30"/>
+                                                <rect key="frame" x="246.66666666666671" y="0.0" width="123.33333333333334" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pco-Oi-ATm">
-                                                        <rect key="frame" x="0.0" y="0.0" width="118" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="Nfx-gA-Nx5"/>
                                                         </constraints>
@@ -150,8 +150,6 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="3x9-MB-ngF" firstAttribute="bottom" secondItem="QW7-Wf-nbE" secondAttribute="bottomMargin" id="7gm-rq-1Ai"/>
-                                            <constraint firstItem="QfP-Df-XrD" firstAttribute="leading" secondItem="QW7-Wf-nbE" secondAttribute="leading" constant="118" id="BhP-1S-NEF"/>
-                                            <constraint firstItem="QfP-Df-XrD" firstAttribute="centerX" secondItem="QW7-Wf-nbE" secondAttribute="centerX" id="O6K-Cm-lWe"/>
                                             <constraint firstItem="QfP-Df-XrD" firstAttribute="bottom" secondItem="TxK-PU-Qjq" secondAttribute="bottom" id="gxS-4u-axQ"/>
                                             <constraint firstItem="3x9-MB-ngF" firstAttribute="bottom" secondItem="QfP-Df-XrD" secondAttribute="bottom" id="ugx-Uw-ZO0"/>
                                         </constraints>
@@ -210,7 +208,7 @@
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                                <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
@@ -289,17 +287,17 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="4ba-q0-E0r"/>
+                                    <constraint firstItem="QW7-Wf-nbE" firstAttribute="leading" secondItem="QrH-ci-525" secondAttribute="leading" constant="10" id="4fP-Tt-6xO"/>
                                     <constraint firstAttribute="trailing" secondItem="XQE-oH-Ste" secondAttribute="trailing" constant="10" id="9EF-6W-1Ve"/>
                                     <constraint firstItem="gku-sP-Vhc" firstAttribute="top" secondItem="QrH-ci-525" secondAttribute="top" id="CeC-vM-UL6"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="leading" secondItem="QrH-ci-525" secondAttribute="leading" constant="10" id="Emh-l8-GUf"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="J6g-IH-VFS"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="centerY" secondItem="QrH-ci-525" secondAttribute="centerY" id="TXS-eQ-9Va"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="centerX" secondItem="QrH-ci-525" secondAttribute="centerX" id="VYe-vH-Clm"/>
-                                    <constraint firstItem="QW7-Wf-nbE" firstAttribute="leading" secondItem="QrH-ci-525" secondAttribute="leading" constant="10" id="Zo4-Rj-gIS"/>
+                                    <constraint firstAttribute="trailing" secondItem="QW7-Wf-nbE" secondAttribute="trailing" constant="10" id="YnG-bX-w4E"/>
                                     <constraint firstAttribute="bottom" secondItem="18g-Ab-AV8" secondAttribute="bottom" id="bFE-TA-uWi"/>
                                     <constraint firstItem="18g-Ab-AV8" firstAttribute="leading" secondItem="QrH-ci-525" secondAttribute="leading" id="bmw-PD-v7N"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="eDz-gp-L1w"/>
-                                    <constraint firstAttribute="trailing" secondItem="QW7-Wf-nbE" secondAttribute="trailing" constant="10" id="h0i-36-ApO"/>
                                     <constraint firstItem="B54-aL-HnB" firstAttribute="leading" secondItem="QrH-ci-525" secondAttribute="leading" constant="10" id="jav-9y-Ked"/>
                                     <constraint firstAttribute="trailing" secondItem="B54-aL-HnB" secondAttribute="trailing" constant="10" id="m0C-Et-krS"/>
                                     <constraint firstItem="XQE-oH-Ste" firstAttribute="top" secondItem="QW7-Wf-nbE" secondAttribute="bottom" id="p5I-SJ-R9a"/>
@@ -312,10 +310,10 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDn-As-umL">
-                                <rect key="frame" x="7.9999999999999964" y="20" width="50.666666666666657" height="37"/>
+                                <rect key="frame" x="8" y="20" width="44" height="34"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="back_red"/>
-                                <buttonConfiguration key="configuration" style="plain" image="back_red"/>
+                                <buttonConfiguration key="configuration" style="plain" image="back_white_icon"/>
                                 <connections>
                                     <action selector="tapOnBack:" destination="hrd-vA-2ET" eventType="touchUpInside" id="XfG-EA-S0Y"/>
                                 </connections>
@@ -599,10 +597,10 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FoO-lj-3Qs">
-                                                <rect key="frame" x="58.666666666666679" y="58.666666666666664" width="21.333333333333336" height="21.333333333333336"/>
+                                                <rect key="frame" x="43.333333333333343" y="43.333333333333343" width="36.666666666666657" height="36.666666666666657"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" backgroundImage="inactive-fav"/>
-                                                <state key="selected" backgroundImage="active-fav"/>
+                                                <state key="normal" backgroundImage="favourite"/>
+                                                <state key="selected" backgroundImage="fav-act"/>
                                                 <connections>
                                                     <action selector="tapOnProfileFav:" destination="K4q-nf-uiO" eventType="touchUpInside" id="eIi-gK-krf"/>
                                                 </connections>
@@ -690,7 +688,7 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -840,7 +838,7 @@
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                                    <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
@@ -1379,25 +1377,25 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" backgroundImage="ns_like"/>
-                                                <state key="selected" backgroundImage="heart.circle.fill" catalog="system"/>
+                                                <state key="selected" backgroundImage="fav-act"/>
                                                 <connections>
                                                     <action selector="tapOnAudioController:" destination="Erw-zX-rm8" eventType="touchUpInside" id="y6f-Qr-vAg"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bUK-aA-ggR">
-                                                <rect key="frame" x="50" y="1" width="40" height="38.666666666666671"/>
+                                                <rect key="frame" x="50" y="0.0" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="fjh-vZ-gF5"/>
                                                     <constraint firstAttribute="width" constant="40" id="wzR-9m-uKP"/>
                                                 </constraints>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" backgroundImage="play.circle.fill" catalog="system"/>
-                                                <state key="selected" backgroundImage="ns_pause"/>
+                                                <state key="normal" backgroundImage="ns_play"/>
+                                                <state key="selected" backgroundImage="ns_paus"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -1415,7 +1413,7 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -1448,7 +1446,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -1630,7 +1628,7 @@
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                                <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
@@ -1644,11 +1642,11 @@
                                                             <constraint firstAttribute="height" constant="40" id="ocy-dT-n9V"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" backgroundImage="next"/>
+                                                        <state key="normal" backgroundImage="ns_next"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                                <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
@@ -1822,7 +1820,7 @@
                                                                     <userDefinedRuntimeAttributes>
                                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                                         <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                                            <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         </userDefinedRuntimeAttribute>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </button>
@@ -2041,7 +2039,7 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -2055,11 +2053,11 @@
                                                     <constraint firstAttribute="width" constant="40" id="fWY-q3-ini"/>
                                                 </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" backgroundImage="next"/>
+                                                <state key="normal" backgroundImage="ns_next"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -2144,36 +2142,33 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>
-        <image name="active-fav" width="21.333333969116211" height="21.333333969116211"/>
         <image name="active-favour" width="16.666666030883789" height="16.666666030883789"/>
         <image name="back_red" width="26.666666030883789" height="23"/>
         <image name="back_white_icon" width="20" height="20"/>
         <image name="background" width="360" height="899.66668701171875"/>
         <image name="close" width="20" height="20"/>
+        <image name="fav-act" width="46.666667938232422" height="46.666667938232422"/>
         <image name="favourite" width="36.666667938232422" height="36.666667938232422"/>
         <image name="favourite-act" width="36.666667938232422" height="36.666667938232422"/>
-        <image name="heart.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="inactive-fav" width="21.333333969116211" height="21.333333969116211"/>
         <image name="inactive-favour" width="16.666666030883789" height="16.666666030883789"/>
         <image name="menu_white" width="25" height="16.666666030883789"/>
-        <image name="next" width="162.66667175292969" height="162.33332824707031"/>
-        <image name="ns_like" width="46" height="46"/>
-        <image name="ns_next" width="46" height="46"/>
+        <image name="ns_like" width="46.666667938232422" height="46.666667938232422"/>
+        <image name="ns_next" width="46.666667938232422" height="46.666667938232422"/>
         <image name="ns_off" width="90" height="84.666664123535156"/>
         <image name="ns_on" width="90" height="84.666664123535156"/>
-        <image name="ns_pause" width="46" height="46"/>
+        <image name="ns_paus" width="46.666667938232422" height="46.666667938232422"/>
+        <image name="ns_play" width="46.666667938232422" height="46.666667938232422"/>
         <image name="ns_pop-bg" width="360" height="640"/>
         <image name="ns_speaker" width="210" height="210"/>
-        <image name="pause" width="63.333332061767578" height="63.333332061767578"/>
+        <image name="pause" width="60" height="60"/>
         <image name="pause.fill" catalog="system" width="117" height="128"/>
-        <image name="play" width="41.333332061767578" height="41.333332061767578"/>
-        <image name="play.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="play" width="60" height="60"/>
         <image name="play.fill" catalog="system" width="117" height="128"/>
         <image name="previous" width="36.666667938232422" height="36.666667938232422"/>
-        <image name="share" width="36.666667938232422" height="36.666667938232422"/>
+        <image name="share" width="33.333332061767578" height="33.333332061767578"/>
         <image name="shuffle" width="41.333332061767578" height="41.333332061767578"/>
-        <image name="skip-bck" width="36.666667938232422" height="36.666667938232422"/>
-        <image name="skip-fwd" width="36.666667938232422" height="36.666667938232422"/>
+        <image name="skip-bck" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="skip-fwd" width="33.333332061767578" height="33.333332061767578"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

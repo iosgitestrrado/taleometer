@@ -216,6 +216,7 @@ enum Feed {
     case NotificationSetting
     case NotificationCount
     case Notification
+    case UpdateNotification
     case StartUsage
     case EndUsage
     case FAQ
@@ -312,6 +313,7 @@ extension Feed: Endpoint {
         case .Notification:             return "/api/notifications"
         case .NotificationSetting:      return "/api/notification"
         case .NotificationCount:        return "/api/notification-count"
+        case .UpdateNotification:       return "/api/update-notifications"
         case .AutoplaySetting:          return "/api/autoplay"
         case .StartUsage:               return "/api/usage/start"
         case .EndUsage:                 return "/api/usage/end"

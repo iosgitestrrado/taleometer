@@ -43,9 +43,9 @@ class ChatViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if isMovingFromParent {
-            self.sideMenuController!.toggleRightView(animated: false)
-        }
+//        if isMovingFromParent {
+//            self.sideMenuController!.toggleRightView(animated: false)
+//        }
     }
     
     // MARK: - Side Menu button action -

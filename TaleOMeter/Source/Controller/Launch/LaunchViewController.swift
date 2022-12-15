@@ -25,7 +25,7 @@ class LaunchViewController: UIViewController {
     @IBOutlet weak var AGLetsStart: UIButton!
     @IBOutlet weak var pageController: UIPageControl!
     
-    private var totalImages = 5
+    private var totalImages = 6
     var showTutorial = false
     
     enum VersionError: Error {

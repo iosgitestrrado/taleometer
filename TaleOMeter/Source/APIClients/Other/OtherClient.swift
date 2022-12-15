@@ -22,6 +22,14 @@ class OtherClient {
         }
     }
     
+    static func updateNotification(_ req: NotificationUpdateRequest, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .UpdateNotification) { result in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
+                completion(status)
+            }
+        }
+    }
+    
     static func setAutoPlaySetting(_ req: AutoplaySetRequest, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(parameters: req, feed: .AutoplaySetting) { result in
             ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in

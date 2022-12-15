@@ -19,8 +19,11 @@ struct NotificationModel {
     var Created_at = String()
     var Updated_at = String()
     var Deleted_at = String()
+    var Target_page = String()
+    var Target_page_id = -1
     var Audio_story = Audio()
     var Post_id = -1
+    var Notify_type = String()
     
     init() { }
     init(_ json: JSON) {
@@ -43,10 +46,15 @@ struct NotificationModel {
         Created_at = Core.convertDateFormate(json["created_at"].stringValue)
         Updated_at = json["updated_at"].stringValue
         Deleted_at = json["deleted_at"].stringValue
+        Target_page = json["target_page"].stringValue
+        if let targetpageid =  json["target_page_id"].int {
+            Target_page_id = targetpageid
+        }
         
         if let audio_story = json["audio_story"].dictionaryObject {
             Audio_story = Audio(JSON(audio_story))
         }
+        Notify_type = json["notify_type"].stringValue
     }
 }
 
@@ -118,6 +126,13 @@ struct FeedbackRequest: Encodable {
 struct NotificationSetRequest: Encodable {
     var value = Int()
 }
+
+struct NotificationUpdateRequest: Encodable {
+    var type = "read"
+    var notification_id = "all"
+    var notify_type = "taleometer"
+}
+
 
 struct AutoplaySetRequest: Encodable {
     var value = String()

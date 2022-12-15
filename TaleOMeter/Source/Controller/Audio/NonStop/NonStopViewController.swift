@@ -99,7 +99,7 @@ class NonStopViewController: UIViewController {
                 return
             }
             Core.ShowProgress(self, detailLbl: "")
-            AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 10)) { [self] result in
+            AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 30)) { [self] result in
                 if let response = result, response.count > 0 {
                     AudioPlayManager.shared.audioList = response
                     myAudioList = response
@@ -249,14 +249,17 @@ class NonStopViewController: UIViewController {
     
     // MARK: - Tap On Non stop
     @IBAction func tapOnNonStop(_ sender: UIButton) {
-        UIView.transition(with: sender as UIView, duration: 0.1, options: .transitionCrossDissolve) {
+        UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
             sender.isSelected = !sender.isSelected
         } completion: { [self] isDone in
+            if sender.isSelected {
+            }
 //            if isPlaying {
             playPauseAudio(!sender.isSelected)
 //            }
             AudioPlayManager.shared.isNonStop = !sender.isSelected
             AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
+            self.navigationController?.popViewController(animated: true)
         }
     }
     

@@ -27,7 +27,7 @@ class NotificationTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(_ cellData: NotificationModel, row: Int, target: Any, selector: Selector) {
+    func configure(_ cellData: NotificationModel, target: Any, selector: Selector) {
         if imageVW != nil {
             imageVW.sd_setImage(with: URL(string: cellData.BannerUrl), placeholderImage: defaultImage, context: nil)
         }
@@ -41,7 +41,7 @@ class NotificationTableViewCell: UITableViewCell {
         }
         
         if closeButton != nil {
-            closeButton.tag = row
+            closeButton.tag = cellData.Id
             closeButton.addTarget(target, action: selector, for: .touchUpInside)
         }
     }
