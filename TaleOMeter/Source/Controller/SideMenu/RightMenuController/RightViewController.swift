@@ -283,6 +283,8 @@ extension RightViewController: UITableViewDelegate {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
             case .logout:
+                
+                
                 if !Reachability.isConnectedToNetwork() {
                     Core.noInternet(self)
                     return

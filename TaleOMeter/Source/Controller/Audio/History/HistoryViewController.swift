@@ -99,50 +99,6 @@ class HistoryViewController: UIViewController {
             }
             self.navigationController?.pushViewController(myobject, animated: true)
         }
-        /*
-        if sender.isSelected {
-            // Pause audio and update row
-            if AudioPlayManager.shared.playerAV != nil {
-                AudioPlayManager.shared.playPauseAudio(false, addToHistory: true)
-                if audioTimer.isValid {
-                    audioTimer.invalidate()
-                }
-                selectedIndex = -1
-                selectedSection = -1
-                self.tableView.reloadData()
-                return
-            }
-        } else {
-            // Check already audio is loaded
-            if AudioPlayManager.shared.currentIndex == currentIndex && AudioPlayManager.shared.playerAV != nil {
-                AudioPlayManager.shared.playPauseAudio(true)
-                enableTimer()
-                selectedIndex = sender.tag
-                selectedSection = sectionIndex
-                self.tableView.reloadData()
-                return
-            }
-            
-            // Set audio for audio play manager
-            AudioPlayManager.shared.audioList = audioList
-            
-            // Set current audio index of audio play manager
-            AudioPlayManager.shared.setAudioIndex(currentIndex, isNext: false)
-            
-            // Set audio history id
-            AudioPlayManager.shared.audioHistoryId = cellData.Id
-            
-            // Check favourite audio list and set to audio play manager
-            if !AudioPlayManager.shared.isHistory {
-                // Enable isfavorite of audio player manager
-                AudioPlayManager.shared.isHistory = true
-                AudioPlayManager.shared.isFavourite = false
-                AudioPlayManager.shared.isNonStop = false
-            }
-            
-            // Set curret audio index of audio play manager
-            self.initPlayerManager(sectionIndex, rowIndex: sender.tag, currentSecond: cellData.Time)
-        }*/
     }
     
     private func enableTimer() {
@@ -263,7 +219,7 @@ class HistoryViewController: UIViewController {
                 // Get section index from button layer
                 guard let sectionIndex = currentProgressBar.layer.value(forKey: "Section") as? Int else { return }
                 // Get key from history data
-                if !playhead.isNaN && currentProgressBar.tag > historyData[sectionIndex].sectionObjects.count {
+                if !playhead.isNaN && historyData[sectionIndex].sectionObjects.count > currentProgressBar.tag {
                     historyData[sectionIndex].sectionObjects[currentProgressBar.tag].Time = Int(roundf(Float(playhead)))
                 }
                 self.tableView.reloadRows(at: [IndexPath(row: currentProgressBar.tag, section: sectionIndex)], with: .none)

@@ -22,9 +22,9 @@ class OtherClient {
         }
     }
     
-    static func updateNotification(_ req: NotificationUpdateRequest, completion: @escaping(Bool?) -> Void) {
+    static func updateNotification(_ req: NotificationUpdateRequest, showSuccMessage: Bool, completion: @escaping(Bool?) -> Void) {
         APIClient.shared.postJson(parameters: req, feed: .UpdateNotification) { result in
-            ResponseAPI.getResponseJsonBool(result, showSuccMessage: true) { status in
+            ResponseAPI.getResponseJsonBool(result, showSuccMessage: showSuccMessage) { status in
                 completion(status)
             }
         }

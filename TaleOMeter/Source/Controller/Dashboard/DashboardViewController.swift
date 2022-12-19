@@ -53,7 +53,7 @@ class DashboardViewController: UIViewController {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
         getNotificationCount()
-        self.nonStopBtn.isSelected = false
+        self.nonStopBtn.isSelected = AudioPlayManager.shared.isNonStop
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -112,7 +112,7 @@ class DashboardViewController: UIViewController {
                 self.nonStopBtn.isSelected = !self.nonStopBtn.isSelected
             } completion: { [self] isDone in
                 if self.nonStopBtn.isSelected {
-                    Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: "NonStopViewController")
+                    Core.push(self, storyboard: Constants.Storyboard.audio, storyboardId: NonStopViewController().className)
                 } else {
                     AudioPlayManager.shared.isNonStop = !self.nonStopBtn.isSelected
                     AudioPlayManager.shared.isMiniPlayerActive = !self.nonStopBtn.isSelected

@@ -56,7 +56,7 @@ class NotificationViewController: UIViewController {
 //        if segmentController.selectedSegmentIndex
         let alert = UIAlertController(title: "Clear All", message: self.segmentController.selectedSegmentIndex == 0 ? "Are you sure want to clear all notifications of the trivia section?" : "Are you sure want to clear all notifications of the taleometer section?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-            self.updateNotification(type: self.segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isRead: false)
+            self.updateNotification(type: self.segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isRead: false, showMessage: true)
         }))
         alert.addAction(UIAlertAction(title: "No", style: .destructive))
         self.present(alert, animated: true)
@@ -67,7 +67,7 @@ class NotificationViewController: UIViewController {
     }
     
     @objc func tapOnCloseButton(_ sender: UIButton) {
-        self.updateNotification(sender.tag, type: segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isRead: false)
+        self.updateNotification(sender.tag, type: segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isRead: false, showMessage: true)
     }
     
     /*
@@ -131,7 +131,7 @@ extension NotificationViewController {
         }
     }
     
-    @objc func updateNotification(_ id: Int = -1, type: String = "trivia", isRead: Bool = true, isProgresShow: Bool = true) {
+    @objc func updateNotification(_ id: Int = -1, type: String = "trivia", isRead: Bool = true, isProgresShow: Bool = true, showMessage: Bool = false) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self, methodName: "updateNotification")
             return
@@ -139,7 +139,7 @@ extension NotificationViewController {
         if isProgresShow {
             Core.ShowProgress(self, detailLbl: "")
         }
-        OtherClient.updateNotification(NotificationUpdateRequest(type: isRead ? "read" : "clear", notification_id: id != -1 ? "\(id)" : "all", notify_type: type)) { status in
+        OtherClient.updateNotification(NotificationUpdateRequest(type: isRead ? "read" : "clear", notification_id: id != -1 ? "\(id)" : "all", notify_type: type), showSuccMessage: showMessage) { status in
             if let st = status, st {
                 self.getTriviaNotifications()
             }
@@ -232,7 +232,7 @@ extension NotificationViewController: UITableViewDelegate {
         }
         
         if segmentController.selectedSegmentIndex == 0 {
-            if notifiTriviaList[indexPath.row].Target_page.lowercased() == "leaderboard" {
+            if notifiTriviaList.count > 0 &&  notifiTriviaList[indexPath.row].Target_page.lowercased() == "leaderboard" {
                 if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
                     if AudioPlayManager.shared.isNonStop {
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
@@ -240,21 +240,22 @@ extension NotificationViewController: UITableViewDelegate {
                     myobject.categoryId = notifiTriviaList[indexPath.row].Target_page_id
                     self.navigationController?.pushViewController(myobject, animated: true)
                 }
-            } else if notifiTriviaList[indexPath.row].Target_page_id != -1 && notifiTriviaList[indexPath.row].Target_page.lowercased() == "trivia" {
+            } else if notifiTriviaList.count > 0 &&  notifiTriviaList[indexPath.row].Target_page_id != -1 && notifiTriviaList[indexPath.row].Target_page.lowercased() == "trivia" {
                 if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: LeaderboardViewController().className) as? LeaderboardViewController {
                     self.navigationController?.pushViewController(myobject, animated: true)
                 }
             }
         } else {
-            if notifiTaleometerList[indexPath.row].Target_page.lowercased() == "chat" {
+            if notifiTaleometerList.count > 0 &&  notifiTaleometerList[indexPath.row].Target_page.lowercased() == "chat" {
                 if let myobject = UIStoryboard(name: Constants.Storyboard.chat, bundle: nil).instantiateViewController(withIdentifier: ChatViewController().className) as? ChatViewController {
                     self.navigationController?.pushViewController(myobject, animated: true)
                 }
-            } else if notifiTaleometerList[indexPath.row].Target_page_id != -1, notifiTaleometerList[indexPath.row].Target_page.lowercased() == "audio_story" {
+            } else if notifiTaleometerList.count > 0 &&  notifiTaleometerList[indexPath.row].Target_page_id != -1, notifiTaleometerList[indexPath.row].Target_page.lowercased() == "audio_story" {
                 if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
                     if AudioPlayManager.shared.isNonStop {
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
                     }
+                    myobject.isFromNotification = true
                     myobject.myAudioList = [notifiTaleometerList[indexPath.row].Audio_story]
                     myobject.currentAudioIndex = 0
                     AudioPlayManager.shared.audioList = [notifiTaleometerList[indexPath.row].Audio_story]

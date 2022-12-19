@@ -36,7 +36,7 @@ class FooterManager: NSObject {
             myobject.view.tag = FooterManager.viewTag
             myobject.view.addShadow(shadowOffset: CGSize(width: 1.0, height: 1.0), shadowOpacity: 0.75)
 
-            myobject.view.frame = CGRect(x: 40.0, y: controller.view.frame.size.height - 80.0, width: controller.view.frame.size.width - 80.0, height: 60.0)
+            myobject.view.frame = CGRect(x: 30.0, y: controller.view.frame.size.height - 80.0, width: controller.view.frame.size.width - 60.0, height: 60.0)
             
             myobject.homeButton.addTarget(FooterManager.shared.self, action: #selector(tapOnHome(_:)), for: .touchUpInside)
             myobject.searchButton.addTarget(FooterManager.shared.self, action: #selector(tapOnSearch(_:)), for: .touchUpInside)

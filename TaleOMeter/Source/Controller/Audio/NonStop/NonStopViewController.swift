@@ -109,6 +109,7 @@ class NonStopViewController: UIViewController {
                     setupAudioDataPlay(true)
                 } else {
                     Core.HideProgress(self)
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
 //            AudioClient.get(AudioRequest(page: "all", limit: 10), isNonStop: true, completion: { [self] result in

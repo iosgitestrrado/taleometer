@@ -45,7 +45,8 @@ class NowPlayViewController: UIViewController {
     var currentAudioIndex = -1
     var currentPlayDuration = -1
     var storyIdis = -1
-
+    var isFromNotification = false
+    
     // MARK: - Private Properties -
     private var totalTimeDuration: Float = 0.0
     private var audioTimer = Timer()
@@ -84,11 +85,13 @@ class NowPlayViewController: UIViewController {
         // Set notification center for audio playing completed
         NotificationCenter.default.addObserver(self, selector: #selector(remoteCommandHandler(_:)), name: remoteCommandName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
+        AudioPlayManager.shared.isNowPlayPage = true
     }
         
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         audioTimer.invalidate()
+        AudioPlayManager.shared.isNowPlayPage = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -134,8 +137,11 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - When audio playing is finished -
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
-        if /*!AudioPlayManager.shared.isTrivia,*/ !AudioPlayManager.shared.isHistory, !AudioPlayManager.shared.isFavourite, !AudioPlayManager.shared.isNonStop, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
+        if !isFromNotification, AudioPlayManager.shared.isNowPlayPage, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
             PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: aList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: aList[AudioPlayManager.shared.nextIndex].ImageUrl)
+        } else if isFromNotification {
+            self.playPauseAudio(false)
+            self.playPauseWave()
         }
     }
     
@@ -373,7 +379,7 @@ class NowPlayViewController: UIViewController {
     
     // MARK: - SPN stands Story(0) Plot(1) and Narrotion(2)
     @IBAction func tapOnSPNButton(_ sender: UIButton) {
-        let authorView = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "AuthorViewController") as! AuthorViewController
+        let authorView = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: AuthorViewController().className) as! AuthorViewController
         authorView.delegate = self
         authorView.currentAudio = currentAudio
         switch sender.tag {
@@ -434,6 +440,7 @@ class NowPlayViewController: UIViewController {
                 audioTimer.fire()
 //                visualizationWave.play(for: TimeInterval(totalTimeDuration))
             }
+        NotificationCenter.default.post(name: AudioPlayManager.favPlayNotification, object: nil, userInfo: ["isPlaying": playing])
         //}
     }
     
@@ -691,7 +698,11 @@ extension NowPlayViewController: PromptViewDelegate {
             //2 - play next song
             DispatchQueue.main.async { [self] in
                 currentAudio = AudioPlayManager.shared.currentAudio
-                myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                if myAudioList.count > 0 {
+                    myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                } else if var audioList = AudioPlayManager.shared.audioList, audioList.count > 0 {
+                    AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = currentAudio.Is_favorite
+                }
                 favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
                 nextPrevPlay()
             }

@@ -232,8 +232,8 @@
                                                     </button>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="44" translatesAutoresizingMaskIntoConstraints="NO" id="ctY-E5-uH9">
-                                                <rect key="frame" x="133" y="90" width="124" height="40"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="ctY-E5-uH9">
+                                                <rect key="frame" x="125" y="90" width="140" height="40"/>
                                                 <subviews>
                                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mn4-rO-XIb">
                                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -248,7 +248,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lG3-Jy-cQB">
-                                                        <rect key="frame" x="84" y="0.0" width="40" height="40"/>
+                                                        <rect key="frame" x="100" y="0.0" width="40" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="40" id="bEM-0I-rJW"/>
                                                             <constraint firstAttribute="height" constant="40" id="rk1-E2-B5e"/>
@@ -262,7 +262,7 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="thn-YM-IoX">
-                                                <rect key="frame" x="175" y="130" width="40" height="40"/>
+                                                <rect key="frame" x="175" y="117" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="cOK-ub-juG"/>
                                                     <constraint firstAttribute="width" constant="40" id="nhK-PT-dxR"/>
@@ -276,7 +276,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="thn-YM-IoX" firstAttribute="top" secondItem="ctY-E5-uH9" secondAttribute="bottom" id="8t1-Tz-tC7"/>
+                                            <constraint firstItem="thn-YM-IoX" firstAttribute="top" secondItem="ctY-E5-uH9" secondAttribute="bottom" constant="-13" id="8t1-Tz-tC7"/>
                                             <constraint firstItem="ctY-E5-uH9" firstAttribute="top" secondItem="mFz-Zc-aMg" secondAttribute="bottom" id="Yle-Eq-rMh"/>
                                             <constraint firstItem="thn-YM-IoX" firstAttribute="centerX" secondItem="18g-Ab-AV8" secondAttribute="centerX" id="ZX7-7w-2Mq"/>
                                             <constraint firstItem="mFz-Zc-aMg" firstAttribute="centerX" secondItem="18g-Ab-AV8" secondAttribute="centerX" id="aCD-cc-YuS"/>
@@ -669,7 +669,7 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shadow" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                        <color key="value" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -761,7 +761,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="AudioListViewController" id="BZ2-7S-NI9" customClass="AudioListViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="njp-Po-3Us">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="719"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="498"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
@@ -2138,7 +2138,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="OsM-f0-nSp"/>
+        <segue reference="W2Q-wH-ecf"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Default_img" width="76.666664123535156" height="76.666664123535156"/>

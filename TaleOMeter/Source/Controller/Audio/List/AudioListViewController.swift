@@ -64,8 +64,9 @@ class AudioListViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying), name: AudioPlayManager.finishNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: remoteCommandName, object: nil)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: AudioPlayManager.favPlayNotification, object: nil)
+
         if isFavourite {
-            NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: AudioPlayManager.favPlayNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(changeFavAudio(_:)), name: NSNotification.Name("ChangeFavAudio"), object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(tapOnShuffled(_:)), name: Notification.Name(rawValue: "shuffleAudio"), object: nil)
@@ -135,9 +136,8 @@ class AudioListViewController: UITableViewController {
     
     // MARK: - Play Pause current audio -
     @objc private func playPauseAudio(_ notification: Notification) {
-        if (notification.userInfo?["isPlaying"] as? Bool) != nil {
-            if let player = AudioPlayManager.shared.playerAV {
-                if !player.isPlaying {
+        if let isPlaying = notification.userInfo?["isPlaying"] as? Bool,  AudioPlayManager.shared.playerAV != nil {
+                if isPlaying {
                     if !AudioPlayManager.shared.isFavourite {
                         selectedIndex = -2
                         if let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
@@ -154,7 +154,6 @@ class AudioListViewController: UITableViewController {
                     selectedIndex = -1
                     self.tableView.reloadData()
                 }
-            }
         }
     }
     
@@ -181,7 +180,7 @@ class AudioListViewController: UITableViewController {
     // MARK: - Set audio list in play manager
     private func setAudioListPM(_ currentIndex: Int) {
         // Check favourite audio list and set to audio play manager
-        if !AudioPlayManager.shared.isFavourite {
+        if isFavourite && !AudioPlayManager.shared.isFavourite {
             // Set current playing audio in temp variable
             let tempAudio = AudioPlayManager.shared.currentAudio
             
@@ -236,7 +235,7 @@ class AudioListViewController: UITableViewController {
         Core.ShowProgress(parentConroller, detailLbl: "")
                     
         // Initialize audio play manager
-        AudioPlayManager.shared.initPlayerManager(true, isNonStop: false, getMeters: false) { [self] success in
+        AudioPlayManager.shared.initPlayerManager(isFavourite, isNonStop: false, getMeters: true) { [self] success in
             Core.HideProgress(parentConroller)
             
             // Add mini player view in footer
@@ -345,7 +344,7 @@ extension AudioListViewController {
                 audioList = pageNumber == 1 ? response : audioList + response
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     selectedIndex = selectedAudio
-                    if !AudioPlayManager.shared.isFavourite {
+                    if isFavourite && !AudioPlayManager.shared.isFavourite {
                         // Enable isfavorite of audio player manager
                         AudioPlayManager.shared.isFavourite = true
                         AudioPlayManager.shared.isNonStop = false
@@ -405,7 +404,7 @@ extension AudioListViewController {
         FavouriteAudioClient.remove(FavouriteRequest(audio_story_id: audio_story_id)) { [self] status in
             if let st = status, st {
                 AudioPlayManager.shared.currentAudio.Is_favorite = false
-                if AudioPlayManager.shared.audioList != nil {
+                if AudioPlayManager.shared.audioList != nil && AudioPlayManager.shared.currentIndex > AudioPlayManager.shared.audioList!.count {
                     AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = false
                 }
             }
@@ -432,7 +431,7 @@ extension AudioListViewController {
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     isPlayingAudio = true
                     selectedIndex = selectedAudio
-                    if !AudioPlayManager.shared.isFavourite {
+                    if isFavourite && !AudioPlayManager.shared.isFavourite {
                         // Enable isfavorite of audio player manager
                         AudioPlayManager.shared.isFavourite = true
                         AudioPlayManager.shared.isNonStop = false
@@ -479,7 +478,7 @@ extension AudioListViewController {
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     isPlayingAudio = true
                     selectedIndex = selectedAudio
-                    if !AudioPlayManager.shared.isFavourite {
+                    if isFavourite && !AudioPlayManager.shared.isFavourite {
                         // Enable isfavorite of audio player manager
                         AudioPlayManager.shared.isFavourite = true
                         AudioPlayManager.shared.isNonStop = false
@@ -526,7 +525,7 @@ extension AudioListViewController {
                 if AudioPlayManager.shared.isMiniPlayerActive, let player = AudioPlayManager.shared.playerAV, player.isPlaying, let selectedAudio = audioList.firstIndex(where: { $0.Id == AudioPlayManager.shared.currentAudio.Id }) {
                     isPlayingAudio = true
                     selectedIndex = selectedAudio
-                    if !AudioPlayManager.shared.isFavourite {
+                    if isFavourite && !AudioPlayManager.shared.isFavourite {
                         // Enable isfavorite of audio player manager
                         AudioPlayManager.shared.isFavourite = true
                         AudioPlayManager.shared.isNonStop = false

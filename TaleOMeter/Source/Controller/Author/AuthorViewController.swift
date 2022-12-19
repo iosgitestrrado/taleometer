@@ -41,6 +41,9 @@ class AuthorViewController: UIViewController {
         titleLabel.text = storyData.Name
         storiesLabel.text = "0\nStories"
         lengthLabel.text = "0\nLength"
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: remoteCommandName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playButtonSelected(_:)), name: Notification.Name(rawValue: "mainScreenPlay"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,9 +55,6 @@ class AuthorViewController: UIViewController {
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(playPauseAudio(_:)), name: remoteCommandName, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(playButtonSelected(_:)), name: Notification.Name(rawValue: "mainScreenPlay"), object: nil)
     }
     
     @IBAction func tapOnProfileFav(_ sender: UIButton) {

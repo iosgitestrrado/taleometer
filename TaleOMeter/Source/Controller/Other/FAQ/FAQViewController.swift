@@ -89,6 +89,7 @@ extension FAQViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "")
+        faqSectionList = [SectionData]()
         OtherClient.getFAQ { response in
             if let data = response, data.count > 0 {
                 data.forEach { object in

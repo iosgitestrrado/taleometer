@@ -30,6 +30,8 @@ class AudioPlayManager: NSObject {
     var isFavourite = false
     var isFromFavourite = false
     var isHistory = false
+    var isFromStory = false
+    var isNowPlayPage = false
     var waveFormcount = 0
     var audioMetering = [Float]()
     var nowPlayingInfo = [String: Any]()
@@ -256,6 +258,10 @@ class AudioPlayManager: NSObject {
             if isHistory {
                 NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             }
+            if currVController.className == AuthorViewController().className {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList?.count, "IsSelected" : isAudioPlaying])
+                NotificationCenter.default.post(name: AudioPlayManager.favPlayNotification, object: nil, userInfo: ["isPlaying": player.isPlaying])
+            }
         }
     }
     
@@ -300,7 +306,7 @@ class AudioPlayManager: NSObject {
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             
-            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && isMiniPlayerActive && !isTrivia {
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !AudioPlayManager.shared.isNowPlayPage && isMiniPlayerActive && !isTrivia {
                 PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl, isFavourite: isFromFavourite)
             }
         }
@@ -621,7 +627,7 @@ extension AudioPlayManager {
     // MARK: - Click on miniplayer play pause button
     @objc private func tapOnPlayMini(_ sender: UIButton) {
         guard let player = AudioPlayManager.shared.playerAV else { return }
-        NotificationCenter.default.post(name: AudioPlayManager.favPlayNotification, object: nil, userInfo: ["isPlaying": player.isPlaying])
+        NotificationCenter.default.post(name: AudioPlayManager.favPlayNotification, object: nil, userInfo: ["isPlaying": !player.isPlaying])
         self.playPauseAudio(!player.isPlaying)
     }
     
@@ -633,6 +639,7 @@ extension AudioPlayManager {
         isMiniPlayerActive = false
         audioList = [Audio]()
         currentIndex = -1
+        currentAudio = Audio()
         removeMiniPlayer()
         NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
 
@@ -645,7 +652,11 @@ extension AudioPlayManager {
     
     // MARK: - Click on miniplayer
     @objc private func tapOnMiniPlayer(_ sender: UIButton) {
-        if isNonStop {
+        if currVController.className == AuthorViewController().className {
+            currVController.navigationController?.popViewController(animated: true)
+        } else if currVController.className == FavouriteViewController().className || isFavourite {
+            Core.push(currVController, storyboard: Constants.Storyboard.audio, storyboardId: FavouriteViewController().className)
+        } else if isNonStop {
             let nonStopView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NonStopViewController") as! NonStopViewController
             nonStopView.existingAudio = true
             nonStopView.isPlayingExisting = playerAV != nil && playerAV!.isPlaying
@@ -654,13 +665,10 @@ extension AudioPlayManager {
             if audioTimer.isValid {
                 self.audioTimer.invalidate()
             }
-        } else if isFavourite {
-            let favView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "FavouriteViewController") as! FavouriteViewController
-            currVController.navigationController?.pushViewController(favView, animated: true)
         } else if isHistory {
             let hisView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController") as! HistoryViewController
             currVController.navigationController?.pushViewController(hisView, animated: true)
-        } else {
+        } else if !isTrivia {
             let nowPlayingView = UIStoryboard.init(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as! NowPlayViewController
             nowPlayingView.existingAudio = true
             nowPlayingView.isPlaying = playerAV != nil && playerAV!.isPlaying

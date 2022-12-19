@@ -28,6 +28,7 @@ class SegmentViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.containerVC?.scrollMenuViewSelectedIndex(0)
         if self.genreList.count <= 0 {
             getGenres()
         }

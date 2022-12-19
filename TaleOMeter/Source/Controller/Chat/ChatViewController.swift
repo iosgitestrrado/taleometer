@@ -157,6 +157,7 @@ extension ChatViewController {
         Core.ShowProgress(self, detailLbl: "")
         ChatClient.sendMessage(SendMessageRequest(message: messageString)) { response in
             Core.HideProgress(self)
+            self.getMessages()
         }
     }
     
