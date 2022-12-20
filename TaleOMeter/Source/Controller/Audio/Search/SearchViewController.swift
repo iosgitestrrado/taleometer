@@ -314,13 +314,15 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if (searchBar.text?.utf8.count)! > 0 {
             throttler.throttle {
-                DispatchQueue.main.async {
-                    self.searchArray = [Audio]()
-                    self.morePage[0] = true
-                    self.pageNumber[0] = 1
-                    self.showNoData[0] = 0
-                    self.isRecentSearch = false
-                    self.get(searchBar.text!)
+                DispatchQueue.global(qos: .background).async {
+                    DispatchQueue.main.async {
+                        self.searchArray = [Audio]()
+                        self.morePage[0] = true
+                        self.pageNumber[0] = 1
+                        self.showNoData[0] = 0
+                        self.isRecentSearch = false
+                        self.get(searchBar.text!)
+                    }
                 }
             }
         }

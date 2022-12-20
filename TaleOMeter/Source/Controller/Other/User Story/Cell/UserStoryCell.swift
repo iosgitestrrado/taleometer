@@ -172,7 +172,7 @@ class UserStoryCell: UITableViewCell {
         if cellData.TypeT.lowercased() == "choice", cellData.Options.count > 0, let optBtn = self.optionBtn, let optBtnn = self.optionBtnn {
             optBtn.tag = row
             optBtn.addTarget(target, action: selectors[4], for: .touchUpInside)
-            optBtn.setTitle(cellData.Value, for: .normal) //
+            optBtn.setTitle(viewTitle == "English" ? cellData.Value : cellData.Value_Tamil, for: .normal) //
             
             optBtnn.tag = row
             optBtnn.addTarget(target, action: selectors[4], for: .touchUpInside)

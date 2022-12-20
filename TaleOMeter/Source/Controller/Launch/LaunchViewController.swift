@@ -25,7 +25,7 @@ class LaunchViewController: UIViewController {
     @IBOutlet weak var AGLetsStart: UIButton!
     @IBOutlet weak var pageController: UIPageControl!
     
-    private var totalImages = 6
+    private var totalImages = 3
     var showTutorial = false
     
     enum VersionError: Error {
@@ -37,6 +37,9 @@ class LaunchViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
+        if showTutorial {
+            totalImages = 6
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +77,7 @@ class LaunchViewController: UIViewController {
                 for i in 0..<totalImages {
                     let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
                     imgView.contentMode = .scaleToFill
-                    imgView.image = UIImage(named: "tutor\(i+1)")
+                    imgView.image = UIImage(named: "tutorial\(i+1)")
                     guideScrollView.addSubview(imgView)
                     originX += guideScrollView.frame.size.width
                 }

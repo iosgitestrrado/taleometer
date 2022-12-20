@@ -78,7 +78,11 @@ class StoryViewController: UIViewController {
     // MARK: - Call funcation when audio controller press in background
     @objc private func updatedRadioButton(_ notification: Notification) {
        if let rowIndex = notification.userInfo?["rowIndexInt"] as? Int, rowIndex >= 0, let selectedAnswer = notification.userInfo?["selectedAnswer"] as? String {
-           self.storyDataList[rowIndex].Value = selectedAnswer
+           if self.title == "English" {
+               self.storyDataList[rowIndex].Value = selectedAnswer
+           } else {
+               self.storyDataList[rowIndex].Value_Tamil = selectedAnswer
+           }
        }
     }
     
@@ -134,27 +138,44 @@ class StoryViewController: UIViewController {
         userStoryValues = [String]()
         for i in 0..<storyDataList.count {
             let story = storyDataList[i]
-            if story.Value.isBlank && story.CellId != UserStoryCellItem.submitButton.cellIdentifier && story.CellId != UserStoryCellItem.terms.cellIdentifier {
-                if let text = story.TextView {
-                    Validator.showRequiredErrorTextView(text)
+            if self.title == "English" {
+                if story.Value.isBlank && story.CellId != UserStoryCellItem.submitButton.cellIdentifier && story.CellId != UserStoryCellItem.terms.cellIdentifier {
+                    if let text = story.TextView {
+                        Validator.showRequiredErrorTextView(text)
+                        tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                        userStoryIds = [Int]()
+                        userStoryValues = [String]()
+                        return
+                    }
+                    Toast.show(story.TypeT.lowercased() == "text" ? "Please enter \(story.Title)" : "Please select \(story.Title)")
                     tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
                     userStoryIds = [Int]()
                     userStoryValues = [String]()
                     return
                 }
-                Toast.show(story.TypeT.lowercased() == "text" ? "Please enter \(story.Title)" : "Please select \(story.Title)")
-                tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
-                userStoryIds = [Int]()
-                userStoryValues = [String]()
-                return
+            } else {
+                if story.Value_Tamil.isBlank && story.CellId != UserStoryCellItem.submitButton.cellIdentifier && story.CellId != UserStoryCellItem.terms.cellIdentifier {
+                    if let text = story.TextView {
+                        Validator.showRequiredErrorTextView(text)
+                        tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                        userStoryIds = [Int]()
+                        userStoryValues = [String]()
+                        return
+                    }
+                    Toast.show(story.TypeT.lowercased() == "text" ? "Please enter \(story.Title_tamil)" : "Please select \(story.Title_tamil)")
+                    tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                    userStoryIds = [Int]()
+                    userStoryValues = [String]()
+                    return
+                }
             }
+            
             if story.CellId != UserStoryCellItem.terms.cellIdentifier && story.CellId != UserStoryCellItem.submitButton.cellIdentifier {
                 userStoryIds.append(story.Id)
-                userStoryValues.append(story.Value)
+                userStoryValues.append(self.title == "English" ? story.Value : story.Value_Tamil)
             }
         }
-        print("Post")
-//        self.postUserStory()
+        self.postUserStory()
     }
     
     // MARK: Click on terms and condition
@@ -257,9 +278,9 @@ extension StoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: storyDataList[indexPath.row].CellId, for: indexPath) as? UserStoryCell else {
             return UITableViewCell()
         }
-        cell.configuration(self.title ?? "", cellData: storyDataList[indexPath.row], tamilTermsString: tamilTermsString, row: indexPath.row, target: self, selectors: [#selector(tapOnTerms(_:)), #selector(self.tapOnSubmit(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:)), #selector(self.tapOnOptionBtn(_:))], options: storyDataList[indexPath.row].Options, options_tamil: storyDataList[indexPath.row].Options_tamil)
+        cell.configuration(self.title ?? "English", cellData: storyDataList[indexPath.row], tamilTermsString: tamilTermsString, row: indexPath.row, target: self, selectors: [#selector(tapOnTerms(_:)), #selector(self.tapOnSubmit(_:)), #selector(self.doneToolbar(_:)), #selector(self.nextToolbar(_:)), #selector(self.tapOnOptionBtn(_:))], options: storyDataList[indexPath.row].Options, options_tamil: storyDataList[indexPath.row].Options_tamil)
         if let textView = cell.textView {
-            textView.text = storyDataList[indexPath.row].Value
+            textView.text = self.title == "English" ? storyDataList[indexPath.row].Value : storyDataList[indexPath.row].Value_Tamil
             storyDataList[indexPath.row].TextView = textView
         }
         return cell
@@ -271,7 +292,11 @@ extension StoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.tableViewPO == tableView {
             let indexPathStory = IndexPath(row: self.popover.tag, section: 0)
-            storyDataList[indexPathStory.row].Value = popupArray[indexPath.row]
+            if self.title == "English" {
+                storyDataList[indexPathStory.row].Value = popupArray[indexPath.row]
+            } else {
+                storyDataList[indexPathStory.row].Value_Tamil = popupArray[indexPath.row]
+            }
             self.tableView.reloadRows(at: [indexPathStory], with: .none)
             self.popover.dismiss()
             return
@@ -302,7 +327,11 @@ extension StoryViewController: UITextViewDelegate {
     }
     
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        self.storyDataList[textView.tag].Value = textView.text!
+        if self.title == "English" {
+            self.storyDataList[textView.tag].Value = textView.text!
+        } else {
+            self.storyDataList[textView.tag].Value_Tamil = textView.text!
+        }
         if textView.text!.isBlank {
             Validator.showRequiredErrorTextView(textView)
         }

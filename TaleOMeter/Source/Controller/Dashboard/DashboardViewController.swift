@@ -52,7 +52,9 @@ class DashboardViewController: UIViewController {
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
-        getNotificationCount()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getNotificationCount()
+        }
         self.nonStopBtn.isSelected = AudioPlayManager.shared.isNonStop
     }
     
