@@ -63,6 +63,9 @@ struct TriviaPost {
             AudioStory.Id = Post_id
             AudioStory.Title = Question
             AudioStory.File = QuestionVideoURL
+            if let thumString = json["thumbnail"].string {
+                AudioStory.ImageUrl = thumString
+            }
         } else {
             QuestionVideoURL = json["question_media"].stringValue
             Question_media_url = QuestionVideoURL

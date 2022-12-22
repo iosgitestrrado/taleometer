@@ -47,11 +47,11 @@ struct Audio {
         //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         
         if let urlString = json["image"].string {
-            ImageUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+            ImageUrl = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
         }
         
         if let urlString1 = json["file"].string {
-            File = Core.verifyUrl(urlString1) ? urlString1 :   Constants.baseURL.appending("/\(urlString1)")
+            File = Core.verifyUrl(urlString1) ? urlString1 : Constants.baseURL.appending("/\(urlString1)")
         }
         
 //        ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
