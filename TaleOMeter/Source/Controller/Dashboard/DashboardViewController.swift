@@ -109,6 +109,7 @@ class DashboardViewController: UIViewController {
     
     // MARK: - tap on non stop button
     @IBAction func tapOnNonStop(_ sender: UIButton) {
+        sender.isUserInteractionEnabled = false
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             UIView.transition(with: self.nonStopBtn as UIView, duration: 0.75, options: .transitionCrossDissolve) {
                 self.nonStopBtn.isSelected = !self.nonStopBtn.isSelected
@@ -124,9 +125,11 @@ class DashboardViewController: UIViewController {
                         AudioPlayManager.shared.playPauseAudio(false)
                     }
                 }
+                sender.isUserInteractionEnabled = true
             }
         } else {
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
+            sender.isUserInteractionEnabled = true
         }
     }
     
@@ -173,6 +176,15 @@ class DashboardViewController: UIViewController {
 // MARK: - PromptViewDelegate -
 extension DashboardViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

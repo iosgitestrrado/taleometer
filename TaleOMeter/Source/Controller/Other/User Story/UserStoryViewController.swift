@@ -254,6 +254,15 @@ extension UserStoryViewController: UITextViewDelegate {
 // MARK: - PromptViewDelegate -
 extension UserStoryViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         //back to profile screen
         self.navigationController?.popViewController(animated: true)
     }

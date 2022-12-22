@@ -659,6 +659,15 @@ extension NowPlayViewController {
 // MARK: - PromptViewDelegate -
 extension NowPlayViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         switch tag {
         case 0:
             //0 - Add to fav

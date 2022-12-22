@@ -312,7 +312,7 @@ extension SearchViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if (searchBar.text?.utf8.count)! > 0 {
+       /* if (searchBar.text?.utf8.count)! > 0 {
             throttler.throttle {
                 DispatchQueue.global(qos: .background).async {
                     DispatchQueue.main.async {
@@ -325,15 +325,22 @@ extension SearchViewController: UISearchBarDelegate {
                     }
                 }
             }
-        }
+        }*/
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.view.endEditing(true)
         self.isRecentSearch = false
         searchBar.resignFirstResponder()
+        if (searchBar.text?.utf8.count)! > 0 {
+            self.searchArray = [Audio]()
+            self.morePage[0] = true
+            self.pageNumber[0] = 1
+            self.showNoData[0] = 0
+            self.get(searchBar.text!)
+        }
     }
-
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         self.isRecentSearch = true
@@ -354,6 +361,15 @@ extension SearchViewController: UISearchBarDelegate {
 // MARK: - PromptViewDelegate -
 extension SearchViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

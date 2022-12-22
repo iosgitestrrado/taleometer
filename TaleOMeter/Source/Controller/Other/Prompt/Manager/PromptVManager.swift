@@ -14,7 +14,7 @@ class PromptVManager: NSObject {
      *  Dynamic Prompt screen
      *  Set prompt properties as per requirement
      */
-    static func present(_ controller: UIViewController, verifyTitle: String = "Successful", verifyMessage: String = "", verifyImage: UIImage? = nil, queImage: String = "", ansImage: String = "", isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: String = "", closeBtnHide: Bool = false, isFavourite: Bool = false) {
+    static func present(_ controller: UIViewController, verifyTitle: String = "Successful", verifyMessage: String = "", verifyImage: UIImage? = nil, queImage: String = "", ansImage: String = "", isAudioView: Bool = false, isQuestion: Bool = false, isUserStory: Bool = false, audioImage: String = "", closeBtnHide: Bool = false, isFavourite: Bool = false, isLogoutView: Bool = false) {
         if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: "PromptViewController") as? PromptViewController {
 
             myobject.delegate = controller as? PromptViewDelegate
@@ -24,14 +24,17 @@ class PromptVManager: NSObject {
             }
             myobject.currentController = controller
             myobject.isAudioPrompt = isAudioView
-            myobject.isCloseBtnHide = closeBtnHide
+            myobject.isCloseBtnHide = closeBtnHide || isLogoutView
             myobject.isFromFavourite = isFavourite
+            myobject.isFromLogout = isLogoutView
             controller.navigationController?.present(myobject, animated: true, completion: {
                 myobject.audioPromptView.isHidden = !isAudioView
                 myobject.verifyPromptView.isHidden = !isUserStory
                 myobject.answerPromptView.isHidden = !isQuestion
                 myobject.expandButton.isHidden = !isQuestion
+                myobject.logoutPromptView.isHidden = !isLogoutView
                 myobject.imageExpandView.isHidden = true
+                
                 if isAudioView {
                     myobject.audioImageView.sd_setImage(with: URL(string: audioImage), placeholderImage: defaultImage, options: [], context: nil)
                     myobject.audioImageView.cornerRadius = myobject.audioImageView.frame.size.height / 2.0

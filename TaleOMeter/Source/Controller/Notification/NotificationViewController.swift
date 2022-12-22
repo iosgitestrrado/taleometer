@@ -41,7 +41,7 @@ class NotificationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
-        getTriviaNotifications()
+        getNotifications()
         addActivityLog()
     }
     
@@ -83,34 +83,45 @@ class NotificationViewController: UIViewController {
 
 extension NotificationViewController {
     // MARK: - Get Notification data
-    @objc func getTriviaNotifications() {
+    @objc func getNotifications() {
         if !Reachability.isConnectedToNetwork() {
-            Core.noInternet(self, methodName: "getTriviaNotifications")
+            Core.noInternet(self, methodName: "getNotifications")
             return
         }
         Core.ShowProgress(self, detailLbl: "")
         
         OtherClient.getNotifications(pageNumberTrivia, limit: 20, noti_type: "") { [self] response in
             if let data = response, data.count > 0 {
-                var triviaList = [NotificationModel]()
-                var taleometerList = [NotificationModel]()
                 data.forEach { object in
                     if object.Notify_type.lowercased() == "trivia" {
-                        triviaList.append(object)
+                        notifiTriviaList.append(object)
                     } else {
-                        taleometerList.append(object)
+                        notifiTaleometerList.append(object)
                     }
                 }
-                
-                morePageTrivia = triviaList.count > 0
-                notifiTriviaList = pageNumberTrivia == 1 ? triviaList : notifiTriviaList + triviaList
-                
-                morePage = taleometerList.count > 0
-                notifiTaleometerList = pageNumber == 1 ? taleometerList : notifiTaleometerList + taleometerList
             }
             self.tableView.reloadData()
             Core.HideProgress(self)
 //            getTaleometerNotifications()
+        }
+    }
+    
+    @objc func getTriviaNotifications() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "getTaleometerNotifications")
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        
+        OtherClient.getNotifications(pageNumber, limit: 20, noti_type: "trivia") { [self] response in
+            if let data = response, data.count > 0 {
+                morePageTrivia = true
+                notifiTriviaList = pageNumber == 1 ? data : notifiTriviaList + data
+            } else {
+                morePage = false
+            }
+            self.tableView.reloadData()
+            Core.HideProgress(self)
         }
     }
     
@@ -123,8 +134,10 @@ extension NotificationViewController {
         
         OtherClient.getNotifications(pageNumber, limit: 20, noti_type: "taleometer") { [self] response in
             if let data = response, data.count > 0 {
-                morePage = data.count > 0
+                morePage = true
                 notifiTaleometerList = pageNumber == 1 ? data : notifiTaleometerList + data
+            } else {
+                morePage = false
             }
             self.tableView.reloadData()
             Core.HideProgress(self)

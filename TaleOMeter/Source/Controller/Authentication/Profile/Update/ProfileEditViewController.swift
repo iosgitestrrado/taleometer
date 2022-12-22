@@ -120,6 +120,15 @@ class ProfileEditViewController: UIViewController {
 extension ProfileEditViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
         //back to profile screen
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         if let navControllers = self.navigationController?.children {
             for controller in navControllers {
                 if controller is ProfileViewController {

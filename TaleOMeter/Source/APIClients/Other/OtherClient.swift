@@ -10,7 +10,7 @@ import Darwin
 class OtherClient {
     static func getNotifications(_ page: Int, limit: Int, noti_type: String, completion: @escaping([NotificationModel]?) -> Void) {
         APIClient.shared.get("?page=\(page)&limit=\(limit)&notify_type=\(noti_type)", feed: .Notification) { result in
-            ResponseAPI.getResponseArray(result) { response in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
                 var notifications = [NotificationModel]()
                 if let nots = response {
                     nots.forEach { object in

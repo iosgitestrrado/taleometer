@@ -16,6 +16,7 @@ class PromptViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var audioPromptView: UIView!
+    @IBOutlet weak var logoutPromptView: UIView!
     @IBOutlet weak var songTitleLbl: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var audioImageView: UIImageView!
@@ -48,6 +49,7 @@ class PromptViewController: UIViewController {
     var isCloseBtnHide: Bool = false
     var currentController = UIViewController()
     var isFromFavourite: Bool = false
+    var isFromLogout: Bool = false
 
     // MARK: - Private Properties -
     private var timer = Timer()
@@ -178,6 +180,13 @@ class PromptViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func tapOnLogout(_ sender: UIButton) {
+        if let delegate = delegate {
+            delegate.didActionOnPromptButton(9)
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func tapOnClose(_ sender: Any) {
         if !self.imageExpandView.isHidden {
             self.imageExpandView.isHidden = true
@@ -187,7 +196,7 @@ class PromptViewController: UIViewController {
         if timer.isValid {
             timer.invalidate()
         }
-        if let delegate = delegate {
+        if !isFromLogout, let delegate = delegate {
             delegate.didActionOnPromptButton(3)
         }
         self.dismiss(animated: true, completion: nil)

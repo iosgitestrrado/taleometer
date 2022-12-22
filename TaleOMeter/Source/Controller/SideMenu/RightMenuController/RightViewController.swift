@@ -283,17 +283,9 @@ extension RightViewController: UITableViewDelegate {
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
             switch item {
             case .logout:
-                
-                
-                if !Reachability.isConnectedToNetwork() {
-                    Core.noInternet(self)
-                    return
+                if let lastView = self.sideMenuController?.rootViewController?.children.last {
+                    PromptVManager.present(lastView, isLogoutView: true)
                 }
-                AuthClient.logout("", moveToLogin: false)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                self.pushToView(item.storyboardId, controllerName: item.controllerName)
                 return
             default:
                 self.pushToView(item.storyboardId, controllerName: item.controllerName)

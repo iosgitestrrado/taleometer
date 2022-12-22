@@ -35,7 +35,10 @@ class AuthorViewController: UIViewController {
         
         //bannerImage.image = storyData.Image
         profileImage.sd_setImage(with: URL(string: storyData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
-        bannerImage.sd_setImage(with: URL(string: storyData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+
+        if isPlot || isNarration {
+            bannerImage.sd_setImage(with: URL(string: storyData.CoverImageUrl), placeholderImage: defaultImage, options: [], context: nil)
+        }
         bannerImage.alpha = 0.75
         favButton.isHidden = true
         titleLabel.text = storyData.Name
@@ -117,6 +120,15 @@ class AuthorViewController: UIViewController {
 // MARK: - PromptViewDelegate -
 extension AuthorViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         AudioPlayManager.shared.didActionOnPromptButton(tag)
     }
 }

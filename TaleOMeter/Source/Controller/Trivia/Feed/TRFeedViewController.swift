@@ -324,17 +324,22 @@ class TRFeedViewController: UIViewController {
                 postData[sender.tag].User_opened = true
             }
             if postData[sender.tag].Question_type.lowercased() == "audio" {
-                if audioPostId != -1 {
-                    lastaudioPostId = audioPostId
+                if rowIndex != audioPlayingIndex || AudioPlayManager.shared.playerAV == nil || !AudioPlayManager.shared.isTrivia {
+                    if audioPostId != -1 {
+                        lastaudioPostId = audioPostId
+                    }
+                    audioPostId = postData[sender.tag].Post_id
+                } else {
+                    AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
+                    self.playPauseAudio(sender.isSelected, rowIndex: rowIndex)
+                    sender.isSelected = !sender.isSelected
                 }
-                audioPostId = postData[sender.tag].Post_id
             } else {
                 if videoPostId != -1 {
                     lastVideoPostId = videoPostId
                 }
                 videoPostId = postData[sender.tag].Post_id
             }
-            
             self.tableView.reloadData()
         } else {
             Toast.show("No video found!")
@@ -1029,6 +1034,15 @@ extension TRFeedViewController: UITextFieldDelegate {
 // MARK: - PromptViewDelegate -
 extension TRFeedViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         //Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TRFeedViewController")
     }
 }

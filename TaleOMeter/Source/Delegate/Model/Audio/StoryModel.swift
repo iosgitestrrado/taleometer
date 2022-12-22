@@ -12,6 +12,7 @@ struct StoryModel {
     var Name = String()
 //    var Image = UIImage()
     var ImageUrl = String()
+    var CoverImageUrl = String()
     var Created_at = String()
     var Updated_at = String()
     var Deleted_at = String()
@@ -23,7 +24,10 @@ struct StoryModel {
         //Core.setImage(Constants.baseURL.appending("/\(json["image"].stringValue)"), image: &Image)
         //ImageUrl = Constants.baseURL.appending("/\(json["image"].stringValue)")
         if let urlString = json["image"].string {
-            ImageUrl = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+            ImageUrl = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
+        }
+        if let urlString = json["cover_image"].string {
+            CoverImageUrl = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
         }
         Created_at = json["created_at"].stringValue
         Updated_at = json["updated_at"].stringValue

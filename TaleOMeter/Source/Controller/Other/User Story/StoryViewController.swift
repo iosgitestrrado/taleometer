@@ -61,7 +61,6 @@ class StoryViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -342,6 +341,15 @@ extension StoryViewController: UITextViewDelegate {
 // MARK: - PromptViewDelegate -
 extension StoryViewController: PromptViewDelegate {
     func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
         //back to profile screen
         self.isRightViewEnable = true
         self.navigationController?.popViewController(animated: true)

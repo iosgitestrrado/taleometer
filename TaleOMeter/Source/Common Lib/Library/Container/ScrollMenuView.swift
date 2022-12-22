@@ -56,7 +56,7 @@ class ScrollMenuView: UIView {
     }
     
     var itemTitleArray:[NSString]? {
-        didSet{
+        didSet {
             
             var views:[UILabel] = [UILabel]()
             
@@ -81,7 +81,7 @@ class ScrollMenuView: UIView {
             
             self.itemViewArray = views
             
-            self.indicatorView = UIView.init(frame: CGRect(x: 0, y: self.scrollView!.frame.size.height - indicatorHeight, width: 30.0, height: indicatorHeight))
+            self.indicatorView = UIView.init(frame: CGRect(x: 0, y: self.scrollView!.frame.size.height - indicatorHeight, width: menuViewWidth, height: indicatorHeight))
             self.indicatorView.backgroundColor = self.itemIndicatorColor
             self.scrollView?.addSubview(self.indicatorView)
         }
@@ -131,7 +131,7 @@ class ScrollMenuView: UIView {
             return
         }
         
-        self.indicatorView.frame = CGRect(x: indicatorX, y: (self.scrollView?.frame.size.height)! - indicatorHeight, width: 30.0, height: indicatorHeight)
+        self.indicatorView.frame = CGRect(x: indicatorX, y: (self.scrollView?.frame.size.height)! - indicatorHeight, width: menuViewWidth, height: indicatorHeight)
     }
     
     internal func setItem(_ itemTextColor:UIColor?,selectedItemTextColor:UIColor?,currentIndex:NSInteger){
