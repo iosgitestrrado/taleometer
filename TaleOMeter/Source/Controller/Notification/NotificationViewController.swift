@@ -114,12 +114,12 @@ extension NotificationViewController {
         }
         Core.ShowProgress(self, detailLbl: "")
         
-        OtherClient.getNotifications(pageNumber, limit: 20, noti_type: "trivia") { [self] response in
+        OtherClient.getNotifications(pageNumberTrivia, limit: 20, noti_type: "trivia") { [self] response in
             if let data = response, data.count > 0 {
                 morePageTrivia = true
-                notifiTriviaList = pageNumber == 1 ? data : notifiTriviaList + data
+                notifiTriviaList = pageNumberTrivia == 1 ? data : notifiTriviaList + data
             } else {
-                morePage = false
+                morePageTrivia = false
             }
             self.tableView.reloadData()
             Core.HideProgress(self)

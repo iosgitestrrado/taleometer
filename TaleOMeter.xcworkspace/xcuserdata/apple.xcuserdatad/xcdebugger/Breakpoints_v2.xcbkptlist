@@ -191,7 +191,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
                   endingLineNumber = "31"
-                  offsetFromSymbolStart = "129">
+                  offsetFromSymbolStart = "124">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -224,7 +224,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "228"
                   endingLineNumber = "228"
-                  offsetFromSymbolStart = "74">
+                  offsetFromSymbolStart = "60">
                </Location>
                <Location
                   uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - d2f5bd15b27286a3"
@@ -239,7 +239,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "229"
                   endingLineNumber = "229"
-                  offsetFromSymbolStart = "313">
+                  offsetFromSymbolStart = "240">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -288,7 +288,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "259"
                   endingLineNumber = "259"
-                  offsetFromSymbolStart = "1244">
+                  offsetFromSymbolStart = "1164">
                </Location>
                <Location
                   uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - f652dd51d8227307"
@@ -303,7 +303,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "260"
                   endingLineNumber = "260"
-                  offsetFromSymbolStart = "313">
+                  offsetFromSymbolStart = "240">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -321,22 +321,6 @@
             startingLineNumber = "230"
             endingLineNumber = "230"
             landmarkName = "facebookSiginAPI(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8DAB2614-41C8-49EF-A466-9538CD34B241"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Notification/NotificationViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
-            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -401,6 +385,22 @@
             startingLineNumber = "171"
             endingLineNumber = "171"
             landmarkName = "getResponseArray1(_:showAlert:showSuccMessage:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "656B0ADE-CFBC-4588-949D-7710D57EFDA4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/APIClients/Other/OtherClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "getNotifications(_:limit:noti_type:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

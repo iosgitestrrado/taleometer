@@ -57,7 +57,7 @@ class LaunchViewController: UIViewController {
             var originX = 0.0
             for i in 0..<totalImages {
                 let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
-                imgView.contentMode = .scaleToFill
+                imgView.contentMode = .scaleAspectFill
                 imgView.image = UIImage(named: "tutor\(i+1)")
                 guideScrollView.addSubview(imgView)
                 originX += guideScrollView.frame.size.width
@@ -80,7 +80,7 @@ class LaunchViewController: UIViewController {
                 var originX = 0.0
                 for i in 0..<totalImages {
                     let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
-                    imgView.contentMode = .scaleToFill
+                    imgView.contentMode = .scaleAspectFill
                     imgView.image = UIImage(named: "tutorial\(i+1)")
                     guideScrollView.addSubview(imgView)
                     originX += guideScrollView.frame.size.width

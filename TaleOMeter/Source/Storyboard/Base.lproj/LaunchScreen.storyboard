@@ -16,10 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ThL-to-mWe">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" red="0.1451125741" green="0.1442503929" blue="0.235509634" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4kK-JA-4Um">
                                 <rect key="frame" x="0.0" y="48" width="414" height="848"/>
                                 <subviews>
@@ -118,11 +114,7 @@
                         <color key="backgroundColor" red="0.14509803921568626" green="0.14509803921568626" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="4kK-JA-4Um" secondAttribute="bottom" id="Bci-YN-fHt"/>
-                            <constraint firstAttribute="bottom" secondItem="ThL-to-mWe" secondAttribute="bottom" id="EEc-wT-SoD"/>
                             <constraint firstItem="4kK-JA-4Um" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Iyb-Zh-eU5"/>
-                            <constraint firstItem="ThL-to-mWe" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MXg-Ac-Uq4"/>
-                            <constraint firstItem="ThL-to-mWe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NYV-Lr-3ss"/>
-                            <constraint firstItem="ThL-to-mWe" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="TkQ-Ue-YsI"/>
                             <constraint firstItem="4kK-JA-4Um" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="c3d-u6-HDd"/>
                             <constraint firstItem="4kK-JA-4Um" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="mSg-EB-clt"/>
                         </constraints>
@@ -134,7 +126,6 @@
                         <outlet property="appGuideView" destination="4kK-JA-4Um" id="NrU-oN-b0y"/>
                         <outlet property="guideScrollView" destination="m16-Fn-0v0" id="xYG-pm-kng"/>
                         <outlet property="pageController" destination="DBd-3D-KaB" id="njl-Ue-VBP"/>
-                        <outlet property="splashImage" destination="ThL-to-mWe" id="MYj-vD-QOM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
