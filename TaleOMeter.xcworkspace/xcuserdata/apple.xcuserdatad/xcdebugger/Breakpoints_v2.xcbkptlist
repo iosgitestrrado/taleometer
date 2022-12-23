@@ -191,7 +191,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
                   endingLineNumber = "31"
-                  offsetFromSymbolStart = "124">
+                  offsetFromSymbolStart = "129">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -224,7 +224,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "228"
                   endingLineNumber = "228"
-                  offsetFromSymbolStart = "60">
+                  offsetFromSymbolStart = "74">
                </Location>
                <Location
                   uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - d2f5bd15b27286a3"
@@ -239,7 +239,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "229"
                   endingLineNumber = "229"
-                  offsetFromSymbolStart = "240">
+                  offsetFromSymbolStart = "313">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -288,7 +288,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "259"
                   endingLineNumber = "259"
-                  offsetFromSymbolStart = "1164">
+                  offsetFromSymbolStart = "1244">
                </Location>
                <Location
                   uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - f652dd51d8227307"
@@ -303,7 +303,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "260"
                   endingLineNumber = "260"
-                  offsetFromSymbolStart = "240">
+                  offsetFromSymbolStart = "313">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -337,6 +337,70 @@
             startingLineNumber = "246"
             endingLineNumber = "246"
             landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FB859C72-E019-4BD6-9EEF-3248C1AE42F7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Delegate/Model/Response/ResponseModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "getResponseJson(_:showAlert:showSuccMessage:isLogout:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FBD4C43D-156E-4CA4-87EE-DF171C35457E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Delegate/Model/Response/ResponseModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
+            landmarkName = "getResponseJsonToken(_:showAlert:showSuccMessage:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E7037E82-8570-4A63-AD54-29816BB5C182"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Delegate/Model/Response/ResponseModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "getResponseArray(_:showAlert:showSuccMessage:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6225EBBD-73D6-41F9-909D-C25D23A83B2A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Delegate/Model/Response/ResponseModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "getResponseArray1(_:showAlert:showSuccMessage:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

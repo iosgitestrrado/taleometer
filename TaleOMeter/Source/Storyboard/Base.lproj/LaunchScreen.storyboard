@@ -21,90 +21,101 @@
                                 <color key="backgroundColor" red="0.1451125741" green="0.1442503929" blue="0.235509634" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4kK-JA-4Um">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="848"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m16-Fn-0v0">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="839"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="793"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="delegate" destination="01J-lp-oVM" id="84Z-Al-oaw"/>
                                         </connections>
                                     </scrollView>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Zr-5X-yQn">
-                                        <rect key="frame" x="8" y="851" width="55" height="30"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mji-Gt-7M2">
+                                        <rect key="frame" x="0.0" y="793" width="414" height="55"/>
+                                        <subviews>
+                                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="DBd-3D-KaB">
+                                                <rect key="frame" x="88" y="14.5" width="238" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="238" id="1ST-IO-wv9"/>
+                                                </constraints>
+                                                <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="currentPageIndicatorTintColor" red="0.92941176470588238" green="0.17254901960784313" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </pageControl>
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Zr-5X-yQn">
+                                                <rect key="frame" x="10" y="12.5" width="55" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="55" id="3iH-q3-E4h"/>
+                                                </constraints>
+                                                <state key="normal" title="SKIP">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="tapOnAppGuide:" destination="01J-lp-oVM" eventType="touchUpInside" id="8mA-K7-NhC"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Okk-eG-Db9">
+                                                <rect key="frame" x="103.5" y="12.5" width="207" height="30"/>
+                                                <color key="backgroundColor" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="207" id="cNY-os-cpL"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                <state key="normal" title="LET'S START NOW!">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="tapOnAppGuide:" destination="01J-lp-oVM" eventType="touchUpInside" id="OdV-pQ-ku7"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDb-yx-wMV">
+                                                <rect key="frame" x="349" y="12.5" width="55" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="55" id="GOU-ae-zP5"/>
+                                                </constraints>
+                                                <state key="normal" title="NEXT">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="tapOnAppGuide:" destination="01J-lp-oVM" eventType="touchUpInside" id="paO-bQ-Wqy"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="55" id="3iH-q3-E4h"/>
+                                            <constraint firstItem="Okk-eG-Db9" firstAttribute="centerY" secondItem="Mji-Gt-7M2" secondAttribute="centerY" id="2He-IP-Kz5"/>
+                                            <constraint firstAttribute="bottom" secondItem="LDb-yx-wMV" secondAttribute="bottom" constant="12.5" id="2Ux-JL-fld"/>
+                                            <constraint firstAttribute="bottom" secondItem="8Zr-5X-yQn" secondAttribute="bottom" constant="12.5" id="2VD-Bu-udv"/>
+                                            <constraint firstItem="LDb-yx-wMV" firstAttribute="top" secondItem="Mji-Gt-7M2" secondAttribute="top" constant="12.5" id="CXN-8K-gzd"/>
+                                            <constraint firstAttribute="height" constant="55" id="GQH-nT-Aag"/>
+                                            <constraint firstItem="8Zr-5X-yQn" firstAttribute="leading" secondItem="Mji-Gt-7M2" secondAttribute="leading" constant="10" id="Vak-T7-DI1"/>
+                                            <constraint firstItem="8Zr-5X-yQn" firstAttribute="top" secondItem="Mji-Gt-7M2" secondAttribute="top" constant="12.5" id="iHp-j7-xQw"/>
+                                            <constraint firstItem="Okk-eG-Db9" firstAttribute="centerX" secondItem="Mji-Gt-7M2" secondAttribute="centerX" id="ssV-UO-8Uy"/>
+                                            <constraint firstItem="DBd-3D-KaB" firstAttribute="centerX" secondItem="Mji-Gt-7M2" secondAttribute="centerX" id="ufN-n4-27i"/>
+                                            <constraint firstAttribute="trailing" secondItem="LDb-yx-wMV" secondAttribute="trailing" constant="10" id="wLL-iZ-bab"/>
+                                            <constraint firstItem="DBd-3D-KaB" firstAttribute="centerY" secondItem="Mji-Gt-7M2" secondAttribute="centerY" id="x6E-YE-INs"/>
                                         </constraints>
-                                        <state key="normal" title="SKIP">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="tapOnAppGuide:" destination="01J-lp-oVM" eventType="touchUpInside" id="8mA-K7-NhC"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDb-yx-wMV">
-                                        <rect key="frame" x="351" y="851" width="55" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="55" id="GOU-ae-zP5"/>
-                                        </constraints>
-                                        <state key="normal" title="NEXT">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="tapOnAppGuide:" destination="01J-lp-oVM" eventType="touchUpInside" id="paO-bQ-Wqy"/>
-                                        </connections>
-                                    </button>
-                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="DBd-3D-KaB">
-                                        <rect key="frame" x="88" y="853" width="238" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="238" id="1ST-IO-wv9"/>
-                                        </constraints>
-                                        <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="currentPageIndicatorTintColor" red="0.92941176470588238" green="0.17254901960784313" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </pageControl>
-                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Okk-eG-Db9">
-                                        <rect key="frame" x="103.5" y="849" width="207" height="34"/>
-                                        <color key="backgroundColor" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="207" id="cNY-os-cpL"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                        <state key="normal" title="LET'S START NOW!">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="tapOnAppGuide:" destination="01J-lp-oVM" eventType="touchUpInside" id="OdV-pQ-ku7"/>
-                                        </connections>
-                                    </button>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.14509803921568626" green="0.14509803921568626" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="m16-Fn-0v0" firstAttribute="leading" secondItem="4kK-JA-4Um" secondAttribute="leading" id="6BZ-wX-Idz"/>
                                     <constraint firstAttribute="trailing" secondItem="m16-Fn-0v0" secondAttribute="trailing" id="CCh-io-77o"/>
-                                    <constraint firstItem="8Zr-5X-yQn" firstAttribute="leading" secondItem="4kK-JA-4Um" secondAttribute="leading" constant="8" id="Dos-rJ-l1h"/>
-                                    <constraint firstItem="DBd-3D-KaB" firstAttribute="leading" secondItem="8Zr-5X-yQn" secondAttribute="trailing" constant="25" id="KUc-Cq-VoR"/>
-                                    <constraint firstItem="Okk-eG-Db9" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="10" id="LPa-ps-mnY"/>
-                                    <constraint firstAttribute="bottom" secondItem="Okk-eG-Db9" secondAttribute="bottom" constant="13" id="LYC-rp-XAh"/>
                                     <constraint firstItem="m16-Fn-0v0" firstAttribute="top" secondItem="4kK-JA-4Um" secondAttribute="top" id="Ols-UV-lSt"/>
-                                    <constraint firstItem="DBd-3D-KaB" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="14" id="VwK-gW-q9h"/>
-                                    <constraint firstAttribute="bottom" secondItem="LDb-yx-wMV" secondAttribute="bottom" constant="15" id="Yab-0Z-ibg"/>
-                                    <constraint firstItem="Okk-eG-Db9" firstAttribute="centerX" secondItem="4kK-JA-4Um" secondAttribute="centerX" id="Z4Y-2g-n8F"/>
-                                    <constraint firstAttribute="trailing" secondItem="LDb-yx-wMV" secondAttribute="trailing" constant="8" id="d7X-pt-lJM"/>
-                                    <constraint firstItem="LDb-yx-wMV" firstAttribute="leading" secondItem="DBd-3D-KaB" secondAttribute="trailing" constant="25" id="ju7-QV-4UA"/>
-                                    <constraint firstAttribute="bottom" secondItem="DBd-3D-KaB" secondAttribute="bottom" constant="17" id="mti-tv-mnt"/>
-                                    <constraint firstAttribute="bottom" secondItem="8Zr-5X-yQn" secondAttribute="bottom" constant="15" id="pr7-f5-0sp"/>
-                                    <constraint firstItem="8Zr-5X-yQn" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="12" id="sz3-zK-Qr4"/>
-                                    <constraint firstItem="LDb-yx-wMV" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" constant="12" id="u0o-1h-i9W"/>
+                                    <constraint firstAttribute="bottom" secondItem="Mji-Gt-7M2" secondAttribute="bottom" id="em7-Pl-PJQ"/>
+                                    <constraint firstItem="Mji-Gt-7M2" firstAttribute="leading" secondItem="4kK-JA-4Um" secondAttribute="leading" id="gF8-te-SaN"/>
+                                    <constraint firstItem="Mji-Gt-7M2" firstAttribute="top" secondItem="m16-Fn-0v0" secondAttribute="bottom" id="hLp-6D-tXq"/>
+                                    <constraint firstAttribute="trailing" secondItem="Mji-Gt-7M2" secondAttribute="trailing" id="hZt-he-CdQ"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="0.14509803921568626" green="0.14509803921568626" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="4kK-JA-4Um" secondAttribute="bottom" id="Bci-YN-fHt"/>
                             <constraint firstAttribute="bottom" secondItem="ThL-to-mWe" secondAttribute="bottom" id="EEc-wT-SoD"/>
@@ -112,7 +123,7 @@
                             <constraint firstItem="ThL-to-mWe" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MXg-Ac-Uq4"/>
                             <constraint firstItem="ThL-to-mWe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NYV-Lr-3ss"/>
                             <constraint firstItem="ThL-to-mWe" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="TkQ-Ue-YsI"/>
-                            <constraint firstItem="4kK-JA-4Um" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Z0k-Cn-3Aa"/>
+                            <constraint firstItem="4kK-JA-4Um" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="c3d-u6-HDd"/>
                             <constraint firstItem="4kK-JA-4Um" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="mSg-EB-clt"/>
                         </constraints>
                     </view>

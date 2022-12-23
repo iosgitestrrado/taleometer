@@ -40,7 +40,7 @@ class AudioClient {
     
     static func getNotificationCount(_ completion: @escaping(Int?, Int?) -> Void) {
         APIClient.shared.getJson("", feed: .NotificationCount) { result in
-            ResponseAPI.getResponseJson(result) { response in
+            ResponseAPI.getResponseJson(result, isLogout: false) { response in
                 var notification_count = 0
                 var chat_count = 0
                 if let data = response {

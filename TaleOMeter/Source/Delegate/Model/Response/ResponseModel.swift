@@ -190,7 +190,7 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJson(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping (JSON?) -> ()) {
+    static func getResponseJson(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, isLogout: Bool = true, completion: @escaping (JSON?) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
@@ -201,7 +201,9 @@ struct ResponseAPI {
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
-                    AuthClient.logout("")
+                    if isLogout {
+                        AuthClient.logout("")
+                    }
                     completion(nil)
                 } else {
                     if showAlert {
@@ -223,7 +225,7 @@ struct ResponseAPI {
         }
     }
     
-    static func getResponseJsonBool(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping (Bool) -> ()) {
+    static func getResponseJsonBool(_ result: Result<ResponseModelJSON?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, isLogout: Bool = true, completion: @escaping (Bool) -> ()) {
         switch result {
         case .success(let aPIResponse):
             if let response = aPIResponse, let status = response.status, status {
@@ -234,7 +236,9 @@ struct ResponseAPI {
             } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
                 let messageis = getMessageString(msg)
                 if messageis.lowercased().contains("unauthorized") {
-                    AuthClient.logout("")
+                    if isLogout {
+                        AuthClient.logout("")
+                    }
                     completion(false)
                 } else {
                     if showAlert {

@@ -45,11 +45,15 @@ class LaunchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: true, isRightViewEnabled: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if showTutorial {
-            self.appGuideView.frame.size.height = UIScreen.main.bounds.size.height
-            self.guideScrollView.frame.size.height = UIScreen.main.bounds.size.height - 61.0
-            self.appGuideView.frame.size.width = UIScreen.main.bounds.size.width
-            self.guideScrollView.frame.size.width = UIScreen.main.bounds.size.width
+//            self.appGuideView.frame.size.height = UIScreen.main.bounds.size.height
+//            self.guideScrollView.frame.size.height = UIScreen.main.bounds.size.height - 61.0
+//            self.appGuideView.frame.size.width = UIScreen.main.bounds.size.width
+//            self.guideScrollView.frame.size.width = UIScreen.main.bounds.size.width
             var originX = 0.0
             for i in 0..<totalImages {
                 let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
@@ -71,8 +75,8 @@ class LaunchViewController: UIViewController {
           AnalyticsParameterContentType: "cont",
         ])
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [self] in
-            if !UserDefaults.standard.bool(forKey: Constants.UserDefault.GuideCompleted) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
+            if !showTutorial && !UserDefaults.standard.bool(forKey: Constants.UserDefault.GuideCompleted) {
                 var originX = 0.0
                 for i in 0..<totalImages {
                     let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))

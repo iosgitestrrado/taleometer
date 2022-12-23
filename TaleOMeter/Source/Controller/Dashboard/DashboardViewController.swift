@@ -31,13 +31,21 @@ class DashboardViewController: UIViewController {
         notiBarButton.setup(image: UIImage(named: "noti"))
 
         chatBarButton.tapAction = {
-            if let myobject = UIStoryboard(name: Constants.Storyboard.chat, bundle: nil).instantiateViewController(withIdentifier: ChatViewController().className) as? ChatViewController {
-                self.navigationController?.pushViewController(myobject, animated: true)
+            if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.chat, bundle: nil).instantiateViewController(withIdentifier: ChatViewController().className) as? ChatViewController {
+                    self.navigationController?.pushViewController(myobject, animated: true)
+                }
+            } else {
+                Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
             }
         }
         notiBarButton.tapAction = {
-            if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: NotificationViewController().className) as? NotificationViewController {
-                self.navigationController?.pushViewController(myobject, animated: true)
+            if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: NotificationViewController().className) as? NotificationViewController {
+                    self.navigationController?.pushViewController(myobject, animated: true)
+                }
+            } else {
+                Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
             }
         }
     }
