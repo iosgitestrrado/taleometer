@@ -89,8 +89,9 @@ extension NotificationViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "")
-        
-        OtherClient.getNotifications(pageNumberTrivia, limit: 20, noti_type: "") { [self] response in
+        notifiTriviaList = [NotificationModel]()
+        notifiTaleometerList = [NotificationModel]()
+        OtherClient.getNotifications(1, limit: 20, noti_type: "") { [self] response in
             if let data = response, data.count > 0 {
                 data.forEach { object in
                     if object.Notify_type.lowercased() == "trivia" {
@@ -153,8 +154,8 @@ extension NotificationViewController {
             Core.ShowProgress(self, detailLbl: "")
         }
         OtherClient.updateNotification(NotificationUpdateRequest(type: isRead ? "read" : "clear", notification_id: id != -1 ? "\(id)" : "all", notify_type: type), showSuccMessage: showMessage) { status in
-            if let st = status, st {
-                self.getTriviaNotifications()
+            if !isRead, let st = status, st {
+                self.getNotifications()
             }
             if isProgresShow {
                 Core.HideProgress(self)
@@ -241,7 +242,9 @@ extension NotificationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.global(qos: .background).async {
-            self.updateNotification(self.segmentController.selectedSegmentIndex == 0 ? self.notifiTriviaList[indexPath.row].Id : self.notifiTaleometerList[indexPath.row].Id, type: self.segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isProgresShow: false)
+            DispatchQueue.main.async {
+                self.updateNotification(self.segmentController.selectedSegmentIndex == 0 ? self.notifiTriviaList[indexPath.row].Id : self.notifiTaleometerList[indexPath.row].Id, type: self.segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isProgresShow: false)
+            }
         }
         
         if segmentController.selectedSegmentIndex == 0 {

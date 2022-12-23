@@ -36,7 +36,7 @@ class AuthorViewController: UIViewController {
         //bannerImage.image = storyData.Image
         profileImage.sd_setImage(with: URL(string: storyData.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
 
-        if isPlot || isNarration {
+        if isPlot || isNarration || isStroy {
             bannerImage.sd_setImage(with: URL(string: storyData.CoverImageUrl), placeholderImage: defaultImage, options: [], context: nil)
         }
         bannerImage.alpha = 0.75

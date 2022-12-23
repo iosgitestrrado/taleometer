@@ -18,7 +18,8 @@ class LeaderboardViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var triviaScoreLbl: UILabel!
     @IBOutlet weak var rankTotalUserLbl: UILabel!
-
+    @IBOutlet weak var chatBarButton: BadgedButtonItem!
+    @IBOutlet weak var notiBarButton: BadgedButtonItem!
     
     private var leaderboardList = [LeaderboardModel]()
     
@@ -29,13 +30,30 @@ class LeaderboardViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = UITableView.automaticDimension
         self.tableView.register(UINib(nibName: "NoDataTableViewCell", bundle: nil), forCellReuseIdentifier: "NoDataTableViewCell")
+        
+        chatBarButton.setup(image: UIImage(named: "msg"))
+        notiBarButton.setup(image: UIImage(named: "noti"))
+
+        chatBarButton.tapAction = {
+            if let myobject = UIStoryboard(name: Constants.Storyboard.chat, bundle: nil).instantiateViewController(withIdentifier: ChatViewController().className) as? ChatViewController {
+                self.navigationController?.pushViewController(myobject, animated: true)
+            }
+        }
+        notiBarButton.tapAction = {
+            if let myobject = UIStoryboard(name: Constants.Storyboard.other, bundle: nil).instantiateViewController(withIdentifier: NotificationViewController().className) as? NotificationViewController {
+                self.navigationController?.pushViewController(myobject, animated: true)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true, bigfont: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
         getLeaderboardData()
         addActivityLog()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getNotificationCount()
+        }
     }
     
     // MARK: - Side Menu button action -
@@ -60,6 +78,28 @@ class LeaderboardViewController: UIViewController {
 }
 
 extension LeaderboardViewController {
+    
+    private func getNotificationCount() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "getNotificationCount")
+            //completionHandler?()
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AudioClient.getNotificationCount { chatCount, notificationCount in
+            self.chatBarButton.setBadge(with: 0)
+            if let chat_c = chatCount, chat_c > 0 {
+                self.chatBarButton.setBadge(with: chat_c)
+            }
+            self.notiBarButton.setBadge(with: 0)
+            if let noti_c = notificationCount, noti_c > 0 {
+                self.notiBarButton.setBadge(with: noti_c)
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
+    
     // MARK: - Get trivia posts
     @objc func getLeaderboardData() {
         if !Reachability.isConnectedToNetwork() {

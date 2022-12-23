@@ -82,10 +82,13 @@ class DashboardViewController: UIViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "")
+        
         AudioClient.getNotificationCount { chatCount, notificationCount in
+            self.chatBarButton.setBadge(with: 0)
             if let chat_c = chatCount, chat_c > 0 {
                 self.chatBarButton.setBadge(with: chat_c)
             }
+            self.notiBarButton.setBadge(with: 0)
             if let noti_c = notificationCount, noti_c > 0 {
                 self.notiBarButton.setBadge(with: noti_c)
             }

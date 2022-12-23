@@ -576,14 +576,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccY-oP-qgf">
                                 <rect key="frame" x="0.0" y="47" width="390" height="265"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="0no-Ea-AmG">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="0no-Ea-AmG">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="265"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lh9-2i-qLk">
                                         <rect key="frame" x="20" y="100" width="80" height="80"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_img" translatesAutoresizingMaskIntoConstraints="NO" id="jx7-Nj-Z9S">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="jx7-Nj-Z9S">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -1784,7 +1784,7 @@
                                                                         <constraint firstAttribute="height" constant="5" id="92A-1v-UBj"/>
                                                                     </constraints>
                                                                     <color key="progressTintColor" red="0.92941176469999998" green="0.1764705882" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <color key="trackTintColor" red="0.1176470588" green="0.1176470588" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="trackTintColor" red="0.29019607843137252" green="0.28627450980392155" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </progressView>
                                                             </subviews>
                                                             <constraints>
@@ -2151,6 +2151,7 @@
         <image name="favourite" width="36.666667938232422" height="36.666667938232422"/>
         <image name="favourite-act" width="36.666667938232422" height="36.666667938232422"/>
         <image name="inactive-favour" width="16.666666030883789" height="16.666666030883789"/>
+        <image name="logo" width="34" height="24.666666030883789"/>
         <image name="menu_white" width="25" height="16.666666030883789"/>
         <image name="ns_like" width="46.666667938232422" height="46.666667938232422"/>
         <image name="ns_next" width="46.666667938232422" height="46.666667938232422"/>

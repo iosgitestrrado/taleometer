@@ -72,7 +72,7 @@ struct ProfileData: Codable {
 //        Apple_id = json["apple_id"].stringValue
        // Avatar = Constants.baseURL.appending("/\(json["avatar"].stringValue)")
         if let urlString = json["avatar"].string {
-            Avatar = Core.verifyUrl(urlString) ? urlString :   Constants.baseURL.appending("/\(urlString)")
+            Avatar = Core.verifyUrl(urlString) ? urlString : Constants.baseURL.appending("/\(urlString)")
         }
         if let url = URL(string: Avatar) {
             do {
