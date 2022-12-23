@@ -43,9 +43,9 @@ class RightViewController: UIViewController {
             case .profile:
                 return "My Account"
             case .triviaQuiz:
-                return "Trivia"
+                return "Storivia"
             case .leaderboard:
-                return "Trivia Leaderboard"
+                return "Storivia Leaderboard"
 //            case .triviaComments:
 //                return "Trivia Comments"
             case .shareStory:

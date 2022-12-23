@@ -1909,7 +1909,7 @@ Cg
                                     <constraint firstAttribute="height" constant="45" id="ZIU-DI-NM5"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="Trivia"/>
+                                    <segment title="Storivia"/>
                                     <segment title="Taleometer"/>
                                 </segments>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2319,7 +2319,7 @@ Cg
         <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="close" width="20" height="20"/>
         <image name="enlarge" width="85.333335876464844" height="85.333335876464844"/>
-        <image name="heart" catalog="system" width="128" height="107"/>
+        <image name="heart" catalog="system" width="32" height="32"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="logo" width="34" height="24.666666030883789"/>
         <image name="menu_white" width="25" height="16.666666030883789"/>

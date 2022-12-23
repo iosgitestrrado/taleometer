@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--tale'o'meter trivia-->
+        <!--tale'o'meter Storivia-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController storyboardIdentifier="TriviaViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="TriviaViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -175,7 +175,7 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="hwg-kk-YXM" secondAttribute="bottom" id="vmd-3R-l6d"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="tale'o'meter trivia" largeTitleDisplayMode="always" id="dOX-zV-6fq">
+                    <navigationItem key="navigationItem" title="tale'o'meter Storivia" largeTitleDisplayMode="always" id="dOX-zV-6fq">
                         <barButtonItem key="rightBarButtonItem" id="mS8-U7-Xc5">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YzF-jx-nP5">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
@@ -262,7 +262,7 @@
             </objects>
             <point key="canvasLocation" x="7.6923076923076916" y="61.137440758293835"/>
         </scene>
-        <!--tale'o'meter trivia-->
+        <!--tale'o'meter Storivia-->
         <scene sceneID="Etb-tU-VBT">
             <objects>
                 <viewController storyboardIdentifier="TRPostViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="G6A-FA-7uB" customClass="TRPostViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -781,7 +781,7 @@
                             <constraint firstAttribute="bottom" secondItem="fpP-7e-VJh" secondAttribute="bottom" id="wZD-hJ-crc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="tale'o'meter trivia" id="cWt-07-dlA">
+                    <navigationItem key="navigationItem" title="tale'o'meter Storivia" id="cWt-07-dlA">
                         <barButtonItem key="rightBarButtonItem" id="e1g-Qm-gvP">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QCD-dG-XNF">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
@@ -804,7 +804,7 @@
             </objects>
             <point key="canvasLocation" x="910.76923076923072" y="61.137440758293835"/>
         </scene>
-        <!--tale'o'meter trivia-->
+        <!--tale'o'meter Storivia-->
         <scene sceneID="sxo-u3-BgB">
             <objects>
                 <viewController storyboardIdentifier="TRFeedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9BP-r7-O6k" customClass="TRFeedViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -2024,7 +2024,7 @@
                             <constraint firstItem="lgT-I2-59H" firstAttribute="leading" secondItem="PWg-bP-3mH" secondAttribute="leading" constant="15" id="z53-vk-RvV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="tale'o'meter trivia" id="4g8-jo-KpP">
+                    <navigationItem key="navigationItem" title="tale'o'meter Storivia" id="4g8-jo-KpP">
                         <barButtonItem key="rightBarButtonItem" id="08X-zQ-6qi">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="z84-qe-3hy">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
@@ -2048,7 +2048,7 @@
             </objects>
             <point key="canvasLocation" x="1927.6923076923076" y="60.426540284360186"/>
         </scene>
-        <!--Trivia Leaderboard-->
+        <!--Storivia Leaderboard-->
         <scene sceneID="cjp-sJ-afg">
             <objects>
                 <viewController storyboardIdentifier="LeaderboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="UbQ-YT-6qa" customClass="LeaderboardViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
@@ -2292,7 +2292,7 @@
                             <constraint firstItem="hoo-83-cXe" firstAttribute="top" secondItem="PDU-ad-uJC" secondAttribute="top" id="ksP-NC-Osa"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Trivia Leaderboard" id="xNX-fq-fWq">
+                    <navigationItem key="navigationItem" title="Storivia Leaderboard" id="xNX-fq-fWq">
                         <rightBarButtonItems>
                             <barButtonItem tag="1" image="menu_white" style="plain" id="tF6-Yq-qgF">
                                 <connections>
@@ -2319,7 +2319,7 @@
             </objects>
             <point key="canvasLocation" x="2776.9230769230767" y="53.317535545023695"/>
         </scene>
-        <!--tale'o'meter trivia-->
+        <!--tale'o'meter Storivia-->
         <scene sceneID="LR4-ev-tzc">
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYT-8r-blB" sceneMemberID="viewController">
@@ -2488,7 +2488,7 @@
                             <constraint firstItem="PMU-Vh-7ih" firstAttribute="bottom" secondItem="grN-Jj-Neb" secondAttribute="bottom" constant="8" id="rb6-6N-Jun"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="tale'o'meter trivia" id="Ryj-vJ-8Vh">
+                    <navigationItem key="navigationItem" title="tale'o'meter Storivia" id="Ryj-vJ-8Vh">
                         <barButtonItem key="rightBarButtonItem" id="HeA-Q3-oLr">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CQV-Z8-sb4">
                                 <rect key="frame" x="324" y="0.0" width="50" height="44"/>
