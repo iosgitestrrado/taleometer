@@ -150,6 +150,8 @@ class RightViewController: UIViewController {
         super.init(coder: coder)
     }
     
+    var timerForShowScrollIndicator: Timer?
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -241,8 +243,19 @@ class RightViewController: UIViewController {
         super.viewDidAppear(animated)
         struct Counter { static var count = 0 }
         Counter.count += 1
+        startTimerForShowScrollIndicator()
     }
 
+    @objc func showScrollIndicatorsInContacts() {
+        UIView.animate(withDuration: 0.001) {
+            self.tableView.flashScrollIndicators()
+        }
+    }
+    
+    func startTimerForShowScrollIndicator() {
+        self.timerForShowScrollIndicator = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.showScrollIndicatorsInContacts), userInfo: nil, repeats: true)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         struct Counter { static var count = 0 }

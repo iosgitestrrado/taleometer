@@ -135,70 +135,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1F04D0D5-1F71-41DC-8771-FC32EC5085FD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Trivia/Feed/TRFeedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "622"
-            endingLineNumber = "622"
-            landmarkName = "getTriviaPosts(_:showProgress:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B4578F76-821E-4E83-9945-1999D8324C97"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/APIClients/Trivia/TriviaClient.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "getTriviaDailyPost(_:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B4578F76-821E-4E83-9945-1999D8324C97 - a2606d918746cda4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;SwiftyJSON.JSON&gt;&gt;) -&gt; () in closure #1 (TaleOMeter.Result&lt;Swift.Optional&lt;TaleOMeter.ResponseModel&gt;, TaleOMeter.APIError&gt;) -&gt; () in static TaleOMeter.TriviaClient.getTriviaDailyPost(_: Swift.Int, completion: (Swift.Optional&lt;Swift.Array&lt;TaleOMeter.TriviaPost&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "TaleOMeter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/APIClients/Trivia/TriviaClient.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31"
-                  offsetFromSymbolStart = "96">
-               </Location>
-               <Location
-                  uuid = "B4578F76-821E-4E83-9945-1999D8324C97 - a2606d918746cda4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;SwiftyJSON.JSON&gt;&gt;) -&gt; () in closure #1 (TaleOMeter.Result&lt;Swift.Optional&lt;TaleOMeter.ResponseModel&gt;, TaleOMeter.APIError&gt;) -&gt; () in static TaleOMeter.TriviaClient.getTriviaDailyPost(_: Swift.Int, completion: (Swift.Optional&lt;Swift.Array&lt;TaleOMeter.TriviaPost&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "TaleOMeter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/APIClients/Trivia/TriviaClient.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31"
-                  offsetFromSymbolStart = "124">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -224,7 +160,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "228"
                   endingLineNumber = "228"
-                  offsetFromSymbolStart = "60">
+                  offsetFromSymbolStart = "74">
                </Location>
                <Location
                   uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - d2f5bd15b27286a3"
@@ -239,7 +175,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "229"
                   endingLineNumber = "229"
-                  offsetFromSymbolStart = "240">
+                  offsetFromSymbolStart = "313">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -288,7 +224,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "259"
                   endingLineNumber = "259"
-                  offsetFromSymbolStart = "1164">
+                  offsetFromSymbolStart = "1244">
                </Location>
                <Location
                   uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - f652dd51d8227307"
@@ -303,7 +239,7 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "260"
                   endingLineNumber = "260"
-                  offsetFromSymbolStart = "240">
+                  offsetFromSymbolStart = "313">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -398,13 +334,13 @@
             filePath = "TaleOMeter/Source/Controller/SideMenu/RightMenuController/RightViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "75826407-178C-465D-B084-3F52AA10A09A - 7d83d4aaeec5491f"
+                  uuid = "75826407-178C-465D-B084-3F52AA10A09A - 7d83d4aaeec54fa8"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -414,12 +350,12 @@
                   urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/SideMenu/RightMenuController/RightViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "286"
-                  endingLineNumber = "286"
-                  offsetFromSymbolStart = "732">
+                  startingLineNumber = "299"
+                  endingLineNumber = "299"
+                  offsetFromSymbolStart = "803">
                </Location>
                <Location
-                  uuid = "75826407-178C-465D-B084-3F52AA10A09A - 7d83d4aaeec5491f"
+                  uuid = "75826407-178C-465D-B084-3F52AA10A09A - 7d83d4aaeec54fa8"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -429,9 +365,9 @@
                   urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/SideMenu/RightMenuController/RightViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "286"
-                  endingLineNumber = "286"
-                  offsetFromSymbolStart = "1192">
+                  startingLineNumber = "299"
+                  endingLineNumber = "299"
+                  offsetFromSymbolStart = "1246">
                </Location>
             </Locations>
          </BreakpointContent>

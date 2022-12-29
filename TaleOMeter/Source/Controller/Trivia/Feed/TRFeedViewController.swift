@@ -330,8 +330,10 @@ class TRFeedViewController: UIViewController {
                     }
                     audioPostId = postData[sender.tag].Post_id
                 } else {
-                    AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
-                    self.playPauseAudio(sender.isSelected, rowIndex: rowIndex)
+//                    AudioPlayManager.shared.playPauseAudioOnly(sender.isSelected, addToHistory: false)
+//                    self.playPauseAudio(sender.isSelected, rowIndex: rowIndex)
+                    AudioPlayManager.shared.playPauseAudioOnly(true, addToHistory: false)
+                    self.playPauseAudio(true, rowIndex: rowIndex)
                     sender.isSelected = !sender.isSelected
                 }
             } else {
@@ -896,6 +898,13 @@ extension TRFeedViewController : UITableViewDataSource {
                 if cell.playButton != nil {
                     cell.playButton.isSelected = true
                 }
+            }
+        }
+        
+        if cell.playButton != nil {
+            cell.playButton.isHidden = true
+            if postData[cellData.index].Question_type.lowercased() == "audio" && cell.videoButton1 != nil, let audioPlayer = AudioPlayManager.shared.playerAV, !audioPlayer.isPlaying {
+                cell.videoButton1.isHidden = false
             }
         }
         return cell

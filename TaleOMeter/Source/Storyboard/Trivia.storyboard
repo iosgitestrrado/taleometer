@@ -1084,13 +1084,13 @@
                                                                             <rect key="frame" x="5" y="10" width="350" height="40"/>
                                                                             <subviews>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="hZg-Nq-jbB">
-                                                                                    <rect key="frame" x="8" y="0.0" width="292" height="40"/>
+                                                                                    <rect key="frame" x="8" y="0.0" width="284" height="40"/>
                                                                                     <subviews>
                                                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xz2-VX-YIj">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="292" height="11.666666666666666"/>
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="284" height="11.666666666666666"/>
                                                                                         </stackView>
                                                                                         <progressView opaque="NO" tag="9995556" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Zo-a4-cO9">
-                                                                                            <rect key="frame" x="0.0" y="16.666666666666657" width="292" height="4"/>
+                                                                                            <rect key="frame" x="0.0" y="16.666666666666657" width="284" height="4"/>
                                                                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                             <color key="tintColor" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <userDefinedRuntimeAttributes>
@@ -1098,16 +1098,16 @@
                                                                                             </userDefinedRuntimeAttributes>
                                                                                         </progressView>
                                                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="BSr-iM-gE7">
-                                                                                            <rect key="frame" x="0.0" y="25.666666666666654" width="292" height="14.333333333333332"/>
+                                                                                            <rect key="frame" x="0.0" y="25.666666666666654" width="284" height="14.333333333333332"/>
                                                                                             <subviews>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFa-q5-7Sz">
-                                                                                                    <rect key="frame" x="0.0" y="0.0" width="203" height="14.333333333333334"/>
+                                                                                                    <rect key="frame" x="0.0" y="0.0" width="195" height="14.333333333333334"/>
                                                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                     <nil key="highlightedColor"/>
                                                                                                 </label>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSY-IE-SKm">
-                                                                                                    <rect key="frame" x="258" y="0.0" width="34" height="14.333333333333334"/>
+                                                                                                    <rect key="frame" x="250" y="0.0" width="34" height="14.333333333333334"/>
                                                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                     <nil key="highlightedColor"/>
@@ -1117,7 +1117,7 @@
                                                                                     </subviews>
                                                                                 </stackView>
                                                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpX-gQ-zcA">
-                                                                                    <rect key="frame" x="310" y="0.0" width="40" height="40"/>
+                                                                                    <rect key="frame" x="302" y="0.0" width="40" height="40"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="40" id="eLI-g9-c5o"/>
                                                                                         <constraint firstAttribute="height" constant="40" id="lnV-Cr-6em"/>
@@ -1128,7 +1128,7 @@
                                                                                     <state key="selected" image="play.fill" catalog="system"/>
                                                                                 </button>
                                                                             </subviews>
-                                                                            <directionalEdgeInsets key="directionalLayoutMargins" top="0.0" leading="8" bottom="0.0" trailing="0.0"/>
+                                                                            <directionalEdgeInsets key="directionalLayoutMargins" top="0.0" leading="8" bottom="0.0" trailing="8"/>
                                                                         </stackView>
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1275,13 +1275,13 @@
                                                                             <rect key="frame" x="5" y="10" width="350" height="40"/>
                                                                             <subviews>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="SIQ-63-qcy">
-                                                                                    <rect key="frame" x="8" y="0.0" width="292" height="40"/>
+                                                                                    <rect key="frame" x="8" y="0.0" width="334" height="40"/>
                                                                                     <subviews>
                                                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qTb-d1-2td">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="292" height="11.666666666666666"/>
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="334" height="11.666666666666666"/>
                                                                                         </stackView>
                                                                                         <progressView opaque="NO" tag="9995556" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Mj-hC-a9E">
-                                                                                            <rect key="frame" x="0.0" y="16.666666666666657" width="292" height="4"/>
+                                                                                            <rect key="frame" x="0.0" y="16.666666666666657" width="334" height="4"/>
                                                                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                             <color key="tintColor" red="0.92956817150000004" green="0.1748278737" blue="0.23307880759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <userDefinedRuntimeAttributes>
@@ -1289,16 +1289,16 @@
                                                                                             </userDefinedRuntimeAttributes>
                                                                                         </progressView>
                                                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="cdI-l2-zEJ">
-                                                                                            <rect key="frame" x="0.0" y="25.666666666666654" width="292" height="14.333333333333332"/>
+                                                                                            <rect key="frame" x="0.0" y="25.666666666666654" width="334" height="14.333333333333332"/>
                                                                                             <subviews>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fuI-1R-gl9">
-                                                                                                    <rect key="frame" x="0.0" y="0.0" width="203" height="14.333333333333334"/>
+                                                                                                    <rect key="frame" x="0.0" y="0.0" width="245" height="14.333333333333334"/>
                                                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                     <nil key="highlightedColor"/>
                                                                                                 </label>
                                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0I-ZA-38w">
-                                                                                                    <rect key="frame" x="258" y="0.0" width="34" height="14.333333333333334"/>
+                                                                                                    <rect key="frame" x="300" y="0.0" width="34" height="14.333333333333334"/>
                                                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                     <nil key="highlightedColor"/>
@@ -1307,8 +1307,8 @@
                                                                                         </stackView>
                                                                                     </subviews>
                                                                                 </stackView>
-                                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZxL-cQ-0RJ">
-                                                                                    <rect key="frame" x="310" y="0.0" width="40" height="40"/>
+                                                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZxL-cQ-0RJ">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="40" id="YCM-hg-EeS"/>
                                                                                         <constraint firstAttribute="width" constant="40" id="sQq-m0-cm0"/>
@@ -1319,7 +1319,7 @@
                                                                                     <state key="selected" image="play.fill" catalog="system"/>
                                                                                 </button>
                                                                             </subviews>
-                                                                            <directionalEdgeInsets key="directionalLayoutMargins" top="0.0" leading="8" bottom="0.0" trailing="0.0"/>
+                                                                            <directionalEdgeInsets key="directionalLayoutMargins" top="0.0" leading="8" bottom="0.0" trailing="8"/>
                                                                         </stackView>
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
