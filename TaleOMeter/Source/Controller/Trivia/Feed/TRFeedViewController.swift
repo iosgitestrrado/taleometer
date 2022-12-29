@@ -80,7 +80,7 @@ class TRFeedViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: false, backImage: true, bigfont: true)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, backImage: true)
         if audioTimer.isValid {
             self.audioTimer.invalidate()
         }

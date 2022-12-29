@@ -46,8 +46,8 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "762"
-            endingLineNumber = "762"
+            startingLineNumber = "763"
+            endingLineNumber = "763"
             landmarkName = "updateHistory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -391,17 +391,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "656B0ADE-CFBC-4588-949D-7710D57EFDA4"
+            uuid = "75826407-178C-465D-B084-3F52AA10A09A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/APIClients/Other/OtherClient.swift"
+            filePath = "TaleOMeter/Source/Controller/SideMenu/RightMenuController/RightViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "14"
-            endingLineNumber = "14"
-            landmarkName = "getNotifications(_:limit:noti_type:completion:)"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "75826407-178C-465D-B084-3F52AA10A09A - 7d83d4aaeec5491f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.RightViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/SideMenu/RightMenuController/RightViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "732">
+               </Location>
+               <Location
+                  uuid = "75826407-178C-465D-B084-3F52AA10A09A - 7d83d4aaeec5491f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.RightViewController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/SideMenu/RightMenuController/RightViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "1192">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -61,7 +61,7 @@ class NowPlayViewController: UIViewController {
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
         self.backBarButton.isHidden = storyId == -1
-        if let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
+        if let audList = AudioPlayManager.shared.audioList, audList.count > 0, AudioPlayManager.shared.currentIndex >= 0 {
             currentAudio = audList[AudioPlayManager.shared.currentIndex]
             AudioPlayManager.shared.audioHistoryId = -1
             // Configure audio data
@@ -682,7 +682,9 @@ extension NowPlayViewController: PromptViewDelegate {
             DispatchQueue.main.async { [self] in
                 if myAudioList.count > currentAudioIndex {
                     currentAudio = AudioPlayManager.shared.currentAudio
-                    myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                    if currentAudioIndex >= 0 {
+                        myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
+                    }
                 }
                 favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
                 if let player = AudioPlayManager.shared.playerAV {

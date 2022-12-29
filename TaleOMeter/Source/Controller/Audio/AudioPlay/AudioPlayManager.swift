@@ -306,7 +306,7 @@ class AudioPlayManager: NSObject {
             }
             NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             
-            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !AudioPlayManager.shared.isNowPlayPage && isMiniPlayerActive && !isTrivia {
+            if UserDefaults.standard.bool(forKey: "AutoplayEnable") && !isNonStop && !AudioPlayManager.shared.isNowPlayPage && isMiniPlayerActive && !isTrivia {
                 PromptVManager.present(currVController, verifyTitle: audioList![currentIndex].Title, verifyMessage: audioList![nextIndex].Title, isAudioView: true, audioImage: audioList![nextIndex].ImageUrl, isFavourite: isFromFavourite)
             }
         }
@@ -634,6 +634,7 @@ extension AudioPlayManager {
     // MARK: - Close miniplayer
     @objc private func tapOnCloseMini(_ sender: UIButton) {
         if isNonStop {
+            isNonStop = false
             NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
         }
         isMiniPlayerActive = false

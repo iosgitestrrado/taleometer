@@ -92,7 +92,7 @@ class FeedbackViewController: UIViewController {
 extension FeedbackViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .lightGray {
+        if textView.textColor == .darkGray {
             textView.text = nil
             textView.textColor = UIColor.white
         }

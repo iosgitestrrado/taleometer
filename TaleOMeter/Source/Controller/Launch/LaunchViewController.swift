@@ -39,6 +39,8 @@ class LaunchViewController: UIViewController {
         self.splashImage.image = UIImage.gif(name: "splash_anim_new")
         if showTutorial {
             totalImages = 6
+            self.showHideView(self.appGuideView, isHidden: false)
+            AGLetsStart.isHidden = true
         }
     }
     

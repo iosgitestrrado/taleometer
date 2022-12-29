@@ -10,7 +10,7 @@ import UIKit
 
 struct Constants {
     
-//    static let baseURL = "https://dev-taleometer.estrradoweb.com"
+//    static let baseURL = "h   ttps://dev-taleometer.estrradoweb.com"
 //    static let baseURL = "https://app.taleometer.com"
 //    static let baseURL = "https://live.taleometer.com"
     static let baseURL = "https://dev-taleometer.estrradoweb.com/qa"

@@ -48,6 +48,9 @@ class DashboardViewController: UIViewController {
                 Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController")
             }
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(DoneNonStopPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+
+        //finishNotification
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,6 +69,7 @@ class DashboardViewController: UIViewController {
         self.nonStopBtn.isSelected = AudioPlayManager.shared.isNonStop
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
@@ -81,6 +85,11 @@ class DashboardViewController: UIViewController {
         if let textContainer = window.viewWithTag(9998) {
             textContainer.removeFromSuperview()
         }
+    }
+    
+    // MARK: - When audio playing is finished -
+    @objc private func DoneNonStopPlayer(_ notification: Notification) {
+        self.nonStopBtn.isSelected = AudioPlayManager.shared.isNonStop
     }
     
     private func getNotificationCount() {

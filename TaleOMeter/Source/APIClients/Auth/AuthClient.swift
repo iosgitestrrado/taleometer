@@ -102,7 +102,7 @@ class AuthClient {
     
     static func getProfile(_ completion: @escaping(ProfileData?) -> Void) {
         APIClient.shared.getJson("", feed: .GetProfile) { result in
-            ResponseAPI.getResponseJson(result) { responseJson in
+            ResponseAPI.getResponseJson(result, showAlert: false) { responseJson in
                 var verification: ProfileData?
                 if let response = responseJson {
                     verification = ProfileData(response)

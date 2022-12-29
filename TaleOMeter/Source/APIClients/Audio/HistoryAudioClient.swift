@@ -12,7 +12,10 @@ class HistoryAudioClient {
                 var histories = [History]()
                 if let hiss = response {
                     hiss.forEach { object in
-                        histories.append(History(object))
+                        let hiist = History(object)
+                        if !hiist.Audio_story.Title.isBlank {
+                            histories.append(hiist)
+                        }
                     }
                 }
                 completion(histories)

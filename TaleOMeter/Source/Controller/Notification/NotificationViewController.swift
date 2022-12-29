@@ -54,7 +54,7 @@ class NotificationViewController: UIViewController {
     
     @IBAction func tapOnClearAll(_ sender: UIButton) {
 //        if segmentController.selectedSegmentIndex
-        let alert = UIAlertController(title: "Clear All", message: self.segmentController.selectedSegmentIndex == 0 ? "Are you sure want to clear all notifications of the trivia section?" : "Are you sure want to clear all notifications of the taleometer section?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Clear All", message: self.segmentController.selectedSegmentIndex == 0 ? "Are you sure want to clear all notifications of the storivia section?" : "Are you sure want to clear all notifications of the taleometer section?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
             self.updateNotification(type: self.segmentController.selectedSegmentIndex == 0 ? "trivia" : "taleometer", isRead: false, showMessage: true)
         }))
