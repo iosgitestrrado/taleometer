@@ -18,7 +18,8 @@ struct Constants {
     // Trivia Live: com.app.taleometer
     // Trivia UAT: com.estrrado.taleometer
     // Taleometer v1: com.estrrado.v1.taleometer
-    static let GOOGLE_IOS_CLIENT_ID = "1018972893351-fspd9pnm1hgpknlb3mt2j896nfb999od.apps.googleusercontent.com"
+//    static let GOOGLE_IOS_CLIENT_ID = "1018972893351-fspd9pnm1hgpknlb3mt2j896nfb999od.apps.googleusercontent.com"
+    static let GOOGLE_IOS_CLIENT_ID = "1045779842263-abb23fcmqjo1mn0ohvivvhtitmekj7iq.apps.googleusercontent.com"
     
     static let loaderImage = UIImage.gif(name: "spinner1")
     static let loaderImageBig = UIImage.gif(name: "spinner11")

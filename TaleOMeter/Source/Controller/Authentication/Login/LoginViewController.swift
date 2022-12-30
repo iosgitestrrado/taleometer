@@ -111,7 +111,7 @@ class LoginViewController: UIViewController {
                 }
             }
         } else if sender.tag == 2 { //Facebook Login
-            Core.ShowProgress(self, detailLbl: "Google SignIn...")
+            Core.ShowProgress(self, detailLbl: "Facebook SignIn...")
             let fbLoginManager : LoginManager = LoginManager()
             fbLoginManager.logIn(permissions: ["email"], from: self) { result, error in
                 if error == nil {

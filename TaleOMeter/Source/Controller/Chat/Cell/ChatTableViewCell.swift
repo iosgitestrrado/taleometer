@@ -47,7 +47,9 @@ class ChatTableViewCell: UITableViewCell {
             }
         }
         if messageLabel != nil {
+//            messageLabel.attributedText = cellData.Message.htmlToAttributedString
             messageLabel.text = cellData.Message
+            messageLabel.textColor = .white
             messageLabel.sizeToFit()
         }
         if mainStackView != nil {

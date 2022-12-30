@@ -12,6 +12,7 @@ class StoryViewController: UIViewController {
 
     // MARK: - Weak Property -
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var titleTableView: UILabel!
     @IBOutlet weak var tblBottomConstraint: NSLayoutConstraint!
     
     // MARK: - Public Properties -
@@ -44,6 +45,7 @@ class StoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         //setStoryData()
         self.hideKeyboard()
+        self.titleTableView.text = self.title == "English" ? "You share an event from your life. We will turn it into a story." : "உங்க வாழ்க்கையில நடந்த ஒரு விஷையத்த பகிருங்க. நாங்க அதை ஒரு நல்ல கதையா மாத்துவோம்."
         
         /* Popover tableview */
         tableViewPO = UITableView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width - 50.0, height: 320.0))
