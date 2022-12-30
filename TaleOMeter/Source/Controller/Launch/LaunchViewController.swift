@@ -52,14 +52,22 @@ class LaunchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if showTutorial {
+//            if UIScreen.main.bounds.size.height <= 667.0 {
+//                self.guideScrollView.frame.size.height = self.guideScrollView.frame.size.height - 220.0
+//                guideScrollView.frame.origin.y = 60.0
+//            }
+//            self.guideScrollView.frame.size.height = 550.0
+
 //            self.appGuideView.frame.size.height = UIScreen.main.bounds.size.height
-//            self.guideScrollView.frame.size.height = UIScreen.main.bounds.size.height - 61.0
+//
 //            self.appGuideView.frame.size.width = UIScreen.main.bounds.size.width
 //            self.guideScrollView.frame.size.width = UIScreen.main.bounds.size.width
             var originX = 0.0
             for i in 0..<totalImages {
-                let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
-                imgView.contentMode = .scaleAspectFill
+                let imgView = UIImageView(frame: CGRect(x: originX, y: 0.0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
+                imgView.contentMode = .scaleAspectFit
+                imgView.backgroundColor = i == 2 || i == 3 ? UIColor(hexString: "1E1E1E") : .black
+//                imgView.clipsToBounds = true
                 imgView.image = UIImage(named: "tutor\(i+1)")
                 guideScrollView.addSubview(imgView)
                 originX += guideScrollView.frame.size.width
@@ -82,7 +90,8 @@ class LaunchViewController: UIViewController {
                 var originX = 0.0
                 for i in 0..<totalImages {
                     let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
-                    imgView.contentMode = .scaleAspectFill
+                    imgView.contentMode = .scaleAspectFit
+                    imgView.backgroundColor = UIColor(hexString: "1E1E1E")
                     imgView.image = UIImage(named: "tutorial\(i+1)")
                     guideScrollView.addSubview(imgView)
                     originX += guideScrollView.frame.size.width
