@@ -102,7 +102,7 @@ class AudioPlayManager: NSObject {
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
-                    Toast.show(error.localizedDescription)
+//                    Toast.show(error.localizedDescription)
                     Core.HideProgress(currVController)
                 }
             }).resume()

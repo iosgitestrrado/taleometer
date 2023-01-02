@@ -262,7 +262,7 @@ extension FAQViewController {
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
-                    Toast.show(error.localizedDescription)
+//                    Toast.show(error.localizedDescription)
                 }
             }).resume()
         }

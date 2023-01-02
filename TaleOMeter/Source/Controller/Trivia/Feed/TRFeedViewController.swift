@@ -317,6 +317,18 @@ class TRFeedViewController: UIViewController {
     
     // MARK: Tap on video Button
     @objc private func tapOnVideo(_ sender: UIButton) {
+        if AudioPlayManager.shared.isMiniPlayerActive {
+            guard let player = AudioPlayManager.shared.playerAV else { return }
+            if player.isPlaying {
+                AudioPlayManager.shared.playPauseAudio(false)
+            }
+            AudioPlayManager.shared.isNonStop = false
+            AudioPlayManager.shared.isHistory = false
+            AudioPlayManager.shared.isFavourite = false
+            AudioPlayManager.shared.isMiniPlayerActive = false
+            AudioPlayManager.shared.removeMiniPlayer()
+        }
+        
         if let rowIndex = sender.layer.value(forKey: "RowIndex") as? Int {
             videoPlayIndex = rowIndex
             if !postData[sender.tag].User_opened {
@@ -592,7 +604,7 @@ extension TRFeedViewController {
                         }
                     }
                     if audioList.count > 0 {
-                        if AudioPlayManager.shared.isMiniPlayerActive, AudioPlayManager.shared.playerAV != nil, let rowIndex = postData.firstIndex(where: { $0.Post_id == audioList[AudioPlayManager.shared.currentIndex].Id }) {
+                        if !AudioPlayManager.shared.isNonStop, !AudioPlayManager.shared.isHistory, !AudioPlayManager.shared.isFavourite, AudioPlayManager.shared.isMiniPlayerActive, AudioPlayManager.shared.playerAV != nil, let rowIndex = postData.firstIndex(where: { $0.Post_id == audioList[AudioPlayManager.shared.currentIndex].Id }) {
                             videoPlayIndex = rowIndex
                             //self.addAudioPlayer(audioList[AudioPlayManager.shared.currentIndex].Id, rowIndex: rowIndex, isPlayNow: player.isPlaying)
                         }
@@ -625,7 +637,7 @@ extension TRFeedViewController {
                         }
                     }
                     if audioList.count > 0 {
-                        if AudioPlayManager.shared.isMiniPlayerActive, AudioPlayManager.shared.playerAV != nil, let rowIndex = postData.firstIndex(where: { $0.Post_id == audioList[AudioPlayManager.shared.currentIndex].Id }) {
+                        if !AudioPlayManager.shared.isNonStop, !AudioPlayManager.shared.isHistory, !AudioPlayManager.shared.isFavourite, AudioPlayManager.shared.isMiniPlayerActive, AudioPlayManager.shared.playerAV != nil, let rowIndex = postData.firstIndex(where: { $0.Post_id == audioList[AudioPlayManager.shared.currentIndex].Id }) {
                             videoPlayIndex = rowIndex
                             //self.addAudioPlayer(audioList[AudioPlayManager.shared.currentIndex].Id, rowIndex: rowIndex, isPlayNow: player.isPlaying)
                         }

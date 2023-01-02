@@ -518,3 +518,18 @@ extension ProfileViewController: NoInternetDelegate {
         }
     }
 }
+
+// MARK: - PromptViewDelegate -
+extension ProfileViewController: PromptViewDelegate {
+    func didActionOnPromptButton(_ tag: Int) {
+        if tag == 9 {
+            if !Reachability.isConnectedToNetwork() {
+                Core.noInternet(self)
+                return
+            }
+            AuthClient.logout("Logged out successfully", moveToLogin: false)
+            Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
+            return
+        }
+    }
+}
