@@ -199,12 +199,15 @@ class Core: NSObject {
         //        NVActivityIndicatorPresenter.sharedInstance.setMessage("Fetching Data...")
         target.view.addSubview(activityIndicator)
         target.view.isUserInteractionEnabled = false
+        target.navigationController?.view.isUserInteractionEnabled = false
         activityIndicator.startAnimating()
     }
 
     static func HideProgress(_ target: UIViewController) {
         DispatchQueue.main.async {
             target.view.isUserInteractionEnabled = true
+            target.navigationController?.view.isUserInteractionEnabled = true
+
             if let indc = target.view.viewWithTag(9566) {
                 indc.removeFromSuperview()
             }

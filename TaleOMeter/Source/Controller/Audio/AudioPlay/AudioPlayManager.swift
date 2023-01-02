@@ -60,7 +60,16 @@ class AudioPlayManager: NSObject {
         self.isTrivia = isTrivia
         self.isFavourite = isFavourite
         self.isHistory = isHistory
-        currentAudio = audList[currentIndex]
+        if audList.count > currentIndex {
+            currentAudio = audList[currentIndex]
+        } else {
+            completionHandler([Float]())
+            if let player = playerAV {
+                player.pause()
+                playerAV = nil
+            }
+            return
+        }
         audioHistoryId = -1
         
         guard let url = URL(string: currentAudio.File) else { return }
