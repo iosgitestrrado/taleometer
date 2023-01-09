@@ -60,7 +60,7 @@ class NowPlayViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.audioImageView.cornerRadius = self.audioImageView.frame.size.height / 2.0
         self.imageView.cornerRadius = self.imageView.frame.size.height / 2.0
-        self.backBarButton.isHidden = storyId == -1
+        self.backBarButton.isHidden = true// storyId == -1
         if let audList = AudioPlayManager.shared.audioList, audList.count > 0, AudioPlayManager.shared.currentIndex >= 0 {
             currentAudio = audList[AudioPlayManager.shared.currentIndex]
             AudioPlayManager.shared.audioHistoryId = -1
@@ -118,9 +118,11 @@ class NowPlayViewController: UIViewController {
         if (notification.userInfo?["isPlaying"] as? Bool) != nil {
             // Play pause audio wave
             self.playPauseWave()
-        } else if let isNext = notification.userInfo?["isNext"] as? Bool {
-            // Seek audio
-            seekAudio(isNext)
+        } else if let isfrwdback = notification.userInfo?["isForwardBackward"] as? Bool, isfrwdback {
+            if let isNext = notification.userInfo?["isNext"] as? Bool {
+                // Seek audio
+                seekAudio(isNext)
+            }
         } else if let notificationStoryId = notification.userInfo?["NotificationStoryId"] as? Int, notificationStoryId != -1 {
             if let playCurrent = notification.userInfo?["PlayCurrent"] as? Bool {
                 if playCurrent, let audList = AudioPlayManager.shared.audioList, AudioPlayManager.shared.currentIndex >= 0 {
@@ -139,7 +141,7 @@ class NowPlayViewController: UIViewController {
     @objc private func itemDidFinishedPlaying(_ notification: Notification) {
         if !isFromNotification, AudioPlayManager.shared.isNowPlayPage, UserDefaults.standard.bool(forKey: "AutoplayEnable"), let aList = AudioPlayManager.shared.audioList, aList.count > 0 {
             PromptVManager.present(self, verifyTitle: currentAudio.Title, verifyMessage: aList[AudioPlayManager.shared.nextIndex].Title, isAudioView: true, audioImage: aList[AudioPlayManager.shared.nextIndex].ImageUrl)
-        } else if isFromNotification {
+        } else {
             self.playPauseAudio(false)
             self.playPauseWave()
         }

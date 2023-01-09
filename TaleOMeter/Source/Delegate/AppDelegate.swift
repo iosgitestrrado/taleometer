@@ -14,6 +14,8 @@ var storyId = -1
 var categorId = -2//9
 var postId = -1//81
 var commentId = -1
+var targetPage = ""
+var targetPageId = -1
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -151,6 +153,18 @@ extension AppDelegate: MessagingDelegate {
         if let commId = userInfo["gcm.notification.comment_id"] as? String {
             commentId = Int(commId) ?? -1
         }
+        if let trgtPage = userInfo["gcm.notification.target_page"] as? String {
+            targetPage = trgtPage
+        }
+        if let trgtPageId = userInfo["gcm.notification.target_page_id"] as? String {
+            targetPageId = Int(trgtPageId) ?? -1
+            if targetPage.lowercased() == "trivia" {
+                categorId = -1
+                catId = Int(trgtPageId) ?? -2
+            } else if targetPage.lowercased() == "audio_story" {
+                storyId = Int(trgtPageId) ?? -1
+            }
+        }
         self.redirectedToNotification(catId)
     }
     
@@ -177,11 +191,23 @@ extension AppDelegate: MessagingDelegate {
             postId = Int(postIdn) ?? -1
         }
         if let categoryn = userInfo["gcm.notification.category_id"] as? String {
-            categorId = -1//Int(categoryn) ?? -2
+            categorId = -1
             catId = Int(categoryn) ?? -2
         }
         if let commId = userInfo["gcm.notification.comment_id"] as? String {
             commentId = Int(commId) ?? -1
+        }
+        if let trgtPage = userInfo["gcm.notification.target_page"] as? String {
+            targetPage = trgtPage
+        }
+        if let trgtPageId = userInfo["gcm.notification.target_page_id"] as? String {
+            targetPageId = Int(trgtPageId) ?? -1
+            if targetPage.lowercased() == "trivia" {
+                categorId = -1
+                catId = Int(trgtPageId) ?? -2
+            } else if targetPage.lowercased() == "audio_story" {
+                storyId = Int(trgtPageId) ?? -1
+            }
         }
         if let aps = userInfo["aps"] as? [AnyHashable : AnyObject], let alert = aps["alert"] as? [AnyHashable: AnyObject], let title = alert["title"] as? String {
             Toast.show(title)
@@ -194,7 +220,10 @@ extension AppDelegate: MessagingDelegate {
     private func redirectedToNotification(_ catId: Int = -2) {
         if storyId != -1 && !isOnlyTrivia {
             if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
-                if (cont.children.last is NowPlayViewController) {
+                if let nowPlaye = cont.children.last as? NowPlayViewController {
+                    if targetPage.lowercased() == "audio_story" {
+                        nowPlaye.isFromNotification = true
+                    }
                     if let audioListNow = AudioPlayManager.shared.audioList, let audioIndex = audioListNow.firstIndex(where: { $0.Id == storyId }) {
                         AudioPlayManager.shared.setAudioIndex(audioIndex, isNext: false)
                         NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["NotificationStoryId": storyId, "PlayCurrent": true])
@@ -203,6 +232,9 @@ extension AppDelegate: MessagingDelegate {
                     }
                 } else {
                     if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
+                        if targetPage.lowercased() == "audio_story" {
+                            myobject.isFromNotification = true
+                        }
                         if AudioPlayManager.shared.isNonStop {
                             NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
                         }
@@ -217,6 +249,9 @@ extension AppDelegate: MessagingDelegate {
             }
         } else if categorId != -2 {
             if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
+                if AudioPlayManager.shared.isNonStop {
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+                }
                 if (cont.children.last is TRFeedViewController) {
                     addNotificationActivityLog(postId, categoryIdd: catId, type: Constants.ActivityType.trivia)
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "tapOnNotification"), object: nil, userInfo: ["NotificationCategoryId": categorId, "NotificationPostId": postId, "NotificationCommentId": commentId])
@@ -228,6 +263,26 @@ extension AppDelegate: MessagingDelegate {
                         myobject.isFromNotifPostId = postId
                         addNotificationActivityLog(postId, categoryIdd: catId, type: Constants.ActivityType.trivia)
                         cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
+                    }
+                }
+            }
+        } else if !targetPage.isBlank {
+            if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {
+                if targetPage.lowercased() == "leaderboard" {
+                    if (cont.children.last is LeaderboardViewController) {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "tapOnLeaderboradNotification"), object: nil)
+                    } else {
+                        if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: LeaderboardViewController().className) as? LeaderboardViewController {
+                            cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
+                        }
+                    }
+                } else if targetPage.lowercased() == "chat" {
+                    if (cont.children.last is ChatViewController) {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "tapOnChatNotification"), object: nil)
+                    } else {
+                        if let myobject = UIStoryboard(name: Constants.Storyboard.chat, bundle: nil).instantiateViewController(withIdentifier: ChatViewController().className) as? ChatViewController {
+                            cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
+                        }
                     }
                 }
             }

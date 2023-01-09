@@ -34,6 +34,7 @@ class NotificationViewController: UIViewController {
         
         self.segmentController.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16.0)], for: .selected)
         self.segmentController.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16.0)], for: .normal)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData(_:)), name: Notification.Name(rawValue: "tapOnLeaderboradNotification"), object: nil)
 //        self.segmentController.layer.masksToBounds = true
 //        self.segmentController.layer.cornerRadius = 25.0
     }
@@ -50,6 +51,10 @@ class NotificationViewController: UIViewController {
 //        if isMovingFromParent {
 //            self.sideMenuController!.toggleRightView(animated: false)
 //        }
+    }
+    
+    @objc private func reloadData(_ notification: Notification) {
+        self.getNotifications()
     }
     
     @IBAction func tapOnClearAll(_ sender: UIButton) {
@@ -249,15 +254,15 @@ extension NotificationViewController: UITableViewDelegate {
         
         if segmentController.selectedSegmentIndex == 0 {
             if notifiTriviaList.count > 0 &&  notifiTriviaList[indexPath.row].Target_page.lowercased() == "leaderboard" {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: LeaderboardViewController().className) as? LeaderboardViewController {
+                    self.navigationController?.pushViewController(myobject, animated: true)
+                }
+            } else if notifiTriviaList.count > 0 &&  notifiTriviaList[indexPath.row].Target_page_id != -1 && notifiTriviaList[indexPath.row].Target_page.lowercased() == "trivia" {
                 if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
                     if AudioPlayManager.shared.isNonStop {
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
                     }
                     myobject.categoryId = notifiTriviaList[indexPath.row].Target_page_id
-                    self.navigationController?.pushViewController(myobject, animated: true)
-                }
-            } else if notifiTriviaList.count > 0 &&  notifiTriviaList[indexPath.row].Target_page_id != -1 && notifiTriviaList[indexPath.row].Target_page.lowercased() == "trivia" {
-                if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: LeaderboardViewController().className) as? LeaderboardViewController {
                     self.navigationController?.pushViewController(myobject, animated: true)
                 }
             }

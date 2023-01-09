@@ -233,7 +233,6 @@ class LaunchViewController: UIViewController {
                 Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: "LoginViewController", animated: false)
             }
         } else {
-            
             if let profileData = Login.getProfileData(), profileData.Is_login, Core.GetAppVersion() == "1.4.7", !UserDefaults.standard.bool(forKey: "isTaleometer1.0First") {
                 AuthClient.logout()
             }
@@ -249,7 +248,25 @@ class LaunchViewController: UIViewController {
             if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) && storyId != -1 {
                 if let myobject = UIStoryboard(name: Constants.Storyboard.audio, bundle: nil).instantiateViewController(withIdentifier: "NowPlayViewController") as? NowPlayViewController {
                     myobject.storyIdis = storyId
+                    if targetPage.lowercased() == "audio_story" {
+                        myobject.isFromNotification = true
+                    }
                     self.navigationController?.pushViewController(myobject, animated: true)
+                    return
+                }
+            } else if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) && categorId != -2 {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: "TRFeedViewController") as? TRFeedViewController {
+                    myobject.categoryId = categorId
+                    myobject.redirectToPostId = postId
+                    self.navigationController?.pushViewController(myobject, animated: true)
+                    return
+                }
+            } else if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) && !targetPage.isBlank {
+                if targetPage.lowercased() == "leaderboard" {
+                    Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: LeaderboardViewController().className, animated: false)
+                    return
+                } else if targetPage.lowercased() == "chat" {
+                    Core.push(self, storyboard: Constants.Storyboard.chat, storyboardId: ChatViewController().className, animated: false)
                     return
                 }
             }

@@ -151,6 +151,7 @@ class AudioClient {
         APIClient.shared.post(parameters: req, feed: .StoryAudioStories) { result in
             ResponseAPI.getResponseArray(result) { response in
                 var audios = [Audio]()
+//                print(response ?? "te")
                 if let data = response {
                     data.forEach { object in
                         let aud = Audio(object)

@@ -121,10 +121,8 @@ class DashboardViewController: UIViewController {
     }
     
     // MARK: - Side Menu button action -
-    @IBAction func ClickOnTopbarItem(_ sender: UIBarButtonItem) {
-        if sender.tag == 0 { // Menu
-            self.sideMenuController!.toggleRightView(animated: true)
-        }
+    @IBAction func ClickOnTopbarItem(_ sender: UIButton) {
+        self.sideMenuController!.toggleRightView(animated: true)
     }
     
     // MARK: - tap on non stop button

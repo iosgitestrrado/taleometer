@@ -823,6 +823,9 @@ extension TRFeedViewController : UITableViewDataSource {
                            cellId: cellDataArray[indexPath.row].cellId,
                            messageString: messageString, videoUrl: postData[cellData.index].QuestionVideoURL, row: indexPath.row, target: self,
                            selectors: [#selector(tapOnPost(_:)), #selector(tapOnViewMore(_:)),  #selector(tapOnViewPrevReply(_:)),  #selector(tapOnReply(_:)), #selector(doneToolbar(_:)), #selector(tapOnAnswer(_:)), #selector(tapOnVideo(_:)), #selector(tapOnQuestionImage(_:)), #selector(tapOnAudioPlay(_:))], questionType: postData[cellData.index].Question_type)
+        if cell.playButton != nil {
+            cell.playButton.isHidden = true
+        }
         if cellDataArray[indexPath.row].cellId == FeedCellIdentifier.question || cellDataArray[indexPath.row].cellId == FeedCellIdentifier.questionVideo, let textField = cell.textField {
             textField.text = postData[cellData.index].Value
             postData[cellData.index].TextField = textField
@@ -850,8 +853,22 @@ extension TRFeedViewController : UITableViewDataSource {
         }
         if videoPlayIndex == indexPath.row, audioPlayingIndex != -1, cell.audioView != nil, let audioPlayer = AudioPlayManager.shared.playerAV, let currentItem = audioPlayer.currentItem {
             if cell.playButton != nil {
+                cell.playButton.isHidden = true
+                if audioPlayer.isPlaying {
+                    cell.playButton.isHidden = false
+                    if let videoBtn1 = cell.videoButton1 {
+                        videoBtn1.isHidden = true
+                    }
+                } else {
+                    if let videoBtn1 = cell.videoButton1 {
+                        videoBtn1.isHidden = false
+                    }
+                }
                 cell.playButton.isSelected = !audioPlayer.isPlaying
             }
+//            if cell.videoButton1 != nil {
+//                cell.videoButton1.isSelected = audioPlayer.isPlaying
+//            }
             if cell.songTitle != nil {
                 cell.songTitle.text = postData[cellData.index].Question
             }
@@ -885,10 +902,11 @@ extension TRFeedViewController : UITableViewDataSource {
                 if let subTitle = cell.subTitleXConstraint {
                     subTitle.constant = 60.0
                 }
+                if let videoBtn1 = cell.videoButton1 {
+                    videoBtn1.isHidden = true
+                }
             }
-            if let videoBtn1 = cell.videoButton1 {
-                videoBtn1.isHidden = true
-            }
+            
         } else if let videoBtn = cell.videoButton {
             if let playerView = videoBtn.viewWithTag(9898998) {
                 playerView.removeFromSuperview()
@@ -910,13 +928,6 @@ extension TRFeedViewController : UITableViewDataSource {
                 if cell.playButton != nil {
                     cell.playButton.isSelected = true
                 }
-            }
-        }
-        
-        if cell.playButton != nil {
-            cell.playButton.isHidden = true
-            if postData[cellData.index].Question_type.lowercased() == "audio" && cell.videoButton1 != nil, let audioPlayer = AudioPlayManager.shared.playerAV, !audioPlayer.isPlaying {
-                cell.videoButton1.isHidden = false
             }
         }
         return cell

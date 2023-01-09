@@ -184,7 +184,7 @@ class AudioPlayManager: NSObject {
         commandCenter.previousTrackCommand.addTarget { [unowned self] event in
             if playerAV != nil {
                 seekMiniPlayer(false)
-                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isNext": false])
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isForwardBackward": true, "isNext": false])
                 return .success
             }
             return .commandFailed
@@ -194,17 +194,18 @@ class AudioPlayManager: NSObject {
         commandCenter.nextTrackCommand.addTarget { [unowned self] event in
             if playerAV != nil {
                 seekMiniPlayer(true)
-                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isNext": true])
+                NotificationCenter.default.post(name: remoteCommandName, object: nil, userInfo: ["isForwardBackward": true, "isNext": true])
                 return .success
             }
             return .commandFailed
         }
     }
     
+    let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+
     // MARK: - Setup now playing for notification on mobile application -
     private func setupNowPlaying() {
         // Define Now Playing Info
-        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
 
         if let audioList = audioList, currentIndex >= 0 {
@@ -268,7 +269,7 @@ class AudioPlayManager: NSObject {
                 NotificationCenter.default.post(name: AudioPlayManager.finishNotification, object: nil)
             }
             if currVController.className == AuthorViewController().className {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList?.count, "IsSelected" : isAudioPlaying])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "mainScreenPlay"), object: nil, userInfo: ["TotalStories" : audioList?.count ?? 0, "IsSelected" : isAudioPlaying])
                 NotificationCenter.default.post(name: AudioPlayManager.favPlayNotification, object: nil, userInfo: ["isPlaying": player.isPlaying])
             }
         }
@@ -658,6 +659,7 @@ extension AudioPlayManager {
             player.seek(to: CMTimeMakeWithSeconds(0, preferredTimescale: 1000))
             playPauseAudio(false)
         }
+//        nowPlayingInfoCenter.nowPlayingInfo = nil
     }
     
     // MARK: - Click on miniplayer

@@ -93,17 +93,17 @@ class Core: NSObject {
         }
 
         if !setNavigationBarHidden && cont.navigationController?.children[(cont.navigationController?.children.count)! - 2] is LaunchViewController {
-            if storyId != -1 {
+            if storyId != -1 || categorId != -2 || !targetPage.isEmpty {
                 if let dash = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: DashboardViewController().className) as? DashboardViewController, var navViewControllers = cont.navigationController?.viewControllers {
                     navViewControllers.insert(dash, at: navViewControllers.count - 1)
                     cont.navigationController?.viewControllers = navViewControllers
                 }
-            } else if categorId != -2 {
+            } /*else if categorId != -2 {
                 if let dashTrivia = UIStoryboard(name: Constants.Storyboard.trivia, bundle: nil).instantiateViewController(withIdentifier: TriviaViewController().className) as? TriviaViewController, var navViewControllers = cont.navigationController?.viewControllers {
                     navViewControllers.insert(dashTrivia, at: navViewControllers.count - 1)
                     cont.navigationController?.viewControllers = navViewControllers
                 }
-            } else {
+            } */else {
                 cont.navigationItem.hidesBackButton = true
             }
             if cont is RegisterViewController || cont is PreferenceViewController {

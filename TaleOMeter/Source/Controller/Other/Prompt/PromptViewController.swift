@@ -81,7 +81,7 @@ class PromptViewController: UIViewController {
             }
             
             let rangeTitle1 = NSRange(location: 0, length: 21)
-            let rangeTitle2 = NSRange(location: 21, length: songTitle.utf8.count + 2) // 10 is title character length
+            let rangeTitle2 = NSRange(location: 21, length: songTitle.utf8.count + 3)
             
             titleString.addAttributes(font16, range: rangeTitle1)
             titleString.addAttributes(font22, range: rangeTitle2)

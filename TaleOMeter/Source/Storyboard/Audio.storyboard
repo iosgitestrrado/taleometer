@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -60,7 +60,7 @@
                                             <constraint firstAttribute="width" secondItem="gku-sP-Vhc" secondAttribute="height" multiplier="1:1" id="wXo-lf-VJ2"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracks To Relax" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="B54-aL-HnB">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="B54-aL-HnB">
                                         <rect key="frame" x="10" y="194.66666666666669" width="370" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="A3H-01-uS1"/>
@@ -83,7 +83,7 @@
                                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Plot: Jane Doe"/>
+                                                        <state key="normal" title="Plot:"/>
                                                         <connections>
                                                             <action selector="tapOnSPNButton:" destination="hrd-vA-2ET" eventType="touchUpInside" id="CY0-I7-fLc"/>
                                                         </connections>
@@ -108,7 +108,7 @@
                                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Story: Jane Do"/>
+                                                        <state key="normal" title="Story: "/>
                                                         <connections>
                                                             <action selector="tapOnSPNButton:" destination="hrd-vA-2ET" eventType="touchUpInside" id="ZUk-Wg-pxg"/>
                                                         </connections>
@@ -133,7 +133,7 @@
                                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Narration: Jane Doe"/>
+                                                        <state key="normal" title="Narration:"/>
                                                         <connections>
                                                             <action selector="tapOnSPNButton:" destination="hrd-vA-2ET" eventType="touchUpInside" id="WVl-xt-78S"/>
                                                         </connections>
@@ -309,7 +309,7 @@
                                     <constraint firstAttribute="bottom" secondItem="18g-Ab-AV8" secondAttribute="bottom" id="xxr-h1-eey"/>
                                 </constraints>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDn-As-umL">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDn-As-umL">
                                 <rect key="frame" x="8" y="20" width="44" height="34"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="back_red"/>
@@ -1039,7 +1039,7 @@
                                             <action selector="tapOnBack:" destination="BVW-ro-8og" eventType="touchUpInside" id="WdY-SP-nfm"/>
                                         </connections>
                                     </button>
-                                    <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for stories" translatesAutoresizingMaskIntoConstraints="NO" id="wW5-og-7VZ">
+                                    <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" placeholder="Search for stories" translatesAutoresizingMaskIntoConstraints="NO" id="wW5-og-7VZ">
                                         <rect key="frame" x="40" y="0.0" width="334" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

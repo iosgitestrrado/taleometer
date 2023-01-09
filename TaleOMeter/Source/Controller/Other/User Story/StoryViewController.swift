@@ -271,8 +271,8 @@ extension StoryViewController: UITableViewDataSource {
         if self.tableViewPO == tableView {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "cellIdentifier")
             cell.textLabel?.text = "\(self.popupArray[indexPath.row])"
-            cell.textLabel?.textColor = .black
-            cell.contentView.backgroundColor = .white
+            cell.textLabel?.textColor = .white
+            cell.contentView.backgroundColor = Constants.purpleColor
             return cell
         }
         

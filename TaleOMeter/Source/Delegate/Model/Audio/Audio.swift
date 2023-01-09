@@ -31,6 +31,7 @@ struct Audio {
     var Favorites_count = Int()
     var IsLinkedAudio = Bool()
     
+    var Audio_story_count = Int()
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
@@ -82,7 +83,7 @@ struct Audio {
         }
         
         TypeT = json["type"].stringValue
-
+        Audio_story_count = json["audio_story_count"].intValue
                 
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
 //            Story = story

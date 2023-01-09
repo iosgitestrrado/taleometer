@@ -246,7 +246,7 @@ class FeedCellView: UITableViewCell {
 //            } else {
             videoBtn1.isHidden = false
             if questionType.lowercased() == "audio" {
-                videoBtn1.isHidden = false
+//                videoBtn1.isHidden = false
                 videoBtn.sd_setBackgroundImage(with: URL(string: cellData.videoThumbnail), for: .normal, placeholderImage: UIImage(named: "bannerimage"), options: []) { imgg, error, typrr, url in
                     if error != nil {
                         videoBtn.setBackgroundImage(UIImage(named: "bannerimage") ?? defaultImage, for: .normal)

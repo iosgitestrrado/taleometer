@@ -248,21 +248,18 @@
                     </view>
                     <navigationItem key="navigationItem" title="tale'o'meter" id="sgD-H4-zj0">
                         <rightBarButtonItems>
-                            <barButtonItem image="menu_white" style="plain" id="SWG-Yz-Nls">
-                                <connections>
-                                    <action selector="ClickOnTopbarItem:" destination="5eJ-87-TSF" id="eWR-6C-bMv"/>
-                                </connections>
+                            <barButtonItem id="7nS-Qs-h08">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xWs-6M-W4K">
+                                    <rect key="frame" x="324" y="0.0" width="50" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="menu_white"/>
+                                    <connections>
+                                        <action selector="ClickOnTopbarItem:" destination="5eJ-87-TSF" eventType="touchUpInside" id="1nf-nw-VUy"/>
+                                    </connections>
+                                </button>
                             </barButtonItem>
-                            <barButtonItem tag="1" image="noti" style="plain" id="7QN-4c-hJf" customClass="BadgedButtonItem" customModule="TaleOMeter" customModuleProvider="target">
-                                <connections>
-                                    <action selector="ClickOnTopbarItem:" destination="5eJ-87-TSF" id="ZiU-N1-GYW"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem tag="2" image="msg" style="plain" id="2bS-VW-xAb" customClass="BadgedButtonItem" customModule="TaleOMeter" customModuleProvider="target">
-                                <connections>
-                                    <action selector="ClickOnTopbarItem:" destination="5eJ-87-TSF" id="L7h-Iu-RxS"/>
-                                </connections>
-                            </barButtonItem>
+                            <barButtonItem tag="1" image="noti" style="plain" id="7QN-4c-hJf" customClass="BadgedButtonItem" customModule="TaleOMeter" customModuleProvider="target"/>
+                            <barButtonItem tag="2" image="msg" style="plain" id="2bS-VW-xAb" customClass="BadgedButtonItem" customModule="TaleOMeter" customModuleProvider="target"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -387,7 +384,7 @@
             <objects>
                 <viewController storyboardIdentifier="SegmentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="qxK-Ne-xRd" customClass="SegmentViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4yU-Sn-yXv">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="674"/>
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="501"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="nPo-X1-DwE"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -589,11 +586,11 @@ Cg
             <objects>
                 <viewController storyboardIdentifier="GridViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DLo-Xl-bO1" customClass="GridViewController" customModule="TaleOMeter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MJl-nJ-fh4">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="617"/>
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="444"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3JD-tz-CaK">
-                                <rect key="frame" x="0.0" y="0.0" width="350" height="617"/>
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="444"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="gridCell" rowHeight="130" id="Xpb-Wc-I3M" customClass="GridViewTableCell" customModule="TaleOMeter" customModuleProvider="target">
@@ -1042,7 +1039,7 @@ Cg
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="JND-P8-yIF"/>
+        <segue reference="APt-hQ-xjT"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>

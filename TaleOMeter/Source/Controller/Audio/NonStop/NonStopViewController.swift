@@ -245,9 +245,63 @@ class NonStopViewController: UIViewController {
         if (notification.userInfo?["isPlaying"] as? Bool) != nil {
             // Play pause audio wave
             self.playPauseWave()
-        } else if let isNext = notification.userInfo?["isNext"] as? Bool {
-            // Play next or previouse audio
-            nextPrevPlay(isNext ,isPlayNow: true)
+        } else if let isfrwdback = notification.userInfo?["isForwardBackward"] as? Bool, isfrwdback {
+            if let isNext = notification.userInfo?["isNext"] as? Bool {
+                // Seek audio
+                seekAudio(isNext)
+            }
+        }
+        
+        
+//        if let isNext = notification.userInfo?["isNext"] as? Bool {
+//            // Play next or previouse audio
+//            nextPrevPlay(isNext ,isPlayNow: true)
+//        }
+    }
+    
+    // MARK: - Seek audio time
+    private func seekAudio(_ forward: Bool) {
+        if let player = AudioPlayManager.shared.playerAV {
+            if forward {
+                guard let duration = player.currentItem?.duration else {
+                        return
+                }
+                let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+                let newTime = playerCurrentTime + 10
+
+                if newTime < CMTimeGetSeconds(duration) {
+                    let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                    player.seek(to: time2)
+                    setTime(newTime)
+                } else {
+                    let time2: CMTime = CMTimeMake(value: Int64(CMTimeGetSeconds(duration)) * 1000, timescale: 1000)
+                    player.seek(to: time2)
+                    setTime(newTime)
+                }
+            } else {
+                let playerCurrentTime = CMTimeGetSeconds(player.currentTime())
+                var newTime = playerCurrentTime - 10
+                if newTime < 0 {
+                    newTime = 0
+                }
+                let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                player.seek(to: time2)
+                setTime(newTime)
+            }
+        }
+    }
+    
+    // MARK: - Set start and end time
+    private func setTime(_ currentTime: TimeInterval) {
+        let playhead = currentTime
+        let duration = TimeInterval(totalTimeDuration) - currentTime
+        
+        if !playhead.isNaN && !duration.isNaN {
+            self.audioTime.text = "\(AudioPlayManager.formatTimeFor(seconds: playhead + 1)) \\ \(AudioPlayManager.formatTimeFor(seconds: duration))"
+        }
+        if let chronometer = self.visualizationWave.playChronometer {
+            chronometer.timerCurrentValue = currentTime
+            chronometer.timerDidUpdate?(currentTime)
         }
     }
     

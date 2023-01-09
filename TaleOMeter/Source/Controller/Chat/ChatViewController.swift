@@ -29,9 +29,10 @@ class ChatViewController: UIViewController {
         self.textView.textColor = .darkGray
         self.textView.addInputAccessoryView("Done", target: self, selector: #selector(tapOnDoneTool(_:)))
         
-        self.hideKeyboard()
+//        self.hideKeyboard()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData(_:)), name: Notification.Name(rawValue: "tapOnChatNotification"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,9 +44,14 @@ class ChatViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.view.endEditing(true)
 //        if isMovingFromParent {
 //            self.sideMenuController!.toggleRightView(animated: false)
 //        }
+    }
+    
+    @objc private func reloadData(_ notification: Notification) {
+        self.getMessages()
     }
     
     // MARK: - Side Menu button action -
@@ -72,8 +78,7 @@ class ChatViewController: UIViewController {
 //        chatCellList.append(CellData(cellId: ChatTableViewCell.rightIdentifier, data: ChatModel(JSON(chatDictonary), storeName: storeName), isRight: true))
 //        self.tableView.reloadData()
         messageString = self.textView.text
-        self.textView.text = textPlaceholder
-        self.textView.textColor = .darkGray
+        self.textView.text = ""
         self.sendMessage()
     }
     
@@ -134,18 +139,24 @@ extension ChatViewController {
 //        }
     }
     
-    @objc func getMessages() {
+    @objc func getMessages(_ showProgress: Bool = true) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self, methodName: "getMessages")
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
+        if showProgress {
+            Core.ShowProgress(self, detailLbl: "")
+        }
         ChatClient.getMessages { response in
             if let data = response, data.Messages.count > 0 {
                 self.chatList = data.Messages
             }
-            self.tableView.reloadData()
-            Core.HideProgress(self)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            if showProgress {
+                Core.HideProgress(self)
+            }
         }
     }
     
@@ -154,10 +165,14 @@ extension ChatViewController {
             Core.noInternet(self, methodName: "sendMessage")
             return
         }
-        Core.ShowProgress(self, detailLbl: "")
-        ChatClient.sendMessage(SendMessageRequest(message: messageString)) { response in
-            Core.HideProgress(self)
-            self.getMessages()
+//        Core.ShowProgress(self, detailLbl: "")
+        DispatchQueue.global(qos: .background).async {
+            ChatClient.sendMessage(SendMessageRequest(message: self.messageString)) { response in
+                //            Core.HideProgress(self)
+                DispatchQueue.global(qos: .background).async {
+                    self.getMessages(false)
+                }
+            }
         }
     }
     

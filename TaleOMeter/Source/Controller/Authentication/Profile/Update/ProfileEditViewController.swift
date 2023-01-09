@@ -90,7 +90,6 @@ class ProfileEditViewController: UIViewController {
         }
     }
     
-    
     @IBAction func tapOnSubmit(_ sender: Any) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)

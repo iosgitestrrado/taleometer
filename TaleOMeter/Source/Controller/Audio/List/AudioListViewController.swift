@@ -469,7 +469,7 @@ extension AudioListViewController {
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "Getting Audios...")
-        AudioClient.getAudiosByPlot(PlotRequest(plot_id: storyData.Id, shuffle: shuffle, page: "\(pageNumber)", limit: 10)) { [self] response in
+        AudioClient.getAudiosByPlot(PlotRequest(plot_id: storyData.Id, shuffle: shuffle, page: "\(pageNumber)", limit: 100)) { [self] response in
             showNoData = 1
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
@@ -516,7 +516,7 @@ extension AudioListViewController {
             return
         }
         Core.ShowProgress(parentConroller, detailLbl: "Getting Audios...")
-        AudioClient.getAudiosByNarration(NarrationRequest(narration_id: storyData.Id, shuffle: shuffle, page: "\(pageNumber)", limit: 10)) { [self] response in
+        AudioClient.getAudiosByNarration(NarrationRequest(narration_id: storyData.Id, shuffle: shuffle, page: "\(pageNumber)", limit: 100)) { [self] response in
             showNoData = 1
             if let data = response, data.count > 0 {
                 morePage = data.count > 0
