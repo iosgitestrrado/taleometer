@@ -184,6 +184,7 @@ enum Feed {
     //Audio
     case GuestAudioStories
     case AudioStories
+    case GetAudioStoryById
     case AudioStoriesGenre
     case NonStopAudios
     case AddAudioStoryAction
@@ -232,6 +233,7 @@ enum Feed {
     case TriviaAddCommennt
     case TriviaPostView
     case Leaderboard
+    case TriviaLeaderboard
     
     //Activities
     case ShareActivity
@@ -282,6 +284,7 @@ extension Feed: Endpoint {
         //Audio
         case .GuestAudioStories:        return "/api/guest-audio-stories"
         case .AudioStories:             return "/api/audio-stories"
+        case .GetAudioStoryById:        return "/api/audio-story/id/"
         case .AudioStoriesGenre:        return "/api/audio-stories/genre"
         case .NonStopAudios:            return "/api/audio-stories/non-stop"
         case .AddAudioStoryAction:      return "/api/audio-story/action"
@@ -330,6 +333,7 @@ extension Feed: Endpoint {
         case .TriviaAddCommennt:        return "/api/trivia/add-comment"
         case .TriviaPostView:           return "/api/trivia/posts/view"
         case .Leaderboard:              return "/api/trivia-leader"
+        case .TriviaLeaderboard:        return "/api/trivia-leaderboard"
 
         //Activity
         case .ShareActivity:            return "/api/trivia/users/share/activity"

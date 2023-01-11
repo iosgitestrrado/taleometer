@@ -638,8 +638,9 @@ extension NowPlayViewController {
             return
         }
         Core.ShowProgress(self, detailLbl: "")
-        AudioClient.getAudios(AudioRequest(page: "all", limit: 20)) { [self] response in
-            if let data = response {
+//        AudioClient.getAudios(AudioRequest(page: "all", limit: 20)) { [self] response in
+        AudioClient.getAudioById(storyIdCurrent) { [self] response in
+            if let data = response, data.count > 0 {
                 myAudioList = data
                 AudioPlayManager.shared.audioList = myAudioList
                 if let currAudioIdx = myAudioList.firstIndex(where: { $0.Id == storyIdCurrent }) {
@@ -648,10 +649,14 @@ extension NowPlayViewController {
                     currentAudioIndex = 0
                 }
                 AudioPlayManager.shared.setAudioIndex(currentAudioIndex, isNext: false)
-                currentAudio = myAudioList[currentAudioIndex]
+                if myAudioList.count > 0 {
+                    currentAudio = myAudioList[currentAudioIndex]
+                }
                 AudioPlayManager.shared.audioHistoryId = -1
                 // Configure audio data
                 setupAudioDataPlay(isPlaying)
+            } else {
+                Toast.show("No Audio Found!")
             }
             Core.HideProgress(self)
         }

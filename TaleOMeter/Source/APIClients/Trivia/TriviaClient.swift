@@ -109,7 +109,7 @@ class TriviaClient {
     }
     
     static func getLeaderboards(_ completion: @escaping(LeaderboardData?) -> Void) {
-        APIClient.shared.postJson(parameters: EmptyRequest(), feed: .Leaderboard) { result in
+        APIClient.shared.postJson(parameters: EmptyRequest(), feed: .TriviaLeaderboard) { result in
             ResponseAPI.getResponseJson(result) { response in
                 var leaderData: LeaderboardData?
                 if let data = response {

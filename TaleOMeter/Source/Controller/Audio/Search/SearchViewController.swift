@@ -58,7 +58,9 @@ class SearchViewController: UIViewController {
 //            recentSearchArray = recentData
 //        }
 //        self.tableView.reloadData()
-        self.getRecent()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            self.getRecent()
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)

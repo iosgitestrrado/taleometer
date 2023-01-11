@@ -38,8 +38,10 @@ class ChatViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
-        getMessages()
-        addActivityLog()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getMessages()
+            addActivityLog()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

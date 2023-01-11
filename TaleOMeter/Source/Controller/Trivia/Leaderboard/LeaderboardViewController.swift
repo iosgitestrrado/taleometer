@@ -49,9 +49,9 @@ class LeaderboardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
-        getLeaderboardData()
-        addActivityLog()
         if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getLeaderboardData()
+            addActivityLog()
             getNotificationCount()
         }
     }

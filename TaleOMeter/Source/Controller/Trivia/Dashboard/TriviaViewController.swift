@@ -60,8 +60,10 @@ class TriviaViewController: UIViewController {
         if AudioPlayManager.shared.isMiniPlayerActive {
             AudioPlayManager.shared.addMiniPlayer(self, bottomConstraint: self.containerBottomCons)
         }
-        getTrivia()
-        addActivityLog()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getTrivia()
+            addActivityLog()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

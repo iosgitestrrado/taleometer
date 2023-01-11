@@ -71,6 +71,21 @@ class AudioClient {
         }
     }
     
+    static func getAudioById(_ storyId: Int, completion: @escaping([Audio]?) -> Void) {
+        APIClient.shared.get("\(storyId)", feed: .GetAudioStoryById) { result in
+            ResponseAPI.getResponseArray(result, showAlert: false) { response in
+                var audios = [Audio]()
+                if let audio = response {
+                    audio.forEach({ (object) in
+                        // Set refrence for Story, Plot and Narration
+                        audios.append(Audio(object))
+                    })
+                }
+                completion(audios)
+            }
+        }
+    }
+    
     static func getNonstopAudio(_ audioReq: AudioRequest, completion: @escaping([Audio]?) -> Void) {
         APIClient.shared.post(parameters: audioReq, feed: .NonStopAudios) { result in
             ResponseAPI.getResponseArray(result) { response in

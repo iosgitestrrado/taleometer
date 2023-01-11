@@ -36,8 +36,10 @@ class FAQViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
-        getFAQData()
-        addActivityLog()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getFAQData()
+            addActivityLog()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

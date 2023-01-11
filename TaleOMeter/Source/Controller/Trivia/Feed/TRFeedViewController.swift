@@ -55,6 +55,12 @@ class TRFeedViewController: UIViewController {
     private var audioList = [Audio]()
     private var audioTimer = Timer()
     
+//    private var playButtonAudio = UIButton()
+//    private var videoButtonAudio = UIButton()
+    private var startTimeLabelAudio: UILabel?
+    private var endTimeLabelAudio: UILabel?
+    private var progressBarAudio: UIProgressView?
+    
     // MARK: - Lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +82,7 @@ class TRFeedViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateUserData(_:)), name: Notification.Name(rawValue: "updateUserData"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tapOnNotification(_:)), name: Notification.Name(rawValue: "tapOnNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishedPlaying(_:)), name: AudioPlayManager.finishNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -479,6 +486,7 @@ class TRFeedViewController: UIViewController {
                 audioTimer = Timer(timeInterval: 1.0, target: self, selector: #selector(TRFeedViewController.updateAudioPlayerTime), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.audioTimer, forMode: .default)
                 audioTimer.fire()
+                tableView.reloadData()
             }
         } else {
             if player.isPlaying {
@@ -493,10 +501,31 @@ class TRFeedViewController: UIViewController {
 //        }
     }
     
+    // MARK: - When audio playing is finished -
+    @objc private func itemDidFinishedPlaying(_ notification: Notification) {
+        self.playPauseAudio(false, rowIndex: audioPlayingIndex)
+        self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
+        audioPlayingIndex = -1
+    }
+    
     // MARK: - Add mini player time and progress bar
     @objc func updateAudioPlayerTime() {
         if audioPlayingIndex > -1 {
-            self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
+            if let audioPlayer = AudioPlayManager.shared.playerAV, let currentItem = audioPlayer.currentItem {
+                // Get the current time in seconds
+                let playhead = currentItem.currentTime().seconds
+                let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
+                if !playhead.isNaN && self.startTimeLabelAudio != nil {
+                    self.startTimeLabelAudio?.text = playhead > 0 ? AudioPlayManager.formatTimeFor(seconds: playhead + 1) : AudioPlayManager.formatTimeFor(seconds: playhead)
+                }
+                if !duration.isNaN && self.endTimeLabelAudio != nil {
+                    self.endTimeLabelAudio?.text = AudioPlayManager.formatTimeFor(seconds: duration)
+                }
+                if !playhead.isNaN && !currentItem.duration.seconds.isNaN && self.progressBarAudio != nil {
+                    self.progressBarAudio?.progress = Float(playhead / currentItem.duration.seconds)
+                }
+            }
+//            self.tableView.reloadRows(at: [IndexPath(row: audioPlayingIndex, section: 0)], with: .none)
         }
 //        if let currentItem = AudioPlayManager.shared.playerAV?.currentItem {
 //            // Get the current time in seconds
@@ -875,14 +904,23 @@ extension TRFeedViewController : UITableViewDataSource {
             // Get the current time in seconds
             let playhead = currentItem.currentTime().seconds
             let duration = currentItem.duration.seconds - currentItem.currentTime().seconds
-            if !playhead.isNaN && cell.startTimeLabel != nil {
-                cell.startTimeLabel.text = playhead > 0 ? AudioPlayManager.formatTimeFor(seconds: playhead + 1) : AudioPlayManager.formatTimeFor(seconds: playhead)
+            if cell.startTimeLabel != nil {
+                if !playhead.isNaN {
+                    cell.startTimeLabel.text = playhead > 0 ? AudioPlayManager.formatTimeFor(seconds: playhead + 1) : AudioPlayManager.formatTimeFor(seconds: playhead)
+                }
+                self.startTimeLabelAudio = cell.startTimeLabel
             }
-            if !duration.isNaN && cell.endTimeLabel != nil {
-                cell.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+            if cell.endTimeLabel != nil {
+                if !duration.isNaN {
+                    cell.endTimeLabel.text = AudioPlayManager.formatTimeFor(seconds: duration)
+                }
+                self.endTimeLabelAudio = cell.endTimeLabel
             }
-            if !playhead.isNaN && !currentItem.duration.seconds.isNaN && cell.progressBar != nil {
-                cell.progressBar.progress = Float(playhead / currentItem.duration.seconds)
+            if cell.progressBar != nil {
+                if !playhead.isNaN && !currentItem.duration.seconds.isNaN {
+                    cell.progressBar.progress = Float(playhead / currentItem.duration.seconds)
+                }
+                self.progressBarAudio = cell.progressBar
             }
         }
         if videoPlayIndex == indexPath.row, let videoURL = URL(string: postData[cellData.index].QuestionVideoURL) {

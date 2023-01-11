@@ -50,7 +50,9 @@ class ProfileViewController: UIViewController {
                 AudioPlayManager.shared.addMiniPlayer(self)
             }
         }
-        getProfileData()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getProfileData()
+        }
         notificationSwitch.isSelected = true
         autoPlaySwitch.isSelected = UserDefaults.standard.bool(forKey: "AutoplayEnable")
         autoPlayView.isHidden = isOnlyTrivia

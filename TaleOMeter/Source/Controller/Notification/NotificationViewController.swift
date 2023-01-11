@@ -42,8 +42,10 @@ class NotificationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Core.showNavigationBar(cont: self, setNavigationBarHidden: false, isRightViewEnabled: true, titleInLeft: true, backImage: true)
-        getNotifications()
-        addActivityLog()
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getNotifications()
+            addActivityLog()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

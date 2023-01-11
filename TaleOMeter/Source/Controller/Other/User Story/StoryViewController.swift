@@ -55,7 +55,6 @@ class StoryViewController: UIViewController {
         self.tableView.panGestureRecognizer.cancelsTouchesInView = false
         NotificationCenter.default.addObserver(self, selector: #selector(updatedRadioButton(_:)), name: NSNotification.Name(rawValue: "UpdateRadioButton"), object: nil)
 
-        getUserStory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +62,9 @@ class StoryViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            getUserStory()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -2294,10 +2294,15 @@
                     </view>
                     <navigationItem key="navigationItem" title="Storivia Leaderboard" id="xNX-fq-fWq">
                         <rightBarButtonItems>
-                            <barButtonItem tag="1" image="menu_white" style="plain" id="tF6-Yq-qgF">
-                                <connections>
-                                    <action selector="ClickOnMenu:" destination="UbQ-YT-6qa" id="JTc-mh-O52"/>
-                                </connections>
+                            <barButtonItem id="Ay1-71-rCG">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gDL-c2-BAA">
+                                    <rect key="frame" x="324" y="0.0" width="50" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="menu_white"/>
+                                    <connections>
+                                        <action selector="ClickOnMenu:" destination="UbQ-YT-6qa" eventType="touchUpInside" id="XaC-ZX-coS"/>
+                                    </connections>
+                                </button>
                             </barButtonItem>
                             <barButtonItem tag="1" image="noti" style="plain" id="KCF-3r-e5f" customClass="BadgedButtonItem" customModule="TaleOMeter" customModuleProvider="target"/>
                             <barButtonItem tag="2" image="msg" style="plain" id="hHj-nF-T9A" customClass="BadgedButtonItem" customModule="TaleOMeter" customModuleProvider="target"/>

@@ -136,6 +136,41 @@ extension AppDelegate: MessagingDelegate {
 //        print(remoteMessage.appData)
 //    }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+       // print(userInfo)
+        var catId = -2
+        if let storyIdn = userInfo["gcm.notification.audio_story_id"] as? String {
+            storyId = Int(storyIdn) ?? -1
+        }
+        if let postIdn = userInfo["gcm.notification.post_id"] as? String {
+            postId = Int(postIdn) ?? -1
+        }
+        if let categoryn = userInfo["gcm.notification.category_id"] as? String {
+            categorId = -1//Int(categoryn) ?? -2
+            catId = Int(categoryn) ?? -2
+        }
+        if let commId = userInfo["gcm.notification.comment_id"] as? String {
+            commentId = Int(commId) ?? -1
+        }
+        if let trgtPage = userInfo["gcm.notification.target_page"] as? String {
+            targetPage = trgtPage
+        }
+        if let trgtPageId = userInfo["gcm.notification.target_page_id"] as? String {
+            targetPageId = Int(trgtPageId) ?? -1
+            if targetPage.lowercased() == "trivia" {
+                categorId = -1
+                catId = Int(trgtPageId) ?? -2
+            } else if targetPage.lowercased() == "audio_story" {
+                storyId = Int(trgtPageId) ?? -1
+            }
+        }
+//        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+//            self.redirectedToNotification(catId)
+//        }
+        completionHandler([[.alert, .sound, .badge]])
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
        // print(userInfo)
@@ -165,10 +200,13 @@ extension AppDelegate: MessagingDelegate {
                 storyId = Int(trgtPageId) ?? -1
             }
         }
-        self.redirectedToNotification(catId)
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            self.redirectedToNotification(catId)
+        }
+        completionHandler()
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    /*func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
       // If you are receiving a notification message while your app is in the background,
       // this callback will not be fired till the user taps on the notification launching the application.
       // TODO: Handle data of notification
@@ -212,10 +250,11 @@ extension AppDelegate: MessagingDelegate {
         if let aps = userInfo["aps"] as? [AnyHashable : AnyObject], let alert = aps["alert"] as? [AnyHashable: AnyObject], let title = alert["title"] as? String {
             Toast.show(title)
         }
-        self.redirectedToNotification(catId)
-//print(Int(userInfo["gcm.notification.audio_story_id"] as! String)!)
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            self.redirectedToNotification(catId)
+        }
       completionHandler(UIBackgroundFetchResult.newData)
-    }
+    }*/
     
     private func redirectedToNotification(_ catId: Int = -2) {
         if storyId != -1 && !isOnlyTrivia {
