@@ -284,7 +284,6 @@ extension AppDelegate: MessagingDelegate {
                         cont.children.last?.navigationController?.pushViewController(myobject, animated: true)
                     }
                 }
-                storyId = -2
             }
         } else if categorId != -2 {
             if let cont = UIApplication.shared.windows.first?.rootViewController?.sideMenuController?.rootViewController as? UINavigationController {

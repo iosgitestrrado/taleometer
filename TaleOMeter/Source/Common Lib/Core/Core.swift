@@ -111,7 +111,7 @@ class Core: NSObject {
             }
         }
         cont.navigationController?.navigationBar.tintColor = !backImageColorWhite ? .red : .white
-        if storyId != -1 {
+        if storyId != -1 && cont.className == NowPlayViewController().className {
             cont.navigationController?.navigationBar.tintColor = .clear
             storyId = -2
         }

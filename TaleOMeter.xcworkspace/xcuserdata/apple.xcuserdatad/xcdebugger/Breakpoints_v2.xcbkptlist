@@ -279,32 +279,80 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9BD8C896-7EE0-430F-9CCB-FDE2FD9E3C4F"
+            uuid = "BD970A9F-7A10-4496-8981-C1413477D6F2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
+            filePath = "TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "tapOnSubmit(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "564EC770-446A-494E-9C2D-FC76723EC183"
+            uuid = "6B9D76FE-6806-44B4-BA34-5EA16578BF02"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
+            filePath = "TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
-            landmarkName = "userNotificationCenter(_:willPresent:withCompletionHandler:)"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "setNotificationToken(_:hasPreference:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6B9D76FE-6806-44B4-BA34-5EA16578BF02 - 153c07d37f716336"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.VerificationViewController.setNotificationToken(_: Swift.Bool, hasPreference: Swift.Bool) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  uuid = "6B9D76FE-6806-44B4-BA34-5EA16578BF02 - 153c07d37f716336"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.VerificationViewController.setNotificationToken(_: Swift.Bool, hasPreference: Swift.Bool) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "252">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "281AEBF4-1736-4FCD-9057-8448C7938ECF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "setNotificationToken(_:hasPreference:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

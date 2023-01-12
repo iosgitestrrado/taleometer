@@ -110,10 +110,12 @@ class RegisterViewController: UIViewController {
                     response.StoryBoardName = ""
                     response.StoryBoardId = ""
                     Core.push(self, storyboard: Constants.Storyboard.trivia, storyboardId: "TriviaViewController")
-                } else {
+                } else if !response.Has_preference {
                     response.StoryBoardName = Constants.Storyboard.dashboard
                     response.StoryBoardId = "PreferenceViewController"
                     Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: "PreferenceViewController")
+                } else {
+                    Core.push(self, storyboard: Constants.Storyboard.dashboard, storyboardId: DashboardViewController().className)
                 }
                 Login.storeProfileData(response)
 //                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateUserData"), object: nil)
