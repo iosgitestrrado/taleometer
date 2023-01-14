@@ -603,7 +603,11 @@ extension AudioPlayManager {
     // MARK: - Share current audio -
     static func shareAudio(_ target: UIViewController, completion: @escaping(Bool?) -> Void) {
 //        let content = "Introducing tale'o'meter, An App that simplifies audio player for Every One. \nClick here to play audio \(AudioPlayManager.shared.currentAudio.File)"
-        let content = "I am loving the '\(AudioPlayManager.shared.currentAudio.File)' story on taleometer."
+        var userDisplayName = ""
+        if let pfData = Login.getProfileData() {
+            userDisplayName = pfData.Fname
+        }
+        let content = "I am loving the '\(AudioPlayManager.shared.currentAudio.Title)' story on taleometer.\n\nSignup for FREE. http://onelink.to/38pfnx\n\nLet’s take the daily break we deserve. I play this daily as \(userDisplayName)"
         let controller = UIActivityViewController(activityItems: [content], applicationActivities: nil)
 //        controller.excludedActivityTypes = [.postToTwitter, .postToFacebook, .postToWeibo, .message, .mail, .print, .copyToPasteboard, .assignToContact, .saveToCameraRoll, .addToReadingList, .postToVimeo, .postToFlickr, .postToTencentWeibo, .airDrop, .markupAsPDF, .openInIBooks]
         controller.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in

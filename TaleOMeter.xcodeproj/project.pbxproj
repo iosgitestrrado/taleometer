@@ -36,6 +36,7 @@
 		1833287E2938DA4300AF9176 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */; };
 		1836662D292B4A6600BC280C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1836662C292B4A6600BC280C /* GoogleSignIn */; };
 		18366630292BBD3700BC280C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 1836662F292BBD3700BC280C /* FacebookLogin */; };
+		183DF7DA29726BB2005D5C38 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183DF7D929726BB2005D5C38 /* AuthenticationServices.framework */; };
 		1843ECBB293E23C100777B1A /* trivia_post_thumb20221101194503202.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1843ECBA293E23C000777B1A /* trivia_post_thumb20221101194503202.jpg */; };
 		184A5FAF29430BBF002FE35B /* UIBarButtonItem+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184A5FAE29430BBF002FE35B /* UIBarButtonItem+Badge.swift */; };
 		184C38D62935D9250065C1AE /* LeaderBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184C38D52935D9250065C1AE /* LeaderBoardTableViewCell.swift */; };
@@ -238,6 +239,7 @@
 		183328772938D2DD00AF9176 /* ChatClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
 		1833287A2938D48B00AF9176 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		1833287D2938DA4300AF9176 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		183DF7D929726BB2005D5C38 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		1843ECBA293E23C000777B1A /* trivia_post_thumb20221101194503202.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = trivia_post_thumb20221101194503202.jpg; sourceTree = "<group>"; };
 		184A5FAE29430BBF002FE35B /* UIBarButtonItem+Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Badge.swift"; sourceTree = "<group>"; };
 		184C38D52935D9250065C1AE /* LeaderBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderBoardTableViewCell.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 				0BB11CED285C926B00FDC1F5 /* FirebaseAnalyticsSwift in Frameworks */,
 				0BB11CEB285C926B00FDC1F5 /* FirebaseAnalytics in Frameworks */,
 				18366630292BBD3700BC280C /* FacebookLogin in Frameworks */,
+				183DF7DA29726BB2005D5C38 /* AuthenticationServices.framework in Frameworks */,
 				0BB11CF1285C926B00FDC1F5 /* FirebaseCrashlytics in Frameworks */,
 				C53F96388270C0FCAD41FB5F /* Pods_TaleOMeter.framework in Frameworks */,
 				0BB11CEF285C926B00FDC1F5 /* FirebaseAuth in Frameworks */,
@@ -448,6 +451,7 @@
 		05354AC023DB047C57BDD458 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				183DF7D929726BB2005D5C38 /* AuthenticationServices.framework */,
 				0BB11CF4285C927C00FDC1F5 /* AdSupport.framework */,
 				B05FCB8D7D2EF4A7104B66CD /* Pods_TaleOMeter.framework */,
 				90C8812C4B157C97DC84D3E4 /* Pods_TaleOMeter_TaleOMeterUITests.framework */,
@@ -2082,7 +2086,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.6;
+				MARKETING_VERSION = 1.5.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2127,7 +2131,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.6;
+				MARKETING_VERSION = 1.5.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.taleometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Taleometer_appstore;

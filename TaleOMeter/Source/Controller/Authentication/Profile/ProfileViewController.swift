@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import Photos
 
 class ProfileViewController: UIViewController {
 
@@ -272,7 +273,7 @@ class ProfileViewController: UIViewController {
                 Toast.show("Camera not supported")
                 return
             }
-            
+            //https://stackoverflow.com/questions/43974752/app-crashes-in-background-while-changing-permission-swift
             if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
                 DispatchQueue.main.async {
                     self.imagePicker.sourceType = .camera
@@ -285,6 +286,25 @@ class ProfileViewController: UIViewController {
                             self.imagePicker.sourceType = .camera
                             self.present(self.imagePicker, animated: true, completion: nil)
                         }
+                    } else {
+                        let alertView = UIAlertController(title: "Camera", message: "Please allow Camera to take the profile picture. Go to Setting?", preferredStyle: .alert)
+                        alertView.addAction(UIAlertAction(title: "Settings", style: .default, handler: { action in
+                            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                                return
+                            }
+                            
+                            if UIApplication.shared.canOpenURL(settingsUrl) {
+                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                    DispatchQueue.main.async {
+                                        
+                                    }
+                                })
+                            }
+                        }))
+                        alertView.addAction(UIAlertAction(title: "Cancel", style: .destructive))
+                        DispatchQueue.main.async {
+                            self.present(alertView, animated: true)
+                        }
                     }
                 })
             }
@@ -295,22 +315,57 @@ class ProfileViewController: UIViewController {
                 Toast.show("Photo library not supported")
                 return
             }
-            
-            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
-                DispatchQueue.main.async {
-                    self.imagePicker.sourceType = .photoLibrary
-                    self.present(self.imagePicker, animated: true, completion: nil)
-                }
-            } else {
-                AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
-                    if granted {
+            let photos = PHPhotoLibrary.authorizationStatus()
+            if photos == .notDetermined || photos == .denied {
+                PHPhotoLibrary.requestAuthorization({status in
+                    if status == .authorized{
                         DispatchQueue.main.async {
                             self.imagePicker.sourceType = .photoLibrary
                             self.present(self.imagePicker, animated: true, completion: nil)
                         }
+                    } else {
+                        let alertView = UIAlertController(title: "Photo Library", message: "Please allow Photos to select the profile picture. Go to Setting?", preferredStyle: .alert)
+                        alertView.addAction(UIAlertAction(title: "Settings", style: .default, handler: { action in
+                            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                                return
+                            }
+                            
+                            if UIApplication.shared.canOpenURL(settingsUrl) {
+                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                })
+                            }
+                        }))
+                        alertView.addAction(UIAlertAction(title: "Cancel", style: .destructive))
+                        DispatchQueue.main.async {
+                            self.present(alertView, animated: true)
+                        }
                     }
                 })
+            } else if photos == .authorized {
+                DispatchQueue.main.async {
+                    self.imagePicker.sourceType = .photoLibrary
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                }
             }
+            
+            
+//            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+//                DispatchQueue.main.async {
+//                    self.imagePicker.sourceType = .photoLibrary
+//                    self.present(self.imagePicker, animated: true, completion: nil)
+//                }
+//            } else {
+//                AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+//                    if granted {
+//                        DispatchQueue.main.async {
+//                            self.imagePicker.sourceType = .photoLibrary
+//                            self.present(self.imagePicker, animated: true, completion: nil)
+//                        }
+//                    } else {
+//
+//                    }
+//                })
+//            }
             break
         case 0, 4:
             // 0 - Cancel // 4 - Update Profile

@@ -25,7 +25,7 @@ class LaunchViewController: UIViewController {
     @IBOutlet weak var AGLetsStart: UIButton!
     @IBOutlet weak var pageController: UIPageControl!
     
-    private var totalImages = 3
+    private var totalImages = 6
     var showTutorial = false
     
     enum VersionError: Error {
@@ -91,8 +91,10 @@ class LaunchViewController: UIViewController {
                 for i in 0..<totalImages {
                     let imgView = UIImageView(frame: CGRect(x: originX, y: 0, width: guideScrollView.frame.size.width, height: guideScrollView.frame.size.height))
                     imgView.contentMode = .scaleAspectFit
-                    imgView.backgroundColor = UIColor(hexString: "1E1E1E")
-                    imgView.image = UIImage(named: "tutorial\(i+1)")
+//                    imgView.backgroundColor = UIColor(hexString: "1E1E1E")
+                    imgView.backgroundColor = i == 2 || i == 3 ? UIColor(hexString: "1E1E1E") : .black
+
+                    imgView.image = UIImage(named: "tutor\(i+1)")
                     guideScrollView.addSubview(imgView)
                     originX += guideScrollView.frame.size.width
                 }

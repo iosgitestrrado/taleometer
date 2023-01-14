@@ -718,7 +718,7 @@ extension NowPlayViewController: PromptViewDelegate {
                 currentAudio = AudioPlayManager.shared.currentAudio
                 if myAudioList.count > 0 {
                     myAudioList[currentAudioIndex].Is_favorite = currentAudio.Is_favorite
-                } else if var audioList = AudioPlayManager.shared.audioList, audioList.count > 0 {
+                } else if let audioList = AudioPlayManager.shared.audioList, audioList.count > 0 {
                     AudioPlayManager.shared.audioList![AudioPlayManager.shared.currentIndex].Is_favorite = currentAudio.Is_favorite
                 }
                 favButton.isSelected = AudioPlayManager.shared.currentAudio.Is_favorite
