@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -563,7 +563,7 @@ Cg
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yc9-VL-k3v">
-                                        <rect key="frame" x="20" y="337" width="350" height="170"/>
+                                        <rect key="frame" x="20" y="338" width="350" height="168"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hope To See You Back Soon" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="aoU-41-xIP">
                                                 <rect key="frame" x="58" y="30" width="234" height="30"/>
@@ -575,16 +575,13 @@ Cg
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to logout ?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="hV3-Fm-1Gh">
-                                                <rect key="frame" x="61.000000000000014" y="70" width="228.33333333333337" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="edT-mn-LaH"/>
-                                                </constraints>
+                                                <rect key="frame" x="61.000000000000014" y="70" width="228.33333333333337" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ss-BI-qdC">
-                                                <rect key="frame" x="15" y="95" width="320" height="165"/>
+                                                <rect key="frame" x="15" y="93" width="320" height="165"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wh7-VN-8je">
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="165"/>
@@ -620,7 +617,7 @@ Cg
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="100" translatesAutoresizingMaskIntoConstraints="NO" id="Nln-XF-BOc">
-                                                <rect key="frame" x="25" y="100" width="300" height="40"/>
+                                                <rect key="frame" x="25" y="98" width="300" height="40"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O1p-fG-JOx">
                                                         <rect key="frame" x="0.0" y="0.0" width="100" height="40"/>
@@ -761,6 +758,8 @@ Cg
                         <outlet property="imageExpandView" destination="hyn-Qc-Yi5" id="5PB-cc-Sj7"/>
                         <outlet property="logoutPromptView" destination="7ID-aY-r1w" id="SpO-91-jjS"/>
                         <outlet property="messageLabelV" destination="DeF-1Y-s3M" id="j4f-R0-afF"/>
+                        <outlet property="popupMessage" destination="hV3-Fm-1Gh" id="GSx-Jj-Pes"/>
+                        <outlet property="popupTitle" destination="aoU-41-xIP" id="Hsv-nJ-4Do"/>
                         <outlet property="questionImage" destination="bej-2s-OrJ" id="Vgo-z6-vrz"/>
                         <outlet property="remainSecondLabel" destination="46P-JC-mei" id="Bof-GO-dVk"/>
                         <outlet property="songTitleLbl" destination="Asp-ul-veF" id="VaI-Ew-qkH"/>

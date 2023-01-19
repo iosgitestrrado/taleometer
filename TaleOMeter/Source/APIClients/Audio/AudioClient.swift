@@ -86,9 +86,9 @@ class AudioClient {
         }
     }
     
-    static func getNonstopAudio(_ audioReq: AudioRequest, completion: @escaping([Audio]?) -> Void) {
+    static func getNonstopAudio(_ audioReq: AudioRequest, completion: @escaping([Audio]?, NonStopStatus?) -> Void) {
         APIClient.shared.post(parameters: audioReq, feed: .NonStopAudios) { result in
-            ResponseAPI.getResponseArray(result) { response in
+            ResponseAPI.getResponseArray1(result) { response, jsonObj in
                 var nonStopAudios = [Audio]()
                 if let audios = response {
                     audios.forEach { object in
@@ -98,7 +98,19 @@ class AudioClient {
                         }
                     }
                 }
-                completion(nonStopAudios)
+                var nonStopStatus = NonStopStatus()
+                if let nonStatus = jsonObj {
+                    nonStopStatus = NonStopStatus(nonStatus)
+                }
+                completion(nonStopAudios, nonStopStatus)
+            }
+        }
+    }
+    
+    static func setNonStopActivity(_ req: NonStopActivityReq, completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: req, feed: .NonStopAudioActivity) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
             }
         }
     }
@@ -230,4 +242,3 @@ class AudioClient {
         }
     }
 }
-

@@ -111,6 +111,14 @@ class AuthClient {
             }
         }
     }
+    
+    static func deleteAccount(_ completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.deleteJson(EmptyRequest(), query: "", feed: .DeleteUserAccount) { result in
+            ResponseAPI.getResponseJsonBool(result) { status in
+                completion(status)
+            }
+        }
+    }
 
     static func updateProfile(_ profileReq: ProfileRequest, showSuccMessage: Bool = false, completion: @escaping(ProfileData?) -> Void) {
         APIClient.shared.postJson(parameters: profileReq, feed: .UpdateProfileDetails) { result in

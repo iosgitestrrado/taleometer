@@ -53,6 +53,10 @@ class NowPlayViewController: UIViewController {
     private var isPlayingTap = false
     private var currentAudio = Audio()
     private var audioURL = URL(string: "")
+    
+    let yourAttributes: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue
+      ] 
 
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -151,9 +155,28 @@ class NowPlayViewController: UIViewController {
     private func setAudioData() {
         self.imageView.sd_setImage(with: URL(string: currentAudio.ImageUrl), placeholderImage: defaultImage, options: [], context: nil)
         self.titleLabel.text = currentAudio.Title
-        self.storyButton.setTitle("Story: \(currentAudio.Story.Name)", for: .normal)
-        self.plotButton.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
-        self.narrotionButton.setTitle("Narration: \(currentAudio.Narration.Name)", for: .normal)
+        
+        let attributeString = NSMutableAttributedString(
+              string: "Story: \(currentAudio.Story.Name)",
+              attributes: yourAttributes
+            )
+        self.storyButton.setAttributedTitle(attributeString, for: .normal)
+        
+        let attributeString1 = NSMutableAttributedString(
+              string: "Plot: \(currentAudio.Plot.Name)",
+              attributes: yourAttributes
+            )
+        self.plotButton.setAttributedTitle(attributeString1, for: .normal)
+        
+        let attributeString2 = NSMutableAttributedString(
+              string: "Narration: \(currentAudio.Narration.Name)",
+              attributes: yourAttributes
+            )
+        self.narrotionButton.setAttributedTitle(attributeString2, for: .normal)
+        
+//        self.storyButton.setTitle("Story: \(currentAudio.Story.Name)", for: .normal)
+//        self.plotButton.setTitle("Plot: \(currentAudio.Plot.Name)", for: .normal)
+//        self.narrotionButton.setTitle("Narration: \(currentAudio.Narration.Name)", for: .normal)
         
         self.cuncurrentUserLbl.text = "Concurrent Users: \(currentAudio.Views_count.formatPoints())"
         self.favButton.isSelected = currentAudio.Is_favorite
@@ -180,7 +203,7 @@ class NowPlayViewController: UIViewController {
             AudioPlayManager.shared.playPauseAudioOnly(false, addToHistory: false)
             
             // Start progress
-            Core.ShowProgress(self, detailLbl: "Streaming Audio")
+            Core.ShowProgress(self, detailLbl: "Streaming Audio", isUserInterface: false)
             
             // Initialize audio play in audio player manager
             AudioPlayManager.shared.initPlayerManager { result in

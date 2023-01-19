@@ -140,7 +140,7 @@ class DashboardViewController: UIViewController {
                     AudioPlayManager.shared.removeMiniPlayer()
                     guard let player = AudioPlayManager.shared.playerAV else { return }
                     if player.isPlaying {
-                        AudioPlayManager.shared.playPauseAudio(false)
+                        AudioPlayManager.shared.playPauseAudio(false, action: "stop")
                     }
                 }
                 sender.isUserInteractionEnabled = true

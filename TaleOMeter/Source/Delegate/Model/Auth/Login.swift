@@ -102,6 +102,7 @@ struct FBLoginModel {
     }
 }
 
+
 struct LoginRequest: Encodable {
     var mobile = String()
     var isd_code = String()

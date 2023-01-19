@@ -106,6 +106,16 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    @IBAction func tapOnDeleteAccount(_ sender: UIButton) {
+        PromptVManager.present(self, isDeleteAccount: true)
+//        let alert = UIAlertController(title:  "Account Delete", message: "Are you sure you want to delete the account?", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { result in
+//            self.deleteAccount()
+//        }))
+//        alert.addAction(UIAlertAction(title: "No", style: .destructive))
+//        self.present(alert, animated: true)
+    }
+    
     private func setProfileData() {
         
         if let pfData = Login.getProfileData() {
@@ -416,6 +426,49 @@ extension ProfileViewController {
         }
     }
     
+    private func deleteAccount() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self)
+            return
+        }
+        Core.ShowProgress(self, detailLbl: "")
+        AuthClient.deleteAccount { status in
+            if let st = status, st {
+                if let myobject = UIStoryboard(name: Constants.Storyboard.auth, bundle: nil).instantiateViewController(withIdentifier: LoginViewController().className) as? LoginViewController {
+                    
+                    let isGuideCompleted = UserDefaults.standard.bool(forKey: Constants.UserDefault.GuideCompleted)
+                    let deviceToken = UserDefaults.standard.string(forKey: Constants.UserDefault.FCMTokenStr)
+
+                    let domain = Bundle.main.bundleIdentifier!
+                    UserDefaults.standard.removePersistentDomain(forName: domain)
+                    UserDefaults.standard.synchronize()
+                    
+                    UserDefaults.standard.set(isGuideCompleted, forKey: Constants.UserDefault.GuideCompleted)
+                    UserDefaults.standard.set(deviceToken, forKey: Constants.UserDefault.FCMTokenStr)
+                    UserDefaults.standard.synchronize()
+                    
+                    AudioPlayManager.shared.isMiniPlayerActive = false
+                    AudioPlayManager.shared.isNonStop = false
+                    Login.setGusetData()
+                    
+    //                myobject.hideNavbar = true
+                    var contStacks = [UIViewController]()
+                    if let myobject = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil).instantiateViewController(withIdentifier: LaunchViewController().className) as? LaunchViewController {
+                        contStacks.append(myobject)
+                    }
+                    if let myobject = UIStoryboard(name: Constants.Storyboard.dashboard, bundle: nil).instantiateViewController(withIdentifier: DashboardViewController().className) as? DashboardViewController {
+                        contStacks.append(myobject)
+                    }
+                    self.navigationController?.viewControllers = contStacks
+    //                self.sideMenuController?.rightViewController = myobject
+                    contStacks.last?.navigationController?.pushViewController(myobject, animated: true)
+    //                self.navigationController?.pushViewController(myobject, animated: true)
+                }
+            }
+            Core.HideProgress(self)
+        }
+    }
+    
     private func uploadProfileImage(_ imageData: Data, image: UIImage) {
         if !Reachability.isConnectedToNetwork() {
             Core.noInternet(self)
@@ -587,6 +640,8 @@ extension ProfileViewController: PromptViewDelegate {
             AuthClient.logout("Logged out successfully", moveToLogin: false)
             Core.push(self, storyboard: Constants.Storyboard.auth, storyboardId: LoginViewController().className)
             return
+        } else if tag == 10 {
+            self.deleteAccount()
         }
     }
 }

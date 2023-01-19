@@ -172,6 +172,7 @@ enum Feed {
     case RemoveProfileImage
     case UpdateProfileDetails
     case UpdateDeviceToke
+    case DeleteUserAccount
 
     //Preference
     case GetPreference
@@ -187,6 +188,7 @@ enum Feed {
     case GetAudioStoryById
     case AudioStoriesGenre
     case NonStopAudios
+    case NonStopAudioActivity
     case AddAudioStoryAction
     case EndAudioStoryPlaying
     case AddAudioHistory
@@ -272,6 +274,7 @@ extension Feed: Endpoint {
         case .RemoveProfileImage:       return "/api/update-profile/image"
         case .UpdateProfileDetails:     return "/api/update-profile/details"
         case .UpdateDeviceToke:         return "/api/notification/token"
+        case .DeleteUserAccount:        return "/api/user-account"
 
         //Preference
         case .GetPreference:            return "/api/preference-bubbles"
@@ -287,6 +290,7 @@ extension Feed: Endpoint {
         case .GetAudioStoryById:        return "/api/audio-story/id/"
         case .AudioStoriesGenre:        return "/api/audio-stories/genre"
         case .NonStopAudios:            return "/api/audio-stories/non-stop"
+        case .NonStopAudioActivity:     return "/api/audio-stories/non-stop/activity"
         case .AddAudioStoryAction:      return "/api/audio-story/action"
         case .EndAudioStoryPlaying:     return "/api/audio-story/end-playing"
         case .AddAudioHistory:          return "/api/add-audio-history"

@@ -38,6 +38,9 @@ class PromptViewController: UIViewController {
     @IBOutlet weak var answerMessage: UILabel!
     @IBOutlet weak var answerImage: UIImageView!
     @IBOutlet weak var answerImageView: UIView!
+    
+    @IBOutlet weak var popupTitle: UILabel!
+    @IBOutlet weak var popupMessage: UILabel!
 
     // Making this a weak variable, so that it won't create a strong reference cycle
     weak var delegate: PromptViewDelegate? = nil
@@ -50,6 +53,7 @@ class PromptViewController: UIViewController {
     var currentController = UIViewController()
     var isFromFavourite: Bool = false
     var isFromLogout: Bool = false
+    var isFromAccountDel: Bool = false
 
     // MARK: - Private Properties -
     private var timer = Timer()
@@ -92,6 +96,12 @@ class PromptViewController: UIViewController {
             timer = Timer(timeInterval: 1.0, target: self, selector: #selector(PromptViewController.updateTimer), userInfo: nil, repeats: true)
             RunLoop.main.add(self.timer, forMode: .default)
             timer.fire()
+        } else if isFromLogout {
+            self.popupTitle.text = "Hope To See You Back Soon"
+            self.popupMessage.text = "Are you sure you want to logout ?"
+        } else if isFromAccountDel {
+            self.popupTitle.text = "Delete Account ?"
+            self.popupMessage.text = "Deleting your account will remove all of your information from our database. This cannot be undone."
         }
     }
     
@@ -182,7 +192,7 @@ class PromptViewController: UIViewController {
     
     @IBAction func tapOnLogout(_ sender: UIButton) {
         if let delegate = delegate {
-            delegate.didActionOnPromptButton(9)
+            delegate.didActionOnPromptButton(isFromLogout ? 9 : 10)
         }
         self.dismiss(animated: true, completion: nil)
     }
@@ -196,7 +206,7 @@ class PromptViewController: UIViewController {
         if timer.isValid {
             timer.invalidate()
         }
-        if !isFromLogout, let delegate = delegate {
+        if !isFromLogout, !isFromAccountDel, let delegate = delegate {
             delegate.didActionOnPromptButton(3)
         }
         self.dismiss(animated: true, completion: nil)

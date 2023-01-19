@@ -46,6 +46,7 @@ class NonStopViewController: UIViewController {
     private var audioURL = URL(string: "")
     private var myAudioList = [Audio]()
     private var currentAudioIndex = -1
+    private var audioPlayerFromSec = 0
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -102,12 +103,16 @@ class NonStopViewController: UIViewController {
                 return
             }
             Core.ShowProgress(self, detailLbl: "")
-            AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 30)) { [self] result in
+            AudioClient.getNonstopAudio(AudioRequest(page: "all", limit: 30)) { [self] result, nonStopStatus in
                 if let response = result, response.count > 0 {
                     AudioPlayManager.shared.audioList = response
                     myAudioList = response
                     currentAudioIndex = 0
-                    AudioPlayManager.shared.setAudioIndex(0 ,isNext: false)
+                    if let nonStatus = nonStopStatus, nonStatus.Action.lowercased() == "pause" {
+                        currentAudioIndex = myAudioList.firstIndex(where: { $0.Id == nonStatus.Audio_story_id }) ?? 0
+                        self.audioPlayerFromSec = nonStatus.Time
+                    }
+                    AudioPlayManager.shared.setAudioIndex(currentAudioIndex ,isNext: false)
                     currentAudio = response[AudioPlayManager.shared.currentIndex]
                     setupAudioDataPlay(true)
                 } else {
@@ -195,6 +200,11 @@ class NonStopViewController: UIViewController {
                     chronometer.timerCurrentValue = TimeInterval(waveformsToBeRecolored)
                     chronometer.timerDidUpdate?(TimeInterval(waveformsToBeRecolored))
                 }
+                if audioPlayerFromSec > 0, let chronometer = self.visualizationWave.playChronometer {
+                    self.seekAudioTo(Double(audioPlayerFromSec))
+                    chronometer.timerCurrentValue = TimeInterval(audioPlayerFromSec)
+                    chronometer.timerDidUpdate?(TimeInterval(audioPlayerFromSec))
+                }
             }
             if !playNow {
                 udpateTime()
@@ -229,8 +239,17 @@ class NonStopViewController: UIViewController {
                         // Set audio start end label
                         self.udpateTime()
                     }
+                                    
                     // Set up visulation wave as per audio duration
                     visualizationWave.setplayChronometer(for: TimeInterval(totalTimeDuration))
+                    
+                    if audioPlayerFromSec > 0 {
+                        self.seekAudioTo(Double(audioPlayerFromSec))
+                        if let chronometer = self.visualizationWave.playChronometer {
+                            chronometer.timerCurrentValue = TimeInterval(audioPlayerFromSec)
+                            chronometer.timerDidUpdate?(TimeInterval(audioPlayerFromSec))
+                        }
+                    }
                     
                     // Play or pause current audio
                     self.playPauseAudio(playNow)
@@ -291,6 +310,23 @@ class NonStopViewController: UIViewController {
         }
     }
     
+    private func seekAudioTo(_ newTime: Double) {
+        if let player = AudioPlayManager.shared.playerAV {
+            guard let duration = player.currentItem?.duration else {
+                    return
+            }
+            if newTime < CMTimeGetSeconds(duration) {
+                let time2: CMTime = CMTimeMake(value: Int64(newTime) * 1000, timescale: 1000)
+                player.seek(to: time2)
+                setTime(newTime)
+            } else {
+                let time2: CMTime = CMTimeMake(value: Int64(CMTimeGetSeconds(duration)) * 1000, timescale: 1000)
+                player.seek(to: time2)
+                setTime(newTime)
+            }
+        }
+    }
+    
     // MARK: - Set start and end time
     private func setTime(_ currentTime: TimeInterval) {
         let playhead = currentTime
@@ -310,13 +346,12 @@ class NonStopViewController: UIViewController {
         UIView.transition(with: sender as UIView, duration: 0.75, options: .transitionCrossDissolve) {
             sender.isSelected = !sender.isSelected
         } completion: { [self] isDone in
-            if sender.isSelected {
-            }
 //            if isPlaying {
-            playPauseAudio(!sender.isSelected)
+            playPauseAudio(!sender.isSelected, action: "stop")
 //            }
             AudioPlayManager.shared.isNonStop = !sender.isSelected
             AudioPlayManager.shared.isMiniPlayerActive = !sender.isSelected
+            
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -498,9 +533,9 @@ class NonStopViewController: UIViewController {
     }
     
     // MARK: - Handle audio play and pause
-    private func playPauseAudio(_ playing: Bool) {
+    private func playPauseAudio(_ playing: Bool, action: String = "pause") {
         //if let player = AudioPlayManager.shared.playerAV {
-        AudioPlayManager.shared.playPauseAudioOnly(playing)
+        AudioPlayManager.shared.playPauseAudioOnly(playing, action: action)
         DispatchQueue.main.async {
             self.playButton.isSelected = playing
         }

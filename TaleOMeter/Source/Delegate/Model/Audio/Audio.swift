@@ -32,6 +32,7 @@ struct Audio {
     var IsLinkedAudio = Bool()
     
     var Audio_story_count = Int()
+    var Order = Int()
     var Story = StoryModel()
     var Plot = StoryModel()
     var Narration = StoryModel()
@@ -83,6 +84,7 @@ struct Audio {
         }
         
         TypeT = json["type"].stringValue
+        Order = json["order"].intValue
         Audio_story_count = json["audio_story_count"].intValue
                 
 //        if let story = strories.first(where: { $0.Id == Story_id }) {
@@ -105,6 +107,21 @@ struct Audio {
             return Float(CMTimeGetSeconds(audioAsset.duration))
         }
         return 0
+    }
+}
+
+struct NonStopStatus {
+    var Order = Int()
+    var Time = Int()
+    var Audio_story_id = Int()
+    var Action = String()
+    
+    init() {    }
+    init(_ json: JSON) {
+        Order = json["order"].intValue
+        Time = json["time"].intValue
+        Audio_story_id = json["audio_story_id"].intValue
+        Action = json["action"].stringValue
     }
 }
 
@@ -146,6 +163,13 @@ struct AddAudioActionRequest: Codable {
     var audio_history_id = Int()
     var action = String()
     var time = Int()
+}
+
+struct NonStopActivityReq: Codable {
+    var order = Int()
+    var audio_story_id = Int()
+    var time = Int()
+    var action = String()
 }
 
 public enum AudioAction: Equatable {

@@ -14,8 +14,9 @@ struct ResponseModel: Decodable {
     let status: Bool?
     let message: AnyObject?
     let data: [JSON]?
+    let nonstop_status: JSON?
 
-    private enum CodingKeys : String, CodingKey { case status, message, data }
+    private enum CodingKeys : String, CodingKey { case status, message, data, nonstop_status }
     init(from decoder : Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         do {
@@ -34,6 +35,11 @@ struct ResponseModel: Decodable {
             self.data = try container.decode([JSON].self, forKey: .data)
         } catch {
             self.data = [JSON]()
+        }
+        do {
+            self.nonstop_status = try container.decode(JSON.self, forKey: .nonstop_status)
+        } catch {
+            self.nonstop_status = JSON()
         }
     }
 }
@@ -153,6 +159,44 @@ struct ResponseAPI {
                 Toast.show(error.customDescription)
             }
             completion(nil)
+        }
+    }
+    
+    // MARK: check response and parse as per requirement
+    static func getResponseArray1(_ result: Result<ResponseModel?, APIError>, showAlert: Bool = true, showSuccMessage: Bool = false, completion: @escaping ([JSON]?, JSON?) -> ()) {
+        switch result {
+        case .success(let aPIResponse):
+            if let response = aPIResponse, let status = response.status, status, let responseData = response.data {
+                if showSuccMessage, let msg = response.message as? String {
+                    Toast.show(msg)
+                }
+                var jsonObject: JSON?
+                if let jsonObj = response.nonstop_status {
+                    jsonObject = jsonObj
+                }
+                completion(responseData, jsonObject)
+            } else if let response = aPIResponse, let msg = response.message, (msg is String || msg is JSON) {
+                let messageis = getMessageString(msg)
+                if messageis.lowercased().contains("unauthorized") {
+                    AuthClient.logout("")
+                    completion(nil, nil)
+                } else {
+                    if showAlert {
+                        Toast.show(messageis)
+                    }
+                    completion(nil, nil)
+                }
+            } else {
+                if showAlert {
+                    Toast.show(errorMessage)
+                }
+                completion(nil, nil)
+            }
+        case .failure(let error):
+            if showAlert {
+                Toast.show(error.customDescription)
+            }
+            completion(nil, nil)
         }
     }
     

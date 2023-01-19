@@ -183,7 +183,7 @@ class Core: NSObject {
 //        }
 //    }
     
-    static func ShowProgress(_ target: UIViewController, detailLbl: String) {
+    static func ShowProgress(_ target: UIViewController, detailLbl: String, isUserInterface: Bool = true) {
         if let indc = target.view.viewWithTag(9566) {
             indc.removeFromSuperview()
         }
@@ -198,8 +198,8 @@ class Core: NSObject {
         activityIndicator.tag = 9566
         //        NVActivityIndicatorPresenter.sharedInstance.setMessage("Fetching Data...")
         target.view.addSubview(activityIndicator)
-        target.view.isUserInteractionEnabled = false
-        target.navigationController?.view.isUserInteractionEnabled = false
+        target.view.isUserInteractionEnabled = isUserInterface
+        target.navigationController?.view.isUserInteractionEnabled = isUserInterface
         activityIndicator.startAnimating()
     }
 

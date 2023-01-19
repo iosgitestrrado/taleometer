@@ -12,6 +12,7 @@ import GoogleSignIn
 import FacebookLogin
 import FirebaseAnalytics
 import SwiftyJSON
+import AuthenticationServices
 
 class LoginViewController: UIViewController {
     
@@ -23,6 +24,7 @@ class LoginViewController: UIViewController {
 
     // MARK: - Private Properties -
     private var countryModel: Country = Country()
+    var hideNavbar = false
     
     // MARK: - Lifecycle -
     override func viewDidLoad() {
@@ -53,7 +55,8 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Core.showNavigationBar(cont: self, setNavigationBarHidden: isOnlyTrivia, isRightViewEnabled: false)
+        Core.showNavigationBar(cont: self, setNavigationBarHidden: isOnlyTrivia || hideNavbar, isRightViewEnabled: false)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -144,6 +147,14 @@ class LoginViewController: UIViewController {
                     Core.HideProgress(self)
                 }
             }
+        } else if sender.tag == 4 { // Google Login
+            Core.ShowProgress(self, detailLbl: "Apple SignIn...")
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            let request = appleIDProvider.createRequest()
+            request.requestedScopes = [.fullName, .email]
+            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+            authorizationController.delegate = self
+            authorizationController.performRequests()
         }
     }
     
@@ -280,6 +291,32 @@ extension LoginViewController {
         }
     }
     
+    private func appleSiginAPI(_ loginId: String, name: String, email: String) {
+        AuthClient.socialLogin(SocialLoginRequest(social_media: "apple", login_id: loginId, fname: name, email: email)) { profileData, status, token, isNewRegister in
+            if var response = profileData, !token.isBlank {
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                  AnalyticsParameterItemID: "id-appleSignIn",
+                  AnalyticsParameterItemName: email,
+                  AnalyticsParameterContentType: "cont",
+                ])
+                UserDefaults.standard.set(true, forKey: Constants.UserDefault.IsLogin)
+                UserDefaults.standard.set(token, forKey: Constants.UserDefault.AuthTokenStr)
+                if isNewRegister {
+                    response.StoryBoardName = Constants.Storyboard.auth
+                    response.StoryBoardId = "RegisterViewController"
+                } else if !isOnlyTrivia && !response.Has_preference {
+                    response.StoryBoardName = Constants.Storyboard.dashboard
+                    response.StoryBoardId = "PreferenceViewController"
+                }
+                Login.storeProfileData(response)
+                self.setNotificationToken(isNewRegister, hasPreference: response.Has_preference)
+            } else {
+                Core.HideProgress(self)
+            }
+        }
+    }
+    
+    
     private func setNotificationToken(_ isNewRegister: Bool, hasPreference: Bool) {
         if let nToken = UserDefaults.standard.string(forKey: Constants.UserDefault.FCMTokenStr) {
             AuthClient.updateNotificationToken(NotificationRequest(token: nToken)) { status in
@@ -341,5 +378,45 @@ extension LoginViewController: UITextFieldDelegate {
             Validator.showError(self.mobileNumberTxt, message: "Invalid phone number")
             return
         }
+    }
+}
+
+// MARK: ASAuthorizationControllerDelegate
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+//            print("User id is \(userIdentifier) \n Full Name is \(String(describing: fullName)) \n Email id is \(String(describing: email))")
+            if fullName?.givenName != nil {
+                self.appleSiginAPI(userIdentifier, name: "\(fullName?.givenName ?? "") \(fullName?.familyName ?? "")", email: email ?? "")
+            } else {
+                self.appleSiginAPI(userIdentifier, name: "", email: "")
+            }
+            
+//            let appleIDProvider = ASAuthorizationAppleIDProvider()
+//            appleIDProvider.getCredentialState(forUserID: userIdentifier) {  (credentialState, error) in
+//                switch credentialState {
+//                case .authorized:
+//                    // The Apple ID credential is valid.
+//                    break
+//                case .revoked:
+//                    // The Apple ID credential is revoked.
+//                    break
+//                case .notFound:
+//                    // No credential was found, so show the sign-in UI.
+//                    break
+//                default:
+//                    break
+//                }
+//            }
+            Core.HideProgress(self)
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+        Toast.show(error.localizedDescription)
     }
 }

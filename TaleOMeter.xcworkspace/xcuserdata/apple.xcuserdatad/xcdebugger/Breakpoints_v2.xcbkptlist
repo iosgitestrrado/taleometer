@@ -14,10 +14,42 @@
             filePath = "TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "778"
-            endingLineNumber = "778"
+            startingLineNumber = "820"
+            endingLineNumber = "820"
             landmarkName = "updateHistory()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5D5960E6-D2E4-428C-BC82-BDCF6CBEA355 - 4530858a606e960e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.AudioPlayManager.updateHistoryAction(Swift.Bool) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "822"
+                  endingLineNumber = "822"
+                  offsetFromSymbolStart = "408">
+               </Location>
+               <Location
+                  uuid = "5D5960E6-D2E4-428C-BC82-BDCF6CBEA355 - 4530858a606e960e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TaleOMeter.AudioPlayManager.updateHistoryAction(Swift.Bool) -&gt; ()"
+                  moduleName = "TaleOMeter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Audio/AudioPlay/AudioPlayManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "822"
+                  endingLineNumber = "822"
+                  offsetFromSymbolStart = "488">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -78,13 +110,13 @@
             filePath = "TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "facebookSiginAPI(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - 87a1bc87507fc95b"
+                  uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - 87a1bc87507fce2c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -94,12 +126,12 @@
                   urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "228"
-                  endingLineNumber = "228"
-                  offsetFromSymbolStart = "74">
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "60">
                </Location>
                <Location
-                  uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - d2f5bd15b27286a3"
+                  uuid = "81BFFAA4-73F1-4CA5-BD13-E3276BCB717E - d2f5bd15b2728016"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -109,9 +141,9 @@
                   urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "229"
-                  endingLineNumber = "229"
-                  offsetFromSymbolStart = "313">
+                  startingLineNumber = "240"
+                  endingLineNumber = "240"
+                  offsetFromSymbolStart = "240">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -126,8 +158,8 @@
             filePath = "TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "googleSiginAPI(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,13 +174,13 @@
             filePath = "TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "googleSiginAPI(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - 3a5abae5e5275050"
+                  uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - 3a5abae5e5275f25"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -158,12 +190,12 @@
                   urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "259"
-                  endingLineNumber = "259"
-                  offsetFromSymbolStart = "1244">
+                  startingLineNumber = "270"
+                  endingLineNumber = "270"
+                  offsetFromSymbolStart = "1164">
                </Location>
                <Location
-                  uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - f652dd51d8227307"
+                  uuid = "23CF2338-A82D-4499-AEFE-9BC8E96177A1 - f652dd51d8227db0"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -173,9 +205,9 @@
                   urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "260"
-                  endingLineNumber = "260"
-                  offsetFromSymbolStart = "313">
+                  startingLineNumber = "271"
+                  endingLineNumber = "271"
+                  offsetFromSymbolStart = "240">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -190,8 +222,8 @@
             filePath = "TaleOMeter/Source/Controller/Authentication/Login/LoginViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
             landmarkName = "facebookSiginAPI(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,8 +238,8 @@
             filePath = "TaleOMeter/Source/Delegate/Model/Response/ResponseModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "278"
-            endingLineNumber = "278"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "getResponseJsonToken(_:showAlert:showSuccMessage:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -222,8 +254,8 @@
             filePath = "TaleOMeter/Source/Delegate/Model/Response/ResponseModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
             landmarkName = "getResponseArray1(_:showAlert:showSuccMessage:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -279,80 +311,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BD970A9F-7A10-4496-8981-C1413477D6F2"
+            uuid = "D08E7D92-9B94-4E75-A689-9CBC3826308D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
+            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "tapOnSubmit(_:)"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6B9D76FE-6806-44B4-BA34-5EA16578BF02"
+            uuid = "2BAD9FD9-63FE-4887-8E24-4C37BA5344FB"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
+            filePath = "TaleOMeter/Source/Delegate/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "setNotificationToken(_:hasPreference:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6B9D76FE-6806-44B4-BA34-5EA16578BF02 - 153c07d37f716336"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TaleOMeter.VerificationViewController.setNotificationToken(_: Swift.Bool, hasPreference: Swift.Bool) -&gt; ()"
-                  moduleName = "TaleOMeter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "170"
-                  endingLineNumber = "170"
-                  offsetFromSymbolStart = "114">
-               </Location>
-               <Location
-                  uuid = "6B9D76FE-6806-44B4-BA34-5EA16578BF02 - 153c07d37f716336"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TaleOMeter.VerificationViewController.setNotificationToken(_: Swift.Bool, hasPreference: Swift.Bool) -&gt; ()"
-                  moduleName = "TaleOMeter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Projects/iOS/Estrrado/Taleometer/TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "170"
-                  endingLineNumber = "170"
-                  offsetFromSymbolStart = "285">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "281AEBF4-1736-4FCD-9057-8448C7938ECF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TaleOMeter/Source/Controller/Authentication/Verification/VerificationViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "setNotificationToken(_:hasPreference:)"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "userNotificationCenter(_:willPresent:withCompletionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

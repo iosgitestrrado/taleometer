@@ -233,8 +233,8 @@ class AudioPlayManager: NSObject {
         nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
     }
     
-    // MARK: Play pause audio with mini player update
-    func playPauseAudio(_ isPlay: Bool, addToHistory: Bool = true) {
+    // MARK: Play pause au  dio with mini player update
+    func playPauseAudio(_ isPlay: Bool, addToHistory: Bool = true, action: String = "pause") {
         DispatchQueue.main.async { [self] in
             guard let player = playerAV else { return }
             //Add update history
@@ -259,6 +259,9 @@ class AudioPlayManager: NSObject {
             } else {
                 if player.isPlaying {
                     player.pause()
+                    if isNonStop {
+                        self.nonStopAudioActivity(action)
+                    }
                 }
                 if audioTimer.isValid {
                     self.audioTimer.invalidate()
@@ -276,7 +279,7 @@ class AudioPlayManager: NSObject {
     }
     
     // MARK: Play pause audio only
-    func playPauseAudioOnly(_ isPlay: Bool, addToHistory: Bool = true) {
+    func playPauseAudioOnly(_ isPlay: Bool, addToHistory: Bool = true, action: String = "pause") {
         guard let player = playerAV else { return }
         if addToHistory && !isTrivia {
             addUpdateAudioActionHistory(isPlay)
@@ -285,6 +288,9 @@ class AudioPlayManager: NSObject {
         if isPlay {
             player.play()
         } else {
+            if isNonStop {
+                self.nonStopAudioActivity(action)
+            }
             player.pause()
         }
     }
@@ -650,6 +656,9 @@ extension AudioPlayManager {
         if isNonStop {
             isNonStop = false
             NotificationCenter.default.post(name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
+            if let player = AudioPlayManager.shared.playerAV, player.isPlaying, let currentItem = playerAV?.currentItem {
+                self.nonStopAudioActivity1("pause", audioId: currentAudio.Id, time: getCurrentSecond(currentItem), order: currentAudio.Order)
+            }
         }
         isMiniPlayerActive = false
         audioList = [Audio]()
@@ -702,6 +711,9 @@ extension AudioPlayManager {
             playhead = currentItem.duration.seconds
         }
         if playhead.isNaN {
+            playhead = 0
+        }
+        if Int(playhead) >= Int(currentItem.duration.seconds) - 1 {
             playhead = 0
         }
         return Int(playhead)
@@ -761,6 +773,36 @@ extension AudioPlayManager {
                         audioHistoryId = data.Id
 //                        AudioClient.addAudioAction(AddAudioActionRequest(audio_history_id: data.Id, action: AudioAction.resume.description)) { status in }
                     }
+                }
+            }
+        }
+    }
+    
+    public func nonStopAudioActivity1(_ action: String, audioId: Int, time: Int, order: Int) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        
+        // Add history in background
+        DispatchQueue.global(qos: .background).async {
+            print("Non stop audio is \(action)")
+            AudioClient.setNonStopActivity(NonStopActivityReq(order: order, audio_story_id: audioId, time: time, action: action)) { status in
+            }
+        }
+    }
+    
+    public func nonStopAudioActivity(_ action: String) {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(currVController)
+            return
+        }
+        
+        // Add history in background
+        DispatchQueue.global(qos: .background).async { [self] in
+            if let currentItem = playerAV?.currentItem {
+                print("Non stop audio is \(action)")
+                AudioClient.setNonStopActivity(NonStopActivityReq(order: currentAudio.Order, audio_story_id: currentAudio.Id, time: getCurrentSecond(currentItem), action: action)) { status in
                 }
             }
         }
