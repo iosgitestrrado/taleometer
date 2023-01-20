@@ -55,7 +55,7 @@ class NonStopViewController: UIViewController {
         AudioPlayManager.shared.audioHistoryId = -1
         getAudioList()
         
-        // Pan gesture for scrubbing support.
+//        Pan gesture for scrubbing support.
 //        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
 //        panGestureRecognizer.cancelsTouchesInView = false
 //        visualizationWave.addGestureRecognizer(panGestureRecognizer)
@@ -205,6 +205,7 @@ class NonStopViewController: UIViewController {
                     chronometer.timerCurrentValue = TimeInterval(audioPlayerFromSec)
                     chronometer.timerDidUpdate?(TimeInterval(audioPlayerFromSec))
                 }
+                audioPlayerFromSec = 0
             }
             if !playNow {
                 udpateTime()
@@ -250,7 +251,7 @@ class NonStopViewController: UIViewController {
                             chronometer.timerDidUpdate?(TimeInterval(audioPlayerFromSec))
                         }
                     }
-                    
+                    audioPlayerFromSec = 0
                     // Play or pause current audio
                     self.playPauseAudio(playNow)
                 }

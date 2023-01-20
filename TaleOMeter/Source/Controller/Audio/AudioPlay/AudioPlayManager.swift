@@ -707,13 +707,17 @@ extension AudioPlayManager {
     
     private func getCurrentSecond(_ currentItem: AVPlayerItem) -> Int {
         var playhead = currentItem.currentTime().seconds
+        var totalDurtation = currentItem.duration.seconds
         if Int(playhead) <= 1 {
             playhead = currentItem.duration.seconds
         }
         if playhead.isNaN {
             playhead = 0
         }
-        if Int(playhead) >= Int(currentItem.duration.seconds) - 1 {
+        if totalDurtation.isNaN {
+            totalDurtation = 0
+        }
+        if Int(playhead) >= Int(totalDurtation) - 1 {
             playhead = 0
         }
         return Int(playhead)

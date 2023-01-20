@@ -51,8 +51,8 @@ class StorySegmentViewController: UIViewController {
 // MARK: - ContainerVCDelegate -
 extension StorySegmentViewController: ContainerVCDelegate {
     func containerViewItem(_ index: NSInteger, currentController: UIViewController) {
-//        if let grid = currentController as? StoryViewController {
-//            grid.getUserStory()
-//        }
+        if let grid = currentController as? StoryViewController {
+            grid.getUserStory()
+        }
     }
 }
