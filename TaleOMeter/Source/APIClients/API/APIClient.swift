@@ -173,6 +173,7 @@ enum Feed {
     case UpdateProfileDetails
     case UpdateDeviceToke
     case DeleteUserAccount
+    case DeviceUpdate
 
     //Preference
     case GetPreference
@@ -275,6 +276,7 @@ extension Feed: Endpoint {
         case .UpdateProfileDetails:     return "/api/update-profile/details"
         case .UpdateDeviceToke:         return "/api/notification/token"
         case .DeleteUserAccount:        return "/api/user-account"
+        case .DeviceUpdate:             return "/api/device-update"
 
         //Preference
         case .GetPreference:            return "/api/preference-bubbles"

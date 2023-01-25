@@ -30,6 +30,14 @@ class AuthClient {
         }
     }
     
+    static func deviceUpdate(_ completion: @escaping(Bool?) -> Void) {
+        APIClient.shared.postJson(parameters: DeviceUpdatedRequest(), feed: .DeviceUpdate) { (result) in
+            ResponseAPI.getResponseJsonBool(result, showAlert: false, isLogout: false, completion: { status in
+                completion(status)
+            })
+        }
+    }
+    
     static func verifyOtp(_ veriReq: VerificationRequest, completion: @escaping(ProfileData?, Bool, String, Bool) -> Void) {
         APIClient.shared.postJson(parameters: veriReq, feed: .VerifyOtp) { (result) in
             ResponseAPI.getResponseJsonToken(result, showSuccMessage: true, completion: { responseJson, status, token, isNewRegister in

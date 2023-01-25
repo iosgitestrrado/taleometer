@@ -51,6 +51,9 @@ class DashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(DoneNonStopPlayer(_:)), name: Notification.Name(rawValue: "closeMiniPlayer"), object: nil)
 
         //finishNotification
+        if UserDefaults.standard.bool(forKey: Constants.UserDefault.IsLogin) {
+            updateDeviceInfo()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +113,18 @@ class DashboardViewController: UIViewController {
                 self.notiBarButton.setBadge(with: noti_c)
             }
             Core.HideProgress(self)
+        }
+    }
+    
+    private func updateDeviceInfo() {
+        if !Reachability.isConnectedToNetwork() {
+            Core.noInternet(self, methodName: "updateDeviceInfo")
+            //completionHandler?()
+            return
+        }
+        DispatchQueue.global(qos: .background).async {
+            AuthClient.deviceUpdate { status in
+            }
         }
     }
     
