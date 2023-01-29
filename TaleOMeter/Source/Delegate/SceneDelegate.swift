@@ -28,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        UserDefaults.standard.set(true, forKey: Constants.UserDefault.GuideCompleted)
 
         let sideMenuStoryboard = UIStoryboard(name: Constants.Storyboard.sideMenu, bundle: nil)
         let launchStoryboard = UIStoryboard(name: Constants.Storyboard.launch, bundle: nil)
