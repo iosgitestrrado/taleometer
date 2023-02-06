@@ -2,6 +2,79 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1045779842263-abb23fcmqjo1mn0ohvivvhtitmekj7iq</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb855965928770280</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>855965928770280</string>
+	<key>FacebookClientToken</key>
+	<string>96361371263d28b0daec073aed9bc4ef</string>
+	<key>FacebookDisplayName</key>
+	<string>tale'o'meter</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>whatsapp</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>dev-taleometer.estrradoweb.com</key>
+			<dict>
+				<key>NSAllowsArbitraryLoads</key>
+				<true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.0</string>
+				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>CommutersSans-Bold.ttf</string>
+		<string>CommutersSans-BoldItalic.ttf</string>
+		<string>CommutersSans-ExtraBold.ttf</string>
+		<string>CommutersSans-ExtraBoldItalic.ttf</string>
+		<string>CommutersSans-ExtraLight.ttf</string>
+		<string>CommutersSans-ExtraLightItalic.ttf</string>
+		<string>CommutersSans-Heavy.ttf</string>
+		<string>CommutersSans-HeavyItalic.ttf</string>
+		<string>CommutersSans-Italic.ttf</string>
+		<string>CommutersSans-Light.ttf</string>
+		<string>CommutersSans-LightItalic.ttf</string>
+		<string>CommutersSans-Regular.ttf</string>
+		<string>CommutersSans-SemiBold.ttf</string>
+		<string>CommutersSans-SemiBoldItalic.ttf</string>
+		<string>CommutersSans-Thin.ttf</string>
+		<string>CommutersSans-ThinItalic.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -21,5 +94,12 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
